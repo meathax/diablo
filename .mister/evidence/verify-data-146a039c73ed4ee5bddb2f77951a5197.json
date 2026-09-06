@@ -1,0 +1,19 @@
+{
+  "schema": "diablo-operation-receipt-v1",
+  "operation": "verify-data",
+  "arguments": [
+    "verify-data"
+  ],
+  "started_utc": "2026-09-05T04:43:42.671896+00:00",
+  "script_sha256": "22012ce78aa7715c0264c6d5d769a60b712c5c00cb505835c169302e1136d94e",
+  "source_lock_sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
+  "result": {
+    "manifest": ".mister\\evidence\\private\\game-data.json",
+    "manifest_sha256": "29d31b77cf7107bee144f2c4fc2c600f49159080f2af04203ef1bd19e5e1ccd3",
+    "archive_count": 5,
+    "total_bytes": 692784866,
+    "scope": "SHA-256 identity and MPQ header/table bounds only; not engine compatibility"
+  },
+  "status": "pass",
+  "finished_utc": "2026-09-05T04:43:43.518653+00:00"
+}

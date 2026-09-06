@@ -1,0 +1,105 @@
+{
+  "schema": "diablo-project-state-v1",
+  "active_package": "P01",
+  "status": "P01-prerequisite-repair-in-progress",
+  "completed_packages": [
+    "P00"
+  ],
+  "blocked_packages": {
+    "P01": {
+      "reason": "Shared leases now advertised; inference/timing audit, named unconstrained export, build identity binding and authenticated acceptance integration remain incomplete. Local audit parser implementation is underway.",
+      "evidence": {
+        "path": ".mister/evidence/doctor-1eb167c34c7c4313ad2dd03d807ef9a9.json",
+        "sha256": "68ec53a35e64fb31a36f9a3c7d029ab6d1009cf165bb77009b7b90fac1d9de5f",
+        "status": "blocked"
+      },
+      "gate": ".mister/contracts/QUARTUS_RUNNER_GATE.md"
+    }
+  },
+  "not_started_packages": [
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P06",
+    "P07",
+    "P08",
+    "P09",
+    "P10",
+    "P11",
+    "P12",
+    "P13",
+    "P14",
+    "P15",
+    "P16",
+    "P17",
+    "P18",
+    "P19",
+    "P20"
+  ],
+  "plan_digest": "702f573c53c8d2fb0eea227ba747d21c3b67150b0c488ee9a88b6c1c45dd6fae",
+  "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
+  "abi_digest": null,
+  "accepted_build_id": null,
+  "active_divergence": null,
+  "latest_reference_receipt": null,
+  "latest_rtl_receipt": null,
+  "latest_hardware_receipt": null,
+  "foundation_receipts": {
+    "test": {
+      "path": ".mister/evidence/test-ff170f1eda944e7c87957d55fc20bb18.json",
+      "sha256": "246c694a1e8e8d47eb009be394a8afc08783699e94dbbb0d0f8115bc40675e08",
+      "status": "pass"
+    },
+    "fetch": {
+      "path": ".mister/evidence/fetch-5a72699af4e9404eacaa6112b133d43d.json",
+      "sha256": "48433b2ca505dba90bf79a9cc82d57b6b5f8101f2e6188bf44580154dbd6f3cf",
+      "status": "pass"
+    },
+    "verify-data": {
+      "path": ".mister/evidence/verify-data-992596d4e085417197c0f55941fe8a23.json",
+      "sha256": "f4719d8bae44f1713c6fcb95a067bf1f0546c66cfcc79bf99d30bc395f2e0c58",
+      "status": "pass"
+    },
+    "doctor": {
+      "path": ".mister/evidence/doctor-1eb167c34c7c4313ad2dd03d807ef9a9.json",
+      "sha256": "68ec53a35e64fb31a36f9a3c7d029ab6d1009cf165bb77009b7b90fac1d9de5f",
+      "status": "blocked"
+    }
+  },
+  "next_exact_command": "python support/scripts/diablo.py test --suite foundation",
+  "next_command_condition": "Run before extending the tested local Quartus auditor. The goal remains active; do not wait indefinitely for another task.",
+  "next_implementation": "Implement hash-bound normalized unconstrained endpoint export and exact setup/hold count reconciliation; raw report repeats detail headings without an explicit domain, so do not assign domains by guessed ordering. Then bind fresh runner reports/source closure and authenticated acceptance.",
+  "allowed_paths": [
+    ".gitignore",
+    "README.md",
+    ".mister/",
+    "support/scripts/",
+    "support/tests/",
+    ".work/sources/"
+  ],
+  "read_only_paths": [
+    "game/",
+    "D:/Arcade/AI/aCORES/blood"
+  ],
+  "hardware_edits": false,
+  "builds_run": [],
+  "commits_created": false,
+  "deployment_performed": false,
+  "known_unknowns": [
+    "Engine archive-member compatibility and detected game-data variants",
+    "Complete dependency and ARM C++23 toolchain/sysroot lock",
+    "Actual MiSTer hardware access and supported kernel",
+    "Safety of proposed 16 MiB DDR aperture",
+    "Wrapper handoff and daemon-free hardware launch",
+    "All rendering, input, audio, multiplayer, performance and release acceptance gates"
+  ],
+  "notes": [
+    "P00 completion is foundation acceptance only; no runnable game core exists.",
+    "No Verilator or MAME operation was run; DevilutionX software is the future functional oracle.",
+    "Source checkout is clean; no upstream engine patches exist.",
+    "Shared lessons consulted; no new hardware lesson proven."
+  ],
+  "audit_development_record": ".mister/evidence/runner-audit-development.md",
+  "goal_turn_classification": "progress"
+}

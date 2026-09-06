@@ -1,0 +1,10 @@
+# Private commercial data and local upstream checkouts must never be published.
+/game/
+/.work/
+/.mister/evidence/private/
+/db/
+/incremental_db/
+/output_files/
+**/__pycache__/
+*.pyc
+

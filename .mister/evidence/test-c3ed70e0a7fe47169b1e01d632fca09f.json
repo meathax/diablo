@@ -1,0 +1,19 @@
+{
+  "schema": "diablo-operation-receipt-v1",
+  "operation": "test",
+  "arguments": [
+    "test",
+    "--suite",
+    "foundation"
+  ],
+  "started_utc": "2026-09-05T04:38:51.827385+00:00",
+  "script_sha256": "33cef4e8dba4b90fa4bd7ed1cfb10a102a578f3f0f18fd0f1035a738f463c349",
+  "source_lock_sha256": "a67420ae41ee04062d768d7f650b42b2d54f9bdfaa6779fe537bbfb6f42f4b88",
+  "result": {
+    "suite": "foundation",
+    "result": "pass",
+    "stdout": "test_lock_has_only_immutable_source_commits (test_foundation.MpqBoundsTests.test_lock_has_only_immutable_source_commits) ... ok\ntest_rejects_declared_size_larger_than_file (test_foundation.MpqBoundsTests.test_rejects_declared_size_larger_than_file) ... ok\ntest_rejects_missing_signature (test_foundation.MpqBoundsTests.test_rejects_missing_signature) ... ok\ntest_rejects_table_outside_archive (test_foundation.MpqBoundsTests.test_rejects_table_outside_archive) ... ok\ntest_rejects_unknown_version_instead_of_assuming_v0 (test_foundation.MpqBoundsTests.test_rejects_unknown_version_instead_of_assuming_v0) ... ok\ntest_valid_minimal_table_extents (test_foundation.MpqBoundsTests.test_valid_minimal_table_extents) ... ok\ntest_identity_change_is_rejected_without_replacing_manifest (test_foundation.PrivateDataTests.test_identity_change_is_rejected_without_replacing_manifest) ... ok\ntest_accepts_clean_exact_identity (test_foundation.SourceAdmissionTests.test_accepts_clean_exact_identity) ... ok\ntest_rejects_modified_tracked_file (test_foundation.SourceAdmissionTests.test_rejects_modified_tracked_file) ... ok\ntest_rejects_untracked_file (test_foundation.SourceAdmissionTests.test_rejects_untracked_file) ... ok\ntest_rejects_wrong_commit (test_foundation.SourceAdmissionTests.test_rejects_wrong_commit) ... ok\ntest_rejects_wrong_origin (test_foundation.SourceAdmissionTests.test_rejects_wrong_origin) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 5.505s\n\nOK"
+  },
+  "status": "pass",
+  "finished_utc": "2026-09-05T04:38:58.371033+00:00"
+}
