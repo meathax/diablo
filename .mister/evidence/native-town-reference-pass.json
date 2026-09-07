@@ -1,0 +1,47 @@
+{
+  "scope": "Full Diablo/Hellfire town smoke scenarios; not complete campaign playthrough or hardware/FPS validation",
+  "resolution": [
+    640,
+    480
+  ],
+  "headless_mode": false,
+  "capture_interval_draws": 128,
+  "campaigns": {
+    "diablo": {
+      "comparison": {
+        "equal": true,
+        "frames_compared": 5,
+        "scope": "All supplied indexed frames and all RGB888 palette entries"
+      },
+      "runs": [
+        {
+          "path": ".work\\runtime\\scenarios\\bdd9bdab41204c94b536d2d1d219934b",
+          "receipt_sha256": "a1964a461884a08768b2da3445f46a5f44ac2fb44c7067cd029d2f969ea8ac38"
+        },
+        {
+          "path": ".work\\runtime\\scenarios\\855983296a4c4dc2aa3af9deebe5a1de",
+          "receipt_sha256": "7e48f71badd44bbf17a05ac2279b6594ecca3b547033caad73a656bad3af86c8"
+        }
+      ],
+      "executable_sha256": "7cf8be48f3f35cdc8089ca1b8eaddc5762998ad29fb85a758d7bce0291ef14dd"
+    },
+    "hellfire": {
+      "comparison": {
+        "equal": true,
+        "frames_compared": 5,
+        "scope": "All supplied indexed frames and all RGB888 palette entries"
+      },
+      "runs": [
+        {
+          "path": ".work\\runtime\\scenarios\\3b4c9f07df90404bb3407fa899bbb7f8",
+          "receipt_sha256": "3b8b9a535f7a53a211134c144a1ecdd99e2bd5d88350d82c42ed9a94b9c8831f"
+        },
+        {
+          "path": ".work\\runtime\\scenarios\\3558bd07c6414d959ea29afd9e2a48e8",
+          "receipt_sha256": "f84976679dc52ee73edbf8021c00066b1e1eea3e47d54ec2edafb346d8886762"
+        }
+      ],
+      "executable_sha256": "7cf8be48f3f35cdc8089ca1b8eaddc5762998ad29fb85a758d7bce0291ef14dd"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "step": 1,
+  "status": "accepted",
+  "scope": "Windows host reference only: clean build, full Diablo/Hellfire playable town scenes and repeated native640 indexed captures; not MiSTer completion or FPS evidence",
+  "clean_build_compares_to_reference": {
+    "diablo": {
+      "equal": true,
+      "frames_compared": 5,
+      "scope": "All supplied indexed frames and all RGB888 palette entries"
+    },
+    "hellfire": {
+      "equal": true,
+      "frames_compared": 5,
+      "scope": "All supplied indexed frames and all RGB888 palette entries"
+    }
+  },
+  "upstream_tests": {
+    "passed": 584,
+    "skipped": 2,
+    "limitation": "Pagination tests skip upstream; test baseline precedes dormant capture/scenario overlays. Original gameplay replay passes after overlays."
+  },
+  "evidence_sha256": {
+    ".mister/evidence/build-host-38ba57a9a10d465bbe122406a92d2356.json": "ada433b78e249ab631d5bda87f4908fe687dc92c1d512d6e93d407be9e29dcdd",
+    ".mister/evidence/upstream-host-tests-baseline.json": "ac2710ee582981d33094b0915bd0fa62be3a89748e55ee58c09b5edc0bac807f",
+    ".mister/evidence/native-town-reference-pass.json": "2b1c62e1696a0a4fda4553624503a6d4d756fb9d48de06e9fefd434b7b6c7e3f",
+    ".mister/evidence/host-clean-dependency-comparison.json": "e780c7b55e13998f54e7a4e509313770cf8b0a77a79ab8f150ae16b1318f0b98",
+    ".mister/evidence/host-current-dependencies.json": "04b0e28db1d071f174d08ee5cbee10f92ce22ae616f7e47fb9b63ea4704b430b",
+    ".mister/evidence/host-clean-dependencies.json": "2056ef97c582a16821d94e5756a0f18ec0777a3e9bcabc3f2647e1cccffc853f",
+    ".mister/evidence/host-loaded-modules.json": "a4e439857f7948472bfd87e30bd6136bcc99df413f402e0ec97c58341270cd87",
+    ".work\\runtime\\scenarios\\855983296a4c4dc2aa3af9deebe5a1de\\run.json": "7e48f71badd44bbf17a05ac2279b6594ecca3b547033caad73a656bad3af86c8",
+    ".work\\runtime\\scenarios\\a0df82a11b66478ba7067eb72f37471a\\run.json": "31a352ef296c3b854688bafeae8fba50115d19094dc0b3c0cede10c59b1c6526",
+    ".work\\runtime\\scenarios\\3558bd07c6414d959ea29afd9e2a48e8\\run.json": "f84976679dc52ee73edbf8021c00066b1e1eea3e47d54ec2edafb346d8886762",
+    ".work\\runtime\\scenarios\\3641e667422a4c78865e8f2ec83d29c1\\run.json": "6a024edb1208d88c53be01cbe9c35a455d706b174feea74b3c122197c8ae2eae"
+  }
+}

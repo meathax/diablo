@@ -15,6 +15,11 @@ import subprocess
 import sys
 import uuid
 
+SCRIPT_DIRECTORY = Path(__file__).resolve().parent
+if str(SCRIPT_DIRECTORY) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIRECTORY))
+import verification
+
 ROOT = Path(__file__).resolve().parents[2]
 LOCK = ROOT / ".mister/source-lock.json"
 DATA_FILES = {
@@ -58,7 +63,11 @@ def command(args: list[str], timeout: int = 120, include_stderr: bool = False) -
 
 def git(path: Path, *args: str, timeout: int = 120) -> str:
     # Scoped trust for the explicitly named donor; never change global Git config.
-    return command(["git", "-c", f"safe.directory={path.resolve().as_posix()}",
+    # Batch shims reparse arguments (notably HEAD^{tree}) through cmd.exe.
+    executable = shutil.which("git.exe" if os.name == "nt" else "git")
+    if executable is None:
+        raise GateError("Native Git executable unavailable")
+    return command([executable, "-c", f"safe.directory={path.resolve().as_posix()}",
                     "-C", str(path), *args], timeout)
 
 
@@ -90,7 +99,7 @@ def inspect_source(path: Path, source: dict) -> dict:
         if (path / name).is_file():
             licenses[name] = sha256(path / name)
     return {"path": str(path), "commit": source["commit"], "origin": remote,
-            "tree": git(path, "rev-parse", "HEAD^{tree}"),
+            "tree": git(path, "show", "-s", "--format=%T", "HEAD"),
             "clean": True, "license_hashes": licenses,
             "submodules": git(path, "submodule", "status", "--recursive")}
 
@@ -177,21 +186,29 @@ def verify_data(_args: argparse.Namespace) -> dict:
             "scope": "SHA-256 identity and MPQ header/table bounds only; not engine compatibility"}
 
 
-def doctor(_args: argparse.Namespace) -> dict:
+def inspect_quartus(root: Path) -> dict:
+    executable = root / "quartus/bin64/quartus_sh.exe"
+    version = root / "quartus/version.txt"
+    return {"root": str(root.resolve()), "executable": str(executable.resolve()),
+            "executable_present": executable.is_file(),
+            "executable_sha256": sha256(executable) if executable.is_file() else None,
+            "version_file": version.read_text(encoding="utf-8").strip() if version.is_file() else None,
+            "version_file_sha256": sha256(version) if version.is_file() else None,
+            "scope": "read-only installation inventory; compiler not executed"}
+
+
+def doctor(args: argparse.Namespace) -> dict:
     load_lock()
     tools = {}
     for name in ("python", "git", "cmake", "docker", "wsl", "verilator-safe"):
         tools[name] = shutil.which(name)
-    runner = Path("C:/Users/meath/.codex/skills/mister-rbf-build/scripts/quartus_flow.ps1")
-    capabilities = None
-    if runner.exists():
-        capabilities = json.loads(command([
-            "C:/Program Files/PowerShell/7/pwsh.exe", "-NoLogo", "-NoProfile", "-NonInteractive",
-            "-WindowStyle", "Hidden", "-File", str(runner), "-Action", "Capabilities"]))
-    required = ("workflowLease", "unregisteredProcessAdmission", "inferenceAudit",
-                "timingAudit", "authenticatedAcceptance", "seedSweep")
-    gaps = [key for key in required if not (capabilities or {}).get(key, False)]
-    return {"python_version": sys.version, "tools": tools, "quartus_capabilities": capabilities,
+    installation = inspect_quartus(args.quartus_root)
+    gaps = []
+    if not installation["executable_present"]:
+        gaps.append("quartusInstallation")
+    return {"python_version": sys.version, "tools": tools,
+            "quartus_installation": installation,
+            "build_execution": "Use the available machine-approved route; not exercised by inventory",
             "quartus_blockers": gaps, "production_build_ready": False,
             "status": "blocked" if gaps else "preflight-only",
             "other_pending_gates": ["ARM sysroot/runtime probe", "DDR reservation hardware proof",
@@ -209,10 +226,24 @@ def run_tests(_args: argparse.Namespace) -> dict:
             "tool_sources": tool_sources, "output": output}
 
 
+def build_host(args: argparse.Namespace) -> dict:
+    from host_build import build
+    return build(ROOT, args, inspect_source, load_lock())
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="operation", required=True)
-    sub.add_parser("doctor").set_defaults(handler=doctor)
+    preflight = sub.add_parser("doctor")
+    preflight.add_argument("--quartus-root", type=Path, default=Path("D:/Q17"))
+    preflight.set_defaults(handler=doctor)
+    host = sub.add_parser("build-host")
+    host.add_argument("--build-dir", default=".work/build/reference-host",
+                      help="Output directory beneath .work/build; choose an unused directory for a clean rebuild")
+    host.add_argument("--configure-only", action="store_true")
+    host.add_argument("--reconfigure", action="store_true", help="Accept a recorded recipe/integration update with unchanged source and tools")
+    host.add_argument("--jobs", type=int, choices=range(1, 17), default=8)
+    host.set_defaults(handler=build_host)
     fetch = sub.add_parser("fetch")
     fetch.add_argument("--locked", action="store_true", required=True)
     fetch.add_argument("--source", action="append")
@@ -221,7 +252,18 @@ def main() -> int:
     tests = sub.add_parser("test")
     tests.add_argument("--suite", choices=["foundation"], required=True)
     tests.set_defaults(handler=run_tests)
+    verify = sub.add_parser("verify", help="Run bounded host/RTL checks and write an immutable receipt")
+    verify.add_argument("--suite", choices=["foundation", "host", "rtl", "local", "arm", "board"], required=True)
+    verify.add_argument("--candidate-manifest", type=Path)
+    verify.add_argument("--board-configuration", type=Path)
     args = parser.parse_args()
+    if args.operation == "verify":
+        verification_args = ["--root", str(ROOT), "--suite", args.suite]
+        if args.candidate_manifest is not None:
+            verification_args += ["--candidate-manifest", str(args.candidate_manifest)]
+        if args.board_configuration is not None:
+            verification_args += ["--board-configuration", str(args.board_configuration)]
+        return verification.main(verification_args)
     receipt = {"schema": "diablo-operation-receipt-v1", "operation": args.operation,
                "arguments": sys.argv[1:], "started_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
                "script_sha256": sha256(Path(__file__)), "source_lock_sha256": sha256(LOCK)}
@@ -229,7 +271,7 @@ def main() -> int:
         receipt["result"] = args.handler(args)
         receipt["status"] = "blocked" if receipt["result"].get("status") == "blocked" else "pass"
         code = 2 if receipt["status"] == "blocked" else 0
-    except (GateError, OSError, subprocess.TimeoutExpired, ValueError) as error:
+    except (RuntimeError, OSError, subprocess.TimeoutExpired, ValueError) as error:
         receipt.update(status="fail", error=str(error))
         code = 1
     receipt["finished_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()

@@ -1,0 +1,11 @@
+{
+  "experiment": "All gates supplied hash-valid but semantically failing synthetic evidence; no real acceptance changed.",
+  "observed": {
+    "schema": "diablo-closure-gate-result-v1",
+    "eligible": true,
+    "matrix_sha256": "a7c94bd625ce72cb2c771ad8d6bdc48b62bc6c3baaaed7fc87b8751b570b4328",
+    "problems": [],
+    "items": {}
+  },
+  "expected_eligible": false
+}

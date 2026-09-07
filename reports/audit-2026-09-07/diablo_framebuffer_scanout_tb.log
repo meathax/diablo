@@ -1,0 +1,2 @@
+framebuffer scanout checks passed
+support/tests/diablo_framebuffer_scanout_tb.sv:187: $finish called at 29285000 (1ps)

@@ -1,0 +1,31 @@
+{
+  "status": "pass-with-skips-after-missing-targets-built",
+  "initial_ctest": {
+    "name": "Win32-mingw32-make",
+    "tests": "586",
+    "failures": "0",
+    "disabled": "0",
+    "skipped": "4",
+    "hostname": "MeatPC",
+    "time": "5",
+    "timestamp": "2026-09-06T12:15:47"
+  },
+  "passed_after_zlib_rerun": 584,
+  "skipped": [
+    "VisualStoreTest.Pagination_NextAndPrevious",
+    "VisualStoreTest.Pagination_ResetsHighlight"
+  ],
+  "skip_reason": "Upstream visual-store pagination fixture generates only one Smith inventory page with its fixed seed",
+  "logs": {
+    ".work\\build\\reference-host\\upstream-tests-build.log": "4de008cc2e413788b103701b2a1e866c5c39a1404cfc69529e7d166351cc9d06",
+    ".work\\build\\reference-host\\upstream-tests-run.log": "4bf821b64dac54ac2f9202e848a66ee570a6985db4584a3a0a3cc2a75f16b138",
+    ".work\\build\\reference-host\\upstream-tests.xml": "c357181b74f770f039a1073d43bc23099e61873b02142150ad11ca070eb07bc3",
+    ".work\\build\\reference-host\\zlib-tests-build.log": "64aa623b456cc87cf8cba41eb39aa55f84ece58f0e94e3d70521c3260709845d",
+    ".work\\build\\reference-host\\zlib-tests-run.log": "9dc4ad284ce7c1185332d8c9a6355e56b7c9da681386dad41d3a075ae7a7893b"
+  },
+  "scope": "Host upstream tests before capture hook enabled; skipped pagination behavior not covered.",
+  "initial_not_run_resolved_by_rerun": [
+    "example",
+    "example64"
+  ]
+}

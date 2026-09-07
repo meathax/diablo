@@ -1,0 +1,34 @@
+{
+  "python_tests": 68,
+  "python_pass": true,
+  "cpp_fixtures_pass": [
+    "command_renderer",
+    "command_transport",
+    "transport_abi"
+  ],
+  "rtl_fixtures_pass": 12,
+  "generator_fresh": true,
+  "reproductions": {
+    "changed_runs": {
+      "exit_code": 1,
+      "mismatched_pixels": 2
+    },
+    "palette_cache": {
+      "exit_code": 1,
+      "expected": 2,
+      "actual": 9
+    },
+    "scanout": {
+      "superseded_slot_state": 2,
+      "superseded_frame_id": 6,
+      "active_frame_id": 8,
+      "palette_writes_before_second_base_switch": 512
+    }
+  },
+  "source_changes_since_manifest": [],
+  "limitations": [
+    "No fresh Quartus/full ARM engine build",
+    "No live hardware validation",
+    "Selective upstream integration review"
+  ]
+}

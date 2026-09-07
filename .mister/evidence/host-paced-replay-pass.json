@@ -1,0 +1,6 @@
+{
+  "status": "pass",
+  "scope": "Normally paced upstream shareware replay with engine rendering enabled; final game state agrees, not full-frame equality or measured MiSTer FPS",
+  "run": ".work/runtime/replays/70b0c0736ba14d679f3b4f3a8595e0b7/run.json",
+  "run_sha256": "56f05ba535e900fe9ab213d45c5a91b1898a9f5d84c31dec4baf4a24ff62ad3e"
+}

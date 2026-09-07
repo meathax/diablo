@@ -5,7 +5,6 @@
       "paths": [
         "README.md",
         ".gitignore",
-        ".mister/DIABLO_IMPLEMENTATION_PLAN.md",
         ".mister/source-lock.json",
         ".mister/state.json",
         ".mister/contracts/",
@@ -51,6 +50,22 @@
         "sha256": "246c694a1e8e8d47eb009be394a8afc08783699e94dbbb0d0f8115bc40675e08",
         "status": "pass"
       }
+    },
+    {
+      "paths": [
+        "CORE_COMPLETION_AUDIT.md",
+        "README.md",
+        ".mister/state.json",
+        ".mister/contracts/QUARTUS_RUNNER_GATE.md",
+        "support/scripts/diablo.py",
+        "support/tests/test_foundation.py"
+      ],
+      "reason": "User-requested fresh audit, deletion of old plan and retirement of its custom-runner prerequisite",
+      "verification": {
+        "path": ".mister/evidence/test-ee8472f09ecc46b7b40b9609ba6ac4a9.json",
+        "sha256": "4ab2c574fbe0933ab7c261b1575bfd6a710db293baf6e398b22804472f837f45",
+        "status": "pass"
+      }
     }
   ],
   "unchanged_groups": [
@@ -61,5 +76,7 @@
     "Quartus constraints and generated IP",
     "Global FPGA runner",
     "Global lessons"
-  ]
+  ],
+  "status": "historical inventory plus completion-audit replacement; not an active restriction",
+  "current_completion_document": "CORE_COMPLETION_AUDIT.md"
 }

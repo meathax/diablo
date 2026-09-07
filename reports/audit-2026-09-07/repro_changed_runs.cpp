@@ -1,0 +1,4 @@
+#include "mister_command_scene.hpp"
+#include <vector>
+#include <iostream>
+int main(){using namespace diablo::mister;std::vector<uint8_t> source(transport::FRAME_PIXEL_BYTES),shadow(source.size()),actual(source.size());source[10]=7;source[640+20]=7;command::Buffer b;bool built=command::BuildChangedRuns(b,source,640,shadow,0);command::SoftwareRenderer r(actual,640,640,480);bool executed=r.Execute(b.records());size_t diff=0;for(size_t i=0;i<source.size();i++)diff+=source[i]!=actual[i];std::cout<<"built="<<built<<" executed="<<executed<<" records="<<b.size()<<" mismatched_pixels="<<diff<<"\n";for(auto q:b.records())std::cout<<"x="<<q.x<<" y="<<q.y<<" w="<<q.width<<" h="<<q.height<<"\n";return diff?1:0;}

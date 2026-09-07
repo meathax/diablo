@@ -1,0 +1,56 @@
+{
+  "schema": "diablo-arm-audio-pcm-transport-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-arm-pcm-ring-open",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "kernel": "Linux MiSTer 5.15.1-MiSTer armv7l",
+    "validation_method": "root SSH, fresh RBF load, real ARM DevilutionX process with dummy SDL, opt-in PCM callback trace and read-only shared-DDR state dump"
+  },
+  "artifacts": {
+    "rbf": {
+      "path": "/media/fat/_Other/Diablo_transport_display_ack_final_20260906.rbf",
+      "bytes": 2493796,
+      "sha256": "631eef67ec1507d08eb283c15c329c8f48ffc93cee73d8ecb313654c390d01f3"
+    },
+    "engine": {
+      "local_path": ".work/build/arm-engine-transport/devilutionx",
+      "target_path": "/media/fat/linux/devilutionx",
+      "bytes": 8584488,
+      "sha256": "1915adc9db97637825934f12c71883aba55398d003f1b35e9a5167f057475556",
+      "build_id": "6fd8c210a3e90d0995907fa1061393384788b7ac"
+    }
+  },
+  "configuration": {
+    "transport": "DIABLO_MISTER_TRANSPORT=1",
+    "shared_physical": "DIABLO_MISTER_SHARED_PHYS=0x3fe00000",
+    "session_epoch": "0x2609070d",
+    "audio_trace": "DIABLO_MISTER_AUDIO_TRACE=1",
+    "video_driver": "SDL_VIDEODRIVER=dummy",
+    "render_driver": "SDL_RENDER_DRIVER=software",
+    "audio_driver": "SDL_AUDIODRIVER=dummy",
+    "assets": "/media/fat/tmp_esc/diablo-transport-assets",
+    "save": "/media/fat/tmp_esc/diablo-transport-save",
+    "config": "/media/fat/tmp_esc/diablo-transport-config"
+  },
+  "command": "timeout --signal=TERM --kill-after=5s 20 /media/fat/linux/devilutionx --diablo --spawn --demo 0 --data-dir /media/fat/tmp_esc/diablo-transport-assets --save-dir /media/fat/tmp_esc/diablo-transport-save --config-dir /media/fat/tmp_esc/diablo-transport-config --lang en -n --verbose --log-to-file /tmp/diablo-audio-resample-20260907.log",
+  "observed": {
+    "audio_init": "Aulib sampleRate=22050 channels=2 frameSize=2048 format=0x8010",
+    "pcm_callback": [
+      "input_bytes=8192 output_frames=4457 epoch=0x2609070d",
+      "input_bytes=8192 output_frames=4458 epoch=0x2609070d"
+    ],
+    "pcm_backpressure": 0,
+    "frame_backpressure": "rate-limited notices only",
+    "transport_state": {
+      "arm_state": 1,
+      "fpga_state": 1,
+      "fault_code": 0,
+      "display_epoch": 224,
+      "last_presented_frame_id": 225
+    }
+  },
+  "interpretation": "The real ARM DevilutionX Aulib callback produced resampled 48 kHz stereo records and the fresh-RBF FPGA session remained attached and fault-free.",
+  "scope_limit": "Dummy audio does not prove that left/right data reaches physical HDMI or speakers, and the existing state dump does not expose the FPGA underrun counter. Physical audio inspection and combined shared-DDR qualification remain open."
+}

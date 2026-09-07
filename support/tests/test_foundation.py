@@ -1,5 +1,6 @@
 """Negative-admission tests use synthetic data; no commercial assets as fixtures."""
 import importlib.util
+import argparse
 from pathlib import Path
 import struct
 import tempfile
@@ -100,6 +101,28 @@ class SourceAdmissionTests(unittest.TestCase):
         diablo.git(self.path, "remote", "set-url", "origin", "https://github.com/example/other.git")
         with self.assertRaises(diablo.GateError):
             diablo.inspect_source(self.path, self.source)
+
+
+class DoctorTests(unittest.TestCase):
+    def test_inventory_does_not_require_or_execute_legacy_runner(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            executable = root / "quartus/bin64/quartus_sh.exe"
+            executable.parent.mkdir(parents=True)
+            executable.write_bytes(b"synthetic executable; never execute")
+            (root / "quartus/version.txt").write_text("Version=synthetic")
+            with patch.object(diablo, "command", side_effect=AssertionError("No tool execution during inventory")):
+                result = diablo.doctor(argparse.Namespace(quartus_root=root))
+            self.assertEqual(result["status"], "preflight-only")
+            self.assertEqual(result["quartus_blockers"], [])
+            self.assertFalse(result["production_build_ready"])
+            self.assertEqual(result["quartus_installation"]["executable_sha256"], diablo.sha256(executable))
+
+    def test_missing_compiler_still_reported(self):
+        with tempfile.TemporaryDirectory() as folder:
+            result = diablo.doctor(argparse.Namespace(quartus_root=Path(folder)))
+            self.assertEqual(result["status"], "blocked")
+            self.assertEqual(result["quartus_blockers"], ["quartusInstallation"])
 
 
 if __name__ == "__main__":

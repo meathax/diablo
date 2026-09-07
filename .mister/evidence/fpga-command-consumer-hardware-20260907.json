@@ -1,0 +1,51 @@
+{
+  "schema": "diablo-fpga-command-consumer-hardware-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-command-execution-display-gate-open",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "kernel": "MiSTer Linux 5.15.1-MiSTer armv7l",
+    "shared_physical": "0x3fe00000"
+  },
+  "artifacts": {
+    "rbf": {
+      "local_path": "output_files/Diablo.rbf",
+      "board_path": "/media/fat/_Other/Diablo_command_consumer_slots_20260907.rbf",
+      "bytes": 2618328,
+      "sha256": "fa98b41c48b3ced1eb8c8cdbac39bf1f00aa47ef0a36a65f7afd97706a91e591"
+    },
+    "probe": {
+      "source": "support/transport/command_scene_probe.cpp",
+      "board_path": "/media/fat/linux/command-scene-probe",
+      "bytes": 3634484,
+      "sha256": "423a99c09d91a9dbc36bedb4c971c67c34da61a95afdb91cbfbf6fbcba7eb112",
+      "target": "ARMv7 hard-float static ELF with Cortex-A9/NEON flags"
+    }
+  },
+  "configuration": {
+    "environment": "DIABLO_MISTER_SHARED_PHYS=0x3fe00000",
+    "command": "timeout --signal=TERM --kill-after=3s 15 /media/fat/linux/command-scene-probe",
+    "scene": "FillRect(0,0,80,60,2), FillRect(10,8,24,18,0x3c), CopyRect(100,8,24,18,10,8), CopyRect(18,30,32,24,10,8), End(0x1122334455667788)",
+    "comparison": "ARM-mapped target bytes compared against SoftwareRenderer output before frame publication"
+  },
+  "run": {
+    "probe_output": "command scene probe passed: epoch=0xa7a0ce74 records=5 fence=0x1122334455667788 frame_state=2 last_presented=0",
+    "fence": "0x1122334455667788",
+    "records_consumed": 5,
+    "transport_state_after_wait": "epoch=0xa7a0ce74 arm=1 fpga=1 fault=0 detail=0x00000000 display_epoch=0x00000000 last_frame=0 input_prod=0 input_cons=0 input_dropped=0 pcm_prod=0 pcm_cons=0 pcm_underruns=0 pcm_resyncs=0",
+    "frame_state_after_wait": 2,
+    "last_presented_frame_id_after_wait": 0
+  },
+  "diagnostics": {
+    "state_dump": {
+      "board_path": "/tmp/transport-state-dump",
+      "local_path": ".work/build/transport-state-dump-arm",
+      "bytes": 2525356,
+      "sha256": "392fb87b4dfeca93a4b251375c7a7a6030913bb414471103ec7e2a1f15f5f2f3",
+      "output": "frame[0] state=2 gen=0xa7a0ce74 id=1 tick=1 display=0x00000000 crc=0x00000000; frame[1] and frame[2] state=0"
+    }
+  },
+  "interpretation": "The corrected integrated RBF and real ARM probe executed the bounded command stream in shared DDR and matched the independent software reference, proving the hardware command consumer and ring fence path on the board. The frame did not advance from READY to FPGA_DISPLAYING during the observation window, so physical HDMI/vblank presentation remains unqualified.",
+  "scope": "This is a controlled scene, not a DevilutionX gameplay scene. It does not qualify visible HDMI pixels, physical audio/input, deterministic gameplay, or the approximately 60 FPS target."
+}

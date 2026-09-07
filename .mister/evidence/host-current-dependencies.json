@@ -1,0 +1,120 @@
+{
+  "schema": "diablo-resolved-host-dependencies-v1",
+  "scope": "configured host source snapshot; not a target/runtime dependency lock",
+  "dependency_closure_verified": false,
+  "engine_commit": "0ff3186238e7c2786c4d52c21ecce1cb83723ed9",
+  "dependencies": [
+    {
+      "name": "asio-src",
+      "file_count": 1652,
+      "file_tree_sha256": "02758b1d60a32a4f4f77ce4faf7cb72b15afa7d844cb727614c42823690f7599"
+    },
+    {
+      "name": "benchmark-src",
+      "file_count": 186,
+      "file_tree_sha256": "c4185d460dda74fcd4a6fc172ebc70d430e2a8a1a5cfc007ad33ddcef5d318ee"
+    },
+    {
+      "name": "bzip2-src",
+      "file_count": 57,
+      "file_tree_sha256": "ec63a487aeba3f14f0b7038fee5390c37e94312cf49a1d8b904749334405fe44",
+      "commit": "6a8690fc8d26c815e798c588f796eabe9d684cf0",
+      "submodules": "",
+      "modifications": ""
+    },
+    {
+      "name": "find_steam_game-src",
+      "file_count": 9,
+      "file_tree_sha256": "3e7410545146d01d65ae39ba145c35c24b63e8b512df87f3d722f4bff88190f4"
+    },
+    {
+      "name": "googletest-src",
+      "file_count": 247,
+      "file_tree_sha256": "6f7ffc09e331a9ef3a7248d23868c339b6329b1fa0ef663b26c2b67689fb8d56"
+    },
+    {
+      "name": "libsmackerdec-src",
+      "file_count": 11,
+      "file_tree_sha256": "93d97075f2e64f63efb03f52c573399dfa08c1a5cc30a5ed5a7b281292869957"
+    },
+    {
+      "name": "libsodium-src",
+      "file_count": 572,
+      "file_tree_sha256": "813285d3a151bfb182e990a43001044502f4e472668d4563f347e0b119c03b35",
+      "commit": "a8ac4509b22b84d6c2eb7d7448f08678e4a67da6",
+      "submodules": "4f5e89fa84ce1d178a6765b8b46f2b6f91216677 libsodium (1.0.17-RELEASE-142-g4f5e89fa)",
+      "modifications": ""
+    },
+    {
+      "name": "libzt-src",
+      "file_count": 1693,
+      "file_tree_sha256": "fe6996eb50756812795e219cc23d216fae357c5aa3504800e1ef17bf60508a1d",
+      "commit": "1a9d83b8c4c2bdcd7ea6d8ab1dd2771b16eb4e13",
+      "submodules": "7369b928017ce2716d689f922fa4c7872bd000f6 ext/ZeroTierOne (remotes/origin/devx-1.4.0)\n 32708c0a8b140efb545cc35101ee5fdeca6d6489 ext/lwip (remotes/origin/STABLE-2_1_x)\n 91deef22e6519f94e0b07327fc778816e384eb7d ext/lwip-contrib (remotes/origin/devx-1.4.0)",
+      "modifications": "M ext/ZeroTierOne"
+    },
+    {
+      "name": "lua-src",
+      "file_count": 135,
+      "file_tree_sha256": "49b6d9764368d4aa144d6e9e2e1cbdf7826a184ea928b343ef787fdf3dfb5779"
+    },
+    {
+      "name": "magic_enum-src",
+      "file_count": 64,
+      "file_tree_sha256": "74145f7daf804caf2514b34c9ef80bd90b116fc609cba239fd3534f9d3de2269"
+    },
+    {
+      "name": "mpqfs-src",
+      "file_count": 28,
+      "file_tree_sha256": "405a0308720f81ce1eaa5852fd7e6c0266b301c8ec960e54efae3936a8d39fe0"
+    },
+    {
+      "name": "sdl2-src",
+      "file_count": 1749,
+      "file_tree_sha256": "81a09baaf390e6276a8fb6aa13395b5cbd103c1f343fa7dc77fbaa9214e48d2f"
+    },
+    {
+      "name": "sdl_audiolib-src",
+      "file_count": 310,
+      "file_tree_sha256": "a849c4f3fdd1a514ebab0325d359e0c4a71459d985c528b2bddfb7eeb3e60e17"
+    },
+    {
+      "name": "sdl_image-src",
+      "file_count": 1988,
+      "file_tree_sha256": "434a1a76af08d0ce50f6e5f26a6015c0196d7bf000c83a66b7946c39fd83e9b2"
+    },
+    {
+      "name": "sheenbidi-src",
+      "file_count": 163,
+      "file_tree_sha256": "22e29236d78e23749d91d9a6327c80784668c7c5f280f50f8a96cd8458bdb13a"
+    },
+    {
+      "name": "sol2-src",
+      "file_count": 672,
+      "file_tree_sha256": "91b75bc1b27d7e2c7dde04ea2cdf0a6c3ac92bad59e61eff39069a778d890073"
+    },
+    {
+      "name": "unordered_dense-src",
+      "file_count": 2383,
+      "file_tree_sha256": "998d0d8c3b89fed7095261e6e4c42275788dddff61b6810c710ac7a276db6e27"
+    },
+    {
+      "name": "zlib-src",
+      "file_count": 242,
+      "file_tree_sha256": "00ab7e94f2230ce4521a3c787bcbce7b65e44c3991b6305911c18736ba059c4e"
+    }
+  ],
+  "build_input_sha256": {
+    "CMakeCache.txt": "395f89617f3d387b3d194684c51cf3b587415bb7af269cee8a00518a2a0c919b",
+    "compile_commands.json": "d81eaf1ec1cf4ed7df3d4f0938cf483f18993a93a50d6b82ff9818ca4d493c9a",
+    "build-inputs.json": "55532a93d47a5c6fc18fa15dabba3fecba3680d5f290aee5e9e460241e07543a",
+    "dependency-fixes.json": "c8c642c9776ec26287ead616f7c98b7dea829bc9f4a04dcc33a9608f75cc1064",
+    "CMakeFiles/devilutionx.dir/link.txt": "eebca7729bb76c070e72624a3e511d2f9a1e51104d457f268e0155ac2cbed2b5",
+    "CMakeFiles/devilutionx.dir/linkLibs.rsp": "8db84d58eb33a51bbcd5def3151a9293178e737a9776a24c3044795f5b6aae57"
+  },
+  "pending": [
+    "system header/library and runtime DLL identities",
+    "independent clean rebuild verification",
+    "ARM dependency closure"
+  ]
+}

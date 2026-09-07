@@ -1,0 +1,53 @@
+{
+  "schema": "diablo-arm-command-scene-live-hardware-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-live-devilutionx-command-path-physical-board-dummy-sdl",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "kernel": "MiSTer Linux 5.15.1-MiSTer armv7l",
+    "shared_physical": "0x3fe00000"
+  },
+  "artifacts": {
+    "rbf": {
+      "board_path": "/media/fat/_Other/Diablo_command_consumer_rectmerge64_20260907.rbf",
+      "bytes": 2598008,
+      "sha256": "4142126272d5b8613b990e6ecc5c25687e9c4c54d8a2c9d37fe7508bae4a77f5"
+    },
+    "arm_engine": {
+      "board_path": "/media/fat/linux/devilutionx-command-scene-mergefast",
+      "bytes": 8494128,
+      "sha256": "29d0870b3f98ec3f33aee29c719fc88c185f5fbd36c63776b3a0d16c4717919e",
+      "target": "ARMv7 hard-float static DevilutionX with Cortex-A9/NEON flags"
+    },
+    "state_dump": {
+      "board_path": "/tmp/transport-state-dump-debug",
+      "local_path": ".work/build/transport-state-dump-debug",
+      "bytes": 490608,
+      "sha256": "9c977bef03986750fa63596d4d1e6c802272ba425c7063582ea3640f11320b5a"
+    }
+  },
+  "configuration": {
+    "environment": "DIABLO_MISTER_TRANSPORT=1 DIABLO_MISTER_SHARED_PHYS=0x3fe00000 DIABLO_MISTER_PROFILE=1 DIABLO_MISTER_COMMAND_SCENE=1 SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software SDL_AUDIODRIVER=dummy",
+    "fresh_command": "timeout --signal=TERM --kill-after=3s 12 /media/fat/linux/devilutionx-command-scene-mergefast --diablo --spawn --demo 0 --timedemo",
+    "relaunch_command": "same command for 12 seconds without loading the RBF again",
+    "artifact_load": "load_core /media/fat/_Other/Diablo_command_consumer_rectmerge64_20260907.rbf"
+  },
+  "runs": {
+    "fresh": {
+      "profile": "presents=162 published=157 backpressure=5 average_present_us=12869 max_present_us=26263 publish_attempts=74 average_publish_us=9513 max_publish_us=23423 flushes=162 average_flush_us=2 max_flush_us=5 command_attempts=162 command_batches=93 command_no_slot=8 command_overflow=61 command_publish_failures=0 command_fence_failures=0 command_frame_failures=0",
+      "command_timing": "build_count=93 average_build_us=4899 max_build_us=20590 wait_count=93 average_wait_us=4631 max_wait_us=14994",
+      "state": "epoch=0x343155cb arm=1 fpga=1 fault=0 detail=0x00000000 display_epoch=0x0000009b last_frame=156 cmd_prod=98687 cmd_cons=98687 payload_prod=0 payload_cons=0 completed_fence=0x000000000000007f",
+      "frames": "frame[0] state=2 id=7 tick=905 display=0x00000004 crc=0x00000000; frame[1] state=0 id=156 tick=11986 display=0x0000009b crc=0xcdbfa48c; frame[2] state=3 id=157 tick=12337 display=0x0000009a crc=0x63a6bf9c",
+      "pcm": "pcm_prod=579568 pcm_cons=579568 pcm_underruns=225478 pcm_resyncs=0"
+    },
+    "relaunch_without_rbf_reload": {
+      "profile": "presents=149 published=145 backpressure=4 average_present_us=13028 max_present_us=25839 publish_attempts=59 average_publish_us=10145 max_publish_us=19571 flushes=149 average_flush_us=2 max_flush_us=4 command_attempts=149 command_batches=94 command_no_slot=7 command_overflow=48 command_publish_failures=0 command_fence_failures=0 command_frame_failures=0",
+      "command_timing": "build_count=94 average_build_us=5799 max_build_us=15831 wait_count=94 average_wait_us=4316 max_wait_us=10573",
+      "state": "epoch=0x9ab3aabb arm=1 fpga=1 fault=0 detail=0x00000000 display_epoch=0x0000008f last_frame=144 cmd_prod=98689 cmd_cons=98689 payload_prod=0 payload_cons=0 completed_fence=0x0000000000000080",
+      "frames": "frame[0] state=0 id=144 tick=11970 display=0x0000008f crc=0x6e93b82c; frame[1] state=3 id=145 tick=12308 display=0x0000008e crc=0xc08aa33c; frame[2] state=2 id=15 tick=4138 display=0x0000000c crc=0x00000000",
+      "pcm": "pcm_prod=570652 pcm_cons=570652 pcm_underruns=247918 pcm_resyncs=0"
+    }
+  },
+  "interpretation": "The actual ARM DevilutionX process submitted vertically coalesced bounded command batches to the packed FillRect FPGA consumer on the exact final RBF. Matching command producer/consumer cursors, completed fences, nonzero display epochs and frame acknowledgements prove the live ARM-to-FPGA command and ownership path across a fresh run and a no-reload relaunch. Dummy SDL video/audio was used; physical HDMI pixels, speakers, controllers, zero-underrun audio, deterministic full-scene equality and approximately 60 FPS remain unqualified."
+}

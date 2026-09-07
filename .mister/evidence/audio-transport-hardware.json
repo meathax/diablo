@@ -1,0 +1,45 @@
+{
+  "schema": "diablo-mister-audio-hardware-receipt-v1",
+  "recorded_at": "2026-09-06T18:59:33+10:00",
+  "target": {
+    "host": "192.168.0.69",
+    "platform": "MiSTer DE10-Nano",
+    "validation_method": "root SSH target probe; no computer-use visual inspection"
+  },
+  "artifacts": {
+    "rbf": {
+      "local_path": ".work/build/fpga-transport-abi/source/output_files/Diablo.compressed.rbf",
+      "target_path": "/media/fat/_Other/Diablo_audio_pcm_20260906.rbf",
+      "sha256": "2dfce9b8fa8c22ff720f8f911ac253cbb6aeca16804f10c273158585647e19df"
+    },
+    "arm_probe": {
+      "local_path": ".work/test-transport-control/transport-header-probe-arm",
+      "target_path": "/media/fat/linux/diablo-transport-header-probe",
+      "sha256": "e8e44b2cba8c06f3c67be9d39bde1bbd8f1617cb002ec711c7832ef8df80cd9a"
+    }
+  },
+  "build_validation": {
+    "quartus_full_compile": "passed: 0 errors, 76 warnings",
+    "fit_report": ".work/build/fpga-transport-abi/source/output_files/Diablo.fit.rpt",
+    "logic_utilization": "8571/41910 ALMs (20%)",
+    "registers": 13321,
+    "block_memory": "404737/5662720 bits (7%), 59/553 RAM blocks (11%)",
+    "dsp": "36/112 (32%)",
+    "pcm_fifo_mapping": "Both FIFO halves inferred as dual-port M10K (fifo_rtl_0 and fifo_rtl_1).",
+    "timing_corners": {
+      "slow_100C": "+0.210 ns, 0 violated",
+      "slow_minus40C": "+0.188 ns, 0 violated",
+      "fast_100C": "+0.529 ns, 0 violated",
+      "fast_minus40C": "+0.526 ns, 0 violated"
+    },
+    "host_and_arm_tests": "Transport control, framebuffer scanout, PCM ordering/starvation/recovery, long 480-record PCM drain, DDR arbiter, host ABI and Cortex-A9 QEMU checks passed."
+  },
+  "hardware_validation": {
+    "clean_boot": "Board rebooted, new RBF loaded, and FPGA manager reported operating.",
+    "control_attachment": "ARM probe reported epoch 0xd1a61001 and fpga_state=ready.",
+    "pcm_queue": "ARM published 480 stereo S16 records; FPGA consumed the queue to producer=consumer=480.",
+    "framebuffer_regression": "On the same new RBF, two ARM-published frames were claimed by FPGA scanout and the retired slot was reclaimed."
+  },
+  "result": "pass",
+  "scope_limit": "This proves the synthesized ARM-to-FPGA PCM queue and shared-DDR arbitration on the board. Physical speaker/HDMI audio channel inspection, underrun qualification under real Diablo load, input traffic and performance qualification remain open."
+}

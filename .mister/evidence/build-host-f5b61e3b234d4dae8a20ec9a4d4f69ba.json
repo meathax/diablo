@@ -1,0 +1,36 @@
+{
+  "schema": "diablo-operation-receipt-v1",
+  "operation": "build-host",
+  "arguments": [
+    "build-host",
+    "--reconfigure",
+    "--jobs",
+    "8"
+  ],
+  "started_utc": "2026-09-06T05:09:30.025850+00:00",
+  "script_sha256": "3dd77203c9d3668575451233ac4602c834e755db0c5a247d848fecd7b1a98444",
+  "source_lock_sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
+  "result": {
+    "variant": "reference-host",
+    "stage": "built",
+    "inputs": ".work\\build\\reference-host\\build-inputs.json",
+    "inputs_sha256": "f2cae1288287ef2a5bccbc59f415c2f0aed8df4f52dd12a0aaf4d5567251b823",
+    "logs": {
+      "configure": {
+        "path": ".work\\build\\reference-host\\configure.log",
+        "sha256": "bb6b75bdbf34d73e5e8bbf907df60a0364a950c107c36492a8a7096afc7f79e6"
+      },
+      "build": {
+        "path": ".work\\build\\reference-host\\build.log",
+        "sha256": "c09967dc23370253e11041aa599852c6eb9ffb37ba02ca71ca30c2ee25c841a4"
+      }
+    },
+    "executable_sha256": "d4429fe6788b3ab3785333ba79f77e99deb9f079dc28dac96095d447b80dfb7b",
+    "dependency_fixes_sha256": "c8c642c9776ec26287ead616f7c98b7dea829bc9f4a04dcc33a9608f75cc1064",
+    "engine_fixes_sha256": "2b0f3c62375f48453e3b3da430a0aa6790256ca405dc769f6dbd829f4b21e915",
+    "gameplay_verified": false,
+    "dependency_closure_verified": false
+  },
+  "status": "pass",
+  "finished_utc": "2026-09-06T05:15:08.503305+00:00"
+}

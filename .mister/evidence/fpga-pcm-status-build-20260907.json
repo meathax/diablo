@@ -1,0 +1,46 @@
+{
+  "schema": "diablo-fpga-pcm-status-build-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "quartus_root": "D:/Q17",
+    "device": "5CSEBA6U23I7"
+  },
+  "artifacts": {
+    "rbf": {
+      "local_path": "output_files/Diablo.compressed.rbf",
+      "target_path": "/media/fat/_Other/Diablo_pcm_status_20260907.rbf",
+      "bytes": 2495012,
+      "sha256": "c872a3a1c7d2de2e98ffd208ca31b7508d1aedd0b68766b88abab618814729eb"
+    },
+    "rtl": {
+      "pcm_player": "rtl/diablo_pcm_player.sv",
+      "sha256": "d2d78320a391c743ed1ab993d2667d1d9aa1f79e57c073891d3bca9d339f805e"
+    }
+  },
+  "compile": {
+    "quartus_flow_exit_code": 0,
+    "errors": 0,
+    "warnings": 77,
+    "worst_case_setup_slack_ns": {
+      "slow_1100mV_100C": 0.210,
+      "slow_1100mV_minus40C": 0.188,
+      "fast_1100mV_100C": 0.529,
+      "fast_1100mV_minus40C": 0.526
+    },
+    "worst_case_hold_slack_ns": {
+      "slow_1100mV_100C": 0.243,
+      "slow_1100mV_minus40C": 0.171,
+      "fast_1100mV_100C": 0.131,
+      "fast_1100mV_minus40C": 0.111
+    },
+    "pcm_health_publication": "PCM dropped field publishes {resync_count, underrun_count} from the FPGA consumer at shared control word +12; ARM-only producer/consumer ownership is unchanged."
+  },
+  "checks": [
+    "transport control/framebuffer/PCM/input/DDR RTL tests passed",
+    "transport ABI generator and host/RTL layout checks passed",
+    "RBF copied to MiSTer and remote SHA-256 matches local artifact"
+  ],
+  "scope": "Build and shared-memory diagnostic publication only; physical speaker, HDMI, peripheral and real-vblank qualification remain open."
+}

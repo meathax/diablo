@@ -1,0 +1,115 @@
+{
+  "scope": "superseded historical state; not active instructions",
+  "state": {
+    "schema": "diablo-project-state-v1",
+    "active_package": "P01",
+    "status": "P01-prerequisite-repair-in-progress",
+    "completed_packages": [
+      "P00"
+    ],
+    "blocked_packages": {
+      "P01": {
+        "reason": "Quartus 17.0.2.602 is installed at D:/Q17. Configured quartus_flow.ps1 is absent. Local endpoint, memory/entity and diagnostic review validators pass 54 tests; qualified runner export production, fresh source/build binding and authenticated acceptance remain pending.",
+        "evidence": {
+          "path": ".mister/evidence/doctor-040611f16b5c472495b085aec57cb552.json",
+          "sha256": "14398c28c383971e4d641f67388675651b5867c119c0c28dcf554bbc950d2be2",
+          "status": "blocked"
+        },
+        "gate": ".mister/contracts/QUARTUS_RUNNER_GATE.md"
+      }
+    },
+    "not_started_packages": [
+      "P02",
+      "P03",
+      "P04",
+      "P05",
+      "P06",
+      "P07",
+      "P08",
+      "P09",
+      "P10",
+      "P11",
+      "P12",
+      "P13",
+      "P14",
+      "P15",
+      "P16",
+      "P17",
+      "P18",
+      "P19",
+      "P20"
+    ],
+    "plan_digest": "702f573c53c8d2fb0eea227ba747d21c3b67150b0c488ee9a88b6c1c45dd6fae",
+    "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
+    "abi_digest": null,
+    "accepted_build_id": null,
+    "active_divergence": null,
+    "latest_reference_receipt": null,
+    "latest_rtl_receipt": null,
+    "latest_hardware_receipt": null,
+    "foundation_receipts": {
+      "test": {
+        "path": ".mister/evidence/test-a125b0a8373c40b48d4b4d53649a39ed.json",
+        "sha256": "cf1bd1e8d4f6ee87eab74a76e38b4142a75c765ac162d95f2f16a31779176cc2",
+        "status": "pass"
+      },
+      "fetch": {
+        "path": ".mister/evidence/fetch-5a72699af4e9404eacaa6112b133d43d.json",
+        "sha256": "48433b2ca505dba90bf79a9cc82d57b6b5f8101f2e6188bf44580154dbd6f3cf",
+        "status": "pass"
+      },
+      "verify-data": {
+        "path": ".mister/evidence/verify-data-992596d4e085417197c0f55941fe8a23.json",
+        "sha256": "f4719d8bae44f1713c6fcb95a067bf1f0546c66cfcc79bf99d30bc395f2e0c58",
+        "status": "pass"
+      },
+      "doctor": {
+        "path": ".mister/evidence/doctor-040611f16b5c472495b085aec57cb552.json",
+        "sha256": "14398c28c383971e4d641f67388675651b5867c119c0c28dcf554bbc950d2be2",
+        "status": "blocked"
+      }
+    },
+    "next_exact_command": "python support/scripts/diablo.py test --suite foundation",
+    "next_command_condition": "Reproduce the baseline before the next bounded P01 audit change. Hardware import/builds remain blocked pending a callable qualified workflow runner.",
+    "next_implementation": "Implement report/source-closure identity binding for a single runner build, with negative mixed-build, modified-input and stale-report tests. Preserve report-only scope until a qualified workflow runner is restored. Complete inventory coverage and ordinary/tabular diagnostic qualification remain pending.",
+    "allowed_paths": [
+      ".gitignore",
+      "README.md",
+      ".mister/",
+      "support/scripts/",
+      "support/tests/",
+      ".work/sources/"
+    ],
+    "read_only_paths": [
+      "game/",
+      "D:/Arcade/AI/aCORES/blood"
+    ],
+    "hardware_edits": false,
+    "builds_run": [],
+    "commits_created": false,
+    "deployment_performed": false,
+    "known_unknowns": [
+      "Engine archive-member compatibility and detected game-data variants",
+      "Complete dependency and ARM C++23 toolchain/sysroot lock",
+      "Actual MiSTer hardware access and supported kernel",
+      "Safety of proposed 16 MiB DDR aperture",
+      "Wrapper handoff and daemon-free hardware launch",
+      "All rendering, input, audio, multiplayer, performance and release acceptance gates"
+    ],
+    "notes": [
+      "P00 completion is foundation acceptance only; no runnable game core exists.",
+      "No Verilator or MAME operation was run; DevilutionX software is the future functional oracle.",
+      "Source checkout is clean; no upstream engine patches exist.",
+      "Shared lessons consulted; no new hardware lesson proven.",
+      "2026-09-06: Local normalized endpoint accounting completed; exporter origin/authentication is still pending. Native Git invocation and tree-format query restore source-admission baseline in the current Windows/MSYS environment.",
+      "2026-09-06: User supplied D:/Q17. Read-only installation inventory confirms version file 17.0.2.602. Entity parser validated against 330 donor entities; no real diagnostic waivers or compiler runs."
+    ],
+    "audit_development_record": ".mister/evidence/runner-audit-development.md",
+    "goal_turn_classification": "progress",
+    "endpoint_audit_development_record": ".mister/evidence/endpoint-audit-development.md",
+    "endpoint_export_contract": ".mister/contracts/UNCONSTRAINED_EXPORT.md",
+    "memory_audit_development_record": ".mister/evidence/memory-audit-development.md",
+    "inference_audit_contract": ".mister/contracts/INFERENCE_AUDIT.md",
+    "quartus_installation_root": "D:/Q17"
+  }
+}

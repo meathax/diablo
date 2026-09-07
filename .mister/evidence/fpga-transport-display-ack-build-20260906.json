@@ -1,0 +1,44 @@
+{
+  "schema": "diablo-fpga-transport-display-ack-build-v1",
+  "recorded_at": "2026-09-06",
+  "status": "pass",
+  "quartus": {
+    "root": "D:/Q17",
+    "version": "17.0.2 Build 602",
+    "compile_command": "powershell -NoProfile -ExecutionPolicy Bypass -File support/scripts/compile_fpga_snapshot.ps1 .work/build/fpga-transport-abi/source compile",
+    "compression_command": "powershell -NoProfile -ExecutionPolicy Bypass -File support/scripts/compile_fpga_snapshot.ps1 .work/build/fpga-transport-abi/source compress",
+    "full_compile_exit_code": 0,
+    "full_compile_errors": 0,
+    "full_compile_warnings": 77,
+    "timing_analysis": "successful; inherited template reports setup/hold as not fully constrained",
+    "slow_1100mV_100C_setup_slack_ns": 0.210,
+    "slow_1100mV_100C_hold_slack_ns": 0.241,
+    "minimum_reported_setup_slack_ns": 0.061,
+    "minimum_reported_hold_slack_ns": 0.059
+  },
+  "changes": {
+    "control_reader": {
+      "path": "rtl/diablo_transport_control_reader.sv",
+      "sha256": "b9ba019f5bad84ebab81f5cd76d46e95b45dcf84d4cfbdaf6b37050faae4be31",
+      "behavior": "The attached control reader monitors the publication marker, session epoch and ARM state at a low rate. A changed session detaches and runs the existing bounded full validation, allowing a second ARM launch without an RBF reload while leaving a healthy scanout attachment live."
+    },
+    "framebuffer_scanout": {
+      "path": "rtl/diablo_framebuffer_scanout.sv",
+      "sha256": "1c426b7828e0b9c2c4932897aa8c709def75a1668e4f49b62e051c5226ad5db4",
+      "behavior": "At vblank retirement the FPGA records the retired slot display epoch, the last presented frame ID and the header display epoch, preserving the producer epoch and ownership protocol."
+    }
+  },
+  "artifact": {
+    "path": ".work/build/fpga-transport-abi/source/output_files/Diablo.compressed.rbf",
+    "bytes": 2493796,
+    "sha256": "631eef67ec1507d08eb283c15c329c8f48ffc93cee73d8ecb313654c390d01f3"
+  },
+  "verification": {
+    "transport_control_test": "pass",
+    "target_copy": "/media/fat/_Other/Diablo_transport_display_ack_final_20260906.rbf",
+    "target_sha256": "631eef67ec1507d08eb283c15c329c8f48ffc93cee73d8ecb313654c390d01f3",
+    "board_load": "pass; /usr/bin/fpga loaded the target RBF and board sha256 matched",
+    "display_ack_smoke": "pass; fresh ARM session produced frames with nonzero display_epoch and last_presented_frame_id"
+  },
+  "scope_limit": "This receipt covers compilation, timing, display acknowledgement RTL and a board transport smoke. It does not prove HDMI image quality, physical input/audio, deterministic gameplay or 60 FPS pacing."
+}

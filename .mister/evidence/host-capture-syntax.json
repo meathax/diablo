@@ -1,0 +1,16 @@
+{
+  "status": "pass",
+  "scope": "Generated scrollrt capture hook syntax checked with actual engine compilation flags; not yet enabled in host build or executed for gameplay",
+  "checks": [
+    "Both patch contexts match once",
+    "One capture call before final gameplay presentation",
+    "Full translation unit syntax passes"
+  ],
+  "sha256": {
+    "support/reference/host_capture.hpp": "9f13e7c00aad90b3f1f22c9ef57e067101e013015ea24c7eaf7bb9878974f65e",
+    "support/reference/indexed_frame.hpp": "0299d81ea67c4618827fd5ab4f60fc3a52f7422e1047c4623a618919b98a60a2",
+    "support/cmake/host-capture.cmake": "82b64d089d89c5c9f4eb65217ccc816ddf269c8c631ebeabe82473afd0e6df7f",
+    ".work/build/host-capture-probe.cpp": "fff0ea9767b2d10164fd4c67c850d6af2812cb96f89ea06d602e3bb140ab7b40",
+    ".work/build/host-capture-syntax.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

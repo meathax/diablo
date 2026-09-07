@@ -1,0 +1,105 @@
+{
+  "status": "passed",
+  "scope": "Ten sampled native640 town frames across Diablo and Hellfire: exact indexed pixels, RGB888 palettes and metadata against accepted clean PC references. Includes inventory/character panels and cursor. Not complete renderer coverage, hardware compatibility or FPS qualification.",
+  "results": [
+    {
+      "campaign": "diablo",
+      "host_frames": ".work\\runtime\\scenarios\\a0df82a11b66478ba7067eb72f37471a\\frames",
+      "arm_run": ".work\\runtime\\arm-scenarios\\51185829844d47bca166d4b03e162787\\run.json",
+      "arm_run_sha256": "5cd5c4e04881805e14b291ca17354545c7269ff5cd03ad0fa9f17975f77018dc",
+      "arm_binary_sha256": "4ef9b4b1557174908809da0fee8c424a1a12e83b10caa45b11db0969925189e2",
+      "demo_sha256": "e143884fc7d5fcdb03e1e5f9bbd93451870d9aa1dc793b567fb6390ff49430df",
+      "comparison": {
+        "equal": true,
+        "frames_compared": 5,
+        "scope": "All supplied indexed frames and all RGB888 palette entries"
+      },
+      "frames": [
+        {
+          "file": "frame-0.d8f",
+          "left_sha256": "aca1e02772e620573fa9dde99cc09c819c340271827482fa10b02552d1f87e1a",
+          "right_sha256": "aca1e02772e620573fa9dde99cc09c819c340271827482fa10b02552d1f87e1a",
+          "equal": true
+        },
+        {
+          "file": "frame-128.d8f",
+          "left_sha256": "1064d8e594e403b6421c5400a434a01c4396072146084cefe29ab9c797dd21cd",
+          "right_sha256": "1064d8e594e403b6421c5400a434a01c4396072146084cefe29ab9c797dd21cd",
+          "equal": true
+        },
+        {
+          "file": "frame-256.d8f",
+          "left_sha256": "3dc0e0700bbb97c1692cf5730f6a974d2dae877a72e3cb165a71652f77066ca3",
+          "right_sha256": "3dc0e0700bbb97c1692cf5730f6a974d2dae877a72e3cb165a71652f77066ca3",
+          "equal": true
+        },
+        {
+          "file": "frame-384.d8f",
+          "left_sha256": "a2e614ffa50e851d58ecb463a344880e38ce293bf64d7206d8a281b5b3802724",
+          "right_sha256": "a2e614ffa50e851d58ecb463a344880e38ce293bf64d7206d8a281b5b3802724",
+          "equal": true
+        },
+        {
+          "file": "frame-512.d8f",
+          "left_sha256": "f8c38367794823c82c55e2f7de869747052902fa9674e601461cef34764faa4c",
+          "right_sha256": "f8c38367794823c82c55e2f7de869747052902fa9674e601461cef34764faa4c",
+          "equal": true
+        }
+      ]
+    },
+    {
+      "campaign": "hellfire",
+      "host_frames": ".work\\runtime\\scenarios\\3641e667422a4c78865e8f2ec83d29c1\\frames",
+      "arm_run": ".work\\runtime\\arm-scenarios\\94058c264cae4016a7947801749ec962\\run.json",
+      "arm_run_sha256": "52bba25dd849c575c1472a6dc9cb544409d915bcb738c6b5f761f9139ea34a23",
+      "arm_binary_sha256": "4ef9b4b1557174908809da0fee8c424a1a12e83b10caa45b11db0969925189e2",
+      "demo_sha256": "e143884fc7d5fcdb03e1e5f9bbd93451870d9aa1dc793b567fb6390ff49430df",
+      "comparison": {
+        "equal": true,
+        "frames_compared": 5,
+        "scope": "All supplied indexed frames and all RGB888 palette entries"
+      },
+      "frames": [
+        {
+          "file": "frame-0.d8f",
+          "left_sha256": "e6962ed4f78ad81303c47784170c5cdb561d0dcab89ca284747fe4c602bb2a78",
+          "right_sha256": "e6962ed4f78ad81303c47784170c5cdb561d0dcab89ca284747fe4c602bb2a78",
+          "equal": true
+        },
+        {
+          "file": "frame-128.d8f",
+          "left_sha256": "7b565d77bf9d539895e96365e255e1689585cd3374479fa9dd02b96ffd51d8fc",
+          "right_sha256": "7b565d77bf9d539895e96365e255e1689585cd3374479fa9dd02b96ffd51d8fc",
+          "equal": true
+        },
+        {
+          "file": "frame-256.d8f",
+          "left_sha256": "3dc0e0700bbb97c1692cf5730f6a974d2dae877a72e3cb165a71652f77066ca3",
+          "right_sha256": "3dc0e0700bbb97c1692cf5730f6a974d2dae877a72e3cb165a71652f77066ca3",
+          "equal": true
+        },
+        {
+          "file": "frame-384.d8f",
+          "left_sha256": "a2e614ffa50e851d58ecb463a344880e38ce293bf64d7206d8a281b5b3802724",
+          "right_sha256": "a2e614ffa50e851d58ecb463a344880e38ce293bf64d7206d8a281b5b3802724",
+          "equal": true
+        },
+        {
+          "file": "frame-512.d8f",
+          "left_sha256": "79968bb8094761d733fc41bb6bfd808e01733ed2039f9fa86e5ec243d347e2d0",
+          "right_sha256": "79968bb8094761d733fc41bb6bfd808e01733ed2039f9fa86e5ec243d347e2d0",
+          "equal": true
+        }
+      ]
+    }
+  ],
+  "patch_inputs": {
+    "support\\cmake\\arm-reference.cmake": "5ff67c311cce16677de32614f2357fce2eed7e51042ed8290858f39472d9c545",
+    "support\\cmake\\replay-loading.cmake": "39900d4bb62f94f156f81e235360818295613ce23b840d7c1ed2297479d795b1",
+    "support\\cmake\\host-reference.cmake": "f8c5ee213d2600967081b1ca69e57245fe37e1728c7370d2c47945f57dd30ff3"
+  },
+  "generated_engine_overlay_manifest": "ARM reference overlays; original checkout unchanged.\nengine/render/scrollrt.cpp fb46866b8f2a54c50e3ec022abb1435b5a1729c8d791f44db4c47cb910d662f2 9ea0be7854908658fad9483b1f492792eedd739bf72aee5138ba7493799dcd5d\nmenu.cpp fadac067f0b1283b82182fdc6be0ba1e03eaad24bc851e79db9256e8768d1f33 74e1961b7d48ffd7d1f3a377d34d57a352b497444dabdda4188cee46e5ff377c\nengine/demomode.cpp 4f0daf1abb08551e5ad7c317fb27c9804baea708b9161d278b6effd7fb03344e 1c20c1908cea89d9263fad7849221ed06210c858b071c669852bd9935ef58d29\nscenario-include menu.cpp 800fbafea27e823249d7006cae975ac4d5aba4364478ffa3706268b562ba8219\nscenario-include engine/demomode.cpp b7bfe1f6a9744a8651cd92736955dfc05d5b552232bbd94792bd7587b0b7aca2\ninterfac.cpp 32a11d0891c5d23a470690e214a28d928a8a4a49db14c99a68ddc03913fe10a0 f1649d7f535acb2b8568b1e4a9f16411bc4c414db272181982bd99ff94e5969e\nreplay-loading interfac.cpp efc78111f485bdefe8d5df4af7562a5b3c60b6ed5bc8e74b62ce845751d5cc94\n",
+  "configure_log_sha256": "654cfb787b93b6662fc110f78bef4eb86ca3d819b2c27f4fa121285d962eb16a",
+  "build_log_sha256": "d9704fdfa7d2acf7cdb9ab2273e07418727604b943c8cd7ecd342c1ae588d5a6",
+  "source_checkout_clean": true
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "diablo-command-consumer-test-v1",
+  "status": "passed",
+  "finished_utc": "2026-09-06T21:02:50.838111+00:00",
+  "commands": [
+    [
+      "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+      "-g2012",
+      "-I",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\rtl",
+      "-s",
+      "diablo_command_consumer_tb",
+      "-o",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\command-consumer\\diablo_command_consumer.vvp",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\rtl\\diablo_command_consumer.sv",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\support\\tests\\diablo_command_consumer_tb.sv"
+    ],
+    [
+      "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\command-consumer\\diablo_command_consumer.vvp"
+    ]
+  ],
+  "inputs": {
+    "rtl\\diablo_command_consumer.sv": "e192dd38aba19f69ab6bdae3f25b809a3517ab968a93da3dc05d80a64cf2cc35",
+    "support\\tests\\diablo_command_consumer_tb.sv": "a7783a784166c4b135948d2138d38f1477d1b61f76cdaf574ddbb04f7a91f842"
+  },
+  "checks": [
+    "command ring identity, layout, epoch and ownership validation",
+    "FillRect clipping and indexed pixel writes",
+    "overlap-safe CopyRect source/destination ordering",
+    "End fence publication and record/payload consumer advancement",
+    "randomized DDR busy and delayed-read backpressure"
+  ],
+  "scope": "RTL command consumer correctness fixture; top-level MiSTer command-ring integration and full DevilutionX scene submission remain open."
+}

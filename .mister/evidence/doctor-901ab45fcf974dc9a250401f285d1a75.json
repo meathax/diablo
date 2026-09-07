@@ -1,0 +1,40 @@
+{
+  "schema": "diablo-operation-receipt-v1",
+  "operation": "doctor",
+  "arguments": [
+    "doctor"
+  ],
+  "started_utc": "2026-09-06T00:38:25.033336+00:00",
+  "script_sha256": "9008939df59fd15cda5495a793701ea1bf03d13150f31e754f0798d3d2995f39",
+  "source_lock_sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
+  "result": {
+    "python_version": "3.14.6 (main, Jul 31 2026, 07:41:16)  [MINGW GCC UCRT 16.1.0 64 bit (AMD64)]",
+    "tools": {
+      "python": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.EXE",
+      "git": "D:\\vibes\\fpga\\bin\\git.CMD",
+      "cmake": "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+      "docker": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.EXE",
+      "wsl": "C:\\Windows\\system32\\wsl.EXE",
+      "verilator-safe": "D:\\vibes\\fpga\\bin\\verilator-safe.EXE"
+    },
+    "quartus_capabilities": null,
+    "quartus_blockers": [
+      "workflowLease",
+      "unregisteredProcessAdmission",
+      "inferenceAudit",
+      "timingAudit",
+      "authenticatedAcceptance",
+      "seedSweep"
+    ],
+    "production_build_ready": false,
+    "status": "blocked",
+    "other_pending_gates": [
+      "ARM sysroot/runtime probe",
+      "DDR reservation hardware proof",
+      "complete dependency lock",
+      "target device availability"
+    ]
+  },
+  "status": "blocked",
+  "finished_utc": "2026-09-06T00:38:25.061724+00:00"
+}

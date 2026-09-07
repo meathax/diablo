@@ -1,0 +1,47 @@
+{
+  "schema": "diablo-ddr-probe-test-v1",
+  "status": "passed",
+  "finished_utc": "2026-09-07T02:08:17.433736+00:00",
+  "arm": "not requested",
+  "commands": [
+    [
+      "iverilog",
+      "-g2012",
+      "-s",
+      "diablo_ddr_probe_tb",
+      "-o",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\test-ddr-probe\\diablo_ddr_probe_tb.vvp",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\rtl\\diablo_ddr_probe.sv",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\support\\tests\\diablo_ddr_probe_tb.sv"
+    ],
+    [
+      "vvp",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\test-ddr-probe\\diablo_ddr_probe_tb.vvp"
+    ],
+    [
+      "C:/Windows/System32/wsl.exe",
+      "-d",
+      "Ubuntu",
+      "--",
+      "g++",
+      "-std=c++23",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-I",
+      "/mnt/d/Arcade/AI/aCORES/Diablo/support/reference",
+      "/mnt/d/Arcade/AI/aCORES/Diablo/support/transport/transport_probe.cpp",
+      "-o",
+      "/home/meath/.cache/diablo-transport-probe-host"
+    ],
+    [
+      "C:/Windows/System32/wsl.exe",
+      "-d",
+      "Ubuntu",
+      "--",
+      "/home/meath/.cache/diablo-transport-probe-host",
+      "--self-test"
+    ]
+  ],
+  "scope": "RTL protocol and ARM mapping constants only; target hardware evidence is recorded separately."
+}

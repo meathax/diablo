@@ -1,0 +1,48 @@
+{
+  "schema": "diablo-mister-input-transport-hardware-receipt-v1",
+  "recorded_at": "2026-09-06T19:31:00+10:00",
+  "target": {
+    "host": "192.168.0.69",
+    "platform": "MiSTer DE10-Nano",
+    "validation_method": "root SSH target probe; no computer-use visual inspection"
+  },
+  "artifacts": {
+    "rbf": {
+      "local_path": ".work/build/fpga-transport-abi/source/output_files/Diablo.compressed.rbf",
+      "target_path": "/media/fat/_Other/Diablo_input_transport_20260906.rbf",
+      "sha256": "699f5d04e9d5f43eeeef54a8c756af5a1a0ccd59d1dac39510f59df3b4692969",
+      "bytes": 2500372
+    },
+    "arm_probe": {
+      "local_path": ".work/test-transport-control/transport-header-probe-arm",
+      "target_path": "/media/fat/linux/diablo-transport-header-probe",
+      "sha256": "3780954610c0c41980c42a61d93260aef4e43ed40b19b56a990f96759c70f148"
+    }
+  },
+  "build_validation": {
+    "quartus_full_compile": "passed: 0 errors, 77 warnings",
+    "fit_report": ".work/build/fpga-transport-abi/source/output_files/Diablo.fit.rpt",
+    "logic_utilization": "8867/41910 ALMs (21%)",
+    "registers": 13781,
+    "block_memory": "404737/5662720 bits (7%), 59/553 RAM blocks (11%)",
+    "dsp": "36/112 (32%)",
+    "input_ring": "256 records x 32 bytes; FPGA producer, ARM consumer; keyboard/mouse/joystick/focus edge capture",
+    "ddr_arbiter": "Audio priority, input next, framebuffer/control fallback; outstanding reads response-locked",
+    "timing_corners": {
+      "slow_100C": "+0.210 ns, 0 violated",
+      "slow_minus40C": "+0.188 ns, 0 violated",
+      "fast_100C": "+0.529 ns, 0 violated",
+      "fast_minus40C": "+0.526 ns, 0 violated"
+    },
+    "host_and_arm_tests": "Transport control, framebuffer scanout, PCM ordering/starvation/recovery, long 480-record PCM drain, DDR arbiter, input capture/overflow, host ABI and Cortex-A9 QEMU checks passed."
+  },
+  "hardware_validation": {
+    "clean_boot": "Board rebooted, new RBF loaded, and FPGA manager reported operating.",
+    "control_attachment": "ARM probe reported epoch 0xd1a61001 and fpga_state=ready.",
+    "input_idle": "ARM probe observed a stable attached input ring with producer=consumer=0 for two seconds.",
+    "pcm_queue": "On a clean boot of the same RBF, ARM published 480 stereo S16 records and FPGA consumed the queue to producer=consumer=480.",
+    "framebuffer_regression": "On a clean boot of the same RBF, two ARM-published frames were claimed by FPGA scanout and the retired slot was reclaimed."
+  },
+  "result": "pass",
+  "scope_limit": "Physical keyboard/mouse/controller edge injection, ARM snapshot recovery after overflow, physical left/right audio channel inspection, real Diablo launch and frame-pacing qualification remain open."
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "diablo-arm-engine-transport-audio-build-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass",
+  "source": {
+    "checkout": ".work/sources/devilutionx",
+    "pinned_engine_unchanged": true,
+    "engine_dx_sha256": "923338e58ba57b612f1ba4bccc6584e2b194d92fe0a1efc164955ea159a457ab",
+    "engine_sound_sha256": "32e84d454ebb46bb696c7dc304b45406c1e5c95045c40e0122734c22a53b0e4e",
+    "engine_main_sha256": "dffc9d98ff32d8cd93547cebf0394617e8d345d3a88673f5c1c8f3965407ea48",
+    "aulib_sha256": "eb4eda01ce58b542a1d94cd9098a9b1c58dd9d0868e2705092b7531b7e539892"
+  },
+  "toolchain": {
+    "configure": "wsl -d Ubuntu -- cmake -S /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx -B /home/meath/.cache/diablo-arm-engine-transport",
+    "build": "wsl -d Ubuntu -- cmake --build /home/meath/.cache/diablo-arm-engine-transport --target devilutionx -j 8",
+    "target": "armv7-neon-linux-gnueabihf",
+    "cpu": "cortex-a9",
+    "float_abi": "hard",
+    "neon": true,
+    "configure_exit_code": 0,
+    "build_exit_code": 0
+  },
+  "overlay": {
+    "module": "support/cmake/arm-transport.cmake",
+    "cmake_overlay_sha256": "9b8a9519e1ac9e7f2ce22147f5c1787ce9328f6868eae0b97db5668a54125c8d",
+    "sdl_adapter": "support/reference/mister_transport_sdl.hpp",
+    "sdl_adapter_sha256": "689a6106857b923aa8b27ac96809782bc3dfc16bf835c45d2d4b9b4d7d60480a",
+    "audio_bridge_header": "support/reference/mister_transport_audio.hpp",
+    "audio_bridge_header_sha256": "85b8d2f869a4e5c097e0eebc9381d27396490d12e89c22f7095a390e7f7eb9ef",
+    "audio_bridge_source": "support/reference/mister_transport_audio.cpp",
+    "audio_bridge_source_sha256": "1713b6a32a01b799af53e9bc975a4bd466aa730a2a63b94b01c8155861d67d60",
+    "transport_abi_sha256": "692a43cb7d0a4b78c53581025d5ae178b1371c060eccd7ba36e38639193e99d1",
+    "abi_generator_sha256": "55449255dcbd427155e58851586828fab89ce6d8b7004aeea7844e820efc91fd",
+    "callback": "Aulib SDL callback publishes interleaved S16 stereo through a stateful linear 22050-to-48000 Hz resampler into the bounded FPGA PCM ring.",
+    "arm_mix_sample_rate": 22050,
+    "fpga_pcm_sample_rate": 48000,
+    "channels": 2,
+    "pcm_publish_path": "ArmPublishPcmBytesFast uses contiguous ring copies and epoch/occupancy checks without full ABI validation on the callback hot path."
+  },
+  "artifact": {
+    "path": ".work/build/arm-engine-transport/devilutionx",
+    "target_path": "/media/fat/linux/devilutionx",
+    "sha256": "1915adc9db97637825934f12c71883aba55398d003f1b35e9a5167f057475556",
+    "bytes": 8584488,
+    "elf": "ELF32 ARM EABI5 PIE, dynamically linked, /lib/ld-linux-armhf.so.3, stripped",
+    "build_id": "6fd8c210a3e90d0995907fa1061393384788b7ac"
+  },
+  "checks": {
+    "generator": "pass: python support/scripts/generate_transport_abi.py --check",
+    "transport_control": "pass: support/scripts/test_transport_control.py",
+    "transport_abi": "pass: support/scripts/test_transport_abi.py",
+    "deployment": "pass: board hash matches the local artifact"
+  },
+  "scope_limit": "This proves the ARM audio callback is compiled, deployed and connected to the FPGA PCM ABI. Physical speaker/HDMI output, underrun counters under live playback, combined reset stress and real-vblank pacing remain open."
+}

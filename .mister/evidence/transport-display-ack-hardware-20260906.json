@@ -1,0 +1,50 @@
+{
+  "schema": "diablo-transport-display-ack-hardware-v1",
+  "recorded_at": "2026-09-06",
+  "status": "pass-board-transport-display-ack",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "kernel": "Linux MiSTer 5.15.1-MiSTer armv7l",
+    "loader": "/usr/bin/fpga",
+    "validation_method": "root SSH, fresh RBF load, headless ARM engine session with dummy SDL video/audio, and read-only shared-DDR state dump; no Computer Use or HDMI visual inspection"
+  },
+  "artifacts": {
+    "rbf": {
+      "path": "/media/fat/_Other/Diablo_transport_display_ack_final_20260906.rbf",
+      "bytes": 2493796,
+      "sha256": "631eef67ec1507d08eb283c15c329c8f48ffc93cee73d8ecb313654c390d01f3"
+    },
+    "engine": {
+      "path": "/media/fat/linux/diablo-mister-transport",
+      "sha256": "bd26610858a40838d33eb30727a0f25d89ba7ac35c20aecc86f1bf83a7cd15dc"
+    },
+    "assets": "/media/fat/tmp_esc/diablo-transport-assets/diabdat.mpq"
+  },
+  "session": {
+    "epoch": "0x26090633",
+    "timeout_seconds": 15,
+    "exit_code": 124,
+    "startup_wait_expired": 0,
+    "fallback_notices": 4,
+    "environment": {
+      "DIABLO_MISTER_TRANSPORT": "1",
+      "DIABLO_MISTER_SHARED_PHYS": "0x3fe00000",
+      "SDL_VIDEODRIVER": "dummy",
+      "SDL_RENDER_DRIVER": "software",
+      "SDL_AUDIODRIVER": "dummy"
+    },
+    "state_after": {
+      "arm_state": 1,
+      "fpga_state": 1,
+      "fault_code": 0,
+      "display_epoch": 158,
+      "last_presented_frame_id": 159,
+      "frame_0": {"state": 2, "frame_id": 16, "logic_tick": 3863, "display_epoch": 13, "crc32": "0xf9019f16"},
+      "frame_1": {"state": 0, "frame_id": 159, "logic_tick": 14973, "display_epoch": 158, "crc32": "0xa3a2df0f"},
+      "frame_2": {"state": 3, "frame_id": 160, "logic_tick": 15244, "display_epoch": 157, "crc32": "0x0dbbc41f"}
+    }
+  },
+  "interpretation": "The real ARM DevilutionX binary found the board DIABDAT asset, published indexed frames into shared DDR, and the freshly loaded FPGA retired frames and acknowledged presentation metadata without a transport fault. The nonzero display epoch and last-presented ID prove the display acknowledgement path is live on the board.",
+  "scope_limit": "The run used dummy video/audio and no physical input. HDMI image quality, tear-free visual inspection, physical audio, controller/keyboard traffic, combined reset stress, deterministic gameplay and 60 FPS pacing remain open."
+}

@@ -1,0 +1,46 @@
+{
+  "status": "pass under user-mode ARM emulation",
+  "binary_sha256": "1c12c43801776ff22e5c1b6e780464d8241e45661f5abec67f7065455ed39141",
+  "emulator": "QEMU10.2.1 Ubuntu1:10.2.1+ds-1ubuntu3.2",
+  "emulator_package_sha256": "f0585a9676a039f46607f185b3657c1e78c1ba4187595724cc567fcc1ae0d1b9",
+  "runs": [
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "--",
+        "/home/meath/.cache/diablo-qemu/root/usr/bin/qemu-arm",
+        "-cpu",
+        "cortex-a9",
+        "-L",
+        "/home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/sysroot",
+        "/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/arm-runtime-probe/probe-glibc227"
+      ],
+      "exit_code": 0,
+      "stdout": "ARM runtime probe PASS: machine=armv7l, kernel=6.18.33.2-microsoft-standard-WSL2, pointer_bits=32, online_cpus=32, page_bytes=4096, neon_result=11\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "--",
+        "/home/meath/.cache/diablo-qemu/root/usr/bin/qemu-arm",
+        "-cpu",
+        "cortex-a9",
+        "-L",
+        "/home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/sysroot",
+        "/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/arm-runtime-probe/probe-glibc227",
+        "changed-input"
+      ],
+      "exit_code": 0,
+      "stdout": "ARM runtime probe PASS: machine=armv7l, kernel=6.18.33.2-microsoft-standard-WSL2, pointer_bits=32, online_cpus=32, page_bytes=4096, neon_result=12\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "Cortex-A9 instruction emulation plus candidate GLIBC2.27 loader/libraries; WSL kernel services",
+  "mister_hardware_verified": false,
+  "fps_measured": false
+}

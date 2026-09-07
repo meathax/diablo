@@ -1,0 +1,16 @@
+{
+  "status": "root cause confirmed; ARM fix validated in both native town scenarios",
+  "diagnostic_run": ".work\\runtime\\arm-scenarios\\d11269f9c38545c1b43e76f6dcc12147\\run.json",
+  "run_status": "passed",
+  "binary_sha256": "2ad3b4090dca9ded783765e155900730beed9777d26dfb3f0bc226e5365927de",
+  "log_sha256": "341d6960aaf135b1baf805b05eca8763dafcd623706f824422bb8871d0a5a2cc",
+  "evidence": [
+    "engine.log:164 recorded MOUSEMOTION 320 180",
+    "engine.log:172 real SDL event 1024 (SDL_MOUSEMOTION) cursor before 320, 180",
+    "engine.log:173 cursor after 0, 0"
+  ],
+  "cause": "HandleProgressBarUpdate bypasses replay FetchMessage and forwards live mouse input to ProgressEventHandler/DisableInputEventHandler. The SDL dummy driver supplies a mouse event that replaces recorded cursor state.",
+  "change": "Filter live mouse motion/button events only during demo playback in loading loop. Preserve recorded events, normal play, window and custom loading events. Shared host/ARM overlay; original source unchanged.",
+  "scope": "Replay determinism; not MiSTer transport or hardware validation.",
+  "validation": ".mister/evidence/arm-native-capture-pass.json"
+}

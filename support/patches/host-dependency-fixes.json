@@ -1,0 +1,35 @@
+{
+  "schema": "diablo-dependency-fixes-v1",
+  "fixes": [
+    {
+      "path": "_deps/libzt-src/ext/ZeroTierOne/ext/miniupnpc/connecthostport.c",
+      "original_sha256": "c08582e21b26ebd185dece3ad8989416b761a83c9a802d519e7cf49173ce7c0d",
+      "patched_sha256": "0375751ab67a3ad54a4a8816b29f6c37092c44224b016addd64871a89c0b4118",
+      "edits": [
+        {
+          "old": "\tstruct timeval timeout;",
+          "new": "#ifdef _WIN32\r\n\tDWORD timeout;\r\n#else\r\n\tstruct timeval timeout;\r\n#endif",
+          "count": 1
+        },
+        {
+          "old": "\ttimeout.tv_sec = 3;\r\n\ttimeout.tv_usec = 0;",
+          "new": "#ifdef _WIN32\r\n\ttimeout = 3000;\r\n#else\r\n\ttimeout.tv_sec = 3;\r\n\ttimeout.tv_usec = 0;\r\n#endif",
+          "count": 2
+        },
+        {
+          "old": "\t\ttimeout.tv_sec = 3;\r\n\t\ttimeout.tv_usec = 0;",
+          "new": "#ifdef _WIN32\r\n\t\ttimeout = 3000;\r\n#else\r\n\t\ttimeout.tv_sec = 3;\r\n\t\ttimeout.tv_usec = 0;\r\n#endif",
+          "count": 2
+        },
+        {
+          "old": "&timeout, sizeof(struct timeval)",
+          "new": "(const char *)&timeout, sizeof(timeout)",
+          "count": 4
+        }
+      ],
+      "reason": "Winsock SO_RCVTIMEO/SO_SNDTIMEO use DWORD milliseconds; preserve the Unix timeval path and three-second value",
+      "upstream_libzt_commit": "1a9d83b8c4c2bdcd7ea6d8ab1dd2771b16eb4e13",
+      "reference": "https://learn.microsoft.com/en-us/windows/win32/winsock/sol-socket-socket-options"
+    }
+  ]
+}

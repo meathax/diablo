@@ -1,105 +1,766 @@
 {
-  "schema": "diablo-project-state-v1",
-  "active_package": "P01",
-  "status": "P01-prerequisite-repair-in-progress",
-  "completed_packages": [
-    "P00"
-  ],
-  "blocked_packages": {
-    "P01": {
-      "reason": "Shared leases now advertised; inference/timing audit, named unconstrained export, build identity binding and authenticated acceptance integration remain incomplete. Local audit parser implementation is underway.",
-      "evidence": {
-        "path": ".mister/evidence/doctor-1eb167c34c7c4313ad2dd03d807ef9a9.json",
-        "sha256": "68ec53a35e64fb31a36f9a3c7d029ab6d1009cf165bb77009b7b90fac1d9de5f",
-        "status": "blocked"
-      },
-      "gate": ".mister/contracts/QUARTUS_RUNNER_GATE.md"
-    }
+  "schema": "diablo-project-state-v2",
+  "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
+  "completion_document_sha256": "e3d8ed345e1216df720f9e679befcb757872b42f8238a3b84707105cf66ec53a",
+  "status": "audit-2026-09-07-fpga-snapshot-built-no-current-candidate",
+  "candidate": {
+    "state": "no-current-accepted-candidate",
+    "id": null,
+    "development_id": "08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4",
+    "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-6-arm.json",
+    "development_manifest_sha256": "8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762",
+    "next_gate": "C16/C18: validate current-boot loader admission and target mapping for development candidate, then promote only after board qualification",
+    "development_validity": "current development-only candidate; local host/RTL and ARM/QEMU receipts pass; target qualification and acceptance promotion remain open"
   },
-  "not_started_packages": [
-    "P02",
-    "P03",
-    "P04",
-    "P05",
-    "P06",
-    "P07",
-    "P08",
-    "P09",
-    "P10",
-    "P11",
-    "P12",
-    "P13",
-    "P14",
-    "P15",
-    "P16",
-    "P17",
-    "P18",
-    "P19",
-    "P20"
+  "active_work": "Audit closure implementation is recorded through candidate-6: checked renderer pitch arithmetic, zero-valued RTL timing guards, signed-safe mouse deltas, ARM header-probe portability, immutable candidate-6 manifest, FPGA snapshot and candidate-bound local/ARM-QEMU receipts. R01/R02/R03 evidence and local gates pass; target loader admission, board mapping, physical I/O, gameplay equality, performance and release promotion remain open.",
+  "completed_implementation_stages": [
+    "1 - Build and run the host reference"
   ],
-  "plan_digest": "702f573c53c8d2fb0eea227ba747d21c3b67150b0c488ee9a88b6c1c45dd6fae",
+  "remaining_stages": {
+    "2": "FPGA/RBF build passes; physical HDMI and analog inspection open",
+    "3": "ARMv7 target build and live DevilutionX launch pass; long target qualification open",
+    "4": "ABI and shared DDR transport pass host/RTL/board checks; combined stress open",
+    "5": "Frame/audio/input transport is integrated; physical I/O, speakers and zero-underrun open",
+    "6": "Diablo/Hellfire timedemo bring-up passes; physical gameplay workflows open",
+    "7": "Physical controls, OSD focus, disconnect/reconnect and multiplayer open",
+    "8": "Profiles identify publish/copy and command overflow costs; tail-latency qualification open",
+    "9": "Bounded software renderer and ARM rings pass host tests; full-scene equality open",
+    "10": "FPGA command consumer and live DevilutionX command path pass; batching and full-scene qualification open",
+    "11": "Qualify complete core on MiSTer",
+    "12": "Package/install/verify release"
+  },
+  "next_action": "Use candidate-6 for C16/C17 current-boot admission and target mapping; record the board configuration and readiness evidence, then run the C19/C21/C23–C25 physical qualification matrix before any C18 promotion.",
+  "next_implementation": "Candidate-6 is the current development snapshot. Continue with target/deployment contract and integrated transport gaps, board admission and physical qualification; any RTL, ABI, constraint or artifact change requires a new source snapshot, manifest, build and candidate-bound receipts.",
+  "quartus_installation_root": "D:/Q17",
+  "legacy_runner_required": false,
   "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
-  "abi_digest": null,
-  "accepted_build_id": null,
-  "active_divergence": null,
-  "latest_reference_receipt": null,
-  "latest_rtl_receipt": null,
-  "latest_hardware_receipt": null,
-  "foundation_receipts": {
+  "validation_receipts": {
+    "baseline_test": {
+      "path": ".mister/evidence/test-434cfd02ddc54ba3a33dc92a70c71c15.json",
+      "sha256": "6087133c51b8a5da11df597d9d63f42f813ee74b0d36d1ca2fec9b3cf8a9af41",
+      "status": "pass"
+    },
     "test": {
-      "path": ".mister/evidence/test-ff170f1eda944e7c87957d55fc20bb18.json",
-      "sha256": "246c694a1e8e8d47eb009be394a8afc08783699e94dbbb0d0f8115bc40675e08",
+      "path": ".mister/evidence/test-0b5ba4b557824a87bb8ea824a3cd9737.json",
+      "sha256": "d8430d135f674407c6d4b1e9225b1a71640e2a1ac903cad6bba8252bbc49b9e4",
       "status": "pass"
     },
     "fetch": {
-      "path": ".mister/evidence/fetch-5a72699af4e9404eacaa6112b133d43d.json",
-      "sha256": "48433b2ca505dba90bf79a9cc82d57b6b5f8101f2e6188bf44580154dbd6f3cf",
+      "path": ".mister/evidence/fetch-94e1223c0840496f9057f6cad6180d3b.json",
+      "sha256": "24c743225cb8ec5d5cb6b760de3f6a65b6bf01ee036b4c13b4bf9f27457fc9e3",
       "status": "pass"
     },
     "verify-data": {
-      "path": ".mister/evidence/verify-data-992596d4e085417197c0f55941fe8a23.json",
-      "sha256": "f4719d8bae44f1713c6fcb95a067bf1f0546c66cfcc79bf99d30bc395f2e0c58",
+      "path": ".mister/evidence/verify-data-81af2440d77643a084572c2800073215.json",
+      "sha256": "b2d4a5c7e01bdffaeb8aa12f2be0b6fa9c25ade74b9680063672105d34688d6a",
       "status": "pass"
     },
     "doctor": {
-      "path": ".mister/evidence/doctor-1eb167c34c7c4313ad2dd03d807ef9a9.json",
-      "sha256": "68ec53a35e64fb31a36f9a3c7d029ab6d1009cf165bb77009b7b90fac1d9de5f",
-      "status": "blocked"
+      "path": ".mister/evidence/doctor-35dc588e436045219ddd339b541b6876.json",
+      "sha256": "a9cd87ca279af599e2257bd938c8e1cf927f8eac92097a487052fc6eb27acc4d",
+      "status": "pass"
+    },
+    "ddr_preflight_hardware": {
+      "path": ".mister/evidence/ddr-preflight-hardware.json",
+      "sha256": "397218d02d951c51801262ffd7b6ca41bf324881a360b962136ebd61cf5b33ab",
+      "status": "pass"
+    },
+    "transport_control_hardware": {
+      "path": ".mister/evidence/transport-control-hardware.json",
+      "sha256": "8feb5ba535356e88aaa5bd6238a0e750145d6026db7088e6514680b99b15824f",
+      "status": "pass"
+    },
+    "framebuffer_scanout_hardware": {
+      "path": ".mister/evidence/framebuffer-scanout-hardware.json",
+      "sha256": "ba2d9705ec4ac40b7f89c1ae8a585956237d0bb68360ea4f1d5f8d2fccf03616",
+      "status": "pass"
+    },
+    "audio_transport_hardware": {
+      "path": ".mister/evidence/audio-transport-hardware.json",
+      "sha256": "8812b14245679dddf3c8388358880f07ddcb8f429d0b851271f13c882b70c7ad",
+      "status": "pass"
+    },
+    "input_transport_hardware": {
+      "path": ".mister/evidence/input-transport-hardware.json",
+      "sha256": "63fcea47b667ff6feda89604acf0eef44f98911a98f398145a6d37b371640f0b",
+      "status": "pass"
+    },
+    "input_transport_local_build": {
+      "path": ".mister/evidence/input-transport-local-build-20260906.json",
+      "sha256": "bb00df1e9735ca0323dd5281bcb8ce9a74fae0bee0057add322da8af46cdb131",
+      "status": "pass; board validation deliberately deferred"
+    },
+    "transport_abi_layout_test": {
+      "path": ".mister/evidence/transport-abi-layout-test.json",
+      "sha256": "bfd66390daef6d28fb009b307eb0952a59b008b58fcb8a82c75b3208473e5071",
+      "status": "pass"
+    },
+    "input_transport_current_hardware": {
+      "path": ".mister/evidence/input-transport-current-hardware-20260906.json",
+      "sha256": "6a7829b089024d5dfca8565456dac78daf9e61ea4164c48a1000906b7d6fc253",
+      "status": "pass; current RBF transport smoke only"
+    },
+    "arm_engine_transport_build": {
+      "path": ".mister/evidence/arm-engine-transport-build-20260906.json",
+      "sha256": "3ddfb29ba49d9d4d89f60abb8e3168c3b95e5f1a2a739c6e144caae8fb843200",
+      "status": "pass; current bounded-fallback build and target transport receipts recorded"
+    },
+    "arm_engine_transport_hardware": {
+      "path": ".mister/evidence/arm-engine-transport-hardware-20260906.json",
+      "sha256": "d6c6a3d60a210beb0e20b21a35cef6dc4fc688ee5b9b81f3313cdfbd419de616",
+      "status": "pass for target startup/asset discovery/frame ownership; performance, physical I/O and deterministic gameplay remain open"
+    },
+    "arm_engine_transport_nonblocking": {
+      "path": ".mister/evidence/arm-engine-transport-nonblocking-20260906.json",
+      "sha256": "370438514d7239e13dc65df78e277e566cf5db7a7b4f1ea4379798820b7e66e5",
+      "status": "pass for current bounded fallback/startup/asset discovery/frame ownership; real HDMI/vblank, physical I/O and performance remain open"
+    },
+    "arm_engine_transport_timedemo": {
+      "path": ".mister/evidence/arm-engine-transport-timedemo-20260906.json",
+      "sha256": "848b4c3f6b8eaff248e34be56e251a2e2326d7d21f10a65566da2903e483e35b",
+      "status": "pass for fresh-RBF startup, sustained ownership and 29.7 FPS dummy-SDL timedemo; real HDMI/vblank, physical I/O, deterministic gameplay and 60 FPS remain open"
+    },
+    "fpga_transport_recheck_build": {
+      "path": ".mister/evidence/fpga-transport-recheck-build-20260906.json",
+      "sha256": "20f08208c2c9199a42fa73f04997b45baf2e41405689683c7698c2e206f3fa2b",
+      "status": "pass; Quartus compile/timing and live epoch reattach RTL test recorded"
+    },
+    "transport_relaunch_hardware": {
+      "path": ".mister/evidence/transport-relaunch-hardware-20260906.json",
+      "sha256": "94b693e3542273cee05fa4dfc958dae809d95fd824718f19e959340f9bff8a87",
+      "status": "pass; two ARM sessions reattached on the new RBF without a second FPGA load"
+    },
+    "fpga_transport_display_ack_build": {
+      "path": ".mister/evidence/fpga-transport-display-ack-build-20260906.json",
+      "sha256": "06c0ace1fb27810ee6bac1e4cdbfac4f959885b277e5f70e62d20ba6d3f93953",
+      "status": "pass; final Quartus build, timing and display acknowledgement RTL recorded"
+    },
+    "transport_display_ack_hardware": {
+      "path": ".mister/evidence/transport-display-ack-hardware-20260906.json",
+      "sha256": "ed19071b30d0d44f137d5662735ee468d590717843bb97b29d1a236a57a9e400",
+      "status": "pass; fresh board session produced nonzero display acknowledgements with arm=1, fpga=1 and fault=0"
+    },
+    "arm_engine_transport_input_build": {
+      "path": ".mister/evidence/arm-engine-transport-input-build-20260907.json",
+      "sha256": "b16fb9a0fa4a0c73ba4c2eb2daedf2d608e009ebc5bbf20c6d1164724d6d840d",
+      "status": "pass; ARM overlay rebuild includes bounded input-to-SDL conversion and MiSTer joystick keyboard-controller mapping"
+    },
+    "arm_input_sdl_bridge": {
+      "path": ".mister/evidence/arm-input-sdl-bridge-20260907.json",
+      "sha256": "f5cc658b3c78c1acc947e53b851eabfa0769858320af98cffec234492a7195d5",
+      "status": "pass for deterministic keyboard/mouse/joystick ring-to-SDL bridge on a fresh RBF; synthetic overflow recovery also passes, while physical peripherals remain open"
+    },
+    "arm_engine_transport_input_timedemo": {
+      "path": ".mister/evidence/arm-engine-transport-input-timedemo-20260907.json",
+      "sha256": "b0d30bb2e20176f314c83a0711d144b0c3b4951bf1325d2710c08cf883c6f01d",
+      "status": "pass for repeatable measurement: 2635 frames in 89.04 seconds at 29.6 FPS with no transport fault; real-vblank and 60 FPS gates remain open"
+    },
+    "arm_engine_transport_audio_build": {
+      "path": ".mister/evidence/arm-engine-transport-audio-build-20260907.json",
+      "sha256": "e39a700e4c9217d6050c4239fd97e6a80311aa359da627e47ed2637609a5f13a",
+      "status": "pass; ARM audio callback overlay, 22.05-to-48 kHz resampler and contiguous PCM publisher build and ABI checks pass"
+    },
+    "arm_audio_pcm_transport": {
+      "path": ".mister/evidence/arm-audio-pcm-transport-20260907.json",
+      "sha256": "31b60c8802b334d9eda12fd1a9bbd064b5364c126b473893d28abde9e73ded82",
+      "status": "pass for real ARM callback-to-PCM-ring publication on a fresh RBF; FPGA underrun/resync counters are now published, while physical speakers and zero-underrun remain open"
+    },
+    "arm_engine_transport_audio_timedemo": {
+      "path": ".mister/evidence/arm-engine-transport-audio-timedemo-20260907.json",
+      "sha256": "da6178dcf3f57fe015cc6d062937b936013e65f8ebdc39af2ab2a53da6e0b77d",
+      "status": "pass for repeatable 2611-frame, 29.1 FPS audio-enabled measurement with no PCM backpressure or transport fault; real-vblank and 60 FPS gates remain open"
+    },
+    "fpga_pcm_status_build": {
+      "path": ".mister/evidence/fpga-pcm-status-build-20260907.json",
+      "sha256": "721055a0e313ce0a441e9f7c8317fe61eb54191dcccb6e04ddb8dbb22b5d0114",
+      "status": "pass; fresh PCM diagnostic RBF compiled with 0 errors and timing closure, remote hash matches local artifact"
+    },
+    "arm_input_overflow_recovery": {
+      "path": ".mister/evidence/arm-input-overflow-recovery-20260907.json",
+      "sha256": "3ea01d51915ce3bf8c0dbcb2936d9a0addbc4283a95f4453065455a35f4462a0",
+      "status": "pass for synthetic 257-record full-ring recovery in the real ARM SDL adapter; physical peripheral overflow remains open"
+    },
+    "arm_pcm_health": {
+      "path": ".mister/evidence/arm-pcm-health-20260907.json",
+      "sha256": "5f12f0a3481c47fa6cebbc459ad541532e286af104ab4aa65564283f2160eec7",
+      "status": "pass for live FPGA counter publication and synchronized cursors; active nonzero underruns keep physical zero-underrun audio gate open"
+    },
+    "arm_campaign_bringup": {
+      "path": ".mister/evidence/arm-campaign-bringup-20260907.json",
+      "sha256": "0a6c3e2472a9c1a688e37133ed356519f1a2c049be26f0afafb76903951d02db",
+      "status": "pass for explicit Diablo and Hellfire startup, asset discovery, audio initialization and clean timedemo termination on the real ARM target; physical gameplay workflows remain open"
+    },
+    "arm_engine_transport_recovery_build": {
+      "path": ".mister/evidence/arm-engine-transport-recovery-build-20260907.json",
+      "sha256": "6aa9839b7cfda4199896df25f18dc094f15979a381310473ddadd644ecd6b82c",
+      "status": "pass; ARM runtime epoch rebind and live FPGA reset recovery build completed"
+    },
+    "arm_fpga_reset_recovery": {
+      "path": ".mister/evidence/arm-fpga-reset-recovery-20260907.json",
+      "sha256": "1508114cda9302957e0947a94bbb5973f0969a81b8693720f0639c9d4955dec1",
+      "status": "pass; live ARM process survived RBF reload, generated a new epoch and returned to fpga=1/fault=0"
+    },
+    "fpga_pcm_fifo1024_build": {
+      "path": ".mister/evidence/fpga-pcm-fifo1024-build-20260907.json",
+      "sha256": "e5898f53de441437882b8fd759912f57e0b8b5d25dd4aa525550784ffeb19cfb",
+      "status": "pass; 1024-sample FIFO RBF compiled with 0 errors, timing closure and exact artifact load"
+    },
+    "arm_fpga_pcm_fifo1024_hardware": {
+      "path": ".mister/evidence/arm-fpga-pcm-fifo1024-hardware-20260907.json",
+      "sha256": "805611a9e8f2c8e1e4205a47cc8a445ee3b400dd8cdee3f564b3a5b26abb115e",
+      "status": "pass for exact RBF board load, ARM epoch reattachment and live frame/PCM publication; dummy audio and active underruns leave physical gates open"
+    },
+    "arm_audio_driver_probe": {
+      "path": ".mister/evidence/arm-audio-driver-probe-20260907.json",
+      "sha256": "570bbb00c2c62414fb0fa1c122360ce386f7bb167254851f28832c85591e3c9a",
+      "status": "blocked; board SDL build reports Audio target alsa not available, so physical speaker validation is unavailable"
+    },
+    "fpga_frame_retire_immediate_build": {
+      "path": ".mister/evidence/fpga-frame-retire-immediate-build-20260907.json",
+      "sha256": "604b0b7f4106ab5d06d8f32740bcac6c6696bdf5628818e90ff97dce748b6746",
+      "status": "pass; corrected immediate-retirement RTL, 0 Quartus errors, positive setup/hold slack at all corners, exact board artifact hash"
+    },
+    "arm_engine_transport_present_profile_build": {
+      "path": ".mister/evidence/arm-engine-transport-present-profile-build-20260907.json",
+      "sha256": "81caf924746c91a3af3af78ccf40715efa6711cfc1e89a4875bb9c780947a533",
+      "status": "pass; profile-enabled Cortex-A9 NEON overlay build and board hash"
+    },
+    "arm_engine_transport_present_profile": {
+      "path": ".mister/evidence/arm-engine-transport-present-profile-20260907.json",
+      "sha256": "0e976d13819d297cab9015ce1804e44e9c3bea32f4d04fd03eb7df60dbd810e2",
+      "status": "pass for two fault-free real-board timedemos and present/backpressure profile; dummy SDL, physical I/O and approximately 60 FPS remain open"
+    },
+    "arm_shared_ddr_copy_benchmark": {
+      "path": ".mister/evidence/arm-shared-ddr-copy-benchmark-20260907.json",
+      "sha256": "6b7cca032189e5478cb005316a92f49ae198eabb09002d5cf2d49f6f33723f90",
+      "status": "pass; MiSTer shared-DDR bandwidth measured and libc memcpy retained as the fastest safe tested path"
+    },
+    "arm_engine_transport_present_profile_breakdown_build": {
+      "path": ".mister/evidence/arm-engine-transport-present-profile-breakdown-build-20260907.json",
+      "sha256": "245ecf35ce02b275474844e228ae53307be2e274e1f0bc6e56323a7d22a4469a",
+      "status": "pass; Cortex-A9 NEON ARM overlay with publish/flush stage profiling built and deployed"
+    },
+    "arm_engine_transport_present_profile_breakdown": {
+      "path": ".mister/evidence/arm-engine-transport-present-profile-breakdown-20260907.json",
+      "sha256": "94665976675dd32d9981d176b589a7c18748ebe1cd59452bce72cb4b7c8c9b9a",
+      "status": "pass for one fault-free real-board stage profile; publish/copy and backpressure are measured, while physical I/O and approximately 60 FPS remain open"
+    },
+    "arm_engine_transport_dirty_copy_build": {
+      "path": ".mister/evidence/arm-engine-transport-dirty-copy-build-20260907.json",
+      "sha256": "ee24e7f608a037075164a6bc862a9fad872277ce652ab07adc980d6a7124c950",
+      "status": "pass; opt-in dirty-copy ARM overlay built, deployed and measured fault-free on MiSTer"
+    },
+    "arm_dirty_copy_ab": {
+      "path": ".mister/evidence/arm-dirty-copy-ab-20260907.json",
+      "sha256": "c03970669b02766014591cf9454a2b110ea537375600b9a037f11b1cb89fbf98",
+      "status": "pass for paired board A/B measurement; dirty-copy improves this timedemo but remains opt-in pending broader scene coverage"
+    },
+    "arm_engine_transport_no_cpu_pacing_build": {
+      "path": ".mister/evidence/arm-engine-transport-no-cpu-pacing-build-20260907.json",
+      "sha256": "1253aa0187b8893ae733d33f553606c03546efd07e81c6428c59307bdfa93838",
+      "status": "pass; diagnostic no-CPU-pacing switch build deployed with exact board hash"
+    },
+    "arm_cpu_pacing_ab": {
+      "path": ".mister/evidence/arm-cpu-pacing-ab-20260907.json",
+      "sha256": "d9b4a4c31d9da1e93be46aa388355d0d35b9847e5e6e39d8224c897fabc3a0df",
+      "status": "pass; paired board A/B retained SDL pacing as default after unpaced throughput regressed"
+    },
+    "software_command_renderer_test": {
+      "path": ".mister/evidence/software-command-renderer-test-20260907.json",
+      "sha256": "7e89d45a404d97ada631594999609b2e29d77931a6e89423483516976b4bea2c",
+      "status": "pass for bounded software command semantics and independent overlap reference; full-game scene submission and FPGA execution remain open"
+    },
+    "software_command_transport_test": {
+      "path": ".mister/evidence/software-command-transport-test-20260907.json",
+      "sha256": "f7c7513e8b6dbeb2b757cfb9eb43c9eb0fb8d47cbb8ea1fc6b7459331ac959ea",
+      "status": "pass for ARM command-ring epoch, wrap, release-ordering and backpressure model; FPGA consumer and scene submission remain open"
+    },
+    "fpga_command_consumer_test": {
+      "path": ".mister/evidence/fpga-command-consumer-test-20260907.json",
+      "sha256": "bddd7518f752684857c21f251b6aa64eeaca3edb49f7833660727ef4c8b3e828",
+      "status": "pass for RTL command-ring validation, clipped FillRect, overlap-safe CopyRect, fence publication and randomized DDR backpressure"
+    },
+    "fpga_command_consumer_build": {
+      "path": ".mister/evidence/fpga-command-consumer-build-20260907.json",
+      "sha256": "819923501bf66eb85da51ed646fe1edf029a55328bbffcca0110310298537348",
+      "status": "pass; corrected target-slot RTL integrated, Quartus compile/timing passed with 0 errors and exact RBF loaded on MiSTer"
+    },
+    "fpga_command_consumer_hardware": {
+      "path": ".mister/evidence/fpga-command-consumer-hardware-20260907.json",
+      "sha256": "146a73ca8c662c3cf086b81af00d934b9da090e5b21daeef0f5f6c2b4b823b3c",
+      "status": "pass for real ARM command execution, shared-target software-reference equality and fence publication; display/vblank acknowledgement remains open"
+    },
+    "fpga_command_consumer_faultclear_build": {
+      "path": ".mister/evidence/fpga-command-consumer-faultclear-build-20260907.json",
+      "sha256": "b71c3f76557a69ae2b81e841d1497e8a1fe2eccee17eee4119e5039d2b9e9507",
+      "status": "pass; final Quartus RBF has 0 errors, positive timing at all corners and exact board hash"
+    },
+    "fpga_control_reader_relaunch_test": {
+      "path": ".mister/evidence/fpga-control-reader-relaunch-test-20260907.json",
+      "sha256": "c1b07861f6871cde220f760b1df8822e8f21dbf801a7feb4c35f6ee5bf8aa7f8",
+      "status": "pass; RTL control reader clears stale fault metadata and accepts relaunch ownership states"
+    },
+    "arm_engine_command_scene_trace_build": {
+      "path": ".mister/evidence/arm-engine-command-scene-trace-build-20260907.json",
+      "sha256": "1613f1e8dc0974edf0ff4e8c9146d112acccbfc89914713c713d767e5a97873e",
+      "status": "pass; exact traced ARM DevilutionX binary built and deployed"
+    },
+    "arm_command_scene_live_hardware": {
+      "path": ".mister/evidence/arm-command-scene-live-hardware-20260907.json",
+      "sha256": "e7dbb8cc1546bb7465bf6580912dbb9100aa5d18d9a1742e5438a71da4a0b66c",
+      "status": "pass; live ARM DevilutionX command batches consumed and displayed by the exact packed-fill RBF under dummy SDL"
+    },
+    "arm_command_scene_optimization": {
+      "path": ".mister/evidence/arm-command-scene-optimization-20260907.json",
+      "sha256": "27d36ccbd1a3050c860e64eb1f69ec2e53977995041507db2dd4c732421ecef1",
+      "status": "pass; paired board measurement covers packed FPGA fills, vertical run coalescing, build/fence timing and fresh/no-reload timedemos"
     }
   },
-  "next_exact_command": "python support/scripts/diablo.py test --suite foundation",
-  "next_command_condition": "Run before extending the tested local Quartus auditor. The goal remains active; do not wait indefinitely for another task.",
-  "next_implementation": "Implement hash-bound normalized unconstrained endpoint export and exact setup/hold count reconciliation; raw report repeats detail headings without an explicit domain, so do not assign domains by guessed ordering. Then bind fresh runner reports/source closure and authenticated acceptance.",
-  "allowed_paths": [
-    ".gitignore",
-    "README.md",
-    ".mister/",
-    "support/scripts/",
-    "support/tests/",
-    ".work/sources/"
+  "prerequisites_to_establish": [
+    "Target hardware access and kernel/runtime baseline",
+    "Complete dependency/toolchain/sysroot identities",
+    "Safe shared DDR reservation",
+    "Functional HDL and ARM platform implementation"
   ],
+  "abi_digest": "dcbc6bf164a8e6707d3a7181933d4ed44fa3de25b05e8dad80552401984391c4",
+  "shared_transport_abi": {
+    "status": "v1 layout, bounded control-page attachment, indexed framebuffer scanout with display acknowledgement, ARM audio callback publication into bounded stereo PCM, FPGA PCM underrun/resync diagnostics, FPGA input edge capture and ARM input-to-SDL conversion passed host, RTL, Cortex-A9 QEMU and the current MiSTer RBF smoke checks. The current image accepted ARM-published frames, retired them at vblank, recorded display epochs and last-presented ID, consumed a 480-record PCM queue, attached an idle input ring, translated deterministic keyboard/mouse/joystick records in the real engine, recovered a synthetic full-ring overflow, rejected malformed magic and stale ownership, and safely reclaimed the retired slot.",
+    "specification": "support/TRANSPORT_ABI.md",
+    "manifest": "support/transport/transport_abi.json",
+    "evidence": ".mister/evidence/transport-abi-layout-test.json",
+    "remaining_hardware_gates": [
+      "continuous real-game ARM frame production with visual tear-free output inspection",
+      "physical left/right audio and underrun qualification",
+      "physical keyboard/mouse/controller input traffic, OSD focus and ARM snapshot recovery",
+      "combined audio/video/input stress under shared-DDR contention and reset",
+      "real-vblank backpressure stability and approximately 60 FPS frame pacing",
+      "deterministic timedemo equality with the accepted replay fixtures"
+    ]
+  },
+  "accepted_build_id": null,
+  "builds_run": [
+    {
+      "kind": "host-reference",
+      "result": "failed",
+      "receipt": ".mister/evidence/build-host-54780598db08432f972ab5964fbbef8c.json",
+      "reason": "miniupnpc Unix timeout representation on Windows"
+    },
+    {
+      "kind": "FPGA bootstrap map",
+      "result": "failed",
+      "log": ".work/build/fpga-bootstrap/map.log",
+      "reason": "Standalone map did not run template build-ID pre-flow"
+    },
+    {
+      "kind": "FPGA full-flow",
+      "result": "interrupted at user request before guide rewrite",
+      "log": ".work/build/fpga-bootstrap/compile.log"
+    },
+    {
+      "kind": "host-reference patched dependency",
+      "result": "failed",
+      "session_id": 62980,
+      "receipt": ".mister/evidence/build-host-acc3e510e3b34df2a1d633e30315cdf8.json",
+      "reason": "Missing libintl link dependency"
+    },
+    {
+      "kind": "host-reference",
+      "result": "pass",
+      "receipt": ".mister/evidence/build-host-506ef6489d4d4158a394927e6e1d9006.json"
+    },
+    {
+      "kind": "host upstream tests first attempt",
+      "result": "failed",
+      "reason": "Transitive SDL GUI startup and missing standalone libintl links"
+    },
+    {
+      "kind": "host test integration configure",
+      "result": "pass",
+      "receipt": ".mister/evidence/build-host-376154eaa57345fbaa128e6c4e0a312c.json"
+    },
+    {
+      "kind": "host upstream tests",
+      "session_id": 75241,
+      "result": "intentionally stopped to apply diagnosed asset-path fix; process tree verified and terminated"
+    },
+    {
+      "kind": "combined upstream tests",
+      "session_id": 66351,
+      "result": "failed",
+      "reason": "Missing GMock dependencies in crawl/path tests; ini test has the same missing dependency, found during follow-up source inspection"
+    },
+    {
+      "kind": "combined upstream tests",
+      "session_id": 73665,
+      "result": "failed",
+      "reason": "MinGW shared test DLL exposes too few symbols; tests fail linking engine functions and globals"
+    },
+    {
+      "kind": "MinGW export-all tests",
+      "session_id": 20184,
+      "result": "failed",
+      "reason": "LTO template export symbol wrong type (4 vs 3); switching test binaries to direct engine object linkage"
+    },
+    {
+      "kind": "ARM loading cursor diagnostic",
+      "session_id": 22930,
+      "status": "passed",
+      "configure_log": ".work/build/arm-engine-portable/loading-trace-configure.log",
+      "build_log": ".work/build/arm-engine-portable/loading-trace-build.log",
+      "exit_code": 0
+    },
+    {
+      "kind": "ARM replay loading input fix",
+      "session_id": 68597,
+      "status": "passed",
+      "configure_log": ".work/build/arm-engine-portable/replay-loading-configure.log",
+      "build_log": ".work/build/arm-engine-portable/replay-loading-build.log",
+      "exit_code": 0
+    },
+    {
+      "kind": "PC reference shared replay loading fix",
+      "session_id": 58681,
+      "status": "passed",
+      "configure_log": ".work/build/reference-host/configure.log",
+      "build_log": ".work/build/reference-host/build.log",
+      "receipt": ".mister/evidence/build-host-f5b61e3b234d4dae8a20ec9a4d4f69ba.json"
+    },
+    {
+      "kind": "ARM gameplay replay after loading fix",
+      "session_id": 95208,
+      "status": "passed",
+      "runtime": ".work/runtime/arm-replays/28adf59102774f608294483781400aea",
+      "receipt": ".work/runtime/arm-replays/28adf59102774f608294483781400aea/run.json"
+    },
+    {
+      "kind": "FPGA complete source snapshot compile/timing/compression",
+      "status": "passed",
+      "snapshot": ".work/build/fpga-candidate-20260907-1",
+      "source_manifest": ".work/build/fpga-candidate-20260907-1/.mister/fpga-source-snapshot.json",
+      "source_manifest_sha256": "c11fd92b3dfedf6c8725fe5c8e17cfd82033f2b85604367188dab96526150360",
+      "compressed_rbf": ".work/build/fpga-candidate-20260907-1/output_files/Diablo.compressed.rbf",
+      "compressed_rbf_sha256": "56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c",
+      "timing_report": ".work/build/fpga-candidate-20260907-1/output_files/Diablo.timing_corners.rpt",
+      "timing_report_sha256": "23232311403418671db88d27675bfb8bbeddf22fdc77bd3af684988511e38347",
+      "worst_case_setup_slack_ns": 0.522,
+      "setup_violations": 0,
+      "candidate_status": "superseded development record; candidate manifest reissued after launcher hardening"
+    },
+    {
+      "kind": "ARM transport overlay rebuild for FPGA candidate",
+      "status": "passed",
+      "build_directory_wsl": "/home/meath/.cache/diablo-arm-engine-transport",
+      "build_command": "wsl -d Ubuntu -- cmake --build /home/meath/.cache/diablo-arm-engine-transport --target devilutionx --parallel 8",
+      "artifact": ".work/build/fpga-candidate-20260907-1/arm/devilutionx",
+      "artifact_sha256": "4bd886c2f6b72022a1884412e1c94bb23c87125c2449f4da3bd896c0f4cfc360",
+      "artifact_bytes": 8518704,
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-1-arm.json",
+      "candidate_id": "14c68529ea5d57efc8eecb14e14c4ad8181a785315370f41bd0fff99e655488e",
+      "candidate_status": "superseded development record; candidate manifest reissued after launcher hardening"
+    },
+    {
+      "kind": "C18 candidate manifest refresh after artifact symlink hardening",
+      "status": "passed; superseded when manifest-path admission was hardened",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-2-arm.json",
+      "manifest_sha256": "c97cd7a8b30a409b4d69a540d2532ab520dabd494b7020822519bd0d1729303d",
+      "source_id": "fd1c317bdafcc9179107fe21ccaa13813a4f8a8ada68feafb741c09a226ec37a",
+      "candidate_id": "f3ca93d3816c12d8a3f8c724e924357cb1b034d300052a5378eb47b7c4b41901",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "candidate_status": "historical development-only record; receipts remain historical evidence"
+    },
+    {
+      "kind": "C18 candidate manifest refresh after manifest-path symlink hardening",
+      "status": "passed; superseded after parent-component and malformed-manifest hardening",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-3-arm.json",
+      "manifest_sha256": "35b0ba541bcea69ebf7f0bd028a02638b41595df16f7e317479c73d797076327",
+      "source_id": "bf1ae19988cb2ecd0d47a310b372f4abef67e6a4602bca4fd3b6af4a401cb02b",
+      "candidate_id": "d8432ef5fd3a53efbd47025f323423f6fcb154d10c7dcca1101e0cfd45c43a1f",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "local_receipt": ".mister/evidence/receipts/20260907T063014Z-5f7e3499-2cfe-40d1-9fe0-537358ef6dd4.json",
+      "local_receipt_sha256": "30ffdc4052e28bce852bd40e793d3f6808b83162ecf208a3acd8f7708f273ecb",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T063223Z-8cabc188-432b-4e6d-b006-e857d7a2db4c.json",
+      "arm_qemu_receipt_sha256": "76b7805aa5fb7800fb37b04b439a9109b2b356517c2df1a864865db9d2be5025",
+      "candidate_status": "historical development-only record; receipts remain historical evidence"
+    },
+    {
+      "kind": "C18 candidate manifest refresh after parent-component and malformed-manifest hardening",
+      "status": "passed; superseded when generated interpreter caches were excluded",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-4-arm.json",
+      "manifest_sha256": "70a2299476e241fb54bbae0a806c3b4d0d650f03e59b6d9dd661dc161f513d72",
+      "source_id": "c308c1d9b34925e279d5998878e79e38463eee5638a6aba251a02f2df6f33046",
+      "candidate_id": "530345670c5334b5c92af9dac32367b29956f409ac46fe5210ee57ef106447ee",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "local_receipt": ".mister/evidence/receipts/20260907T064455Z-b3d10f68-4f14-457b-bc32-0afba22ceab7.json",
+      "local_receipt_sha256": "d9909e89ba59981e5a30d873e5add920680811b96a5a0be2404f997c43d3e2c3",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T064758Z-72fe0c02-7340-4c86-91f3-319f89f99389.json",
+      "arm_qemu_receipt_sha256": "f2c9a68d363ca70f58a822c3d5e48488e01a40704c60dc7b97202e47f45a47fc",
+      "candidate_status": "historical development-only record; receipts remain historical evidence"
+    },
+    {
+      "kind": "C18 candidate manifest refresh after generated-cache reproducibility hardening",
+      "status": "passed",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-5-arm.json",
+      "manifest_sha256": "8d2b603ec3e91cb0240cdda00c37317d32366cc8d616a9890326eac55183a214",
+      "source_id": "dfe50a9cc7af178954cc819e4b93fdd21993148fe70ac9663858062e5a4a1a4e",
+      "candidate_id": "a1fc74fdbf27f9759691391fe576480b5f4e8d4548a287ed08f34ec272a7058c",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "local_receipt": ".mister/evidence/receipts/20260907T070202Z-696eb1c8-c7eb-4f48-bb87-a82772780688.json",
+      "local_receipt_sha256": "cce8691a32ea2bb573465d9cc8a6e6882405c877aa55ecb9458808b768bb9211",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T070404Z-0885edba-e8a3-486d-a31a-2de1815dd881.json",
+      "arm_qemu_receipt_sha256": "8da0bc58cf17efcb70b58da3654071559580ccb598ce96975fa8dc51b92ff8b6",
+      "candidate_status": "development-only; candidate-bound local and ARM/QEMU receipts pass; target qualification open"
+    },
+    {
+      "kind": "C18 candidate manifest refresh after FPGA/ARM rebuild and input/timing hardening",
+      "status": "passed",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-6-arm.json",
+      "manifest_sha256": "8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762",
+      "source_id": "48cbaf2d4ff36ac820e22ca0008b213d539629ef1880c40634ba203a0e8fa5e7",
+      "candidate_id": "08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4",
+      "artifacts": "ARM 11ed2bf67edfc99b80ed6ff541cd991d20cd39cbd82f6b43c9b038dbb06f3ced; compressed/raw RBF 56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c; SOF d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1",
+      "local_receipt": ".mister/evidence/receipts/20260907T074147Z-ba696aab-f304-4da2-a56d-2be0789aadf7.json",
+      "local_receipt_sha256": "7cc30a86a0e88e015a0506021f4cdbe4923779e0bf07331983ec8558a88a21a3",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T074417Z-b62331e3-9ad0-42b7-b56f-b472c5e22bed.json",
+      "arm_qemu_receipt_sha256": "14d687bb116f5be66bfa30fec23791b2ce1fb0437852f0109d9f590c4469530f",
+      "candidate_status": "development-only; candidate-bound local and ARM/QEMU receipts pass; target qualification open"
+    }
+  ],
+  "latest_reference_receipt": ".mister/evidence/step-1-host-reference-acceptance.json",
+  "latest_local_verification_receipt": ".mister/evidence/receipts/20260907T074147Z-ba696aab-f304-4da2-a56d-2be0789aadf7.json",
+  "latest_arm_qemu_verification_receipt": ".mister/evidence/receipts/20260907T074417Z-b62331e3-9ad0-42b7-b56f-b472c5e22bed.json",
+  "latest_fpga_snapshot_build": ".work/build/fpga-candidate-20260907-2",
+  "latest_rtl_receipt": ".mister/evidence/transport-abi-layout-test.json",
+  "latest_hardware_receipt": ".mister/evidence/arm-command-scene-live-hardware-20260907.json",
+  "latest_performance_receipt": ".mister/evidence/arm-cpu-pacing-ab-20260907.json",
+  "latest_local_transport_build": ".mister/evidence/input-transport-local-build-20260906.json",
+  "latest_arm_engine_transport_build": ".mister/evidence/arm-engine-command-scene-trace-build-20260907.json",
+  "latest_input_bridge_receipt": ".mister/evidence/arm-input-sdl-bridge-20260907.json",
+  "latest_audio_bridge_receipt": ".mister/evidence/arm-audio-pcm-transport-20260907.json",
+  "latest_fpga_transport_receipt": ".mister/evidence/fpga-command-consumer-faultclear-build-20260907.json",
+  "latest_fpga_command_consumer_build": ".mister/evidence/fpga-command-consumer-faultclear-build-20260907.json",
+  "latest_transport_relaunch_receipt": ".mister/evidence/arm-command-scene-live-hardware-20260907.json",
   "read_only_paths": [
     "game/",
     "D:/Arcade/AI/aCORES/blood"
   ],
-  "hardware_edits": false,
-  "builds_run": [],
-  "commits_created": false,
-  "deployment_performed": false,
-  "known_unknowns": [
-    "Engine archive-member compatibility and detected game-data variants",
-    "Complete dependency and ARM C++23 toolchain/sysroot lock",
-    "Actual MiSTer hardware access and supported kernel",
-    "Safety of proposed 16 MiB DDR aperture",
-    "Wrapper handoff and daemon-free hardware launch",
-    "All rendering, input, audio, multiplayer, performance and release acceptance gates"
-  ],
   "notes": [
-    "P00 completion is foundation acceptance only; no runnable game core exists.",
-    "No Verilator or MAME operation was run; DevilutionX software is the future functional oracle.",
-    "Source checkout is clean; no upstream engine patches exist.",
-    "Shared lessons consulted; no new hardware lesson proven."
+    "User requested a concise sequential implementation guide and implementation in that order. CORE_COMPLETION_AUDIT.md now contains 12 steps.",
+    "Step 1 is accepted. Step 2 has a fresh compressed RBF with reviewed timing; HDMI and analog output still require hardware validation.",
+    "Development candidate 08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4 binds the current ARM overlay and FPGA artifacts after checked pitch arithmetic, zero-valued timing guards, signed-safe mouse accumulation, header-probe portability, artifact/manifest-path/parent-component/malformed-manifest hardening and generated-cache reproducibility hardening; candidate-bound host/RTL and ARM/QEMU receipts pass, while target admission and physical qualification remain open.",
+    "Engine source remains pinned/unmodified. A hashed Windows socket-timeout dependency patch preserves networking.",
+    "Full working MiSTer core remains the active objective.",
+    "Host game executable built and reached Diablo main menu. Upstream test integration reconfigured successfully. No campaign gameplay or frame-capture acceptance yet.",
+    "MiSTer hardware DDR preflight passed at 0x3fe00000 with matching ARM challenge and FPGA acknowledgement; full control-page integration remains next.",
+    "MiSTer control-page attachment passed with the final timing-clean RBF: reset-time ARM publication reaches FPGA ready, malformed magic faults with code 1, stale slot faults with code 16, and the final clean reload is ready.",
+    "Audio transport now passes on the current RBF: the ARM published 480 stereo S16 records, the FPGA consumed them, and the same image passed the two-frame scanout ownership/reclamation probe.",
+    "Input transport now publishes a monotonic FPGA dropped counter and has a tested ARM InputConsumer snapshot-recovery path. Current-image hardware smoke passed control attachment, idle input, malformed magic and stale-slot rejection; physical input edge injection, physical audio inspection and ARM snapshot recovery on hardware remain open.",
+    "The transport-aware ARM engine overlay builds and runs on MiSTer, discovers DIABDAT and recycles FPGA-owned frames without a transport fault. The bounded input adapter now converts deterministic keyboard, mouse and joystick records to SDL in the real engine, and the audio callback resamples the 22.05 kHz ARM mix into the FPGA 48 kHz PCM ring; physical peripheral edges, HDMI/speaker output, overflow recovery, deterministic timedemo equality and real-vblank frame pacing remain open."
   ],
-  "audit_development_record": ".mister/evidence/runner-audit-development.md",
-  "goal_turn_classification": "progress"
+  "live_build": {
+    "session_id": 28692,
+    "command": "python support/scripts/diablo.py build-host --reconfigure --jobs 8",
+    "log": ".work/build/reference-host/build.log",
+    "status_at_last_poll": "exited",
+    "verification": "Session 28692 completed successfully with capture hook",
+    "exit_code": 0,
+    "receipt": ".mister/evidence/build-host-fe9d41be8ceb4affb7e38df6187446e4.json"
+  },
+  "host_build_recipe": "support/host-reference.json",
+  "host_dependency_inventory": ".mister/host-dependency-inventory.json",
+  "host_build_development_record": ".mister/evidence/host-reference-development.md",
+  "goal_turn_classification": "progress",
+  "dependency_fix_manifest": "support/patches/host-dependency-fixes.json",
+  "host_runtime": {
+    "campaign": "diablo",
+    "process_id": 31908,
+    "session_id": 60813,
+    "last_visual_observation": "main menu; gameplay unverified",
+    "ui_automation": "Stopped by user Escape in previous turn; no further UI actions this turn",
+    "loaded_modules": ".mister/evidence/host-loaded-modules.json",
+    "status": "exited",
+    "exit_code": 0,
+    "verification": "Session 60813 completed; run.json records normal exit. No desktop automation used."
+  },
+  "host_resolved_dependency_inventory": ".mister/evidence/host-resolved-dependencies.json",
+  "host_test_failure": ".mister/evidence/host-text-render-failure.json",
+  "host_test_failure_status": "Fixed; all 25 upstream rendering tests and 2 added Windows regressions pass.",
+  "host_render_tests": ".mister/evidence/host-render-tests-27.json",
+  "host_engine_patches": "support/cmake/host-reference.cmake",
+  "host_png_regression_tests": "support/tests/host_png_test.cpp",
+  "performance_priority": {
+    "requested": "Use ARM and FPGA to increase FPS and eliminate gameplay stuttering, lag and FPS hitches",
+    "target": "approximately 60 FPS presentation, about 16.67 ms per frame; preserve rendering and simulation fidelity",
+    "verification": "On-target software/accelerated comparisons, full tail frame-time distributions, missed deadlines, input-to-visible latency, shared DDR contention and service starvation checks",
+    "hardware_access": "Authorized MiSTer target: 192.168.0.69 as root. DDR preflight RBF was loaded through /dev/MiSTer_cmd and passed bidirectional ARM/FPGA DDR visibility.",
+    "measured_improvement": "Transport path is fault-free and FPGA-owned. The packed FillRect and vertical-run build measured 12.1 FPS fresh and 11.1 FPS after no-reload relaunch in the dummy-SDL timedemo, versus 10.8 FPS for the paired linear builder; command build timing is about 5 ms and fence timing about 4.5 ms. These runs do not qualify real-vblank 60 FPS, physical I/O or zero-underrun audio."
+  },
+  "computer_use_preference": "User requests no Computer Use. Continue with code, CLI builds/tests and replay; do not resume desktop automation.",
+  "host_replay_evidence": ".mister/evidence/host-replay-first-pass.json",
+  "live_replay": {
+    "session_id": 21054,
+    "command": "python support/scripts/replay_host.py --offscreen",
+    "runtime": ".work/runtime/replays/70b0c0736ba14d679f3b4f3a8595e0b7",
+    "status_at_last_poll": "exited",
+    "scope": "Normally paced upstream shareware replay, offscreen SDL with engine drawing enabled",
+    "verification": "Session 21054 completed; final game state matches reference.",
+    "exit_code": 0
+  },
+  "host_paced_replay_evidence": ".mister/evidence/host-paced-replay-pass.json",
+  "indexed_capture_format": "support/reference/indexed_frame.hpp",
+  "indexed_capture_format_evidence": ".mister/evidence/indexed-frame-format-test.json",
+  "indexed_capture_status": "Accepted step-1 town reference for both campaigns, with exact repeated and clean-build captures; rejected translated replay retained as historical evidence.",
+  "host_capture_syntax_evidence": ".mister/evidence/host-capture-syntax.json",
+  "capture_admission_evidence": ".mister/evidence/capture-admission-test.json",
+  "frame_comparison_tests": ".mister/evidence/test-8fa1ef6ec175424b94f08baee68ba206.json",
+  "host_test_mpq_copies": ".mister/evidence/host-test-mpq-copies.json",
+  "host_test_data_status": "Five private MPQ copies hash-match game/ and git check-ignore confirms build copies excluded. Symlink creation unavailable without administrator privilege; originals unchanged.",
+  "host_build_input_tracking": "host_build.py now records hashes of the build helper, CMake integration, capture headers, host regression source and dependency-fix manifest. Takes effect on next explicit configure; current build inputs remain preserved.",
+  "latest_foundation_test": ".mister/evidence/test-68a89bcec959435e8de9152cbaf71b0b.json",
+  "clean_rebuild_command": "python support/scripts/diablo.py build-host --build-dir .work/build/reference-host-clean --jobs 8",
+  "clean_rebuild_status": "Passed in a fresh directory; both campaign captures match earlier build.",
+  "capture_palette_verification": "Pinned dx.cpp binds PalSurface to the shared SDL2 palette; palette.cpp SystemPaletteUpdated writes system_palette into it. Capture hook reads that surface palette, preserving brightness and cycling rather than only logical_palette.",
+  "upstream_test_evidence": ".mister/evidence/upstream-host-tests-baseline.json",
+  "upstream_test_status": "584 passed after building/rerunning the two zlib tests; two upstream visual-store pagination cases skipped because fixed-seed inventory has one page.",
+  "capture_resolution_evidence": ".mister/evidence/capture-resolution-mismatch.json",
+  "native_replay_translation": ".mister/evidence/native-replay-translation-rejected.json",
+  "computer_use_allowed": false,
+  "native_town_reference_receipt": ".mister/evidence/native-town-reference-pass.json",
+  "clean_host_build": {
+    "session_id": 63809,
+    "directory": ".work/build/reference-host-clean",
+    "status": "passed"
+  },
+  "host_launcher_hellfire_mod_staging": "Implemented: stage bundled hf in isolated save directory, preserve existing files, reject conflicts; no GUI automation used.",
+  "native_capture_visual_check": {
+    "path": ".work/runtime/scenarios/3b4c9f07df90404bb3407fa899bbb7f8/frame-128.png",
+    "result": "Rendered town, warrior and HUD visibly present; decoded from indexed capture."
+  },
+  "host_reference_acceptance": ".mister/evidence/step-1-host-reference-acceptance.json",
+  "native_pattern_build": {
+    "session_id": 29076,
+    "status": "passed",
+    "directory": ".work/build/fpga-native640/source",
+    "source_manifest": ".work/build/fpga-native640/source-snapshot.json",
+    "log": ".work/build/fpga-native640/compile.log",
+    "compressed_rbf": ".work/build/fpga-native640/source/output_files/Diablo.compressed.rbf",
+    "compressed_rbf_sha256": "d6d8b1be4cf7b00513be9e70e1bab24af52a7d33044d854e5ed6be409097a6a3"
+  },
+  "native_pattern_rtl_test": ".mister/evidence/native-pattern-rtl-test.json",
+  "native_pattern_quartus_evidence": ".mister/evidence/native-pattern-quartus-build.json",
+  "native_pattern_timing_probe": {
+    "session_id": 27660,
+    "status": "completed; initial HDMI setup margin 0.291 ns at zero board skew",
+    "script": ".work/build/fpga-native640/probe_timing.tcl",
+    "log": ".work/build/fpga-native640/timing-probe.log"
+  },
+  "native_pattern_constrained_build": {
+    "session_id": 91104,
+    "status": "completed; timing qualification failed, minimum HDMI setup -0.212 ns",
+    "directory": ".work/build/fpga-native640-timed/source",
+    "log": ".work/build/fpga-native640-timed/compile.log",
+    "changes": [
+      "Forwarded HDMI output clock and receiver constraints",
+      "0.5 ns board-skew design budget (unverified physically)",
+      "All timing corners enabled"
+    ],
+    "evidence": ".mister/evidence/native-hdmi-constrained-timing.json"
+  },
+  "hardware_jtag_discovery": {
+    "result": "No JTAG hardware available",
+    "exit_code": 4,
+    "log": ".work/build/fpga-native640-timed/jtag-discovery.log"
+  },
+  "native_pattern_delay_build": {
+    "session_id": 80808,
+    "status": "completed; all reported constrained timing passes; compressed RBF generated",
+    "directory": ".work/build/fpga-native640-delay12/source",
+    "log": ".work/build/fpga-native640-delay12/compile.log",
+    "evidence": ".mister/evidence/native-hdmi-delay12-build.json"
+  },
+  "arm_runtime_probe_evidence": ".mister/evidence/arm-runtime-probe-build.json",
+  "external_interface_review": "support/EXTERNAL_INTERFACES.md",
+  "i2s_serializer_rtl_test": ".mister/evidence/i2s-interface-rtl-test.json",
+  "i2s_fitted_path_diagnostic": ".mister/evidence/i2s-fitted-path-diagnostic.json",
+  "arm_engine_preparation": {
+    "status": "stopped due to host header contamination",
+    "session_id": 57406,
+    "directory": ".work/build/arm-engine-preparation",
+    "toolchain": "support/cmake/arm-linux-gnueabihf.cmake",
+    "purpose": "Independent stage-3 compilation preparation; hardware/runtime acceptance remains open",
+    "configure_exit_code": 15
+  },
+  "arm_engine_isolated": {
+    "status": "compile and link passed; runtime not accepted",
+    "build_directory_wsl": "/home/meath/.cache/diablo-arm-engine-isolated",
+    "logs": ".work\\build\\arm-engine-isolated",
+    "reason": "Reject host /usr/include; fresh cache on WSL filesystem",
+    "session_id": 21724,
+    "configure_session_id": 21724,
+    "configure_exit_code": 0,
+    "build_session_id": 9783,
+    "build_exit_code": 0,
+    "evidence": ".mister/evidence/arm-engine-first-build.json"
+  },
+  "arm_portable_toolchain": ".mister/evidence/arm-portable-toolchain.json",
+  "arm_engine_portable": {
+    "status": "baseline build, native exact town capture comparisons and gameplay replay passed under emulation; runtime not accepted on hardware",
+    "session_id": 53714,
+    "build_directory_wsl": "/home/meath/.cache/diablo-arm-engine-portable",
+    "logs": ".work/build/arm-engine-portable",
+    "target_accepted": false,
+    "configure_exit_code": 0,
+    "build_session_id": 66139,
+    "build_exit_code": 0,
+    "evidence": ".mister/evidence/arm-engine-portable-build.json",
+    "replay_session_id": 58184,
+    "replay_directory": ".work/runtime/arm-replays/ba37efdbbc054edabf8b95d3473c08f1",
+    "replay_exit_code": 0
+  },
+  "arm_engine_transport": {
+    "status": "transport-aware overlay and traced command-scene binary load on MiSTer; startup, sustained frame ownership, FPGA display acknowledgement, deterministic input-to-SDL conversion, ARM audio-to-PCM publication and live ARM-to-FPGA command execution pass with bounded fallback; physical performance and gameplay gates remain open",
+    "build_directory_wsl": "/home/meath/.cache/diablo-arm-engine-transport",
+    "artifact": ".work/build/arm-engine-transport/devilutionx",
+    "artifact_sha256": "29d0870b3f98ec3f33aee29c719fc88c185f5fbd36c63776b3a0d16c4717919e",
+    "configure_exit_code": 0,
+    "build_exit_code": 0,
+    "build_tasks": "1038/1038",
+    "evidence": ".mister/evidence/arm-engine-command-scene-trace-build-20260907.json",
+    "hardware_evidence": ".mister/evidence/arm-command-scene-live-hardware-20260907.json",
+    "hardware_status": "pass: exact packed-fill RBF and traced ARM DevilutionX produced and consumed live command batches, displayed frames and reattached on a second ARM session without RBF reload; dummy SDL, physical peripherals, speaker output, zero-underrun audio, deterministic gameplay and 60 FPS remain open"
+  },
+  "arm_runtime_emulated_probe": ".mister/evidence/arm-runtime-probe-emulated.json",
+  "arm_gameplay_replay_evidence": ".mister/evidence/arm-gameplay-replay-pass.json",
+  "arm_reference_build": {
+    "session_id": 61899,
+    "status": "passed",
+    "log": ".work/build/arm-engine-portable/reference-build.log",
+    "exit_code": 0
+  },
+  "arm_native_scenarios": {
+    "diablo": {
+      "session_id": 78108,
+      "directory": ".work/runtime/arm-scenarios/51185829844d47bca166d4b03e162787",
+      "status": "scenario completed; five sampled frames exactly match the accepted PC capture series"
+    },
+    "hellfire": {
+      "session_id": 63285,
+      "directory": ".work/runtime/arm-scenarios/94058c264cae4016a7947801749ec962",
+      "status": "scenario completed; five sampled frames exactly match the accepted PC capture series"
+    }
+  },
+  "arm_native_capture_evidence": ".mister/evidence/arm-native-capture-pass.json",
+  "audit_refresh": {
+    "document": "reports/audit-2026-09-07/REFRESH_AUDIT.md",
+    "execution_guide": "CORE_COMPLETION_AUDIT.md",
+    "findings": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05"
+    ],
+    "candidate_rejection_receipt": ".mister/evidence/receipts/20260907T073141Z-92034273-fd47-4c57-b1f8-ef57d73279bb.json",
+    "local_scope": "104 Python tests run, one skipped; four host and thirteen RTL checks pass. Initial receipt incomplete; both optional host PNG and SDL checks subsequently passed separately. No candidate/board acceptance.",
+    "supplemental_checks": "reports/audit-2026-09-07/refresh-evidence/optional-checks.json"
+  }
 }

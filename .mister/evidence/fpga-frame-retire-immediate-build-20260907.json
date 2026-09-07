@@ -1,0 +1,57 @@
+{
+  "schema": "diablo-fpga-frame-retire-immediate-build-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-compile-timing-clean",
+  "quartus": {
+    "installation_root": "D:/Q17",
+    "version": "17.0.2 Build 602",
+    "seed": 1,
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File support/scripts/compile_fpga_snapshot.ps1 . compile",
+    "compression_command": "powershell -NoProfile -ExecutionPolicy Bypass -File support/scripts/compile_fpga_snapshot.ps1 . compress",
+    "compile_exit_code": 0,
+    "errors": 0,
+    "warnings": 77
+  },
+  "change": {
+    "files": [
+      "rtl/diablo_framebuffer_scanout.sv",
+      "rtl/diablo_transport_control_reader.sv"
+    ],
+    "frame_retirement": "The former displayed slot is retired immediately after the pending slot becomes active at the vblank boundary; the retired slot is never reused until all ownership writes complete.",
+    "control_reader": "A slot producer epoch remains ARM-owned while the FPGA-owned display epoch may be nonzero and advancing.",
+    "pcm_fifo_samples": 1024,
+    "fitter_seed": 1
+  },
+  "resources": {
+    "logic_cells_after_synthesis": 23591,
+    "ram_segments_after_synthesis": 883,
+    "dsp_elements_after_synthesis": 36,
+    "pll_count": 2
+  },
+  "timing_slack_ns": {
+    "slow_100c_setup": 0.207,
+    "slow_100c_hold": 0.243,
+    "slow_minus40c_setup": 0.188,
+    "slow_minus40c_hold": 0.151,
+    "fast_100c_setup": 0.526,
+    "fast_100c_hold": 0.131,
+    "fast_minus40c_setup": 0.522,
+    "fast_minus40c_hold": 0.115,
+    "minimum_setup": 0.188,
+    "minimum_hold": 0.115
+  },
+  "artifact": {
+    "path": "output_files/Diablo.compressed.rbf",
+    "bytes": 2506076,
+    "sha256": "6a7bebb2121cdfd5988b282ba468b9d9bfe0fbca3f37d2e4e9a8746ea03acf5c",
+    "board_path": "/media/fat/_Other/Diablo_fifo1024_retire0_seed1_fixed_20260907.rbf",
+    "board_sha256": "6a7bebb2121cdfd5988b282ba468b9d9bfe0fbca3f37d2e4e9a8746ea03acf5c"
+  },
+  "checks": [
+    "transport control reader, framebuffer scanout, PCM, long PCM, DDR arbiter, input capture and header probe passed with --skip-arm",
+    "Quartus full compilation reported 0 errors",
+    "all four reported setup and hold corners are positive",
+    "compressed artifact hash matches the exact board copy"
+  ],
+  "scope": "The image is timing-clean and board-loadable. Physical HDMI/audio/peripheral validation, real-vblank pacing and approximately 60 FPS qualification remain open."
+}

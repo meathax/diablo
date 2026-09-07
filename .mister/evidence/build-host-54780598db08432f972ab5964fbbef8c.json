@@ -1,0 +1,15 @@
+{
+  "schema": "diablo-operation-receipt-v1",
+  "operation": "build-host",
+  "arguments": [
+    "build-host",
+    "--jobs",
+    "8"
+  ],
+  "started_utc": "2026-09-06T00:58:55.396349+00:00",
+  "script_sha256": "b700ed7f9793f59aff6f4fdca44306dcaefe59b2c688c0b8ce9b1fbcd6d0a541",
+  "source_lock_sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
+  "status": "fail",
+  "error": "Host build failed (2); inspect D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\build.log",
+  "finished_utc": "2026-09-06T01:03:54.004769+00:00"
+}

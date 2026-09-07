@@ -1,0 +1,68 @@
+{
+  "schema": "diablo-arm-fpga-pcm-fifo1024-hardware-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-board-load-and-live-transport-dummy-audio-gate-open",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "validation_method": "root SSH, exact 1024-sample RBF load, real ARM DevilutionX Diablo timedemo with dummy SDL, live shared-DDR state samples"
+  },
+  "artifacts": {
+    "rbf": {
+      "path": "/media/fat/_Other/Diablo_pcm_fifo1024_20260907.rbf",
+      "bytes": 2528800,
+      "sha256": "a0dea00281a32b32e31e0ecb771deb111f2e548942fa79ad0951c70c1f360625"
+    },
+    "engine": {
+      "path": "/media/fat/linux/devilutionx",
+      "bytes": 8584496,
+      "sha256": "03506bc95152d7f709aed7764200a91f97483e77bc1ef9678f306b426683f62e"
+    },
+    "pcm_player_source_sha256": "aec77770a4a60d3a3272b5ae9bb57b184de187db966ee9747c4994ee257ea9b0"
+  },
+  "configuration": {
+    "transport": "DIABLO_MISTER_TRANSPORT=1",
+    "shared_physical": "DIABLO_MISTER_SHARED_PHYS=0x3fe00000",
+    "video_driver": "SDL_VIDEODRIVER=dummy",
+    "render_driver": "SDL_RENDER_DRIVER=software",
+    "audio_driver": "SDL_AUDIODRIVER=dummy",
+    "data_dir": "/media/fat/tmp_esc/diablo-transport-assets",
+    "save_dir": "/media/fat/tmp_esc/diablo-transport-save",
+    "config_dir": "/media/fat/tmp_esc/diablo-transport-config"
+  },
+  "command": "devilutionx --diablo --spawn --demo 0 --timedemo --data-dir /media/fat/tmp_esc/diablo-transport-assets --save-dir /media/fat/tmp_esc/diablo-transport-save --config-dir /media/fat/tmp_esc/diablo-transport-config --lang en -n --verbose",
+  "observations": {
+    "core_load": "exact local RBF hash matched the board copy after load_core",
+    "initial_stale_state": "old epoch faulted during FPGA reload; ARM session reattached with a new epoch",
+    "recovered_session_epoch": "0xde9c71e2",
+    "active_samples": [
+      {
+        "arm_state": 1,
+        "fpga_state": 1,
+        "fault_code": 0,
+        "display_epoch": 3,
+        "last_frame": 4,
+        "pcm_producer": 35664,
+        "pcm_consumer": 32229,
+        "pcm_underruns": 10,
+        "pcm_resyncs": 0
+      },
+      {
+        "arm_state": 1,
+        "fpga_state": 1,
+        "fault_code": 0,
+        "display_epoch": 61,
+        "last_frame": 62,
+        "pcm_producer": 329907,
+        "pcm_consumer": 329027,
+        "pcm_underruns": 462,
+        "pcm_resyncs": 0
+      }
+    ],
+    "audio_callback": "input_bytes=8192 output_frames=4457 and 4458",
+    "timedemo_log": "166 frames, 7.81 seconds, 21.2 fps; deterministic save fixture differed from the initial run",
+    "transport_fault": 0,
+    "pcm_backpressure_messages": 2
+  },
+  "scope": "This proves the exact 1024-sample RBF loads on MiSTer and the real ARM engine reattaches, publishes frames and PCM, and recovers from the reload. Dummy SDL and active nonzero underruns leave physical HDMI, real-vblank pacing, speaker output, zero-underrun audio, physical controls and deterministic gameplay open."
+}

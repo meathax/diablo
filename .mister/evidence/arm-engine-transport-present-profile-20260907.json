@@ -1,0 +1,71 @@
+{
+  "schema": "diablo-arm-engine-transport-present-profile-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-board-transport-fault-free-performance-gate-open",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "validation_method": "exact fixed immediate-retirement RBF load, real ARM DevilutionX Diablo timedemo, dummy SDL video/audio, adapter present profiling and shared-DDR state dump"
+  },
+  "artifacts": {
+    "rbf": {
+      "path": "/media/fat/_Other/Diablo_fifo1024_retire0_seed1_fixed_20260907.rbf",
+      "bytes": 2506076,
+      "sha256": "6a7bebb2121cdfd5988b282ba468b9d9bfe0fbca3f37d2e4e9a8746ea03acf5c"
+    },
+    "engine": {
+      "local_path": ".work/build/arm-engine-transport/devilutionx",
+      "board_path": "/media/fat/linux/devilutionx",
+      "bytes": 8590952,
+      "sha256": "68a2a6bef90349e40a78ec4700e44a96646361ac5a4a63a0767c0c51a52ddd5d",
+      "build_id": "aeaca0da2f179991a97547bd922cdd3e656adf06"
+    }
+  },
+  "configuration": {
+    "transport": "DIABLO_MISTER_TRANSPORT=1",
+    "shared_physical": "DIABLO_MISTER_SHARED_PHYS=0x3fe00000",
+    "video_driver": "SDL_VIDEODRIVER=dummy",
+    "render_driver": "SDL_RENDER_DRIVER=software",
+    "audio_driver": "SDL_AUDIODRIVER=dummy",
+    "profile": "DIABLO_MISTER_PROFILE=1",
+    "command": "timeout --signal=TERM --kill-after=5s 35 /media/fat/linux/devilutionx --diablo --spawn --demo 0 --timedemo --data-dir /media/fat/tmp_esc/diablo-transport-assets --save-dir /media/fat/tmp_esc/diablo-transport-save --config-dir /media/fat/tmp_esc/diablo-transport-config --lang en -n --verbose"
+  },
+  "runs": [
+    {
+      "timedemo": "1011 frames, 34.61 seconds: 29.2 fps",
+      "profile": "presents=1033 published=926 backpressure=203 average_present_us=6166 max_present_us=15225",
+      "state": {
+        "epoch": "0x9bfe5253",
+        "arm_state": 1,
+        "fpga_state": 1,
+        "fault_code": 0,
+        "fault_detail": "0x00000000",
+        "display_epoch": "0x0000039c",
+        "last_presented_frame_id": 925,
+        "pcm_producer": 1671835,
+        "pcm_consumer": 1671835,
+        "pcm_underruns": 533183,
+        "pcm_resyncs": 0
+      }
+    },
+    {
+      "timedemo": "979 frames, 34.62 seconds: 28.3 fps",
+      "profile": "presents=1001 published=908 backpressure=215 average_present_us=6251 max_present_us=13366",
+      "state": {
+        "epoch": "0x1757414f",
+        "arm_state": 1,
+        "fpga_state": 1,
+        "fault_code": 0,
+        "fault_detail": "0x00000000",
+        "display_epoch": "0x0000038a",
+        "last_presented_frame_id": 907,
+        "pcm_producer": 1676293,
+        "pcm_consumer": 1676293,
+        "pcm_underruns": 15745,
+        "pcm_resyncs": 0
+      }
+    }
+  ],
+  "interpretation": "Immediate retirement materially increases the fraction of present calls that publish on the live board while preserving frame ownership and fault-free reattachment. The measured dummy-SDL timedemos remain around 28-29 FPS, below the approximately 60 FPS target; the run-to-run spread is recorded rather than averaged away.",
+  "scope": "This is real ARM and FPGA execution with software rendering and dummy SDL. It does not qualify physical HDMI/vblank pacing, speakers, physical input, zero-underrun audio, deterministic replay equality or gameplay workflows."
+}

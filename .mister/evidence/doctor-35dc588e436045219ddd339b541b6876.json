@@ -1,0 +1,44 @@
+{
+  "schema": "diablo-operation-receipt-v1",
+  "operation": "doctor",
+  "arguments": [
+    "doctor",
+    "--quartus-root",
+    "D:/Q17"
+  ],
+  "started_utc": "2026-09-06T00:54:56.182078+00:00",
+  "script_sha256": "01fa688fab4ea73226c7d7e812eb5a1e71254f2bb14903b63b9c60db744746d5",
+  "source_lock_sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
+  "result": {
+    "python_version": "3.14.6 (main, Jul 31 2026, 07:41:16)  [MINGW GCC UCRT 16.1.0 64 bit (AMD64)]",
+    "tools": {
+      "python": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.EXE",
+      "git": "D:\\vibes\\fpga\\bin\\git.CMD",
+      "cmake": "C:\\Program Files\\CMake\\bin\\cmake.EXE",
+      "docker": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.EXE",
+      "wsl": "C:\\Windows\\system32\\wsl.EXE",
+      "verilator-safe": "D:\\vibes\\fpga\\bin\\verilator-safe.EXE"
+    },
+    "quartus_installation": {
+      "root": "D:\\Q17",
+      "executable": "D:\\Q17\\quartus\\bin64\\quartus_sh.exe",
+      "executable_present": true,
+      "executable_sha256": "360039b0b0f2870a6b098dcb4baeefc040af9285162018882b8030334fa9c21b",
+      "version_file": "Version=17.0.2.602\n[ACDS]\nVersion=17.0.2.602",
+      "version_file_sha256": "58b5aa1818f6229c32bb7e1521e91cbc4d4e97755fada3631f37594f9b8a98b3",
+      "scope": "read-only installation inventory; compiler not executed"
+    },
+    "build_execution": "Use the available machine-approved route; not exercised by inventory",
+    "quartus_blockers": [],
+    "production_build_ready": false,
+    "status": "preflight-only",
+    "other_pending_gates": [
+      "ARM sysroot/runtime probe",
+      "DDR reservation hardware proof",
+      "complete dependency lock",
+      "target device availability"
+    ]
+  },
+  "status": "pass",
+  "finished_utc": "2026-09-06T00:54:56.215170+00:00"
+}

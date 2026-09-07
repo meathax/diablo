@@ -1,0 +1,7 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\rtl", "-s", "transport_abi_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\transport-abi-rtl.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\support\\tests\\transport_abi_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\transport-abi-rtl.vvp"]
+
+transport ABI C++/RTL layout checks passed
+D:\Arcade\AI\aCORES\Diablo\support\tests\transport_abi_tb.sv:53: $finish called at 0 (1ps)

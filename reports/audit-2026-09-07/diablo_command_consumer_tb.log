@@ -1,0 +1,2 @@
+command consumer randomized backpressure checks passed
+support/tests/diablo_command_consumer_tb.sv:233: $finish called at 4915000 (1ps)

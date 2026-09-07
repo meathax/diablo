@@ -1,0 +1,44 @@
+{
+  "schema": "diablo-arm-command-scene-optimization-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-packed-fpga-vertical-run-coalescing",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "shared_physical": "0x3fe00000",
+    "video_audio": "SDL dummy video/audio; physical I/O remains unqualified"
+  },
+  "artifacts": {
+    "rbf": {
+      "board_path": "/media/fat/_Other/Diablo_command_consumer_rectmerge64_20260907.rbf",
+      "bytes": 2598008,
+      "sha256": "4142126272d5b8613b990e6ecc5c25687e9c4c54d8a2c9d37fe7508bae4a77f5"
+    },
+    "arm_engine": {
+      "board_path": "/media/fat/linux/devilutionx-command-scene-mergefast",
+      "bytes": 8494128,
+      "sha256": "29d0870b3f98ec3f33aee29c719fc88c185f5fbd36c63776b3a0d16c4717919e"
+    }
+  },
+  "sources": {
+    "support/reference/mister_command_scene.hpp": "d8c3c6bbeee181b90a689457b48ab183e99126020a5ba1e3be525fda76b73c4e",
+    "support/reference/mister_transport_sdl.hpp": "6e29e5e536873a288a361636c4884ea1041810225cb28e78784adaef12927950",
+    "rtl/diablo_command_consumer.sv": "1a94b03f7730c76a33395b1a97f0aa774f32eba0146d21f376d665c189c3b82d"
+  },
+  "comparison": {
+    "linear_horizontal_builder": {
+      "profile": "presents=146 published=140 backpressure=6 average_present_us=12532 max_present_us=26334 publish_attempts=73 average_publish_us=9135 max_publish_us=19981 flushes=146 average_flush_us=2 max_flush_us=18 command_attempts=146 command_batches=79 command_no_slot=9 command_overflow=58 command_publish_failures=0 command_fence_failures=0 command_frame_failures=0",
+      "command_timing": "build_count=79 average_build_us=5641 max_build_us=14672 wait_count=79 average_wait_us=4353 max_wait_us=7527",
+      "timedemo": "123 frames, 11.35 seconds, 10.8 fps"
+    },
+    "merged_vertical_builder": {
+      "fresh_profile": "presents=162 published=157 backpressure=5 average_present_us=12869 max_present_us=26263 publish_attempts=74 average_publish_us=9513 max_publish_us=23423 flushes=162 average_flush_us=2 max_flush_us=5 command_attempts=162 command_batches=93 command_no_slot=8 command_overflow=61 command_publish_failures=0 command_fence_failures=0 command_frame_failures=0",
+      "fresh_command_timing": "build_count=93 average_build_us=4899 max_build_us=20590 wait_count=93 average_wait_us=4631 max_wait_us=14994",
+      "fresh_timedemo": "140 frames, 11.56 seconds, 12.1 fps",
+      "relaunch_profile": "presents=149 published=145 backpressure=4 average_present_us=13028 max_present_us=25839 publish_attempts=59 average_publish_us=10145 max_publish_us=19571 flushes=149 average_flush_us=2 max_flush_us=4 command_attempts=149 command_batches=94 command_no_slot=7 command_overflow=48 command_publish_failures=0 command_fence_failures=0 command_frame_failures=0",
+      "relaunch_command_timing": "build_count=94 average_build_us=5799 max_build_us=15831 wait_count=94 average_wait_us=4316 max_wait_us=10573",
+      "relaunch_timedemo": "127 frames, 11.47 seconds, 11.1 fps"
+    }
+  },
+  "interpretation": "The pointer-swapped vertical coalescer reduces ARM build work to about 5 ms per successful batch and lowers overflow on the paired steady-state run while preserving the fixed 2,048-record fallback. The packed FPGA FillRect consumer and both ARM sessions completed with zero command publication, fence or frame failures. Short-run FPS varies with ARM startup and dummy SDL scheduling; sustained 60 FPS, physical HDMI/audio/input, full-scene equality and zero-underrun audio remain open."
+}

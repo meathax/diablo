@@ -1,0 +1,45 @@
+{
+  "schema": "diablo-arm-engine-transport-input-build-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass",
+  "source": {
+    "checkout": ".work/sources/devilutionx",
+    "pinned_engine_unchanged": true,
+    "engine_dx_sha256": "923338e58ba57b612f1ba4bccc6584e2b194d92fe0a1efc164955ea159a457ab",
+    "engine_main_sha256": "dffc9d98ff32d8cd93547cebf0394617e8d345d3a88673f5c1c8f3965407ea48"
+  },
+  "toolchain": {
+    "cmake": "support/cmake/arm-portable.cmake",
+    "target": "armv7-neon-linux-gnueabihf",
+    "cpu": "cortex-a9",
+    "float_abi": "hard",
+    "neon": true,
+    "build_directory_wsl": "/home/meath/.cache/diablo-arm-engine-transport",
+    "configure_exit_code": 0,
+    "build_exit_code": 0,
+    "build_tasks": "1038/1038"
+  },
+  "overlay": {
+    "module": "support/cmake/arm-transport.cmake",
+    "sdl_adapter": "support/reference/mister_transport_sdl.hpp",
+    "sdl_adapter_sha256": "b7eb030a2bc90ff07b8e0dbfe8845f92474712d3b442ded0d76bc5829b31edbe",
+    "cmake_overlay_sha256": "ed47a4ed5e1a6e9089387519a994d0a81b806e95ef70179d91a3097b60d8a316",
+    "input_injector_source": "support/transport/transport_input_injector.cpp",
+    "input_injector_source_sha256": "f816b7597330702544c190344e790b0eb184f837fa6ad33a1023c1516028385c",
+    "behavior": "Polls the bounded input ring after each present attempt, converts PS/2 keyboard, mouse, joystick and focus records into SDL events, and maps MiSTer joystick buttons through the keyboard-controller path. Input tracing is opt-in through DIABLO_MISTER_INPUT_TRACE=1."
+  },
+  "artifact": {
+    "path": ".work/build/arm-engine-transport/devilutionx",
+    "sha256": "45706d6ea1650a31166c342b623f755bb99c9e32b4f4d87d6fb7a082ccdd9cd0",
+    "bytes": 8477960,
+    "elf": "ELF32 ARM EABI5 PIE, dynamically linked, /lib/ld-linux-armhf.so.3, stripped",
+    "build_id": "360b82828b8281460c8346cc4df1d4aefeb27fbb"
+  },
+  "target_contract": {
+    "enable": "DIABLO_MISTER_TRANSPORT=1",
+    "shared_physical_base": "DIABLO_MISTER_SHARED_PHYS=0x3fe00000",
+    "optional_input_trace": "DIABLO_MISTER_INPUT_TRACE=1",
+    "board_execution": "pass; fresh-RBF board session logged keyboard, mouse and joystick input records in the real ARM engine with arm=1, fpga=1 and fault=0; see arm-input-sdl-bridge-20260907.json"
+  },
+  "scope_limit": "This build and its deterministic injector validate the ARM input-to-SDL bridge. Physical peripherals, live HDMI/audio, overflow snapshot recovery, deterministic gameplay equality and the approximately 60 FPS gate remain open."
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "diablo-host-reference-recipe-v1",
+  "toolchain_prefix": "D:/vibes/fpga/toolchains/msys64/ucrt64",
+  "cmake_options": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_POLICY_VERSION_MINIMUM": "3.5",
+    "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+    "USE_SDL1": "OFF",
+    "USE_SDL3": "OFF",
+    "NONET": "OFF",
+    "DISABLE_TCP": "OFF",
+    "DISABLE_DEMOMODE": "OFF",
+    "NOSOUND": "OFF",
+    "BUILD_TESTING": "ON",
+    "DEVILUTIONX_SYSTEM_SDL2": "OFF",
+    "DEVILUTIONX_SYSTEM_SDL_IMAGE": "OFF",
+    "DEVILUTIONX_SYSTEM_SDL_AUDIOLIB": "OFF",
+    "DEVILUTIONX_SYSTEM_LIBSODIUM": "OFF",
+    "DEVILUTIONX_SYSTEM_ZLIB": "OFF",
+    "DEVILUTIONX_SYSTEM_BZIP2": "OFF",
+    "DEVILUTIONX_SYSTEM_LUA": "OFF",
+    "DEVILUTIONX_SYSTEM_SHEENBIDI": "OFF",
+    "DEVILUTIONX_SYSTEM_MAGIC_ENUM": "OFF",
+    "DEVILUTIONX_SYSTEM_GOOGLETEST": "OFF",
+    "DEVILUTIONX_SYSTEM_BENCHMARK": "OFF"
+  }
+}

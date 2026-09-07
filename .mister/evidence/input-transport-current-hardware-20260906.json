@@ -1,0 +1,44 @@
+{
+  "schema": "diablo-mister-input-transport-current-hardware-receipt-v1",
+  "recorded_at": "2026-09-06",
+  "target": {
+    "host": "192.168.0.69",
+    "platform": "MiSTer DE10-Nano",
+    "kernel": "Linux MiSTer 5.15.1-MiSTer armv7l",
+    "validation_method": "root SSH target probe; no computer-use visual inspection",
+    "fpga_loader": "/usr/bin/fpga"
+  },
+  "reservation": {
+    "physical_base": "0x3fe00000",
+    "bytes": 2097152,
+    "basis": ".mister/evidence/ddr-preflight-hardware.json"
+  },
+  "artifacts": {
+    "rbf": {
+      "local_path": ".work/build/fpga-transport-abi/source/output_files/Diablo.compressed.rbf",
+      "target_path": "/media/fat/_Other/Diablo_input_transport_latest_20260906.rbf",
+      "sha256": "0a6c15a633b91502a1147b49ab97805de29058140acd3118cc31f248581b850b",
+      "bytes": 2493400
+    },
+    "arm_probe": {
+      "local_path": ".work/test-transport-control/transport-header-probe-arm",
+      "target_path": "/media/fat/linux/diablo-transport-header-probe",
+      "sha256": "3780954610c0c41980c42a61d93260aef4e43ed40b19b56a990f96759c70f148"
+    }
+  },
+  "load": {
+    "command": "fpga /media/fat/_Other/Diablo_input_transport_latest_20260906.rbf",
+    "return_code": 0,
+    "fpga_manager_state": "operating"
+  },
+  "tests": {
+    "control_and_input_idle": "pass: epoch 0xd1a61001, fpga_state=ready, producer=consumer=0 for two seconds",
+    "pcm_queue": "pass after a fresh RBF load: 480 stereo S16 records published and consumed by FPGA",
+    "two_frame_ownership": "pass after a fresh RBF load: two frames claimed by FPGA and the retired slot reclaimed",
+    "malformed_magic": "pass after a fresh RBF load: expected fault code=1 detail=0x48414958",
+    "stale_slot": "pass after a fresh RBF load: expected fault code=16 detail=0x00000000"
+  },
+  "probe_epoch_note": "The legacy probe uses a fixed epoch. Each independent test was preceded by an RBF reload so the FPGA observed a new session; reinitializing the same epoch without a reload is intentionally not treated as a reset.",
+  "result": "pass",
+  "scope_limit": "Physical keyboard/mouse/controller edge injection, ARM snapshot recovery on a live overflow, physical left/right audio inspection, Diablo engine launch, HDMI image inspection, tear-free gameplay and frame pacing remain open."
+}

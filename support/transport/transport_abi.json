@@ -1,0 +1,34 @@
+{
+  "schema": "diablo-mister-transport-abi-v1",
+  "identity": {
+    "magic": "DIAHPS01",
+    "major": 1,
+    "minor": 1,
+    "little_endian_tag": 305419896
+  },
+  "layout": {
+    "control_bytes": 4096,
+    "shared_bytes": 2097152,
+    "frame_width": 640,
+    "frame_height": 480,
+    "frame_pixel_bytes": 307200,
+    "palette_bytes": 768,
+    "frame_slot_bytes": 311296,
+    "frame_slots": 3,
+    "frame_region_offset": 4096,
+    "input_region_offset": 937984,
+    "input_region_bytes": 8192,
+    "pcm_region_offset": 946176,
+    "pcm_region_bytes": 131072,
+    "command_records_offset": 1077248,
+    "command_records_bytes": 65536,
+    "command_payload_offset": 1142784,
+    "command_payload_bytes": 196608
+  },
+  "rings": {
+    "input": { "capacity": 256, "record_bytes": 32 },
+    "pcm": { "capacity": 32768, "record_bytes": 4 },
+    "command_records": { "capacity": 2048, "record_bytes": 32 },
+    "command_payload": { "capacity": 196608, "record_bytes": 1 }
+  }
+}

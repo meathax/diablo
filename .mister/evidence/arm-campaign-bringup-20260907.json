@@ -1,0 +1,81 @@
+{
+  "schema": "diablo-arm-campaign-bringup-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-software-campaign-startup-physical-output-open",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "kernel": "Linux MiSTer 5.15.1-MiSTer armv7l",
+    "validation_method": "fresh PCM-status RBF, real ARM DevilutionX binary, explicit Diablo and Hellfire timedemo launches with dummy SDL"
+  },
+  "artifacts": {
+    "rbf": {
+      "path": "/media/fat/_Other/Diablo_pcm_status_20260907.rbf",
+      "bytes": 2495012,
+      "sha256": "c872a3a1c7d2de2e98ffd208ca31b7508d1aedd0b68766b88abab618814729eb"
+    },
+    "engine": {
+      "path": "/media/fat/linux/devilutionx",
+      "sha256": "1915adc9db97637825934f12c71883aba55398d003f1b35e9a5167f057475556"
+    },
+    "assets": {
+      "diabdat.mpq": {
+        "path": "/media/fat/tmp_esc/diablo-transport-assets/diabdat.mpq",
+        "sha256": "63fb47d9c76484024c7640d90ab6b7ec5e13f567a7e1a917b6c03a6631d3f2b0"
+      },
+      "hellfire.mpq": {
+        "path": "/media/fat/tmp_esc/diablo-transport-assets/hellfire.mpq",
+        "sha256": "bbbd3e4b09db3c16d72e3f8503058dd09a8aaecccf486c3b6a0fca270cef9ba8"
+      }
+    }
+  },
+  "configuration": {
+    "transport": "DIABLO_MISTER_TRANSPORT=1",
+    "shared_physical": "DIABLO_MISTER_SHARED_PHYS=0x3fe00000",
+    "video_driver": "SDL_VIDEODRIVER=dummy",
+    "render_driver": "SDL_RENDER_DRIVER=software",
+    "audio_driver": "SDL_AUDIODRIVER=dummy",
+    "data_dir": "/media/fat/tmp_esc/diablo-transport-assets",
+    "save_dir": "/media/fat/tmp_esc/diablo-transport-save",
+    "config_dir": "/media/fat/tmp_esc/diablo-transport-config"
+  },
+  "campaigns": {
+    "hellfire": {
+      "session_epoch": "0x26090730",
+      "command": "devilutionx --hellfire --spawn --demo 0 --timedemo ...",
+      "asset_discovery": [
+        "Found: hellfire in /media/fat/tmp_esc/diablo-transport-assets/",
+        "Found: DIABDAT in /media/fat/tmp_esc/diablo-transport-assets/"
+      ],
+      "audio_init": "Aulib sampleRate=22050 channels=2 frameSize=2048 format=0x8010",
+      "timedemo": "554 frames, 19.58 seconds, 28.3 fps",
+      "transport_state": {
+        "arm_state": 1,
+        "fpga_state": 1,
+        "fault_code": 0,
+        "display_epoch": 229,
+        "last_frame": 230,
+        "pcm_resyncs": 0
+      }
+    },
+    "diablo": {
+      "session_epoch": "0x26090731",
+      "command": "devilutionx --diablo --spawn --demo 0 --timedemo ...",
+      "asset_discovery": [
+        "Found: hellfire in /media/fat/tmp_esc/diablo-transport-assets/",
+        "Found: DIABDAT in /media/fat/tmp_esc/diablo-transport-assets/"
+      ],
+      "audio_init": "Aulib sampleRate=22050 channels=2 frameSize=2048 format=0x8010",
+      "timedemo": "551 frames, 19.62 seconds, 28.1 fps",
+      "transport_state": {
+        "arm_state": 1,
+        "fpga_state": 1,
+        "fault_code": 0,
+        "display_epoch": 226,
+        "last_frame": 227,
+        "pcm_resyncs": 0
+      }
+    }
+  },
+  "scope": "This closes ARM software campaign startup and clean timedemo termination under the transport image for both explicit campaign modes. Dummy SDL does not prove visible HDMI gameplay, physical audio, physical controls, save/load UI, OSD focus, multiplayer or approximately 60 FPS qualification."
+}

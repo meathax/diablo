@@ -1,0 +1,14 @@
+{
+  "schema": "diablo-entity-parser-diagnostic-v1",
+  "scope": "parser-only donor diagnostic",
+  "report_sha256": "22d132a85edad3bbd8556dc9a32d60a458f8da9ed0e29a0b0796d1e07b7f550d",
+  "auditor_sha256": "aeddd8bf07f3bcaa60988fa75428f6b7fd4ebf001b0c680943d94f76abbbb9e2",
+  "release_acceptance": false,
+  "status": "pass",
+  "entity_count": 330,
+  "top": {
+    "registers_inclusive": 18991,
+    "registers_local": 1514,
+    "block_memory_bits": 481294
+  }
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "host-png",
+    "command": [
+      "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\support\\scripts\\test_host_png.py",
+      "--build-dir",
+      ".work/build/reference-host"
+    ],
+    "exit_code": 0,
+    "log": "reports/audit-2026-09-07/refresh-evidence/host-png.log"
+  },
+  {
+    "id": "transport-sdl-input",
+    "command": [
+      "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+      "D:\\Arcade\\AI\\aCORES\\Diablo\\support\\scripts\\test_mister_transport_input.py",
+      "--sdl-build-include",
+      ".work/build/reference-host/_deps/sdl2-build/include/SDL2",
+      "--sdl-source-include",
+      ".work/build/reference-host/_deps/sdl2-src/include",
+      "--sdl-library",
+      ".work/build/reference-host/_deps/sdl2-build/libSDL2.a"
+    ],
+    "exit_code": 0,
+    "log": "reports/audit-2026-09-07/refresh-evidence/transport-sdl-input.log"
+  }
+]

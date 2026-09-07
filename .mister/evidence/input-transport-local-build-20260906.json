@@ -1,0 +1,45 @@
+{
+  "schema": "diablo-input-transport-local-build-v1",
+  "recorded_at": "2026-09-06T20:03:50+10:00",
+  "target_validation": "deferred; MiSTer was not contacted per user instruction",
+  "source": {
+    "quartus_root": "D:/Q17",
+    "project": ".work/build/fpga-transport-abi/source/Diablo.qpf",
+    "rtl": [
+      "rtl/diablo_input_capture.sv",
+      "rtl/diablo_transport_ddram_arbiter.sv",
+      "rtl/diablo_transport_abi.svh"
+    ]
+  },
+  "artifacts": {
+    "rbf": {
+      "path": ".work/build/fpga-transport-abi/source/output_files/Diablo.compressed.rbf",
+      "sha256": "0a6c15a633b91502a1147b49ab97805de29058140acd3118cc31f248581b850b",
+      "bytes": 2493400
+    }
+  },
+  "build": {
+    "quartus_full_compile": "passed: 0 errors, 77 warnings",
+    "fit_report": ".work/build/fpga-transport-abi/source/output_files/Diablo.fit.rpt",
+    "sta_report": ".work/build/fpga-transport-abi/source/output_files/Diablo.sta.rpt",
+    "logic_utilization": "9000/41910 ALMs needed (21%)",
+    "registers": 13858,
+    "block_memory": "404737/5662720 bits (7%), 59/553 RAM blocks (11%)",
+    "dsp": "36/112 (32%)",
+    "timing_corners": {
+      "slow_100C": { "setup_ns": 0.210, "hold_ns": 0.244, "violated": 0 },
+      "slow_minus40C": { "setup_ns": 0.053, "hold_ns": 0.149, "violated": 0 },
+      "fast_100C": { "setup_ns": 0.529, "hold_ns": 0.132, "violated": 0 },
+      "fast_minus40C": { "setup_ns": 0.526, "hold_ns": 0.115, "violated": 0 }
+    },
+    "metastability": "430 synchronizer chains; worst-case MTBF 1e+09 years"
+  },
+  "local_validation": {
+    "transport_control": "passed",
+    "input_capture": "passed; full-ring drop publishes RingControl.dropped=1",
+    "input_consumer": "passed host and Cortex-A9 QEMU; event reduction and snapshot recovery",
+    "arbiter": "passed priority, DDR backpressure and reset-mid-read checks",
+    "transport_abi": "passed host, RTL and Cortex-A9 QEMU"
+  },
+  "scope_limit": "No board copy, load, SSH, physical input, audio, display or gameplay validation was performed."
+}

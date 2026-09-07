@@ -1,0 +1,31 @@
+{
+  "schema": "diablo-test-mpq-copies-v1",
+  "scope": "Private ignored build copies; original MPQs unchanged",
+  "files": [
+    {
+      "path": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\diabdat.mpq",
+      "source": "D:\\Arcade\\AI\\aCORES\\Diablo\\game\\DIABDAT.MPQ",
+      "sha256": "63fb47d9c76484024c7640d90ab6b7ec5e13f567a7e1a917b6c03a6631d3f2b0"
+    },
+    {
+      "path": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\hellfire.mpq",
+      "source": "D:\\Arcade\\AI\\aCORES\\Diablo\\game\\hellfire.mpq",
+      "sha256": "bbbd3e4b09db3c16d72e3f8503058dd09a8aaecccf486c3b6a0fca270cef9ba8"
+    },
+    {
+      "path": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\hfmonk.mpq",
+      "source": "D:\\Arcade\\AI\\aCORES\\Diablo\\game\\hfmonk.mpq",
+      "sha256": "5358fa2aa6c7bfdd3bfdd07b0457807d3220a60cfe8b1967a0938b433a9b33c5"
+    },
+    {
+      "path": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\hfmusic.mpq",
+      "source": "D:\\Arcade\\AI\\aCORES\\Diablo\\game\\hfmusic.mpq",
+      "sha256": "2d719ef13502bf3c68eb4771411391bd37bb420d753eb6239becb063c6918de1"
+    },
+    {
+      "path": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\hfvoice.mpq",
+      "source": "D:\\Arcade\\AI\\aCORES\\Diablo\\game\\hfvoice.mpq",
+      "sha256": "243fec5f04710ba316b9f61065a257e47c1404b13f63c52541ed4eb714267b72"
+    }
+  ]
+}

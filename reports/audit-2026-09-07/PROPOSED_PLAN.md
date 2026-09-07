@@ -1,0 +1,810 @@
+# Plan to complete and close every September 7 audit item
+
+## Current execution entry point and mandatory audit amendments
+
+**Refresh, 7 September 2026:** use the seven-batch
+[root execution guide](../../CORE_COMPLETION_AUDIT.md) as the compact critical
+path. This document remains the detailed C01–C34 closure authority. The
+[current audit refresh](REFRESH_AUDIT.md) adds R01–R05 with exact evidence,
+reproductions, fixes and acceptance requirements. These amendments override
+older statements below that call candidate `a1fc74f…` current. Its recorded
+artifacts still match, but nine source inputs have changed; candidate-bound
+verification now rejects it. Earlier passes remain historical receipts.
+
+| Amendment | Apply to | Mandatory closure addition |
+| --- | --- | --- |
+| R01 — stale candidate | C18/C25/C27/C29/C30 | Freeze sources, rebuild affected ARM/FPGA artifacts, create and verify a new immutable candidate, and qualify it. Do not relabel old binaries as a new-source build. |
+| R02 — semantic closure admission | C18/C21/C25/C29/C31/C32 | Enforce evidence schemas, required test results/log integrity, valid non-null release candidate, coverage and numeric targets. Reject the synthetic failing-evidence reproduction. |
+| R03 — source mutation during verification | C18/C27/C28/C29 | Run isolated snapshots; revalidate dependencies/artifacts before publishing. Preserve drift evidence and fail the mutation regression. |
+| R04 — checkout-dependent runtime admission | C16/C18/C26/C32 | Add deployment-manifest validation independent of developer source/Git; clean runtime-only relocation must launch and mismatched files must fail. |
+| R05 — missing board/menu adapter | C16/C17/C23/C24/C28/C29/C32 | Implement a concrete target profile and board runner; bind current boot, reserved memory, loaded artifacts, physical observations and safe cleanup. A configured `not_run` stub cannot close a board gate. |
+
+C01–C05/C08 already have implemented local fixes; preserve them and prove their
+remaining integrated/target requirements rather than repeating the original audit.
+C26's original untracked-file observation is historical; the current index has
+staged implementation, while clean-checkout reproducibility remains open. The
+fresh local receipt ran 104 Python tests with one skip, four host checks and
+thirteen RTL fixtures; overall status was incomplete pending explicit optional
+host/SDL paths. Evidence and supplemental results are in REFRESH_AUDIT.md.
+
+For full completion, supplement town/scene benchmarks with campaign progression
+coverage: early/mid/late game, bosses/endings, relevant class/skill/spell/UI,
+cinematics and Hellfire-specific content. Cover all declared output modes,
+controller-only workflows, multiplayer and clean-install/update/rollback checks.
+Existing numeric targets remain mandatory. An approved exception must be stated
+as reduced scope, never silently reported as absolute total completion.
+
+The next implementation is evidence admission (R02/R03), the missing target/
+deployment contract and integrated gaps, then a frozen source snapshot and its
+matching build/qualification. Read only the active detailed package and exact
+evidence; keep large outputs in files and rerun checks by dependency invalidation.
+Do not duplicate historical logs into this plan or state.
+
+This is the detailed execution and closure plan for **all 34 recommendations C01–C34 and all 18 findings F01–F18** in this audit. It is the reference to use when implementing, verifying and closing those items. The earlier audit remains the historical evidence baseline; the compact checklist remains an index into this document. The status and recorded-implementation paragraphs below reflect the current worktree and immutable receipts; an item remains open whenever its stated closure evidence is still missing.
+
+Retain the project's pinned sources, read-only `game/` and donor rules, real-board evidence requirement, and hash-recorded RBF builds after functional RTL changes. Do not restore the intentionally removed old implementation plan. Keep this plan, `.mister/state.json`, the root completion guide and evidence receipts synchronized as implementation advances; installed board artifacts and Git history remain outside this worktree plan until their explicit gates are satisfied.
+
+**Historical verification snapshot (2026-09-07; superseded as current by R01):** candidate-bound local receipt `20260907T070202Z-696eb1c8-c7eb-4f48-bb87-a82772780688.json` passed foundation, host, SDL transport and RTL checks for dependency source snapshot `6d458c7eb45cb2658bed13a50e8b7b6509a5246d4a95bce094f6104959dc8666` and candidate `a1fc74fdbf27f9759691391fe576480b5f4e8d4548a287ed08f34ec272a7058c`. Receipt SHA-256 is `cce8691a32ea2bb573465d9cc8a6e6882405c877aa55ecb9458808b768bb9211`; its scope remains local host/RTL only. The same candidate-bound ARM/QEMU receipt `20260907T070404Z-0885edba-e8a3-486d-a31a-2de1815dd881.json` also passes with receipt SHA-256 `8da0bc58cf17efcb70b58da3654071559580ccb598ce96975fa8dc51b92ff8b6`; it is ABI/emulation evidence, not target or physical acceptance. The superseded four-artifact manifest was `.mister/evidence/candidates/fpga-candidate-20260907-5-arm.json` with manifest SHA-256 `8d2b603ec3e91cb0240cdda00c37317d32366cc8d616a9890326eac55183a214` and manifest source ID `dfe50a9cc7af178954cc819e4b93fdd21993148fe70ac9663858062e5a4a1a4e`. Earlier receipts named in individual records remain valid historical evidence for their recorded snapshots and are not substituted for the current-source result.
+
+**Current development candidate (2026-09-07; not board-accepted):** `.mister/evidence/candidates/fpga-candidate-20260907-6-arm.json` verifies with manifest SHA-256 `8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762`, source ID `48cbaf2d4ff36ac820e22ca0008b213d539629ef1880c40634ba203a0e8fa5e7` and candidate ID `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`. It binds ARM `11ed2bf67edfc99b80ed6ff541cd991d20cd39cbd82f6b43c9b038dbb06f3ced`, compressed/raw RBF `56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c` and SOF `d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`. The configured local receipt `20260907T074147Z-ba696aab-f304-4da2-a56d-2be0789aadf7.json` (SHA-256 `7cc30a86a0e88e015a0506021f4cdbe4923779e0bf07331983ec8558a88a21a3`) and ARM/QEMU receipt `20260907T074417Z-b62331e3-9ad0-42b7-b56f-b472c5e22bed.json` (SHA-256 `14d687bb116f5be66bfa30fec23791b2ce1fb0437852f0109d9f590c4469530f`) pass for that exact candidate. Their scope is local host/RTL and ARM ABI emulation; current-boot loader admission, target mapping, physical I/O, campaign equality, performance and acceptance promotion remain open. The earlier unconfigured local run is retained as an incomplete prerequisite receipt and is not the current pass.
+
+## How to execute and maintain this plan
+
+Each C-item below contains its dependencies, affected code, implementation procedure, verification and closure evidence. Follow the stage overview first, then the detailed work packages. Proposed new scripts, interfaces and tests are implementation deliverables, not commands that already exist.
+
+Use these item states: **OPEN → IN_PROGRESS → IMPLEMENTED → VERIFYING → CLOSED**. Use **BLOCKED** when a named prerequisite, fixture, hardware observation or decision prevents progress. A blocked physical gate is not a pass; continue independent local items. Reopen CLOSED items if relevant source, ABI, configuration or artifact changes invalidate their evidence.
+
+For each item, maintain a closure record immediately below its heading when execution begins:
+
+| Field | Required content |
+| --- | --- |
+| Status / owner / updated | Current state, responsible implementer and UTC date |
+| Implementation | Commit or exact source-snapshot ID; changed files and behavioral summary |
+| Checks | Exact commands, environment/tool versions, seed/configuration, exit codes and test names |
+| Evidence | Immutable receipt paths and hashes; private capture references stay private |
+| Candidate | ARM, RBF and ABI/build IDs where applicable |
+| Result | Measured result against every acceptance criterion |
+| Remaining / next action | Specific unfulfilled requirement and executable next action |
+| Closure | Date, reason each criterion is satisfied and any separately tracked residual issue |
+
+Until such a record exists, the heading's OPEN status applies. Check the corresponding box in `SUGGESTED_CHANGES.md` only when the item's complete closure gate passes. If code is fixed but board verification is pending, record IMPLEMENTED or VERIFYING. Do not claim closure from compilation, a zero fault counter, a matching ring cursor or a historical receipt alone.
+
+Before changing code, rerun the relevant failing reproduction against the current source. If another change already fixed it, record that evidence and still complete the regression and integration requirements. Keep patches to imported sources in reproducible overlays where practical; do not alter the pinned engine or donor checkout as a shortcut.
+
+### Execution order and dependency handling
+
+1. **Baseline/tools:** start C18, C26–C31 and C33. Implement their infrastructure first; their final clean-build/release checks occur after the candidate stabilizes.
+2. **Pure correctness:** C01, C02, C08 and C22. Prepare integrated fixtures for C09/C19 at the same time.
+3. **Ownership/display/recovery:** C03–C07 and C09. Treat C03/C04/C05 as one coordinated design change with separately verified closure criteria.
+4. **Runtime and I/O:** C10–C17. Implement admission before real launcher writes; use C07's lifecycle protocol for audio and input resets.
+5. **Measurement and target correctness:** C19–C22, C25 and candidate rebuilding through C18/C27. Local test development may start earlier; final board checks use matching artifacts.
+6. **Physical/performance acceptance:** C15, C21, C23 and C24, followed by C32 and final clean-checkout closure of C26–C31.
+7. **Maintenance:** C34 after functional responsibilities stabilize, followed by appropriate regression checks. Rebuild/requalify if refactoring changes generated binaries used for acceptance.
+
+Dependencies below mean the named interface or capability must exist before dependent work can be accepted; they do not require waiting for that dependency's final package-level closure. This permits building the C18 manifest and C29 receipt infrastructure together without a circular release gate.
+
+### Acceptance targets to encode before qualification
+
+The following are planning targets, not achieved measurements. Put them into the versioned test configuration before collecting acceptance runs, and record any subsequent change with its rationale. Do not loosen a target merely to make a failing run pass.
+
+- **Correctness:** zero differing indexed pixels/palette bytes in deterministic equality runs; zero mixed palette/frame activations; zero writes outside admitted regions or into an active/pending slot.
+- **Cadence:** with frames prepared in time, one new display activation at every 60 Hz boundary after warm-up. In RTL, verify at least 1,000 consecutive refreshes with no unexplained missed activation.
+- **Recovery:** under an operational DDR interface and a live FPGA, a deliberately delayed fence or software-requested reset must return to a usable session within a configured 1-second recovery budget. Loss of the DDR interface must fail visibly and stop new writes; it must never be “recovered” by unsafe slot reuse.
+- **Audio:** zero underrun/resync deltas during the declared active-playback qualification interval after priming; report startup, drain and stopped-producer counts separately.
+- **Steady gameplay performance:** preserve the existing approximately 60 FPS goal. Initial proposed numeric gate: p99 presentation interval no greater than 16.67 ms plus measured timer/refresh tolerance, and at most 0.1% late prepared-frame submissions in each qualified steady scene. Record actual refresh period instead of rounding where relevant. Report p99.9 and maximum even if not used as a gate; loading transitions get their own bounded-duration report.
+- **Input:** proposed target p95 input-to-visible latency ≤50 ms and p99 ≤100 ms for specified repeatable actions, including loaded rendering; separate transport-only latency from physical end-to-end measurements.
+- **Durations:** 30 minutes combined gameplay/audio/input stress per campaign, 2 hours idle with active service checks, and 100 automated lifecycle cycles where safe. Multiplayer: 30 minutes per campaign pairing plus targeted disconnect/failure cases. These are minimum planned fixtures, not a substitute for complete workflow coverage.
+
+If a target or advertised mode cannot be delivered, leave the corresponding item open and propose a scope decision explicitly. Removing a requirement or declaring a failing mode unsupported does not by itself close the original issue.
+
+## Stage A — identify the candidate and preserve evidence
+
+Related changes: C18, C26–C30, C33.
+
+1. Preserve the known board-tested RBF/ARM identities as historical acceptance of transport activity only.
+2. Identify the current local RBF and ARM candidates; record source snapshot, ABI, QSF/SDC, compiler/toolchain options and hashes in an immutable build directory.
+3. Review and version the intended implementation; repair README/status drift. Keep private data and generated files excluded.
+4. Establish a single verification entry point, immutable receipts and complete build snapshots.
+
+Exit gate: a clean checkout can run host/RTL verification and construct a candidate with no undocumented local runner/source dependencies. Every reused receipt either matches its artifact or is explicitly historical. An in-progress build is never treated as a stable candidate.
+
+## Stage B — restore rendering and ownership correctness
+
+Related changes: C01–C09, C19, C22.
+
+1. Fix changed-run coalescing and mixed-writer palette/pixel cache invalidation.
+2. Pipeline next-frame preparation independently of vblank and retire superseded frames safely.
+3. Make palette/frame activation atomic.
+4. Implement outstanding-fence lifecycle, observable command faults and bounded recovery without premature buffer reuse.
+5. Quiesce audio for epoch recovery and revalidate all content caches.
+6. Expand differential and integrated RTL tests; include full capacity/wrap, sparse run patterns, continuous producer overload, delayed DDR, late fence, reset and relaunch cases.
+
+Exit gate: the audit reproductions pass after their expected results are turned into regressions; randomized source/command/frame comparisons agree; no slot remains permanently owned after bounded recovery; a periodic 60 Hz test activates 60 distinct ready frames per second after warm-up. All twelve existing RTL fixtures and the host/Python suites remain green.
+
+This stage supersedes the current guide's blanket “ABI/frame/audio/input checks pass” and “command path validated” wording. Preserve the narrower historical test results, but reopen integrated ownership and full-scene correctness acceptance.
+
+## Stage C — complete the runtime lifecycle and control boundary
+
+Related changes: C10–C17.
+
+1. Add actual OSD focus transport and robust input-state reconciliation.
+2. Implement modifier/text behavior and correct mouse masks; verify engine consumers, not only generated event logs.
+3. Make transport configuration and startup errors explicit.
+4. Add the minimal menu launcher with campaign data discovery, isolated configuration/saves, matching artifacts and exclusive reserved-memory ownership.
+5. Implement required analog/direct-video modes before advertising them; keep any undelivered mode open pending an explicit scope decision.
+6. Diagnose active-playback PCM starvation with proper priming and stop accounting.
+
+Exit gate: automated adapter/lifecycle tests pass; expected launch failures are visible; a second instance/probe cannot corrupt an active transport; both campaigns can be launched through the intended workflow. Physical peripheral/audio acceptance remains separately open until Stage E.
+
+## Stage D — rebuild and prove complete target frames
+
+Related changes: C18, C19, C22, C25.
+
+1. Rebuild ARM and FPGA from the fixed snapshot, using configured Quartus at `D:/Q17` on this host.
+2. Review every timing corner, inferred resources, relevant warnings and active external interfaces for that exact candidate.
+3. Load only hash-verified matching artifacts on the board.
+4. Capture completed target-slot indices and palettes for deterministic Diablo/Hellfire scenes and compare every byte with the independent software reference.
+5. Separately verify physical displayed RGB/palette transitions and ownership/pacing using the intended output modes.
+
+Exit gate: complete scene equality and displayed output are correct; no stale frame/palette, transport fault or buffer ownership violation occurs. Full-capture overhead is excluded from subsequent production-performance comparisons or separately reported.
+
+## Stage E — qualify physical gameplay and sustained service
+
+Related changes: C15, C23, C24.
+
+Use the launcher and exact Stage D artifacts. Test both campaigns across town, dungeon, combat, cinematics, menus, naming, inventory, spells, save/load, quit, reset, core switching and relaunch. Exercise keyboard/mouse, controller-only use, device reconnects, mixed input and OSD focus. Verify speaker left/right output and zero active-playback underrun delta under combined DDR/render/input load. Test multiplayer host/join/chat/disconnect and incompatible campaign handling.
+
+Proposed durations to adopt explicitly: short per-workflow checks, at least 30 minutes of combined gameplay/audio/input stress, and a multi-hour idle/relaunch/storage qualification. Record the exact duration, scene, active-playback interval, initial/final counters and failures; do not silently mark a shorter run equivalent.
+
+Exit gate: every required physical workflow has a passing receipt; no stuck controls, unbounded queues, data loss or unrecovered transport faults. Any undelivered required output/control/network mode remains open unless an explicit scope decision changes that requirement.
+
+## Stage F — measure and then optimize
+
+Related changes: C20, C21, C31.
+
+1. Define four independent rates: deterministic simulation ticks, render/present calls, successfully published frames and newly displayed frames.
+2. Establish a paired software-only versus accelerated benchmark on identical scenes, settings, pacing and artifacts. Measure warm-up separately from steady state and loading/transitions.
+3. Instrument all outcomes, including failed command builds and fence timeouts. Record frame-time histograms, deadline misses, per-stage costs, queue age, input-to-visible latency and audio/input service health.
+4. Optimize only the measured limiting stage. Candidate work includes an early command-versus-copy cost estimate, bounded record reduction, command batching and independent ARM work; no assumption that higher FPGA/CPU utilization is itself beneficial.
+5. Re-run equality plus the same paired benchmark after each functional optimization.
+
+Exit gate: quantified acceleration improvement without correctness regressions or service starvation, plus the planned approximately 60 FPS deadline/tail-latency targets and one distinct prepared frame displayed per refresh. Average FPS alone is insufficient. If these targets are not achieved, retain the performance blocker; a different release scope requires an explicit recorded decision and disclosure of actual measured behavior.
+
+## Stage G — package and clean-install acceptance
+
+Related changes: C25, C32.
+
+Package matching RBF, ARM executable, launcher, ABI/build manifest, redistributable assets and required notices. Exclude commercial MPQs, saves, captures and donor-only artifacts. Verify installation/update failure behavior and preservation of existing saves/configuration. Install on a clean supported MiSTer and repeat both campaign launch/play/quit/reset/core-switch/relaunch workflows and an independent second launch.
+
+Exit gate: installable, reproducible package with validated source/artifact identities, complete supported-mode documentation and all required physical/performance gates closed.
+
+## State-document structure to implement under C30
+
+Keep a small current-state document with: schema version; completion-guide hash; current stage; development candidate ID; board-accepted candidate ID; per-gate status (`not_started`, `implemented`, `host_pass`, `rtl_pass`, `board_pass`, `blocked`); evidence IDs; blocking finding IDs; next executable command and expected result. Store historical build/process narratives in immutable receipts. Include observation method, date, artifact hashes, configuration, duration, test result and scope limitations in each receipt.
+
+The next immediate action is Stage A candidate identification followed by the Stage B bug fixes, not another performance qualification run of the currently documented command binary.
+
+---
+
+## Detailed work packages
+
+### C01 — Fix changed-run rectangle coalescing
+
+**Status: IMPLEMENTED — local renderer differential regression passes; C19/C28/C29 and target evidence remain open · P1 · closes F01.** Dependencies: none for the fix; C28/C29 for repeatable recorded regression. Code: `support/reference/mister_command_scene.hpp`, renderer tests; audit fixture `repro_changed_runs.cpp`.
+
+**Implementation procedure**
+
+1. Reproduce the source pixels `(10,0)=7` and `(20,1)=7` against a zero shadow and retain the incorrect rectangle output as the pre-fix result.
+2. Make the previous-column map explicitly invalid before any row is processed. Prefer a generation value that cannot represent the previous row, or clear indices to a negative sentinel; avoid zero simultaneously meaning “unset” and “row zero.”
+3. Before dereferencing a previous run, require a valid generation, `0 <= index < previous_count`, equal x, width and colour, and no earlier continuation. Keep the lookup tied to the previous row while populating the current row's mapping.
+4. Preserve bounded storage and the current complete-copy fallback on capacity failure. Verify that partial command construction is never published after failure and End always has reserved capacity.
+5. Add the regression to the maintained C++ renderer/scene test suite rather than relying solely on the report's standalone executable.
+
+**Verification**: empty first row; changes only in row one; unrelated equal-colour runs; disappearance/reappearance of an x position; first/last columns; adjacent runs; all three target slots; non-default source pitch; record capacity/End boundary. Run at least 10,000 deterministic seeded sparse/dense cases, execute generated records against a copy of the shadow, and compare the entire target to the source whenever construction succeeds.
+
+**Close only when** all cases agree byte-for-byte, failures take the safe full-copy path, and the rebuilt ARM candidate contains the fixed header. Retain failing/passing logs, seeds, input hashes and build ID; F01 stays open if only host code is fixed but an affected accepted ARM binary is still advertised as current.
+
+### C02 — Make per-slot caches coherent across all writers
+
+**Status: IMPLEMENTED — mixed direct-command/fallback cache regression passes; C07/C19 integration evidence remains open · P1 · closes F02.** Dependencies: C01 for scene integration; coordinate cache-reset semantics with C07. Code: `mister_transport.hpp`, `mister_transport_sdl.hpp` and adapter tests.
+
+**Implementation procedure**
+
+1. Inventory every writer of slot pixels and palettes: initial full copy, dirty copy, FPGA commands, recovery and diagnostic capture/probes. Define one authoritative content generation per slot and epoch.
+2. Add a session API for external writes/invalidation. Before a command submission can modify a slot, invalidate the full-copy session's palette and dirty-pixel cache for that slot. Successful completion may install a new known shadow; failure must leave it invalid.
+3. Consolidate the command and session shadow ownership if practical. If retaining separate caches, document the generation checks that prevent either cache being used after the other writer changes memory.
+4. Invalidate on epoch change, aborted/unknown command completion and source reattachment. Do not invalidate just because a displayed frame is retired: ownership and content validity are different facts.
+5. Keep command mode and dirty-copy mode composable; reject an unsupported combination explicitly until the implementation is correct.
+
+**Verification**: promote `repro_palette_cache.cpp`; test A→B→A and A→B→B palettes, changes at unsampled pixels, alternating full/dirty/command paths for every slot, palette-only changes, timeout followed by fallback and reset while caches are valid. Compare actual slot memory, not the ARM shadow, after each successful completion.
+
+**Close only when** the production adapter path passes those transitions with dirty-copy both enabled and disabled, no unnecessary stale-cache assumptions survive, and completed target-scene equality under C19 confirms mixed paths. Save mode/configuration, command outcomes and complete memory comparisons.
+
+### C03 — Remove the two-vblank presentation ceiling
+
+**Status: IMPLEMENTED — scanout simulation stages the next frame without a forced second vblank; C09/C21 target qualification remains open · P1 · closes F03.** Dependencies: coordinated design with C04/C05; C09 provides backpressure integration. Code: `rtl/diablo_framebuffer_scanout.sv`, scanout testbench.
+
+**Implementation procedure**
+
+1. Draw the current prepare/claim/palette/activate/retire state transitions and identify all operations unnecessarily gated by `vblank_rise`.
+2. Split preparation from activation. Poll/claim a safe ready candidate and stage its palette while the current frame remains displayed. Keep one explicitly owned pending frame; never replace it without a defined release protocol.
+3. At vblank, commit an already prepared frame and immediately allow preparation of the next one once required retirement writes are safe. Do not start an entire acquisition only after waiting for the next boundary.
+4. Handle no-ready-frame, candidate-not-yet-prepared and DDR-stall cases by keeping the last complete frame. Expose separate counters for no producer frame, preparation overrun and missed activation.
+5. Check the scaler's actual FB_BASE latch and FB_VBL relationship so a core-local state update corresponds to the intended displayed refresh.
+
+**Verification**: replace manual two-pulse assumptions with a periodic boundary generator. Supply ready frames before deadlines, run at least 1,000 refreshes, and check activation IDs/base changes every refresh after warm-up. Repeat with bounded randomized DDR delays, different vblank phase and continuous audio/input traffic. Verify skipped frames only when a declared deadline is missed.
+
+**Close only when** RTL has no built-in alternate-refresh limit and a rebuilt board candidate demonstrates expected activation cadence with real vblank. Keep separate ARM publish and FPGA display traces so a 60-call/s producer cannot disguise 30 displayed frames/s.
+
+### C04 — Reclaim superseded frames without violating ownership
+
+**Status: IMPLEMENTED — scanout simulation retires stale same-epoch READY slots; C06/C09/C23 target stress remains open · P1 · closes F04.** Dependencies: C03 interface; C06 command ownership. Code: scanout RTL, ABI generator/header, transport tests as needed.
+
+**Implementation procedure**
+
+1. Specify the presentation policy in the ABI document. Retain latest-ready selection for low latency only if explicit superseded retirement is implemented; otherwise implement FIFO and document its bounded queue delay.
+2. Under latest-ready selection, identify old READY descriptors in the current epoch that can never be displayed after the chosen frame. Recheck generation/state at the protocol's safe point before retiring them.
+3. Distinguish retirement reason: displayed completion versus superseded without display. Do not increment a display counter or claim a frame was seen for a skipped frame.
+4. Ensure FREE is the final publication of retirement after all metadata needed by the next owner is complete. Preserve ARM-owned descriptor fields and byte enables.
+5. Never retire current display, pending palette/frame, ARM-writing or outstanding-command slots. Handle epoch changes by the common quiescence protocol, not stale snapshot writes.
+
+**Verification**: older slot 2/id 6 alongside active id 8; all slots ready out of order; producer faster than display; equal/stale IDs; wrap policy; reset during retirement; delayed retirement writes. Maintain a scoreboard accounting for every allocation, submission, display and superseded retirement over thousands of frames.
+
+**Close only when** every submitted frame has a terminal ownership outcome, available capacity returns after producer stop, no prohibited slot is freed, and board stress no longer leaves old READY IDs stranded. Preserve the scoreboard and before/after slot-state dumps.
+
+### C05 — Commit palettes and frame bases atomically
+
+**Status: IMPLEMENTED — palette/base handoff is guarded by vblank plus a bounded blank fallback in scanout simulation; scaler and target atomicity evidence remains open · P1 · closes F05.** Dependencies: C03; inspect imported scaler before choosing an implementation. Code: scanout palette logic, `Diablo.sv`, relevant `sys` scaler interface if required.
+
+**Implementation procedure**
+
+1. Establish whether the scaler's core palette is live, banked or latched and when its framebuffer address is sampled. Record the exact imported source paths and timing relationship.
+2. Keep next-frame palette data in private staging RAM. Do not upload it into a palette currently used by the old frame during active scanout.
+3. Prefer a palette-bank select that changes with the frame base if the framework supports it. Otherwise implement an explicitly bounded blanking commit sequence whose completion precedes the scaler's first read of the new frame. Add bank support only with a documented wrapper change if blanking cannot guarantee atomicity.
+4. Couple pending palette generation to pending frame ID/epoch. A late or incomplete palette keeps both old frame and old palette active.
+5. Handle reset and palette-only animation without exposing partially uploaded entries or acknowledging the wrong generation.
+
+**Verification**: use two index images and sharply different palettes such that every wrong pairing is observable. Decode output RGB in a scaler-level fixture, randomize palette DDR delay across vblank, and assert no active pixel combines generations. Include all 256 entries and repeated palette-only updates.
+
+**Close only when** the old ordering reproduction is prevented, decoded integration output has zero mixed-generation pixels, and physical capture of alternating palettes/palette animation matches the intended sequence. A count of 256 palette writes is not sufficient evidence.
+
+### C06 — Implement command timeout and fault completion lifecycle
+
+**Status: IN PROGRESS — adapter keeps an asynchronous fence submission record, uses a monotonic deadline, and faults rather than recycles a late-writable slot; C07/C09 reset and target fault qualification remain open · P1 · closes F06.** Dependencies: C07 epoch protocol, C09 fault injection; coordinate C04. Code: SDL adapter command path, runtime, command consumer and shared ABI status.
+
+**Recorded implementation (2026-09-07):** command submissions retain slot, epoch, fence, publication sequence and an absolute monotonic deadline; completion is reconciled on later presentation calls so the normal path does not block for the full recovery budget. A timeout marks the still-writable slot `FAULT`, invalidates its command shadow and raises the shared command-fence fault; a late fence is consumed only for that original submission and cannot publish or recycle the timed-out slot. Epoch mismatch now resets every adapter-side command shadow, next-slot cursor, fence seed and outstanding record together with `TransportSession::RebindEpoch`; the SDL fixture directly verifies that reset invariant. Candidate-bound local and ARM/QEMU receipts for the current development candidate pass these regressions. Completion-before/after-deadline, delayed DDR writes, repeated timeout recovery and board fault/relaunch evidence remain open.
+
+**Implementation procedure**
+
+1. Introduce an outstanding submission record containing slot, epoch, fence, publication sequence, deadline and state. After publishing commands, retain that record until completion or acknowledged cancellation.
+2. Replace poll-count timing with an absolute monotonic deadline. Normal presentation must not block repeatedly for the full recovery budget; poll/reconcile outstanding work on subsequent service steps.
+3. On timeout, stop new writes to the owned slot and preserve the last display. If the fence arrives late, either publish the completed frame if still useful or retire it safely; never leave the allocation forgotten.
+4. Publish command consumer errors with code/detail/epoch and make the ARM supervisor observe them. Define behavior for bad records and ring cursor violations without waiting on an unwritten global fault field.
+5. For unrecoverable work, quiesce producer and consumer, acknowledge the stopped epoch, then initialize a fresh one. Do not reset ring cursors or FREE slots while FPGA writes can still arrive.
+
+**Verification**: completion just before/after timeout, timeout in each command phase, invalid opcode/layout, delayed writes, fence-number wrap, core reload and repeated timeouts exceeding slot count. Assert that each outstanding record reaches completion or an acknowledged abort and that no late write reaches a recycled slot.
+
+**Close only when** usable service returns within the configured live-interface recovery budget, fatal interface loss is visible and safe, all slots remain accounted for, and board fault/relaunch tests match host/RTL results. Record faults as outcomes, not successful frames.
+
+### C07 — Serialize reset recovery with audio and adapter state
+
+**Status: IN PROGRESS — callback-held atomic runtime ownership, callback-owned resampler reset generations, and a generation-validated reader/transition gate now prevent live reset recovery from racing a callback entry. SDL device quiesce/prime and target interleaving evidence remain open · P1 · closes F07.** Dependencies: define the protocol jointly with C06; C17 ownership applies to process-level resets. Code: adapter, runtime and audio callback overlay.
+
+**Recorded implementation (2026-09-07):** an audio callback first confirms an even transition generation, increments its reader count and confirms the same generation again before loading/using the runtime. Recovery atomically turns the generation odd and proceeds only if no confirmed reader remains; otherwise it restores the even generation and lets normal SDL pacing retry. This closes the previously unsafe check-then-recover interval without blocking the audio thread. The SDL input/transport test explicitly exercises callback-held recovery denial, transition-time callback denial and post-transition resumption. It passes when invoked with the recorded local SDL include/library configuration. Full lifecycle stress, a target audio-device pause/lock decision and board reset proof remain required.
+
+**Implementation procedure**
+
+1. Identify callback, presentation and lifecycle threads and list shared fields. Assign one owner to resampler phase/history and make session lifetime explicit.
+2. Add lifecycle states such as RUNNING, QUIESCING, DETACHED and PRIMING. The control thread requests quiescence; the callback stops publishing and acknowledges it without allocating or performing an unbounded wait.
+3. Use an appropriate SDL audio-device lock/pause or an explicit atomic handshake supported by the actual Aulib integration. Avoid a lock inversion where the control thread waits for a callback while holding a resource the callback needs.
+4. Only after callback and FPGA access are quiesced may the control page/epoch be reinitialized. Reset resampler history, slot caches, pending fences and delivered-input state through their owners.
+5. Wait for validated FPGA attachment, prime PCM, then resume normal publication. Normal shutdown follows the same lifetime guarantees before unmapping.
+
+**Verification**: a host callback/lifecycle harness repeatedly interrupts publication at controlled points; use ThreadSanitizer on a supported native build for ordinary shared state and protocol assertions for MMIO. Run resets during resampling, command waits and full copies, plus shutdown while a callback is scheduled.
+
+**Close only when** there is no unsynchronized mutable callback/session state, no callback access after unmap or during header reinitialization, and repeated on-board resets recover audio/video/input. Sanitizer unavailability must be recorded; alternate evidence must still test the interleavings explicitly.
+
+### C08 — Make malformed rectangle handling safe and consistent
+
+**Status: IMPLEMENTED — widened software/RTL clipping tests pass for extreme coordinates and checked pitch arithmetic rejects overflow; C19 oracle vectors and sanitizer evidence remain open · P2 · closes F17.** Dependencies: none; feeds C19's trustworthy oracle. Code: `mister_command_renderer.hpp`, `mister_transport.hpp`, command validation RTL/tests.
+
+**Implementation procedure**
+
+1. Specify accepted coordinate/dimension ranges and behavior for empty, negative, offscreen and malformed records. Separate valid clipped no-ops from invalid protocol records.
+2. Perform additions, negations and extent calculations in a sufficiently wide signed type before clamping. Never negate INT_MIN or add extents in int32. Validate pitch/height multiplication against span size without overflow.
+3. Convert back to narrow indices only after bounds establish representability. Review packed copy-source coordinates for deliberate int16 truncation versus validation.
+4. Apply the same input semantics in FPGA decode; a software no-op must not become an FPGA write or vice versa.
+
+**Verification**: INT_MIN/INT_MAX coordinates and extents, zero/negative dimensions, crossing each edge, huge pitch/span claims, copy overlap in both directions and malformed flags. Use sanitizer-supported host tests and seeded property tests against a simple widened oracle.
+
+**Close only when** every case rejects or clips deterministically without undefined arithmetic/out-of-bounds access and software/RTL outcomes agree. Save boundary-case vectors so future optimization cannot weaken validation silently.
+
+### C09 — Prove integrated DDR service bounds and recovery
+
+**Status: IN PROGRESS · shared delayed-DDR regression instantiates every production client, fixes command starvation and now fails closed on missing DDR service; deadline calculations and target combined-load stress remain open · P2.** Dependencies: C03–C07 interfaces; final closure after their fixes. Code: `rtl/diablo_transport_ddram_arbiter.sv`, `support/tests/diablo_transport_integrated_tb.sv`, top-level transport harness, arbiter, consumer state machines and tests.
+
+**Recorded implementation (2026-09-07):** `diablo_transport_integrated_tb` puts the real control reader, framebuffer scanout, PCM player, input capture and command consumer behind the real arbiter and one deterministic 1–4-cycle DDR responder. It validates live control attachment, input producer advancement, PCM acknowledgement, a vblank display-state transition, command fill/copy/end-fence completion and equal accepted-read/response counts under contention. The first run discovered that continuous PCM/input/frame traffic left the command client permanently unserviced. The arbiter now retains response and write-burst ownership but gives a pending command request one accepted transfer after at most seven higher-priority grants. It also has parameterized response and pre-acceptance-busy watchdogs: either timeout latches a fail-stop fault, blocks new requests, keeps all clients backpressured, and drains a late reply only to the recorded original owner. The top-level session, framebuffer enable, LED and board-visible preflight indicator observe that fault; reset is the explicit recovery boundary. Zero-valued response/busy watchdogs and zero-valued client poll/sample intervals are clamped to a one-cycle limit so parameterized stress builds cannot underflow into effectively disabled service. The arbiter fixture injects both a missing reply and permanently busy DDR and verifies that contract. Registered RTL receipt `20260907T034106Z-c24f58de-9074-4693-955d-e23b6827fcc1.json` passed all RTL fixtures including this integration case and fault injection for source snapshot `f661b7d60ef235767f2d1b6d4408f90de4999bb71477c4af8da37b297cd6da96`. These are local fail-stop and bounded-service checks only: the watchdog values are not yet derived from audio/display/input deadlines, and no target combined-load stress has been run.
+
+**Implementation procedure**
+
+1. Instantiate real control reader, scanout, PCM, input and command clients behind the actual arbiter, backed by a shared-memory scoreboard rather than independent ideal responders.
+2. Model request acceptance, response delay and single/multiple outstanding behavior exactly as supported. Preserve read ownership until the final expected response; verify resets cannot assign stale responses to a new client.
+3. Define a bounded-DDR service assumption for normal-operation tests. Calculate each client's deadline from queue depth, sample rate and display timing and reserve service accordingly. Add fairness/aging or credits only if strict priority cannot meet the measured bounds.
+4. Separately inject missing responses and stuck busy. Design a visible fatal timeout/recovery path without fabricating a response or releasing memory that may still be written.
+5. Exercise control rechecks and relaunch while command traffic is continuous, not only when the port is idle.
+
+**Verification**: reproducible seeds and adversarial maximum allowed delays; PCM/input saturation; command fills/copies; palette upload at boundary; epoch change; late response after reset. Assert region bounds, owner routing, no client starvation under the bounded model and safe stop under unbounded failure.
+
+**Close only when** the integrated scoreboard remains correct, measured service times meet configured budgets and target combined-load stress confirms no growing queues or unobserved faults. Unit fixtures remain useful but cannot replace this harness.
+
+### C10 — Wire real OSD focus and release/reconcile held controls
+
+**Status: IN PROGRESS — real `OSD_STATUS` capture and host focus/release reconciliation regressions pass; C07 lifecycle, overflow, engine and target workflows remain open · P1 · closes F08.** Dependencies: C12 delivered-state model; coordinate C07 lifecycle. Code: `Diablo.sv`, input capture RTL, input ABI/reducer and SDL adapter.
+
+**Recorded implementation (2026-09-07):** `Diablo.sv` now connects the wrapper's `OSD_STATUS` signal to `diablo_input_capture`; the RTL publishes focus transitions separately from controller-button payload changes and the host adapter releases delivered keyboard/mouse state on focus loss, retains desired physical state, and requires a neutral/repress sequence after focus regain. The SDL regression covers unchanged button bits during OSD transitions, held-key release ordering, filtered key recovery and shared keyboard/controller ownership. Receipt `20260907T050305Z-ad75216e-54e9-4b22-975f-0e6903644782.json` passed the local foundation, host, SDL and RTL suites for source snapshot `01c2814daab244d9bbc85444b0638a27ddd49a3bfe8f793d87c78e215a80a249`. Overflow/reconnect behavior beyond the bounded host fixture, engine-level focus behavior and physical target workflows remain open.
+
+**Implementation procedure**
+
+1. Route `OSD_STATUS` to input capture and establish its polarity and clock-domain contract from the MiSTer wrapper. Synchronize it if required; do not infer focus from physical button bits.
+2. Publish focus changes with epoch/generation and define ordering relative to queued input. On focus loss, suppress gameplay delivery and release every delivered held action, including keyboard and mouse/controller-derived keys.
+3. Retain physical desired state separately while OSD owns input. On focus gain, apply the documented policy: require neutral/repress for actions that must not fire immediately, and resynchronize safe state.
+4. Handle lost focus events through snapshots/generation changes so ring overflow cannot leave permanent focus disagreement.
+
+**Verification**: OSD opened via menu/software with unchanged button bits; held attack/move/click on open; close while still held; rapid toggling; overflow; reset; device reconnect. Verify engine actions, not only focus-event logs.
+
+**Close only when** normal OSD interaction never drives the game behind it or leaves controls stuck afterward, RTL event ordering is tested and physical keyboard/controller OSD workflows pass on the rebuilt candidate.
+
+### C11 — Complete transported keyboard modifiers and text entry
+
+**Status: IN PROGRESS — physical modifier tracking and text-active US-layout SDL regressions pass; engine naming/chat and target validation remain open · P1 · closes F09.** Dependencies: C10 focus semantics and C12 shared delivered state. Code: SDL adapter and pinned engine input integration overlays.
+
+**Recorded implementation (2026-09-07):** `mister_transport_sdl.hpp` tracks left/right Shift/Ctrl/Alt and Caps Lock from physical keyboard state, emits per-event modifier masks, keeps controller modifiers out of typed text, and translates the documented US-layout printable subset to `SDL_TEXTINPUT`. A pending bit now bridges the two-event failure case: if SDL accepts a keydown but filters or rejects its text event, bounded reconciliation retries the text exactly once; key release, focus loss and discontinuity clear stale pending characters. `mister_transport_input_test.cpp` covers shifted text, filtered keydowns, filtered text recovery and release ordering. Receipt `20260907T050305Z-ad75216e-54e9-4b22-975f-0e6903644782.json` passed the local suites for source snapshot `01c2814daab244d9bbc85444b0638a27ddd49a3bfe8f793d87c78e215a80a249`. Engine naming/chat, composition/locale policy, repeat semantics and target validation remain open.
+
+**Implementation procedure**
+
+1. Inventory actual engine consumers of modifier state, keyboard-state polling and SDL text events. Define the supported keyboard layout/text encoding rather than guessing text from arbitrary scancodes.
+2. Maintain physical key state and aggregate modifiers, including left/right Shift/Ctrl/Alt and lock-key behavior. Supply both per-event modifier fields and the state queried by engine consumers using a deliberate backend integration.
+3. Implement text input only while text entry is active, with UTF-8-safe events, shifted characters, repeat/backspace and composition policy. Prevent duplicate text when another SDL input backend is active.
+4. Preserve distinct keyboard and controller sources so synthetic controller modifiers do not accidentally alter typed text or cause premature key-up of a physically held key.
+5. Reset delivered state on focus loss, disconnect and epoch transition using the common reconciliation path.
+
+**Verification**: hero naming, save/name fields, chat, punctuation, Shift+letters, Ctrl+wheel, simultaneous left/right modifiers, lock states, held-repeat and text cancellation. Add engine-level assertions for modifier queries and text buffers rather than merely checking SDL event type.
+
+**Close only when** keyboard-only naming/chat/gameplay combinations work on target and controller mappings do not corrupt them. Record layout limitations explicitly; an unsupported required naming/chat path remains open.
+
+### C12 — Correct mouse masks and make queue recovery reliable
+
+**Status: IN PROGRESS — translated motion masks, bounded failed-event reconciliation and shared-source releases pass in host regression; full queue/physical recovery remains open · P2 · closes F10.** Dependencies: none for mask fix; joint delivered-state interface with C10/C11. Code: SDL adapter event injection and input reducer tests.
+
+**Recorded implementation (2026-09-07):** `mister_transport_sdl.hpp` maps PS/2 left/right/middle bits to the SDL left/right/middle masks for motion, advances delivered state only after `SDL_PushEvent` reports queued, and reconciles keyboard, mouse and controller state through a bounded 32-event budget. Mouse cursor deltas are widened to 64-bit before accumulation, so extreme signed packets clamp safely without signed-overflow UB. The host fixture covers right-button motion/edge ordering, extreme mouse deltas, OSD release/repress, filtered keyboard delivery, shared keyboard/controller holds, shifted text and a filtered text event that is recovered on the next pass. Receipt `20260907T050305Z-ad75216e-54e9-4b22-975f-0e6903644782.json` passed foundation, host, SDL and RTL checks for source snapshot `01c2814daab244d9bbc85444b0638a27ddd49a3bfe8f793d87c78e215a80a249`. Filled-queue saturation, ring overflow/reconnect and physical mixed-input workflows remain open.
+
+**Implementation procedure**
+
+1. Translate PS/2 left/right/middle bits to SDL button masks explicitly for motion, matching the existing button-edge translation.
+2. Replace fire-and-forget event injection with a result that distinguishes queued, filtered and failed events. Inspect the actual SDL return contract before using it to advance state.
+3. Maintain desired versus successfully delivered state. Do not advance delivered masks when an event is rejected; retry/reconcile using a bounded queue rather than accumulating an unbounded event backlog.
+4. Aggregate keyboard and controller contributions to shared keys. Emit a key-up only when no active source still holds that key.
+5. On overflow/disconnect/focus change, use a complete state reconciliation or explicit release sequence. Preserve motion/wheel ordering without replaying stale clicks.
+
+**Verification**: right/middle drag with motion-state checks; filled SDL event queue during down/up; filtered events; ring overflow; held controller+keyboard same key; unplug and reconnect. Assert final engine state equals desired state after recovery and every release is eventually delivered.
+
+**Close only when** all event masks agree, failures cannot strand controls and bounded recovery passes adapter tests plus physical mixed-input workflows.
+
+### C13 — Deliver correct gameplay on every required output mode
+
+**Status: IN PROGRESS — the top level now has an explicit gameplay/diagnostic source policy and forces the framework framebuffer/scaler when a valid indexed frame is committed; target mode, timing and physical gameplay evidence remain open · P1 · closes F11.** Dependencies: C03/C05 display protocol; C25 timing; C31 output matrix. Code: `Diablo.sv`, `rtl/native_test_pattern.sv`, `sys/emu_ports.vh`, `sys/sys_top.v`, framebuffer/scaler and native RGB routing.
+
+**Recorded implementation (2026-09-07):** `Diablo.sv` still sets `FB_FORMAT=5'b00011`, `FB_WIDTH=640`, `FB_HEIGHT=480` and `FB_STRIDE=640`; `FB_EN` and `VGA_SCALER` now share `gameplay_video_valid`, so diagnostic/startup states cannot advertise stale indexed framebuffer metadata. It adds a `Video source` OSD option (Gameplay by default, Diagnostics explicit), drives the framework path only when a valid gameplay frame is available, and passes diagnostic/startup state into `native_test_pattern`. The native generator keeps its 640×480/60 Hz timing, emits the selected bars/pixels/ramps only in explicit Diagnostics mode, emits a dark-red startup/fault screen before a valid frame, and emits black on the direct RGB bus for normal gameplay while the framework scaler is selected. `support/NATIVE_VIDEO.md` records the actual `sys_top.v` mux (`cfg[12]`, `cfg[2]`, `direct_video`, `vgas_en`) and the absence of a core-side inverse direct-video override. The native RTL fixture passes the original timing/pattern checks plus source-guard checks. This proves source-selection intent and local timing only; framework mux behavior, indexed/palette consumption, target modes and physical gameplay output remain open. Preserve `.mister/evidence/native-hdmi-delay12-build.json` as historical timing evidence while keeping the output acceptance gate open.
+
+**Implementation procedure**
+
+1. Freeze the C31 output matrix before changing wiring. For each row, record connector, progressive/interlaced mode, active width/height, pixel clock or `CE_PIXEL` relationship, sync polarity, RGB depth/order, palette ownership, `FB_*` versus direct-`VGA_*` source, forced-scandoubler/scaler setting, and the required physical observation. Mark a row `supported`, `diagnostic-only`, `unsupported-by-scope-decision`, or `blocked-by-equipment`; do not let an unmarked row inherit the HDMI result.
+2. Trace the framework end to end from `emu_ports.vh` through `sys_top.v` and the imported video modules. Draw the actual mux for direct RGB, framebuffer/scaler RGB, HDMI and analog outputs, including where `FB_EN`, `FB_FORCE_BLANK`, `VGA_SCALER`, `VGA_DISABLE`, `VIDEO_ARX/ARY` and `forced_scandoubler` take effect. Add a small source-of-truth comment or interface note beside the mux so a future diagnostic cannot silently become the release source.
+3. Define one explicit top-level video-source state: `diagnostic_pattern`, `game_framebuffer`, `startup_error`, or `blank`. Select it from a documented OSD/debug option and transport/framebuffer validity. In normal launch, select `game_framebuffer` only after a complete frame and palette generation is committed; select `startup_error` or `blank` with a visible, deterministic indication on attach/fault. Never leave the diagnostic pattern as the implicit fallback for a requested gameplay mode.
+4. For each scaler-supported row, route the committed indexed framebuffer and palette through the real `FB_*` interface, then prove the framework consumes those signals rather than the direct test-pattern bus. Check base/stride/width/height and palette-bank timing against C05; keep `FB_EN` low until the first valid atomic frame. Add RTL assertions that the selected source, sync, blanking and palette generation agree at every frame boundary.
+5. If a required row bypasses the scaler, implement a separate native scanout only after a bandwidth calculation under C09. Use a bounded line buffer, indexed palette lookup, explicit DDR ownership and a timing generator with declared read-ahead margin. Prove that scanout never reads an active/pending slot being retired, and that a lost DDR response enters the C09 fail-stop state instead of emitting stale or mixed pixels.
+6. Keep `native_test_pattern` as a diagnostic fixture with an explicit mode and test it independently. Add a mux-level simulation that runs pattern → gameplay → palette-only change → reset → transport fault; assert that gameplay pixels appear in every advertised gameplay row and that pattern colours cannot appear unless diagnostic mode is selected.
+7. Update the mode guide and launcher defaults only after the mux test passes. State the exact MiSTer profile, connector, resolution, refresh, aspect/scandoubler setting and known limitations for each row. If a row is removed from scope, record the decision, rationale, user-visible consequence and required plan/status updates; do not close F11 by relabelling it.
+
+**Verification**: first run the mode-matrix/mux RTL test with assertions for source selection, frame/palette generation, sync polarity, blanking and reset/fault behavior. Then run patterns followed by deterministic Diablo and Hellfire gameplay scenes, palette animation, aspect changes, core switching and relaunch on each supported row. Capture output timing and RGB/palette transitions at the physical connector; verify sync lock, all four borders, geometry, RGB order and 8-bit ramp precision. Correlate each capture with the exact C18 ARM/RBF/ABI IDs and C25 timing report. A recognizable pattern or a framebuffer register dump alone is insufficient.
+
+**Close only when** every required/advertised row has a passing mux/RTL result, complete indexed/palette equality for its gameplay source, matching timing evidence and a physical observation on the same immutable candidate. The closure record must link the final mode matrix, mux test receipt, C19 scene-equality receipts, C25 timing/endpoint review and per-connector captures. If equipment for a required row is unavailable, mark that row `BLOCKED`, name the missing adapter/display/measurement and the exact next observation; the parent item remains open.
+
+### C14 — Make configuration and startup failure deterministic
+
+**Status: IN PROGRESS — strict parser, entry-path host tests and terminal SDL-backend failure handling pass; ARM mapping, launcher and admission coverage remains open · P1 · closes F18.** Dependencies: launcher reporting under C16; runtime source checks under C17. Code: `mister_main.cpp`, SDL adapter initialization and CMake entry overlays.
+
+**Recorded implementation (2026-09-07):** `mister_main.cpp` continues to use the shared strict `DIABLO_MISTER_TRANSPORT` parser and now treats failure to set the required dummy SDL backend as a terminal startup error instead of logging and entering transport with an unknown video backend. The foundation receipt `20260907T042145Z-f9d97680-9394-49c0-81ec-20af9e1fa566.json` covers the entry/lifecycle regression suite for source snapshot `fa6681649351b8187470f9ed7aad730d98f4251bb4fbd578283494c7a07df50f`; direct ARM mapping, ABI-ready and target launcher failure propagation remain open.
+
+**Implementation procedure**
+
+1. Introduce one configuration parser for transport enablement and related environment options. Define absent, `0`/`false`, `1`/`true` and malformed values consistently; reject ambiguous values with a clear diagnostic.
+2. Select dummy SDL video only when transport is positively enabled and its startup policy requires it. Disabled mode retains normal SDL behavior.
+3. Propagate mapping/ABI/epoch/FPGA-ready failures from initialization to the entry point or engine startup result. Explicitly requested transport must not continue invisibly with dummy video after failure.
+4. Preserve useful error causes and exit statuses for the launcher: missing source, conflicting source, invalid address, map failure, mismatched ABI and attachment timeout.
+5. Bound startup waiting with a monotonic deadline and clean up mappings/locks on every failure path.
+
+**Verification**: table-driven parser tests; transport absent/disabled/enabled/malformed; both mapping sources present; nonexistent/short backing file; invalid epoch; FPGA never ready; normal non-transport launch. Assert exit status, cleanup and whether a visible backend or transport was selected.
+
+**Close only when** all startup states have documented outcomes, no silent dummy-only failure remains and the menu launcher presents a useful failure on target without leaving a process/lock behind.
+
+### C15 — Eliminate active-playback PCM starvation
+
+**Status: IN PROGRESS · the ABI now exposes atomic PCM queue/cursor and underrun/resync snapshots, while the adapter records callback/frame publication and drop totals and reports counter deltas. Active-load measurement, priming/watermark tuning and physical audio remain open · P1.** Dependencies: C07 lifecycle, C09 service guarantees, C20/C21 measurement; physical routing from C25. Code: PCM RTL, audio resampler/publisher and Aulib overlay.
+
+**Recorded implementation (2026-09-07):** the ARM can read a coherent PCM health snapshot containing producer, consumer, queued frames, FPGA underruns and resyncs. The SDL adapter samples it on a bounded presentation cadence and logs any diagnostic delta with local successful/dropped callback and frame totals. The ABI regression sets packed FPGA diagnostics and verifies the decoded values. This makes future active-playback traces able to distinguish ring priming from starvation; it does not turn historical or idle counters into a zero-underrun claim.
+
+**Implementation procedure**
+
+1. Establish counter meaning and sample units. Add or expose queue occupancy, high/low watermarks, source callbacks, published/dropped frames, consumed frames, underruns and resyncs with epoch and lifecycle phase.
+2. Define STARTING/PRIMING/PLAYING/DRAINING/STOPPED intervals. Start acceptance counters only after sufficient priming; distinguish legitimate stopped-producer silence from active starvation without hiding active failures.
+3. Capture callback interval distribution and DDR service delay on the candidate. Calculate buffer coverage from 48 kHz consumption and measured worst-case refill time; identify whether starvation originates in scheduling, resampling, ring publication or FPGA arbitration.
+4. Fix the measured cause: bounded callback work, correct resample frame accounting, suitable priming/watermarks and scheduled DDR fetches. Increase buffering only with measured latency cost; do not drop chunks or repeat stale audio to make counters look clean.
+5. Verify source format/channel/rate assumptions against actual obtained SDL audio format and handle mismatch explicitly. Preserve sample continuity through callback boundaries.
+
+**Verification**: ramps/sine/left-right markers, callback-size variation, rate continuity, ring wrap, under/overflow injection, reset and silence. Run 30 minutes active combined load per campaign, sampling counter deltas while the producer is alive; listen/capture physical channels and inspect discontinuities.
+
+**Close only when** active intervals have zero underrun/resync delta, no unreported drops, correct sample/channel behavior and physical sound. Retain traces explaining historical underruns and how the new candidate addresses their cause.
+
+### C16 — Implement the real MiSTer launcher lifecycle
+
+**Status: IN PROGRESS · project-owned preflight and foreground supervision exist; target menu/profile binding, matching accepted artifacts and physical lifecycle qualification remain open · P1.** Dependencies: C14 startup contract, C17 admission, C18 artifact manifest; C10 focus. Code: `support/scripts/diablo_launch.py`, new project-owned launcher/install scripts, runtime entry point and packaging configuration.
+
+**Recorded implementation (2026-09-07):** `diablo_launch.py` defines a shell-free loader contract rather than assuming an undocumented menu API. It accepts only hash-verified RBF and ARM engine artifacts from an immutable candidate manifest; validates Diablo/Hellfire archives without modifying them; creates campaign-specific writable saves; generates one no-replace current-boot admission record; and passes candidate, mapping and lock configuration to the runtime. A loader must exit successfully and write the selected candidate ID to a per-run ready file before the foreground engine is started. Loader, engine and optional menu-return commands have bounded timeouts, process-tree termination, capped logs and explicit cleanup of transient readiness/admission records. The launcher now acquires an OS advisory lease on the configured transport lock before creating the admission record and holds it through loader, runtime and optional unload; a second launch fails before starting either command, and a crashed process releases the lease through descriptor lifetime. The locked descriptor is handed into each child (`pass_fds`/Windows handle list), and the Linux runtime validates and adopts a duplicate of that exact file instead of reopening the held pathname, eliminating a parent/child lock race. Artifact preflight now rejects a symlink before resolving it, so a redirected RBF or engine cannot inherit a trusted target's hash. Unit fixtures prove matching-artifact preflight, symlink rejection, readiness sequencing, inherited-lock metadata, failed-loader non-start of the runtime, cleanup and exclusive-lease rejection; foundation receipt `20260907T042145Z-f9d97680-9394-49c0-81ec-20af9e1fa566.json` passed for source snapshot `fa6681649351b8187470f9ed7aad730d98f4251bb4fbd578283494c7a07df50f`. The development ARM/RBF candidate and host/RTL/ARM-QEMU evidence now exist in C18; C16 still needs a supported MiSTer menu/profile binding, current-boot loader readiness, data compatibility evidence and physical Diablo/Hellfire campaign/save/core-switch qualification before it can close.
+
+**Implementation procedure**
+
+1. Inspect the pinned MiSTer/menu and donor integration contracts read-only. Define a daemon-free entry path, expected filesystem layout, arguments/environment and how launch receives/selects the campaign.
+2. Validate matching ARM/RBF/ABI manifests and required user-supplied campaign data before launch. Keep commercial data read-only; put logs/config/saves in explicit writable locations and avoid sharing test fixtures with real saves.
+3. Acquire exclusive runtime ownership, validate current-boot memory admission, load the matching RBF and wait for readiness before starting normal transport writes.
+4. Supervise the foreground process with bounded startup and shutdown. Handle normal quit, error exit, reset, menu return and core switch; stop callbacks/commands before releasing mappings or locks.
+5. Preserve error output in a bounded log and return a menu-visible message. Handle spaces in paths, missing storage, read-only save paths and failed core loading without continuing in a half-started state.
+6. Define stale-lock recovery based on actual ownership/liveness, not merely deleting an existing lock file.
+
+**Verification**: host fake-board backend for launch/failure sequencing; target Diablo and Hellfire launch, save/load, quit, reset, switch away/back and second launch. Test killed process, missing MPQ, binary mismatch and storage removal/error in a controlled fixture.
+
+**Close only when** both campaigns run through the intended menu entry without manual environment setup, lifecycle failures clean up safely and real saves survive the acceptance sequence. Keep final clean-install packaging verification under C32.
+
+### C17 — Enforce current-boot reserved-memory admission and ownership
+
+**Status: IN PROGRESS · strict physical-aperture parsing, current-boot/candidate admission matching and a kernel-released exclusive lease are implemented and host/ARM-QEMU file-backed runtime checks pass. Board reservation evidence and launcher ownership hand-off remain open · P1.** Dependencies: C18 compatibility manifest; C16 consumes this API. Code: mister_transport_admission.hpp, runtime mapping, DDR preflight/probes and launcher admission helper.
+
+**Recorded implementation (2026-09-07):** production /dev/mem mapping now rejects signs, whitespace, trailing text, overflow and any aperture whose mapping offset/span cannot fit off_t; it requires a bounded no-symlink admission record containing the live Linux boot ID, exact base/bytes and `DIABLO_MISTER_CANDIDATE_ID`. The launcher acquires an OS advisory lock on that configured lease path before creating admission, passes the locked descriptor to child processes, and keeps it until teardown; the Linux runtime validates the inherited descriptor against the no-symlink pathname and adopts a duplicate. File-backed/QEMU mappings now acquire the same lease before opening the shared file, so standalone runtime probes cannot race a launched writer; the QEMU ABI probe supplies and exercises a dedicated lock path. A process crash releases the descriptor lock without treating pathname deletion as recovery. The standalone destructive probe performs the same admission and lease checks before mapping/writing. `mister_transport_admission_test.cpp`, `test_command_transport.py`, `test_diablo_launch.py`, and ARM/QEMU's file-backed `transport_runtime_probe` pass; `transport-abi-layout-test.json` (SHA-256 `5ad038eea5c9b0976aeb2a738f067ae614f72ca9d9a65f8afe2ade56fe79fcf6`) records the QEMU run, while foundation receipt `20260907T042145Z-f9d97680-9394-49c0-81ec-20af9e1fa566.json` remains the historical launcher receipt for its earlier source snapshot. The physical path is intentionally not claimed until C16 produces the admission record and C23 records a supported board boot.
+
+**Implementation procedure**
+
+1. Document why the aperture is reserved on supported MiSTer kernels and how the current boot exposes that fact. Validate the actual memory map/kernel/framework configuration; a successful mmap or old receipt is not proof of reservation.
+2. Validate start/length/alignment and address representability before casting to `off_t`. Reject negative text, trailing junk, arithmetic overflow, out-of-range addresses and overlap with live framework buffers.
+3. Define one ownership mechanism shared by launcher, runtime and every diagnostic writer. Acquire it before any challenge/header writes and hold it for the complete live session.
+4. Keep read-only inspection separate from destructive probes. A DDR challenge writes the ABI header region and must refuse to run while an engine/other probe owns it.
+5. Bind admission evidence to boot identity, kernel/framework identity, aperture and candidate. On boot/core-layout changes, revalidate instead of silently trusting a cached pass.
+
+**Verification**: alternate/unsupported maps, second instance, concurrent probe, stale lock, unaligned and overflowing addresses, failed mmap and crash cleanup. Use file-backed or mocked fixtures for invalid-address cases; never test rejection by writing arbitrary physical memory.
+
+**Close only when** incompatible layouts and conflicting writers fail before writes, the supported board boot has recorded reservation evidence and normal relaunch reacquires ownership safely.
+
+### C18 — Establish immutable candidate and acceptance identities
+
+**Status: IN PROGRESS · candidate manifests are content-addressed and immutable; source/artifact mutation and overwrite refusal are unit-tested. A current development ARM/RBF candidate now exists, while target admission, qualification and acceptance promotion remain open · P1 · closes F12.** Dependencies: C27 build inputs and C29 receipt schema developed together. Code: `support/scripts/candidate_manifest.py`, build helpers, state links.
+
+**Recorded implementation (2026-09-07):** `candidate_manifest.py create` records every configured source input, relevant dirty source status, supplied tool identities and artifact hashes. Its source ID and candidate ID change when their respective inputs change; `verify` rejects mutation. Publication uses a unique temporary file plus a no-replace link, so an existing manifest cannot be overwritten. Source inputs, launcher artifact paths, manifest paths and all parent path components are now rejected before symlink resolution; malformed manifests fail as bounded verification errors; generated `__pycache__`/`.pyc` files are excluded from the canonical source set so test runs cannot mutate candidate identity; the candidate/launcher regressions pass. The earlier FPGA-only manifest `.mister/evidence/candidates/fpga-candidate-20260907-1.json` remains preserved as historical evidence (manifest SHA-256 `ac7298722bae3b26d43c022234d84fb54b6d04e25130b109b19b6ee76bbe60ee`, candidate ID `b9979b1ca4f2640aa10516b53a88959e84f7767588363340df7243f4c11b4110`); the first artifact-path symlink fix correctly invalidated it. The four-artifact candidates `.mister/evidence/candidates/fpga-candidate-20260907-2-arm.json` (manifest SHA-256 `c97cd7a8b30a409b4d69a540d2532ab520dabd494b7020822519bd0d1729303d`, source ID `fd1c317bdafcc9179107fe21ccaa13813a4f8a8ada68feafb741c09a226ec37a`, candidate ID `f3ca93d3816c12d8a3f8c724e924357cb1b034d300052a5378eb47b7c4b41901`) and `.mister/evidence/candidates/fpga-candidate-20260907-5-arm.json` (manifest SHA-256 `8d2b603ec3e91cb0240cdda00c37317d32366cc8d616a9890326eac55183a214`, source ID `dfe50a9cc7af178954cc819e4b93fdd21993148fe70ac9663858062e5a4a1a4e`, candidate ID `a1fc74fdbf27f9759691391fe576480b5f4e8d4548a287ed08f34ec272a7058c`) are preserved as historical development evidence and were superseded by subsequent source hardening. The current development manifest `.mister/evidence/candidates/fpga-candidate-20260907-6-arm.json` verifies with four artifacts (manifest SHA-256 `8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762`, source ID `48cbaf2d4ff36ac820e22ca0008b213d539629ef1880c40634ba203a0e8fa5e7`, candidate ID `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`). The bound ARM artifact is 8,518,704 bytes with SHA-256 `11ed2bf67edfc99b80ed6ff541cd991d20cd39cbd82f6b43c9b038dbb06f3ced`; the compressed and raw RBF both have SHA-256 `56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c`, and the SOF has SHA-256 `d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`. The configured candidate-bound local and ARM/QEMU receipts pass, but this remains development-only: target loader admission, current-boot mapping proof, physical I/O, deterministic campaign equality, performance and acceptance promotion remain open.
+
+**Implementation procedure**
+
+1. Inventory historical accepted ARM/RBF hashes and current local outputs without overwriting either. If a historical binary is unavailable locally, mark the reference unavailable; never relabel a new binary with the old acceptance.
+2. Build a canonical manifest of project source, engine/donor/template identities, overlays, generated ABI, constraints/QSF, dependency lock, tool versions/options and source-tree cleanliness or dirty snapshot.
+3. Derive an immutable build ID from canonical inputs and store artifacts under a build-specific directory. Capture full hashes/sizes and distinguish compressed RBF from other formats.
+4. Maintain separate pointers for development candidate, tested candidate and board-accepted candidate. Promotion requires successful checks applicable to that exact input/artifact set.
+5. Before loading/running on target, verify local and copied target hashes. Record the board boot/configuration and observation window in the resulting receipt.
+
+**Verification**: changing one source/header/constraint invalidates the ID or acceptance; modified artifact fails verification; partial build cannot promote; two concurrent builds cannot overwrite one another; absent historical files are reported accurately.
+
+**Close only when** current source and artifact identities are reconciled, manifests reconstruct every acceptance claim, and one complete fixed candidate has matching build/test/board receipts. Infrastructure implementation can finish early; final promotion occurs after relevant qualification gates.
+
+### C19 — Prove complete accelerated scene equality
+
+**Status: OPEN · P1.** Dependencies: C01–C08, C18, C22; C23 covers physical workflow breadth. Code: scenario/capture runners, independent renderer oracle and target readback tooling.
+
+**Implementation procedure**
+
+1. Define deterministic scenarios for both campaigns covering town, dungeon, combat, automap, UI/cursor restoration, palette fades/cycling, cinematics and loading boundaries. Record seed, replay/input stream, engine/data identities, config and expected capture checkpoints.
+2. Use an independent software reference, avoiding shared changed-run logic as the oracle. Align comparisons by logical checkpoint/frame ID, not wall-clock filename alone.
+3. Add a qualification-only capture protocol that pins a completed slot until index and palette readback finishes. Do not read a slot after FREE or while the FPGA is still executing commands.
+4. Capture all pixels, palette and metadata; compare exact indices/palette, then decoded RGB where appropriate. Report first difference and total differences, preserving private frame artifacts outside distributable evidence.
+5. Exercise software-only, command-only where feasible, and mixed fallback paths with dirty copy on/off. Include forced overflow and late completion so fallback correctness is tested under real adapter flow.
+
+**Verification**: known corruption must fail the comparison; missing/extra capture checkpoints must fail; repeat reference captures first to establish determinism. Run maintained scene cases on actual ARM/FPGA after host/RTL tests pass.
+
+**Close only when** every specified scene has complete equality on the matching candidate and physical displayed-frame/palette checks agree. Emulated ARM capture alone cannot close accelerated target equality.
+
+### C20 — Measure every presentation outcome without bias
+
+**Status: IN PROGRESS · every locally observable presentation return records an explicit outcome and an optional bounded mixed-outcome trace; target measurements and profiler-overhead qualification remain open · P2 · contributes to closing F15.** Dependencies: C06 outstanding-work model; feeds C21. Code: `support/reference/mister_transport_sdl.hpp`, adapter profiling, runtime/engine timing hooks.
+
+**Recorded implementation (2026-09-07):** the adapter starts its profile interval before runtime lookup and accounts for runtime absence, recovery deferred/failed, invalid surface, command published/rejected, frame published, non-backpressure publish failure and exhausted backpressure separately. A failed full-frame publish flushes and records before returning, closing the prior unaccounted early-return path. Publish/flush/present clock arithmetic rejects unavailable or backwards monotonic samples rather than fabricating an unsigned duration; present outcomes are still counted, marked timing-invalid and excluded from duration averages. When `DIABLO_MISTER_PROFILE_TRACE` names a writable file, shutdown writes a versioned JSONL trace from a preallocated 4,096-record ring. Its header reports retained records, overwritten telemetry records and timing-invalid records; each retained record has sequence, timing-validity, publication/backpressure flags and outcome. Trace publication now uses exclusive create (`wbx`), rejects an existing path instead of overwriting prior evidence, removes a newly created partial file on write/close failure and exposes `profile_trace_write_failed` in the aggregate profile output. The SDL fixture verifies mixed outcomes, invalid timing retention, successful trace writing, overwrite refusal and ring overflow retaining the newest window while reporting two drops. The refreshed local receipt is recorded at the top of this plan; target traces and profiler-overhead measurements remain required for closure.
+
+**Implementation procedure**
+
+1. Define non-overlapping stage intervals and an end-to-end presentation interval. For asynchronous work, record timestamps separately rather than summing overlapping durations as if sequential.
+2. Use scope guards or a single finalization path so success, overflow, publish failure, timeout, invalid surface and backpressure all produce records/counter updates.
+3. Add reason codes and counts: no slot, record capacity, payload capacity, command error, late fence, full-copy fallback, skipped display and recovery. Preserve total attempted work including a failed build followed by copy.
+4. Use monotonic clocks and bounded preallocated storage. Make logging asynchronous or sampled with a measured overhead mode; never print per pixel or allocate in the audio callback.
+5. Report dropped telemetry records explicitly and make acceptance traces invalid if missing data could hide deadline misses.
+
+**Verification**: inject each early return and assert event/counter totals; compare stage accounting with outer elapsed time within timer/measurement overhead; test counter wrap and shutdown flush; compare profiling enabled/disabled performance.
+
+**Close only when** unsuccessful work is represented, aggregate counts reconcile to calls/submissions/completions and a saved mixed-outcome trace can be analyzed without excluding failures.
+
+### C21 — Qualify tail latency, display cadence and acceleration benefit
+
+**Status: IN PROGRESS · versioned presentation-trace analysis rejects incomplete telemetry and reports outcome/tail distributions; reproducible paired target benchmarks and physical latency runs remain open · P2 · completes F15 with C20.** Dependencies: C03, C15, C18–C20 and C31 acceptance config. Code: `support/scripts/analyze_presentation_trace.py`, benchmark runner/analyzer and end-to-end latency instrumentation.
+
+**Recorded implementation (2026-09-07):** `analyze_presentation_trace.py` validates the C20 JSONL schema before calculating any metric. By default it rejects a trace with overwritten records, mismatched header counts, discontinuous sequences, malformed/invalid timing or non-monotonic timed starts; `--allow-dropped` is inspection-only and marks the result incomplete. It reports attempts, published and backpressure counts, outcome totals, timing-invalid records, present duration and presentation-start interval distributions using documented nearest-rank p50/p95/p99/p99.9/max values. Optional p99 gates fail explicitly when the needed sample class is absent or exceeds the supplied bound. Foundation tests cover mixed outcome reconciliation, the incomplete-trace rejection/inspection boundary and malformed timing/sequence rejection. Registered foundation receipt `20260907T035638Z-89124f61-3a40-432f-b478-866b630a6cbc.json` passed for source snapshot `d157cf8473fddb913c7d3b25bf2735631fe344a3d28ab4f3d4176be7de7115db`. This local analyzer does not yet supply campaign/scene definitions, target display identifiers, enough duration for target p99.9 confidence, paired software/accelerated artifacts or physical input-to-visible measurements.
+
+**Implementation procedure**
+
+1. Implement an executable benchmark matrix with exact scene, campaign, configuration, pacing authority, candidate IDs and warm-up/run durations. Produce paired software-only/accelerated binaries from the same base.
+2. Collect frame intervals, prepared-frame deadlines, newly displayed IDs, queue age and per-stage outcomes. Separate simulation tick rate, render calls, publication and physical display rather than using one FPS number.
+3. Analyze p50/p95/p99/p99.9 and max with a documented percentile method; include sample count, deadline misses and confidence/variation across at least three paired runs. Long enough runs are required for a meaningful p99.9; label insufficient samples rather than overstating precision.
+4. Measure input-to-visible latency with a repeatable action and synchronized timestamps or physical trigger/capture. Calibrate clock domains; report transport-only figures separately when physical measurement is unavailable.
+5. Identify the limiting stage, implement a bounded optimization, then repeat the same correctness and A/B matrix. Do not compare old dummy-SDL runs with different settings as paired evidence.
+
+**Verification**: analyzer fixtures with known distributions/misses; missing trace rejection; paired order variation; loading stalls classified without dropping them from all reporting. Check the planned performance/input targets per scene, not only a pooled average.
+
+**Close only when** reported distributions are trustworthy, required targets are met and acceleration improves the measured bottleneck without pixel, timing or service regression. If 60 FPS is not achieved, leave the performance gate open and retain the limiting-stage evidence and next implementation action.
+
+### C22 — Separate diagnostic checksums from full correctness evidence
+
+**Status: IN PROGRESS · ABI minor 1 now names absent, sampled CRC32 and full CRC32 checksum kinds, rejects undefined kinds and requires the publisher to declare the kind explicitly; full byte-equality qualification remains open · P2 · closes F16.** Dependencies: ABI compatibility/versioning in C18/C29; used by C19.
+
+**Recorded implementation (2026-09-07):** `support/transport/transport_abi.json` advances the ABI minor from 0 to 1 because the meaning of the existing frame `flags`/`crc32` fields is now contractual. Generated C++ and SystemVerilog outputs define `FRAME_CHECKSUM_ABSENT`, `FRAME_CHECKSUM_SAMPLED_CRC32`, `FRAME_CHECKSUM_FULL_CRC32` and the kind mask. ABI validation rejects unknown flag bits, kinds above full CRC32 and nonzero CRC values marked absent. Both frame-publish APIs require an explicit kind; the indexed publisher selects sampled or full based on `DIABLO_MISTER_FULL_CRC`, while direct command frames declare absence. The host/RTL ABI fixture verifies generated-file freshness, sampled metadata, absent direct frames and rejection of kind 3. Receipt `.mister/evidence/transport-abi-layout-test.json` passed the host and RTL ABI checks. Full indexed-pixel/palette readback, CRC overhead comparison and final candidate compatibility evidence remain required for closure.
+
+**Implementation procedure**
+
+1. Define checksum kind explicitly: absent, sampled diagnostic or full indexed+palette checksum. Specify byte order, sampling pattern, polynomial/algorithm and included fields.
+2. Update producer, generated ABI/docs and tools together. If adding a field or changing interpretation requires an ABI version/capability change, make mismatched peers fail clearly.
+3. Keep normal command frames from appearing verified merely because their checksum is zero. Represent absence rather than interpreting zero as a valid comparison result.
+4. Use completed-slot full readback and byte comparison for qualification; checksum may accelerate triage but must not replace the actual mismatch location/details.
+5. Measure and label the overhead of full CRC/readback; keep diagnostic and performance configurations distinct.
+
+**Verification**: modify a column skipped by the sampled CRC and ensure full qualification fails; change only palette; known checksum vectors; absent versus legitimate zero checksum; old/new ABI mismatch; command and full-copy frames.
+
+**Close only when** no report can mistake sampled/absent metadata for full equality and target corruption in any pixel/palette byte is detected by the qualification pipeline.
+
+### C23 — Complete physical gameplay, lifecycle and endurance qualification
+
+**Status: OPEN · P1.** Dependencies: fixed candidate from C18/C19/C25, launcher C16, I/O C10–C15. This is an acceptance work package, not a substitute for fixing failed cases.
+
+**Implementation procedure**
+
+1. Build a campaign × output × input × workflow matrix with a separate result for every required combination. Include town/dungeon/combat, cinematics, menus, inventory/spells, save/load, quit, reset, switch away/back and relaunch.
+2. Record board/kernel/framework, display/audio/peripheral configuration, artifact hashes, refresh/pacing mode, data identities and save fixture IDs before each run.
+3. Use deterministic scripted actions where possible, plus documented physical observations for visual/audio/control claims. Capture meaningful checkpoints, counters and failures; lack of a crash is not proof that actions worked.
+4. Execute at least 30 minutes combined gameplay per campaign, 2 hours idle with periodic input/audio/display checks and 100 safe lifecycle cycles. Exercise controlled storage failures using disposable test saves/storage fixtures, preserving real user saves.
+5. For a failure, retain reproduction steps, checkpoint, logs and candidate ID, link it to its responsible C-item, implement the fix and rerun affected cases plus a representative full lifecycle. Do not restart the entire matrix unless changes invalidate it.
+
+**Verification/closure**: every required cell passes on the same compatible candidate; no lost/corrupt saves, stuck controls, unexplained frame mismatch, unbounded queue or unrecovered fault. Physical display, speaker and peripheral observations must be explicit. Mark unavailable equipment/observation as BLOCKED, not skipped-success. Store the completed matrix and per-run receipts.
+
+### C24 — Complete controller-only and multiplayer workflows
+
+**Status: OPEN · P1.** Dependencies: C10–C12, C15/C16, compatible candidate C18; coordinate C23 fixtures.
+
+**Implementation procedure**
+
+1. Enumerate every required action and its controller binding: naming, menus, movement, attack, inventory, equipment, spells, automap, saving, pause and exit. Include text-entry or an explicit controller-accessible naming interface.
+2. Test disconnect/reconnect, analog deadzones, simultaneous sources and focus changes. Fix unreachable actions in the mapping/UI integration rather than substituting a keyboard for a controller-only test.
+3. Establish two compatible endpoints with exact engine/campaign/network settings and isolated saves. Test target as both host and joiner for Diablo and Hellfire where supported.
+4. Run 30-minute sessions under normal rendering/audio/input load. Inject bounded delay/loss and disconnect/reconnect using controlled test infrastructure; cover failed join, host exit, wrong campaign/version and chat input.
+5. Capture user-facing errors, connection recovery and transport/audio health. Ensure networking work cannot block the video/input service path indefinitely.
+
+**Verification**: replay the complete action matrix with only the controller connected, then run both host/join directions and each campaign-compatible pairing. Confirm naming/chat, normal gameplay and graceful disconnect while audio/video/input service counters remain within their gates; compare saves before and after failure tests.
+
+**Close only when** the action matrix is complete without hidden keyboard dependencies and both target host/join workflows pass with safe failure behavior. If a second endpoint or physical controller is missing, retain an exact blocked test list. Evidence includes endpoint versions, network settings, durations, action results and resulting save integrity.
+
+### C25 — Close final-candidate timing, inference and endpoint coverage
+
+**Status: OPEN · P2.** Dependencies: C13 supported modes, C18/C27 immutable builds; final check after RTL changes. Code: QSF/SDC, report contracts/parser, `support/EXTERNAL_INTERFACES.md` and relevant framework boundaries.
+
+**Implementation procedure**
+
+1. Compile the complete snapshot with the configured Quartus and retain synthesis/fit/assembly/STA logs, resource reports and all operating corners under the candidate ID.
+2. Inventory active clocks, generated clocks, input/output paths and unconstrained endpoints for every supported mode. Distinguish unused pins from asynchronous inputs and synchronous external interfaces.
+3. Derive I2S/MCLK/I2C/storage/user-port constraints from actual waveform/clock relationships and receiver requirements. Review reset/mode transitions and CDC paths; do not apply broad false paths to silence warnings.
+4. Reconcile the resource inventory with expected RAM shapes, entities, PLL/DSP use and register budgets. Review exact diagnostics with report hashes and rationale, separating errors from qualified exceptions.
+5. Validate HDMI skew/delay assumptions and output-mode electrical/timing behavior on the board where required; retain the distinction between design budgets and measured quantities.
+
+**Verification**: require all applicable timing checks/corners, zero unreviewed active endpoints, matching constraints/source IDs and no unsupported exception. Test parser failure on missing corners, stale review hashes and unexpected RAM shape.
+
+**Close only when** final-candidate reports and endpoint reviews pass, physical assumptions have required evidence and no later RTL/constraint change has invalidated the verdict. A positive summary from another build cannot close this item.
+
+### C26 — Make the complete implementation reproducible from version control
+
+**Status: OPEN · P1 · closes F13.** Dependencies: initial inventory now; final verification uses C27–C29 and candidate source C18.
+
+**Recorded implementation (2026-09-07):** the candidate source inventory now hashes the reviewed top-level, RTL, framework, overlay, test and support inputs while excluding generated interpreter/test caches such as `__pycache__`, `.pyc` and `.pyo`; a regression mutates a generated cache and proves the source ID remains unchanged. Current candidate-6 inventory contains 151 source files and no generated bytecode. This removes one machine-local reproducibility hazard, but a fresh checkout, reviewed source inclusion, dependency acquisition and commit/package audit are still required before C26 can close.
+
+**Implementation procedure**
+
+1. Inventory tracked, modified, deleted, untracked and ignored files with bounded output. Classify intended source, generated output, private assets, historical evidence and accidental files; preserve all existing user work.
+2. Review intended RTL, `sys`, top-level project files, overlays, scripts, tests and documentation for completeness and provenance. Preserve the intentional deletion of the obsolete implementation plan.
+3. Add only reviewed project files in coherent changes. Do not blindly stage all untracked content or include commercial MPQs, saves, screenshots/private captures or local toolchain binaries.
+4. Preserve framework/import identities and required notices. Ensure any runtime-required generated file has a deterministic generation step rather than depending on an ignored local copy.
+5. Reconstruct from a fresh isolated checkout without access to existing `.work`/build caches except explicitly pinned/downloaded dependencies. Use separate private fixture staging for data-dependent tests.
+
+**Verification**: clean checkout can discover tools, generate ABI/build metadata, compile the intended host/RTL/ARM/FPGA paths and run applicable tests. Record which tests need private data/hardware, and verify those inputs are outside Git/package output.
+
+**Close only when** committed source represents the complete candidate and the fresh-checkout result matches declared inputs/artifacts within documented reproducibility limits. Review/commit work is future implementation, not performed by this document edit.
+
+### C27 — Replace hidden build dependencies with complete snapshots
+
+**Status: VERIFYING · P2 · closes F14.** Dependencies: C18 manifest contract; C26 complete source. Code: `compile_fpga_snapshot.ps1`, build helpers/configuration.
+
+**Recorded implementation (2026-09-07):** `support/scripts/compile_fpga_snapshot.ps1` now selects Quartus directly from `-QuartusRoot` or `DIABLO_QUARTUS_ROOT`, retaining `D:/Q17/quartus` only as this host's default; it no longer invokes the external `D:/vibes/fpga/bin/quartus-safe.ps1` wrapper. `-Action sync` requires an empty destination, copies the complete FPGA input set (top-level project/constraint files, `rtl`, `sys` and the timing Tcl script), and writes `.mister/fpga-source-snapshot.json` with per-file size/SHA-256 records. Compile, timing and compression validate that manifest before running the configured executable and write bounded per-action logs. `support/tests/test_compile_fpga_snapshot.py` passes clean-copy, path-with-spaces, non-empty-destination refusal, tamper detection and missing-Quartus-root cases. A fresh identified snapshot at `.work/build/fpga-candidate-20260907-2` then passed direct Quartus compile, STA and compression: 84 source inputs, snapshot manifest SHA-256 `9acb434d09aec3edbefaccf4a8d447c168ed28d945744146e8fe0dd1b258d8ec`, SOF SHA-256 `d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`, raw and compressed RBF SHA-256 `56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c`, and timing report SHA-256 `23a552cd2a649d56bf838ca8d3572a427b8a817e23efba8008589753549da9df`; STA reported three setup groups with zero violations and a conservative 0.161 ns worst-case slack. The FPGA and rebuilt ARM artifacts are bound to the current development-only C18 manifest `.mister/evidence/candidates/fpga-candidate-20260907-6-arm.json` (manifest SHA-256 `8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762`, candidate ID `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`); final C27/C18 closure still requires reproduction from a clean checkout and current-boot target qualification. This snapshot is complete for the allowlisted FPGA input set; it does not substitute for a clean-checkout rebuild or target qualification.
+
+**Implementation procedure**
+
+1. Make Quartus root a parameter/configuration value; retain `D:/Q17` as this host's default. Invoke required Quartus executables directly and capture exit codes/logs for compile, STA and compression independently.
+2. Remove reliance on `D:/vibes/fpga/bin/quartus-safe.ps1`, or deliberately vendor/pin an inspected wrapper if it provides necessary behavior. No undeclared machine-local executable may remain required.
+3. Create snapshots in new empty build-ID directories from an allowlisted complete source manifest: top-level files, RTL, sys framework, QIP/Tcl/SDC and generated metadata inputs.
+4. Avoid recursive merging into an old snapshot; obsolete files must not silently survive. Validate every source reference resolves inside the snapshot or to a declared tool/dependency root.
+5. Separate sync status from native executable status and propagate errors accurately. Parameterize concurrency/tool paths and keep logs/artifacts outside source.
+
+**Verification**: path with spaces; absent/wrong Quartus; native nonzero exit; removed RTL file; stale destination; incomplete sys tree; independent compile/timing/compress actions. Rebuild from a clean checkout without the external runner location available.
+
+**Close only when** documented build commands work from the complete snapshot, fail deterministically on missing inputs and yield hashed artifacts/reports tied to C18.
+
+### C28 — Provide one bounded verification entry point
+
+**Status: IN PROGRESS · `python support/scripts/diablo.py verify --suite {foundation,host,rtl,local,arm,board}` is the bounded entry point. Candidate-bound local and ARM/QEMU receipts now pass for development candidate `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`; board qualification remains a separate explicit non-passing tier · P2.** Dependencies: C29 result format; can be implemented early. Code: `support/scripts/diablo.py`, `support/scripts/verification.py`, existing standalone test runners.
+
+**Recorded implementation (2026-09-07):** each executed subprocess has a per-step timeout, process-tree termination, isolated build output and retained log. The runner records missing prerequisites and unregistered tests as `not_run`, yielding exit code 2 rather than a false pass. The fully configured local receipt `20260907T024242Z-79006fab-e9b2-4818-9373-1c44d754a0ee.json` and configured ARM/QEMU receipt `20260907T024212Z-5f9b3524-a88f-4fab-bd32-12f5ab2e82d7.json` cover the earlier source snapshot `f5be9f8743c58fbba1ce1343890378dda02bdf2b946b827b8beb619b048f3236`; they are preserved history, not current evidence after later transport work. The runner now registers the C09 integrated-DDR regression; current RTL receipt `20260907T033407Z-61c6ea85-88dc-4411-94c5-dd3922eefeb3.json` passed it and all other RTL cases. Local coverage includes foundation, command renderer/transport, transport ABI, indexed-frame probe, host PNG/GTest, SDL-input, I2S and every other registered RTL case. The I2S testbench compiles against its existing project source `sys/i2s.v`; the prior omission was a runner registration defect, now fixed. ARM paths require the explicitly configured WSL distribution, cross compiler, sysroot and QEMU binary; board still requires a named configuration and project-owned adapter. The configured candidate-6 local suite passes in receipt `20260907T074147Z-ba696aab-f304-4da2-a56d-2be0789aadf7.json` (SHA-256 `7cc30a86a0e88e015a0506021f4cdbe4923779e0bf07331983ec8558a88a21a3`) and the explicitly configured ARM/QEMU suite passes in receipt `20260907T074417Z-b62331e3-9ad0-42b7-b56f-b472c5e22bed.json` (SHA-256 `14d687bb116f5be66bfa30fec23791b2ce1fb0437852f0109d9f590c4469530f`) for candidate `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`. Both remain local/ABI-emulation evidence and do not claim target execution; an earlier unconfigured local run is retained as an incomplete prerequisite receipt rather than a pass.
+
+**Implementation procedure**
+
+1. Add explicit suites for foundation/Python, host C++, RTL, ARM/QEMU and board qualification. Keep cheap local verification usable independently of hardware or ARM toolchain availability.
+2. Discover/configure Python, C++ compiler, Icarus, WSL distribution, cross-toolchain/sysroot and QEMU; eliminate hardcoded personal cache paths as mandatory defaults.
+3. Use per-process timeouts and process-tree cleanup on failure; store full logs in files and return bounded summaries. Set deliberate CPU/I/O concurrency to avoid port/lock/build-directory collisions.
+4. Integrate all maintained fixtures, including audit regressions, long PCM, ABI layout and I2S/native pattern. Distinguish suite-level failure from unsupported optional prerequisites.
+5. Require explicit board target/configuration for hardware suites. A generic local test command must not silently load an RBF or run destructive DDR probes.
+
+**Verification**: simulate missing compiler/QEMU, failing compile, failing assertion, hung simulation and malformed result; ensure nonzero required-suite status, bounded termination and preserved logs. Check each test is registered once and not accidentally omitted.
+
+**Close only when** one documented command per tier runs the full intended set, all audit regressions are included and skipped tiers never masquerade as pass. Store a suite inventory and machine-readable summary.
+
+### C29 — Make evidence immutable and dependency-complete
+
+**Status: IN PROGRESS · verification receipts are versioned, unique, atomic and no-replace; they bind each result/log to a full source-and-test dependency snapshot. Promotion and legacy receipt migration remain open · P2.** Dependencies: C18 IDs and C28 execution results developed together. Code: `support/scripts/verification.py`, receipt writer and acceptance validation.
+
+**Recorded implementation (2026-09-07):** `diablo-verification-receipt-v1` stores UUID, UTC interval, requested argv/cwd, sanitized `DIABLO_*` environment, discovered tool identities, suite status, source/candidate identity, each exact command, exit/timeout result and SHA-256/size of its preserved log. Receipts are written under `.mister/evidence/receipts/` with a timestamp and UUID, using a no-replace atomic publish. Unit tests prove failed commands retain logs and an earlier receipt cannot be replaced. A supplied candidate manifest is verified before checks run; without one the record explicitly says it is a source snapshot and cannot promote a board candidate.
+
+**Implementation procedure**
+
+1. Define a versioned receipt schema with unique run ID, UTC times, candidate/input hashes, exact argv/cwd, tool identity, environment allowlist, test configuration/seeds, exit/timeout status and evidence scope.
+2. Hash transitive relevant inputs: source, included headers/generated ABI, testbench, fixtures, overlays, scripts, build options and lockfiles. Do not record only the top-level `.sv` when its ABI include can change.
+3. Write to a new path atomically; never overwrite dated historical acceptance files on a rerun. Keep failures and aborted runs as first-class receipts.
+4. Represent pass/fail/skipped/not-run separately for host, RTL, QEMU and physical board. An ARM-skipped run must not inherit a top-level “ARM passed” claim.
+5. Validate referenced paths/hashes before promotion and redact secrets/private data from public receipt content. Private captures can be referenced by private identity without embedding them.
+
+**Verification**: mutate an included file, delete a log, tamper with a receipt/artifact, rerun same date, interrupt writing and skip ARM. Acceptance must reject mismatched/incomplete evidence and preserve earlier files.
+
+**Close only when** all maintained runners use the schema or have an explicit historical adapter, dependency changes invalidate acceptance and every closed item links to resolvable immutable evidence.
+
+### C30 — Reconcile README, root guide and machine state
+
+**Status: IN PROGRESS · README, root guide, ARM runtime guide and `.mister/state.json` distinguish implemented local capability from a current accepted candidate and designate this plan as closure authority. Automated guide/state digest and local-link validation now reject stale descriptions; candidate-specific promotion and final receipt-link validation remain open · P2.** Dependencies: C18 current identity, C29 evidence and this plan's status model. Code: README, `CORE_COMPLETION_AUDIT.md`, `support/ARM_RUNTIME.md`, `.mister/state.json`, `support/scripts/guide_status.py`, audit index links.
+
+**Recorded implementation (2026-09-07):** README no longer says there is no adapter, ABI or accelerator; it describes the prototype and its acceptance limits and lists the immutable local verification entry point. The root completion guide defers current-candidate decisions to this detailed audit plan and machine state. The ARM guide documents the current physical mapping contract: candidate ID, live-boot admission record and non-conflicting lease are all mandatory before `/dev/mem` mapping. Historical observations remain preserved but explicitly cannot validate later source changes. `support/scripts/guide_status.py` now requires the three guides to link the detailed plan, checks every local Markdown link, verifies that `.mister/state.json` hashes this plan, rejects prose labeled as an exact command, and requires an explicit no-current-candidate state until C18/C29 promotion exists. Its unit fixture covers a valid guide set, stale digest, broken link and misleading command label.
+
+**Implementation procedure**
+
+1. Replace stale “no adapter/ABI/accelerator” descriptions with implemented capability and its precise evidence limit. Reopen correctness claims affected by F01–F18 while preserving historical successful test facts.
+2. Make one document the execution authority and link other documents to it. Retain this detailed C-item plan as the closure reference; do not leave multiple conflicting next-action paragraphs.
+3. Separate current candidate/accepted candidate/current blockers from historical process IDs, failed experiments and old build narratives. Move history into referenced immutable receipts without deleting evidence.
+4. Store either an actual executable command with cwd/prerequisites/expected outcome, or a clearly named `next_action` for non-command work. Never label a prose paragraph “exact command.”
+5. Update the guide digest and evidence pointers consistently when changing the root guide during future implementation. Add validation for missing links, mismatched guide hash and closed items without receipts.
+
+**Verification**: read the project as a fresh contributor; commands and status must agree with source/artifacts. Automated checks reject stale hashes and broken receipt links. Confirm the intentionally removed old plan is not reintroduced.
+
+**Close only when** README/guide/state consistently identify the candidate, remaining gates and next action, and their status checks pass. This recorded progress validates local documents and the detailed-plan digest; a promoted immutable candidate with all closed-item receipt links remains required before closure.
+
+### C31 — Encode explicit scope, dependencies and measurable acceptance
+
+**Status: CLOSED · P2.** Dependencies: this document defines the initial policy; C13/C21/C23 consume the checked matrix. Later matrix, scope or measurement changes reopen this item through the recorded invalidation policy.
+
+**Recorded closure (2026-09-07):** `support/qualification/closure-gates.json` is a versioned matrix covering C01–C34 exactly once. It fixes the required Diablo/Hellfire, output, control, multiplayer and lifecycle scope; records the 60 Hz/60 FPS, p99, input-latency and duration thresholds; declares every C-item's prerequisites, required immutable evidence and invalidating change classes. `support/scripts/closure_gates.py` validates the linked C-item headings and matrix shape, hashes the full matrix into each closure record, rejects missing/open/blocked dependencies, verifies cited artifacts and passing receipt hashes/source identities, and requires a named approver/rationale for a waiver. Its synthetic fixture proves complete evidence can pass while open work, changed source identity and tampered receipts fail. Foundation receipt `20260907T031308Z-1941aea9-335b-45e1-930a-80bed7a12797.json` passed these checks for source snapshot `41a151bc771d6ab81fe1fe71573fa50c202c5e13a0a576a37eea0bed6b2e9243`.
+
+**Implementation procedure**
+
+1. Convert stage and C-item dependencies into a maintained gate matrix with required host/RTL/board/package evidence. Separate implementation status from acceptance status.
+2. Record supported campaigns, output modes, control devices, multiplayer combinations and lifecycle workflows. The current baseline matrix has broad entries for native MiSTer timing output and accelerated indexed framebuffer presentation; before C13 qualification, expand `output_modes` into the exact applicable rows (HDMI framebuffer/scaler, direct native RGB, analog/scandoubled or other required connector paths) with connector, geometry, refresh, sync, palette/source and equipment requirements. Update the matrix hash and reopen C31 through its invalidation policy while this scope refinement is reviewed; existing requirements remain required until an explicit scope decision changes them.
+3. Encode simulation/render/publication/display rate definitions and the numeric correctness, latency, service and duration targets from this plan in versioned qualification configuration.
+4. Preserve the approximately 60 FPS target as an open gate. If a different release threshold is proposed, document the tradeoff and obtain the scope decision rather than silently reducing the requirement.
+5. Define which changes invalidate which gates: renderer changes reopen equality/performance; RTL/SDC changes reopen build/timing/board; launcher changes reopen lifecycle/install. Avoid both blanket invalidation and unjustified evidence reuse.
+
+**Verification**: run the gate evaluator against incomplete/failed/mismatched receipts and ensure release remains blocked; test a complete synthetic fixture and a source-change invalidation fixture. Review that every C01–C34 has a required closure record and no circular acceptance dependency.
+
+**Close only when** scope and targets are explicit, machine/document checks enforce them and no pending requirement can disappear through a changed label. Writing this plan establishes intent but does not alone implement the gate evaluator.
+
+### C32 — Produce and verify the clean-install release package
+
+**Status: OPEN · P2.** Dependencies: all required correctness/runtime/physical/performance gates, C18/C25–C31. Code: package manifest/builder, installer/update scripts, release documentation.
+
+**Implementation procedure**
+
+1. Define an allowlisted package containing matching ARM/RBF, launcher, ABI/build manifest, redistributable assets, notices and setup instructions. Resolve each component's recorded distribution disposition before including it; do not infer an aggregate license.
+2. Build from immutable accepted artifacts, verify all hashes and scan package contents for MPQs, saves, private captures, donor-only material, credentials and machine-specific paths.
+3. Implement install/update preflight, enough-space checks, verified staging and a recoverable activation sequence. Preserve existing saves/configuration and keep a compatible previous install recoverable on failure.
+4. Guide users to supply their own data and clearly report missing/incompatible data. Avoid overwriting user content to make a test install pass.
+5. Test on a clean supported MiSTer using the distributed package, then run both campaign launch/play/save/load/quit/reset/core-switch/relaunch workflows and a second independent launch.
+
+**Verification**: package hash mismatch, interrupted copy, insufficient space, wrong ABI, missing data, old install upgrade and rollback. Verify resulting files exactly match the manifest and save/config hashes are preserved where expected.
+
+**Close only when** the clean install and upgrade/failure matrix pass using final accepted artifacts, required notices/provenance are complete and no unresolved required gate is hidden by packaging success.
+
+### C33 — Clean generated root artifacts without losing evidence
+
+**Status: OPEN · P3.** Dependencies: C26 classification; C18 preserves meaningful artifacts. Code: ignore rules, build/log output paths and root generated files.
+
+**Implementation procedure**
+
+1. Identify who created `$null`, `a.out`, pin dumps and similar root files, whether they are referenced by receipts, and whether they contain unique useful diagnostics. Do not delete solely by filename.
+2. Preserve referenced evidence in a build/run-specific ignored location and update references before moving it. Move disposable generated output to `.work`/configured build directories or remove only after confirming it is reproducible/unneeded.
+3. Fix the producing commands: use shell-correct null redirection and explicit compiler/log output paths so the clutter does not immediately return.
+4. Add narrow ignore rules for generated executables/simulations, keeping source reproductions and non-private audit results reviewable. Avoid ignores broad enough to hide intended source.
+5. On Windows, verify absolute source/destination paths are inside the intended workspace before recursive operations; use native literal-path operations.
+
+**Verification**: run representative build/tests and inspect Git status/root listing; no accidental files return, evidence references resolve and private data remains excluded.
+
+**Close only when** all identified clutter has a documented disposition and its producers write to the intended locations. This is cleanup, not permission to discard unrelated user files.
+
+### C34 — Refactor stale scaffolding and clarify ownership boundaries
+
+**Status: OPEN · P3.** Dependencies: functional interfaces C01–C17 stabilized; C28 regression entry point. Code: adapter, stale comments, demo/template files and project source lists.
+
+**Implementation procedure**
+
+1. Inventory obsolete comments (“future consumer,” “slot zero”), duplicated initialization and apparently unused demo files. Prove usage through QIP/source lists and references before removing anything.
+2. Centralize initialization/reset logic around explicit lifecycle state, ensuring repeated initialize/shutdown/rebind calls reset the intended fields exactly once.
+3. Split the large SDL adapter along real ownership boundaries: lifecycle/session, frame submission/cache, command completion, audio publication/resampling and input reconciliation. Keep clear APIs and avoid introducing cross-module mutable globals.
+4. Keep this refactor separate from behavioral fixes so regressions can be bisected. Preserve fixed-capacity storage and callback constraints; do not add allocations or blocking calls on hot paths.
+5. Update comments and architecture documentation to explain actual ownership and failure behavior, including what stays in the imported framework.
+
+**Verification**: full local suites, differential scene cases, startup/shutdown/reset repetition and profiling-overhead checks. If generated binaries/RTL change, create a new candidate and rerun gates invalidated under C31.
+
+**Close only when** unused scaffolding is demonstrably unused/removed, module ownership is documented, behavior remains equivalent and the final candidate's evidence is still valid.
+
+## Finding-to-closure traceability
+
+| Audit finding | Required work packages |
+| --- | --- |
+| F01 rectangle corruption | C01; integrated equality C19 |
+| F02 stale mixed-writer caches | C02; epoch handling C07; C19 |
+| F03 two-vblank cadence | C03; integrated scheduling C09; display measurement C21 |
+| F04 stranded READY slots | C04; C09; target stress C23 |
+| F05 palette/frame mismatch | C05; decoded equality C19 |
+| F06 forgotten timeout ownership | C06; reset C07; fault integration C09 |
+| F07 audio/reset race | C07; active audio qualification C15 |
+| F08 wrong OSD focus source | C10; physical controls C23 |
+| F09 modifier/text integration | C11; naming/chat/controller qualification C24 |
+| F10 mouse masks/queue recovery | C12; focus/state C10; physical C23 |
+| F11 native output test pattern | C13; timing C25; physical C23 |
+| F12 stale artifact identity | C18; immutable receipts C29; state C30 |
+| F13 unversioned implementation | C26; clean builds C27; install C32 |
+| F14 external runner/snapshot dependency | C27; clean-checkout verification C26 |
+| F15 biased/incomplete performance metrics | C20 and C21; acceptance definitions C31 |
+| F16 incomplete checksum meaning | C22; full equality C19 |
+| F17 unsafe clipping arithmetic | C08; independent oracle C19 |
+| F18 silent dummy startup failure | C14; launcher error handling C16 |
+
+Additional original blockers are explicitly owned: active audio C15; launcher C16; memory admission C17; full scenes C19; physical endurance C23; multiplayer/controller-only C24; external timing C25; test/evidence infrastructure C28/C29; release/provenance/private-data exclusion C32. Maintenance improvements are C33/C34. No original recommendation is implicitly waived.
+
+## Final completion checklist
+
+- [ ] Every C01–C34 has a CLOSED record and its compact checklist box checked, or an explicitly approved scope disposition linked to the original requirement. A blocked item prevents an unqualified “everything complete” statement.
+- [ ] Every F01–F18 has its primary fix and listed integration/qualification evidence; all new failures discovered during implementation have their own tracked closure.
+- [ ] All passing evidence matches the final source/ARM/RBF/ABI/configuration; changed components have reopened and re-passed affected gates.
+- [ ] Complete equality, real-vblank cadence, active audio, physical controls, campaigns, save integrity, multiplayer, timing and performance targets pass.
+- [ ] Clean checkout/build, package composition, installation/update and second-launch qualification pass; private data and user saves remain protected.
+- [ ] README/root guide/state identify the final accepted build, supported modes, measured results and any explicit limitations consistently.
+
+Only then report the audit as fully closed. Report the actual measured outcomes and artifact IDs, not merely the number of implemented patches.

@@ -7,4 +7,6 @@
 /output_files/
 **/__pycache__/
 *.pyc
-
+/build_id.v
+/jtag.cdf
+/Diablo.qws

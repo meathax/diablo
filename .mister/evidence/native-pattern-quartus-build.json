@@ -1,0 +1,38 @@
+{
+  "status": "compiled-and-compressed-not-hardware-qualified",
+  "tool": "Quartus 17.0.2 Build 602",
+  "model": "Slow 1100mv 100c; other corners not yet checked",
+  "core_clock_mhz": 50.4,
+  "pixel_clock_mhz": 25.2,
+  "nominal_frame_hz": 60,
+  "minimum_reported_setup_slack_ns": 0.693,
+  "minimum_reported_hold_slack_ns": 0.229,
+  "resources": {
+    "alms_used": 7164,
+    "alms_available": 41910,
+    "block_memory_bits_used": 384257,
+    "block_memory_bits_available": 5662720,
+    "dsp_blocks_used": 33,
+    "dsp_blocks_available": 112
+  },
+  "unconstrained": {
+    "clocks": 0,
+    "input_ports": 4,
+    "output_ports": 50
+  },
+  "evidence_sha256": {
+    ".work\\build\\fpga-native640\\compile.log": "188ff1f5f4450d3300cf18b5881f2365e9a9dfe8cbce24732308b363db9d10ec",
+    ".work\\build\\fpga-native640\\compression.log": "a39f3ebc98d13e48fc3a72aed439d3ef335d097a34045997640af2403bdd883c",
+    ".work\\build\\fpga-native640\\source-snapshot.json": "bdef5d2e8258ca4d476ebcb0ec1448f8221f4c9a1ca6c042e2826da6d75020d8",
+    ".work\\build\\fpga-native640\\source\\output_files\\Diablo.fit.rpt": "f735e594cdfdef892d096a0229c1f595bde2dee1f8a7ebe36c7dd8af18bf6991",
+    ".work\\build\\fpga-native640\\source\\output_files\\Diablo.sta.rpt": "3e16112e147823101487a4548b772927d6d286eef8553c2c3f163c94668e1bc2",
+    ".work\\build\\fpga-native640\\source\\output_files\\Diablo.sta.summary": "c212eb46f8e5ded2f8740b61f850b8214d08ca41bf2865a4356be3ee8b43b721",
+    ".work\\build\\fpga-native640\\source\\output_files\\Diablo.compressed.rbf": "d6d8b1be4cf7b00513be9e70e1bab24af52a7d33044d854e5ed6be409097a6a3"
+  },
+  "pending": [
+    "External HDMI receiver timing constraints and trace-skew budget",
+    "Other timing corners",
+    "Physical MiSTer HDMI and 31kHz analog tests"
+  ],
+  "hardware_verified": false
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "diablo-operation-receipt-v1",
+  "operation": "build-host",
+  "arguments": [
+    "build-host",
+    "--reconfigure",
+    "--configure-only",
+    "--jobs",
+    "8"
+  ],
+  "started_utc": "2026-09-06T01:28:26.146946+00:00",
+  "script_sha256": "9fa0418c9d3316ff0b28f6090ceeda99ca4fe3a8fe093a998e94814f959a737f",
+  "source_lock_sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
+  "result": {
+    "variant": "reference-host",
+    "stage": "configured",
+    "inputs": ".work\\build\\reference-host\\build-inputs.json",
+    "inputs_sha256": "d18a37d9e8309f6acf451f1a897df319f4d0149929c1c70f0b5224e76085b351",
+    "logs": {
+      "configure": {
+        "path": ".work\\build\\reference-host\\configure.log",
+        "sha256": "e8a3a069a14bfcf0874f299744a1209c80cba96be5b0925e88bb45996860bffd"
+      }
+    },
+    "executable_sha256": null,
+    "dependency_fixes_sha256": null,
+    "gameplay_verified": false,
+    "dependency_closure_verified": false
+  },
+  "status": "pass",
+  "finished_utc": "2026-09-06T01:28:59.699640+00:00"
+}

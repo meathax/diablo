@@ -1,5 +1,9 @@
 # P00 source and component inventory
 
+Historical inventory from the retired plan. Source notices remain relevant;
+P-numbered sequencing and the former hardware-import gate below are superseded
+by [CORE_COMPLETION_AUDIT.md](../../CORE_COMPLETION_AUDIT.md).
+
 The source lock distinguishes directly inspected sources from secondary reference
 identities supplied by the approved plan. A pinned commit is not an import license.
 

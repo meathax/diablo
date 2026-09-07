@@ -1,0 +1,68 @@
+{
+  "schema": "diablo-closure-gate-matrix-v1",
+  "plan": {
+    "path": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
+    "items": ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C12", "C13", "C14", "C15", "C16", "C17", "C18", "C19", "C20", "C21", "C22", "C23", "C24", "C25", "C26", "C27", "C28", "C29", "C30", "C31", "C32", "C33", "C34"]
+  },
+  "scope": {
+    "campaigns": ["Diablo", "Hellfire"],
+    "output_modes": ["native MiSTer video timing output", "accelerated indexed framebuffer presentation"],
+    "control_devices": ["keyboard", "mouse", "controller-only operation"],
+    "multiplayer": ["Diablo target host", "Diablo target joiner", "Hellfire target host", "Hellfire target joiner"],
+    "workflows": ["launch", "save/load", "quit", "reset", "core switch", "relaunch", "storage failure recovery"]
+  },
+  "targets": {
+    "cadence": {"refresh_hz": 60, "rtl_consecutive_refreshes": 1000, "distinct_ready_frames_per_second": 60},
+    "performance": {"target_fps": 60, "p99_presentation_ms": 16.67, "max_late_prepared_percent": 0.1, "paired_runs": 3, "reported_percentiles": ["p50", "p95", "p99", "p99.9", "max"]},
+    "input": {"p95_visible_ms": 50, "p99_visible_ms": 100, "requires_physical_measurement": true},
+    "durations": {"combined_gameplay_minutes_per_campaign": 30, "idle_minutes": 120, "lifecycle_cycles": 100, "multiplayer_minutes_per_campaign_pairing": 30}
+  },
+  "change_classes": {
+    "renderer": "Renderer, cache, frame-slot, palette, command encoding, or clipping behavior changed.",
+    "rtl_or_sdc": "RTL, timing constraints, project source lists, generated HDL, or FPGA build settings changed.",
+    "transport_abi": "Transport ABI layout, mapping, memory admission, or host/FPGA protocol changed.",
+    "runtime": "ARM runtime, lifecycle, callback, input, audio, or memory ownership behavior changed.",
+    "launcher": "Menu entry, packaging, process supervision, campaign data, save path, or shutdown behavior changed.",
+    "verification": "A fixture, oracle, capture protocol, evidence writer, or metric implementation changed.",
+    "framework": "Imported MiSTer/framework integration, board configuration, or external interface changed.",
+    "documentation": "Scope, supported mode, target, guide, state, or release communication changed.",
+    "package": "Installer, update, artifact allowlist, license/provenance, or distributed content changed."
+  },
+  "items": {
+    "C01": {"dependencies": [], "requirements": ["Sparse renderer corruption is fixed and differential rectangle cases remain covered."], "invalidated_by": ["renderer", "transport_abi", "verification"], "evidence": [{"id": "renderer-regression", "kind": "receipt", "suite": "local"}]},
+    "C02": {"dependencies": ["C01"], "requirements": ["Mixed direct-command and full-copy frame paths invalidate stale cache state."], "invalidated_by": ["renderer", "transport_abi", "verification"], "evidence": [{"id": "mixed-writer-regression", "kind": "receipt", "suite": "local"}]},
+    "C03": {"dependencies": [], "requirements": ["A prepared frame activates at each qualified refresh boundary."], "invalidated_by": ["rtl_or_sdc", "transport_abi", "verification"], "evidence": [{"id": "cadence-regression", "kind": "receipt", "suite": "rtl"}]},
+    "C04": {"dependencies": ["C03"], "requirements": ["No READY slot can be stranded through descriptor or vblank races."], "invalidated_by": ["rtl_or_sdc", "transport_abi", "verification"], "evidence": [{"id": "slot-ownership-regression", "kind": "receipt", "suite": "rtl"}]},
+    "C05": {"dependencies": ["C03"], "requirements": ["Frame and palette selection remain coherent at presentation."], "invalidated_by": ["renderer", "rtl_or_sdc", "verification"], "evidence": [{"id": "palette-regression", "kind": "receipt", "suite": "local"}]},
+    "C06": {"dependencies": [], "requirements": ["Timed-out work remains owned until a safe fault/recovery outcome."], "invalidated_by": ["runtime", "transport_abi", "verification"], "evidence": [{"id": "timeout-regression", "kind": "receipt", "suite": "local"}]},
+    "C07": {"dependencies": ["C06"], "requirements": ["Runtime epoch transitions cannot race audio callbacks or stale completions."], "invalidated_by": ["runtime", "transport_abi", "verification"], "evidence": [{"id": "lifecycle-regression", "kind": "receipt", "suite": "local"}]},
+    "C08": {"dependencies": [], "requirements": ["Extreme rectangle clipping is memory-safe and agrees with an independent oracle."], "invalidated_by": ["renderer", "verification"], "evidence": [{"id": "clipping-regression", "kind": "receipt", "suite": "local"}]},
+    "C09": {"dependencies": ["C03", "C04", "C05", "C06", "C07"], "requirements": ["The integrated DDR scoreboard proves bounded service and safe fault recovery."], "invalidated_by": ["rtl_or_sdc", "transport_abi", "verification"], "evidence": [{"id": "integrated-ddr", "kind": "receipt", "suite": "rtl"}, {"id": "combined-load-board", "kind": "receipt", "suite": "board"}]},
+    "C10": {"dependencies": ["C07"], "requirements": ["Focus derives from authoritative OSD state and recovers physical input state."], "invalidated_by": ["runtime", "framework", "verification"], "evidence": [{"id": "focus-regression", "kind": "receipt", "suite": "local"}, {"id": "focus-board", "kind": "receipt", "suite": "board"}]},
+    "C11": {"dependencies": ["C10"], "requirements": ["Modifiers and text input survive focus and device transitions."], "invalidated_by": ["runtime", "framework", "verification"], "evidence": [{"id": "text-regression", "kind": "receipt", "suite": "local"}, {"id": "text-board", "kind": "receipt", "suite": "board"}]},
+    "C12": {"dependencies": ["C10"], "requirements": ["Mouse masks and queue recovery preserve controls under focus changes."], "invalidated_by": ["runtime", "framework", "verification"], "evidence": [{"id": "mouse-regression", "kind": "receipt", "suite": "local"}, {"id": "mouse-board", "kind": "receipt", "suite": "board"}]},
+    "C13": {"dependencies": ["C03"], "requirements": ["Native output is driven by real timing, not a self-contained test pattern."], "invalidated_by": ["rtl_or_sdc", "framework", "verification"], "evidence": [{"id": "native-output-rtl", "kind": "receipt", "suite": "rtl"}, {"id": "native-output-board", "kind": "receipt", "suite": "board"}]},
+    "C14": {"dependencies": [], "requirements": ["Transport startup rejects missing or malformed configuration instead of silently falling back."], "invalidated_by": ["runtime", "transport_abi", "verification"], "evidence": [{"id": "startup-regression", "kind": "receipt", "suite": "local"}]},
+    "C15": {"dependencies": ["C07"], "requirements": ["PCM health is measured during real active playback and recoveries are visible."], "invalidated_by": ["runtime", "rtl_or_sdc", "verification"], "evidence": [{"id": "pcm-regression", "kind": "receipt", "suite": "rtl"}, {"id": "active-audio-board", "kind": "receipt", "suite": "board"}]},
+    "C16": {"dependencies": ["C14", "C17", "C18"], "requirements": ["A project-owned menu lifecycle launches matching campaign artifacts and cleans failures safely."], "invalidated_by": ["launcher", "runtime", "framework", "verification"], "evidence": [{"id": "launcher-sequencing", "kind": "receipt", "suite": "local"}, {"id": "launcher-board", "kind": "receipt", "suite": "board"}]},
+    "C17": {"dependencies": ["C14"], "requirements": ["Physical memory access is admitted for the current boot and held by one owner."], "invalidated_by": ["runtime", "transport_abi", "framework", "verification"], "evidence": [{"id": "admission-regression", "kind": "receipt", "suite": "host"}, {"id": "admission-board", "kind": "receipt", "suite": "board"}]},
+    "C18": {"dependencies": [], "requirements": ["Immutable candidate manifests bind complete source inputs, tools, ARM and RBF artifacts."], "invalidated_by": ["renderer", "rtl_or_sdc", "transport_abi", "runtime", "framework", "package"], "evidence": [{"id": "candidate-manifest", "kind": "artifact"}]},
+    "C19": {"dependencies": ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C18", "C22"], "requirements": ["Complete campaign scenes compare exact pixels, palette and metadata on matching physical artifacts."], "invalidated_by": ["renderer", "rtl_or_sdc", "transport_abi", "verification", "framework"], "evidence": [{"id": "scene-oracle", "kind": "receipt", "suite": "local"}, {"id": "scene-board", "kind": "receipt", "suite": "board"}]},
+    "C20": {"dependencies": ["C06"], "requirements": ["Every presentation outcome has reconciled telemetry and no hidden failure path."], "invalidated_by": ["runtime", "verification"], "evidence": [{"id": "telemetry-regression", "kind": "receipt", "suite": "local"}]},
+    "C21": {"dependencies": ["C03", "C15", "C18", "C19", "C20", "C31"], "requirements": ["Paired acceleration measurements meet documented tail-latency and cadence targets."], "invalidated_by": ["renderer", "rtl_or_sdc", "runtime", "verification", "framework"], "evidence": [{"id": "benchmark-analysis", "kind": "artifact"}, {"id": "performance-board", "kind": "receipt", "suite": "board"}]},
+    "C22": {"dependencies": ["C18"], "requirements": ["Diagnostic checksums cannot be confused with full frame and palette equality."], "invalidated_by": ["transport_abi", "renderer", "rtl_or_sdc", "verification"], "evidence": [{"id": "checksum-regression", "kind": "receipt", "suite": "local"}]},
+    "C23": {"dependencies": ["C16", "C18", "C19", "C25"], "requirements": ["Both campaigns pass the full physical gameplay, lifecycle and endurance matrix."], "invalidated_by": ["renderer", "rtl_or_sdc", "runtime", "launcher", "framework", "verification"], "evidence": [{"id": "physical-matrix", "kind": "artifact"}, {"id": "physical-qualification", "kind": "receipt", "suite": "board"}]},
+    "C24": {"dependencies": ["C10", "C11", "C12", "C15", "C16", "C18"], "requirements": ["Controller-only and target host/join multiplayer workflows pass for both campaigns."], "invalidated_by": ["runtime", "launcher", "framework", "verification"], "evidence": [{"id": "controller-multiplayer-matrix", "kind": "artifact"}, {"id": "controller-multiplayer-board", "kind": "receipt", "suite": "board"}]},
+    "C25": {"dependencies": ["C13", "C18", "C27"], "requirements": ["Final-candidate timing, inference and active endpoint coverage are reviewed at all corners."], "invalidated_by": ["rtl_or_sdc", "framework", "verification"], "evidence": [{"id": "timing-report", "kind": "artifact"}]},
+    "C26": {"dependencies": ["C18"], "requirements": ["A clean checkout contains the complete reproducible implementation without private inputs."], "invalidated_by": ["renderer", "rtl_or_sdc", "transport_abi", "runtime", "framework", "verification", "package"], "evidence": [{"id": "clean-checkout", "kind": "receipt", "suite": "foundation"}, {"id": "inventory", "kind": "artifact"}]},
+    "C27": {"dependencies": ["C18", "C26"], "requirements": ["Complete FPGA snapshots build with declared tools and no hidden machine-local runner."], "invalidated_by": ["rtl_or_sdc", "framework", "verification"], "evidence": [{"id": "snapshot-build", "kind": "artifact"}]},
+    "C28": {"dependencies": ["C29"], "requirements": ["One bounded command runs every intended tier and marks unavailable tiers incomplete."], "invalidated_by": ["verification", "runtime", "rtl_or_sdc"], "evidence": [{"id": "runner-regression", "kind": "receipt", "suite": "foundation"}]},
+    "C29": {"dependencies": ["C18"], "requirements": ["Immutable receipts bind transitive source, logs, status and candidate identity."], "invalidated_by": ["verification", "transport_abi", "rtl_or_sdc", "runtime"], "evidence": [{"id": "receipt-regression", "kind": "receipt", "suite": "foundation"}]},
+    "C30": {"dependencies": ["C18", "C29"], "requirements": ["README, root guide and state identify the same candidate, gates and next action."], "invalidated_by": ["documentation", "verification", "package"], "evidence": [{"id": "guide-validation", "kind": "receipt", "suite": "foundation"}]},
+    "C31": {"dependencies": [], "requirements": ["Scope, dependencies, targets and source invalidation are machine-enforced for every C-item."], "invalidated_by": ["documentation", "verification"], "evidence": [{"id": "gate-evaluator", "kind": "receipt", "suite": "foundation"}]},
+    "C32": {"dependencies": ["C18", "C23", "C24", "C25", "C26", "C27", "C28", "C29", "C30", "C31"], "requirements": ["Clean install and update packages contain only verified, redistributable matching artifacts."], "invalidated_by": ["package", "launcher", "documentation", "verification"], "evidence": [{"id": "package-manifest", "kind": "artifact"}, {"id": "clean-install-board", "kind": "receipt", "suite": "board"}]},
+    "C33": {"dependencies": ["C18"], "requirements": ["Generated clutter has a documented disposition and producers write outside the root."], "invalidated_by": ["verification", "documentation"], "evidence": [{"id": "root-cleanliness", "kind": "receipt", "suite": "foundation"}]},
+    "C34": {"dependencies": ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C10", "C11", "C12", "C14", "C15", "C16", "C17", "C28"], "requirements": ["Stale scaffolding is removed and stable ownership boundaries preserve tested behavior."], "invalidated_by": ["renderer", "rtl_or_sdc", "transport_abi", "runtime", "launcher", "verification"], "evidence": [{"id": "refactor-regression", "kind": "receipt", "suite": "local"}]}
+  },
+  "release": {"requires_all_items_closed": true, "allows_explicit_approved_waivers_only": true}
+}

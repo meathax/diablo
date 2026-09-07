@@ -1,0 +1,6 @@
+{
+  "status": "pass",
+  "scope": "Accelerated upstream shareware replay with offscreen rendering; final game state agrees. No presentation FPS or full-frame equality claim.",
+  "run": ".work/runtime/replays/8e3c8aa5809e4df2b2378689aaece8f6/run.json",
+  "run_sha256": "605bfd6f768a0125dd297f9304ad4045a1c1cf559eb1b8ff21e641c2f394c4c5"
+}

@@ -1,0 +1,9 @@
+{
+  "experiment": "Real local runner; only dependency selection and the step list are narrowed to a temporary input.",
+  "exit_code": 0,
+  "receipt_status": "pass",
+  "recorded_source_id": "007b7d3edadb6efd49fe20b05f2dc0bbdbfa9f8a1d6b9905237483ca2ad55707",
+  "after_source_id": "0bf890f7b889f7cda1eaf0c63ad39b06b546be36b8120d7c73c1a254b6dc33e5",
+  "source_changed": true,
+  "expected": "Receipt must fail or invalidate its source binding when an input changes during execution."
+}

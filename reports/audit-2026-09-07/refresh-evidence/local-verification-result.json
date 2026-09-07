@@ -1,0 +1,5 @@
+{
+  "status": 2,
+  "stdout": "{\"receipt\": \".mister/evidence/receipts/20260907T073534Z-3ef5ef4b-24f6-4468-9bc7-9c50d4a775db.json\", \"source_id\": \"79e3dcdee3b664aaf5f08871d4b2a51beb3a166c578a6d0140295d4e37a81895\", \"status\": \"incomplete\", \"suite\": \"local\"}\r\n",
+  "stderr": ""
+}

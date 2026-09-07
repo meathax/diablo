@@ -1,0 +1,62 @@
+{
+  "schema": "diablo-arm-engine-transport-timedemo-v1",
+  "recorded_at": "2026-09-06",
+  "status": "transport-path-pass-performance-gate-open",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "kernel": "Linux MiSTer 5.15.1-MiSTer armv7l",
+    "loader": "/usr/bin/fpga",
+    "validation_method": "fresh RBF load, root SSH target execution and read-only transport state dump; no computer-use visual inspection"
+  },
+  "artifacts": {
+    "rbf": {
+      "path": "/media/fat/_Other/Diablo_input_transport_latest_20260906.rbf",
+      "bytes": 2493400,
+      "sha256": "0a6c15a633b91502a1147b49ab97805de29058140acd3118cc31f248581b850b"
+    },
+    "engine_local": {
+      "path": ".work/build/arm-engine-transport/devilutionx",
+      "bytes": 8469528,
+      "sha256": "bd26610858a40838d33eb30727a0f25d89ba7ac35c20aecc86f1bf83a7cd15dc"
+    },
+    "engine_target": "/media/fat/linux/diablo-mister-transport",
+    "engine_target_sha256": "bd26610858a40838d33eb30727a0f25d89ba7ac35c20aecc86f1bf83a7cd15dc"
+  },
+  "configuration": {
+    "transport": "DIABLO_MISTER_TRANSPORT=1",
+    "shared_physical": "DIABLO_MISTER_SHARED_PHYS=0x3fe00000",
+    "session_epoch": "0x26090615",
+    "video_driver": "SDL_VIDEODRIVER=dummy",
+    "render_driver": "SDL_RENDER_DRIVER=software",
+    "audio_driver": "SDL_AUDIODRIVER=dummy",
+    "assets": "/media/fat/tmp_esc/diablo-transport-assets",
+    "save": "/media/fat/tmp_esc/diablo-transport-save",
+    "config": "/media/fat/tmp_esc/diablo-transport-config"
+  },
+  "command": "timeout --signal=TERM --kill-after=10s 90 /media/fat/linux/diablo-mister-transport --diablo --spawn --demo 0 --timedemo --data-dir /media/fat/tmp_esc/diablo-transport-assets --save-dir /media/fat/tmp_esc/diablo-transport-save --config-dir /media/fat/tmp_esc/diablo-transport-config --lang en -n --verbose --log-to-file /tmp/diablo-transport-timedemo-fresh-20260906.log",
+  "result": {
+    "exit_code": 124,
+    "timeout_expected": true,
+    "asset_discovery": "pass: one Found: DIABDAT line",
+    "timedemo": "2650 frames, 89.08 seconds, 29.7 fps",
+    "startup_wait_expired": 0,
+    "rate_limited_backpressure_notices": 24,
+    "transport_fault_messages": 0,
+    "replay_fixture_comparison": "not accepted by this timedemo; deterministic replay equality remains a separate gate",
+    "interpretation": "Fresh FPGA initialization plus the bounded two-retry publisher raises the measured transport run from the earlier 14.3 FPS blocking path to 29.7 FPS. The same-board transport-disabled reference is 33.2 FPS, so the transport and real-vblank 60 FPS gates remain open."
+  },
+  "transport_state_after_run": {
+    "epoch": "0x26090615",
+    "arm_state": 1,
+    "fpga_state": 1,
+    "fault_code": 0,
+    "fault_detail": "0x00000000",
+    "display_epoch": "0x00000000",
+    "last_presented_frame_id": 0,
+    "frame_0": {"state": 3, "generation": "0x26090615", "frame_id": 1158, "logic_tick": 90109, "display_epoch": "0x00000000", "crc32": "0x86db311e"},
+    "frame_1": {"state": 0, "generation": "0x26090615", "frame_id": 1157, "logic_tick": 89783, "display_epoch": "0x00000000", "crc32": "0xd62787d6"},
+    "frame_2": {"state": 2, "generation": "0x26090615", "frame_id": 15, "logic_tick": 3951, "display_epoch": "0x00000000", "crc32": "0xf9019f16"}
+  },
+  "scope_limit": "This proves fresh-RBF startup, ARM/FPGA ownership, MPQ discovery and fault-free sustained transport under dummy SDL. It does not prove HDMI image quality, physical input edges, live audio output, deterministic replay equality, 60 FPS pacing or long-duration gameplay."
+}

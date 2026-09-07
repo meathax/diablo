@@ -1,0 +1,31 @@
+{
+  "status": "pass",
+  "scope": "Imported I2S serializer RTL; no fitted-delay or physical validation",
+  "sources": {
+    "sys/i2s.v": "927d2aea6797fb837f383e5e8a3259609e132ed24883127240ab21601f467efa",
+    "sys/audio_out.sv": "11aab123cce330e894d3ce9cf18e71460edbee43d3580a76d3bd1d516b3df40c",
+    "support/tests/i2s_interface_tb.sv": "2a8b28df1c9d353e25ece5a94a60c61c27a78d2b5f70961d717f49f2e469aaf9"
+  },
+  "test_modes_hz": [
+    48000,
+    96000
+  ],
+  "clock_period_ns": 40.69,
+  "receiver_setup_hold_with_provisional_skew_ns": 2.5,
+  "checks": [
+    "stereo payload and channel order after startup",
+    "16-bit word length",
+    "one-bit LRCLK offset",
+    "SCLK high and low durations",
+    "digital data/LRCLK setup and hold",
+    "reset between modes"
+  ],
+  "stdout": "PASS I2S divider=8: 20 words, channel order and setup/hold\nPASS I2S divider=4: 20 words, channel order and setup/hold\nsupport/tests/i2s_interface_tb.sv:83: $finish called at 312926445 (1ps)\n",
+  "exit_code": 0,
+  "limitations": [
+    "complete audio mixer not simulated",
+    "live mode switching not qualified",
+    "post-fit timing pending",
+    "hardware output pending"
+  ]
+}

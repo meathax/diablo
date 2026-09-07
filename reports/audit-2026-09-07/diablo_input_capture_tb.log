@@ -1,0 +1,2 @@
+input capture checks passed events=4 overflow=1 dropped=1
+support/tests/diablo_input_capture_tb.sv:165: $finish called at 505000 (1ps)

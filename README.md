@@ -1,75 +1,71 @@
 # Diablo for MiSTer — implementation workspace
 
-This project is implementing a native DevilutionX ARM port with an FPGA indexed
-2D accelerator for the DE10-Nano. **There is no runnable Diablo core or release
-package yet.** Native 640×480 output, daemon-free launch, full input support,
-Hellfire, and multiplayer are requirements, not implemented feature claims.
+This workspace is preparing a native DevilutionX ARM port with FPGA presentation,
+input transport and indexed rendering acceleration for DE10-Nano. **There is no
+accepted runnable Diablo core or release package yet.**
 
-The approved specification is [.mister/DIABLO_IMPLEMENTATION_PLAN.md](.mister/DIABLO_IMPLEMENTATION_PLAN.md).
-The authoritative progress record is [.mister/state.json](.mister/state.json).
+The detailed execution and closure authority is
+[reports/audit-2026-09-07/PROPOSED_PLAN.md](reports/audit-2026-09-07/PROPOSED_PLAN.md).
+[CORE_COMPLETION_AUDIT.md](CORE_COMPLETION_AUDIT.md) is the compact execution entry point;
+[.mister/state.json](.mister/state.json) identifies the current candidate work and
+marks earlier receipts as historical when the source has changed.
 
-## Implemented foundation
+## What exists
 
-- Immutable source commit lock and clean-checkout admission checks.
-- Read-only inspection of the primary Blood donor and pinned MiSTer template.
-- Separate ignored DevilutionX source checkout under `.work/sources/devilutionx`.
-- SHA-256 identity and MPQ header/table-bounds verification of five private archives.
-- Atomic operation receipts, a Quartus capability preflight, and negative-admission tests.
-- Strict Quartus inference, timing and fitter report parsers under development,
-  exercised against synthetic faults and real Blood reports. These do not issue
-  release acceptance.
+- Pinned engine, Blood donor and MiSTer template identities.
+- A clean ignored DevilutionX checkout under `.work/sources/devilutionx`.
+- Private MPQ identity and structural-bounds verification.
+- Python preflight, source checks, tests and diagnostic Quartus report parsers.
+- A Windows host build and reproducible 640×480 town scenarios for full Diablo
+  and Hellfire, with exact indexed-frame and RGB888 palette comparisons.
 
-Run from this directory with Python 3.10 or newer and Git available:
+The pinned template is imported and the tree contains a prototype ARM transport
+adapter, generated shared ABI, indexed frame/command paths, PCM and input paths.
+Those local components do not establish a target candidate, physical I/O,
+deterministic full-scene correctness, campaign workflows, multiplayer, or a
+daemon-free menu launch. These remain release requirements.
+
+## Current commands
+
+Use Python 3.10 or newer and Git:
 
 ```text
-python support/scripts/diablo.py doctor
+python support/scripts/diablo.py doctor --quartus-root D:/Q17
 python support/scripts/diablo.py fetch --locked
 python support/scripts/diablo.py verify-data
 python support/scripts/diablo.py test --suite foundation
+python support/scripts/diablo.py verify --suite local
+python support/scripts/diablo.py build-host --jobs 8
 ```
 
-`doctor` returns exit code 2 while mandatory tooling gates are blocked. Other
-commands return 0 on success and 1 on failure. The CLI prints the receipt path.
-It does not implement later build, comparison, benchmark, or packaging commands;
-unimplemented commands are rejected rather than reporting success.
+Quartus is installed at `D:/Q17`; its version file reports `17.0.2.602`.
+Doctor inventories it without launching tools. A successful inventory is not a
+build or hardware verdict. It returns exit code 2 if the compiler is missing;
+operation failures return 1 and successful operations return 0.
+The removed plan's particular workflow runner is no longer a project prerequisite.
 
-`fetch --locked` validates the local Blood/template repositories without modifying
-them and fetches the exact engine commit into the ignored development directory.
-It refuses changed checkouts and does not fetch the complete engine dependency
-closure. The latter belongs to P02. Optional `--source <lock-name>` selects a
-specific source. No branch tracking, reset, clean, or global Git configuration is used.
+The host reference builds and the upstream gameplay replay passes. Both campaign
+town scenarios pass and their repeated captures agree. These are PC correctness
+checks, not MiSTer or FPS results. An independent clean rebuild passes the same
+campaign scenarios and produces matching captures; step 1 is accepted in
+[the host-reference evidence](.mister/evidence/step-1-host-reference-acceptance.json).
+See [HOST_REFERENCE.md](support/HOST_REFERENCE.md) for command-line validation
+without desktop automation and the limits of this evidence.
+The local verification command records immutable source-bound receipts. Configure
+host build/SDL paths and ARM/QEMU paths explicitly before requesting those optional
+tiers; a passing local or QEMU receipt does not load an RBF or establish board
+acceptance. FPGA build, target launcher, benchmark and package qualification remain
+open in the detailed plan.
 
-`verify-data` never writes `game/`. Its private manifest is under
-`.mister/evidence/private/`, also ignored. Hashing establishes identity; MPQ
-structural checks do **not** establish member integrity, language compatibility,
-or successful game startup. The pinned engine still needs to open the archives.
+## Data, sources and distribution
 
-## Current gate
+`game/` contains user-supplied commercial archives. Keep it read-only to build
+operations; never include it in Git or packages. Structural MPQ checks do not
+prove member integrity or successful engine startup. No saves or private captures
+belong in public artifacts.
 
-The shared Quartus runner now advertises workflow ownership; audit and acceptance
-integration remains under development. No RTL, framework, PLL, constraints, or Quartus project has been
-imported or changed, and no FPGA build has run. See
-[the gate record](.mister/contracts/QUARTUS_RUNNER_GATE.md) for the observed
-capabilities and the exact conditions for continuing P01.
-
-## Target and accuracy
-
-The intended target is DE10-Nano with HPS DDR3, HDMI, and applicable 31 kHz analog
-output. The proposed DDR aperture is not yet approved for hardware access.
-This is a native software-engine port with a newly designed accelerator; it
-does not reproduce a Diablo arcade PCB. There is no hardware-accuracy claim.
-
-## Sources and licenses
-
-Blood is the primary integration donor; the official MiSTer template provides
-the future public FPGA skeleton. DevilutionX supplies game behavior. Exact
-identities and source roles are in [.mister/source-lock.json](.mister/source-lock.json).
-Additional Frontier/Duke3D/DeViL references are recorded there.
-
-DevilutionX's selected source has a Sustainable Use License. Donor components
-have separate notices and conditions. No aggregate release license is declared
-at this stage, and GPL Blood userspace code has not been copied into the engine.
-See [.mister/contracts/PROVENANCE.md](.mister/contracts/PROVENANCE.md).
-
-Commercial MPQs, saves, and private captures must never enter release packages.
-There are no installable artifacts, OSD options, or downloader instructions yet.
+Exact source identities are in [.mister/source-lock.json](.mister/source-lock.json).
+Blood is a read-only integration donor; Template_MiSTer supplies the FPGA skeleton.
+Preserve component notices and track imported files. Component licensing and
+composition review remain required before distribution; no aggregate release
+license or hardware-accuracy claim is declared.

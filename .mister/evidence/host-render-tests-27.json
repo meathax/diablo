@@ -1,0 +1,9 @@
+{
+  "status": "pass",
+  "tests": 27,
+  "scope": "25 upstream text-render golden tests plus 2 Windows PNG regressions; not full-frame or gameplay acceptance",
+  "log": ".work/build/reference-host/text-render-test-27.log",
+  "log_sha256": "eae763b635ed8cfe3b90e8d23a5d73458b5a526bb10f6a2dc31947893cfec110",
+  "test_source_sha256": "3ac43a5ea4136bfd78d2413878247ee86e80faed0d88ec008dececdcaa3c3580",
+  "executable_sha256": "2c23854931a0702abf15cff6921b7e79ae9383e6397d690ec3a3314e4458ad69"
+}

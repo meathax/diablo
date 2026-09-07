@@ -1,0 +1,6 @@
+{
+  "same_dependency_count": true,
+  "dependency_count": 18,
+  "different_trees": [],
+  "scope": "Resolved source trees and modifications; runtime and ARM closure are separate"
+}

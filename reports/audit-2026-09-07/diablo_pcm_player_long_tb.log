@@ -1,0 +1,5 @@
+support/tests/diablo_pcm_player_long_tb.sv:32: error: Unknown module type: diablo_pcm_player
+2 error(s) during elaboration.
+*** These modules were missing:
+        diablo_pcm_player referenced 1 times.
+***

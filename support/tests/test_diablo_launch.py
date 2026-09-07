@@ -1,0 +1,141 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+from unittest import mock
+
+from support.scripts import candidate_manifest, diablo_launch
+
+
+class DiabloLaunchTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.work = Path(self.temporary.name)
+        self.data = self.work / "data"
+        self.data.mkdir()
+        (self.data / "DIABDAT.MPQ").write_bytes(b"test data")
+        self.rbf = self.work / "Diablo.rbf"
+        self.engine = self.work / "diablo-engine"
+        self.rbf.write_bytes(b"rbf")
+        self.engine.write_bytes(b"engine")
+        self.manifest = self.work / "candidate.json"
+        candidate_manifest.write_new_manifest(
+            self.manifest, candidate_manifest.make_manifest(diablo_launch.ROOT, [self.rbf, self.engine]))
+        self.boot_id = self.work / "boot-id"
+        self.boot_id.write_text("12345678-1234-1234-1234-123456789abc\n", encoding="utf-8")
+
+    def tearDown(self) -> None:
+        self.temporary.cleanup()
+
+    def context(self) -> diablo_launch.LaunchContext:
+        return diablo_launch.preflight(diablo_launch.ROOT, self.manifest, self.rbf, self.engine, "diablo", self.data,
+                                       self.work / "saves", self.work / "runtime", self.boot_id, "0x20000000",
+                                       Path("transport.lock"))
+
+    def write_script(self, name: str, body: str) -> Path:
+        path = self.work / name
+        path.write_text(body, encoding="utf-8")
+        return path
+
+    def test_preflight_requires_matching_candidate_and_writable_paths(self) -> None:
+        context = self.context()
+        self.assertEqual("diablo", context.campaign)
+        self.assertTrue(context.save_root.is_dir())
+        self.assertTrue(context.runtime_root.is_dir())
+        other = self.work / "other.rbf"
+        other.write_bytes(b"different")
+        with self.assertRaisesRegex(diablo_launch.LaunchError, "not a hash-verified artifact"):
+            diablo_launch.preflight(diablo_launch.ROOT, self.manifest, other, self.engine, "diablo", self.data,
+                                    self.work / "saves-other", self.work / "runtime-other", self.boot_id,
+                                    "0x20000000", Path("transport.lock"))
+
+    def test_preflight_rejects_symlink_artifact_before_resolution(self) -> None:
+        redirected = self.work / "redirected.rbf"
+        def redirected_only(path: Path) -> bool:
+            return path == redirected
+        with mock.patch.object(Path, "is_symlink", redirected_only):
+            with self.assertRaisesRegex(diablo_launch.LaunchError, "must not be a symlink"):
+                diablo_launch.preflight(diablo_launch.ROOT, self.manifest, redirected, self.engine, "diablo", self.data,
+                                        self.work / "saves-symlink", self.work / "runtime-symlink", self.boot_id,
+                                        "0x20000000", Path("transport.lock"))
+
+    def test_preflight_rejects_symlink_manifest_before_reading(self) -> None:
+        def manifest_only(path: Path) -> bool:
+            return path == self.manifest
+        with mock.patch.object(Path, "is_symlink", manifest_only):
+            with self.assertRaisesRegex(diablo_launch.LaunchError, "candidate manifest must not be a symlink"):
+                diablo_launch.preflight(diablo_launch.ROOT, self.manifest, self.rbf, self.engine, "diablo", self.data,
+                                        self.work / "saves-manifest-symlink", self.work / "runtime-manifest-symlink",
+                                        self.boot_id, "0x20000000", Path("transport.lock"))
+
+    def test_preflight_rejects_symlinked_manifest_parent_before_reading(self) -> None:
+        with mock.patch.object(diablo_launch.candidate_manifest, "first_symlink_component", return_value=self.manifest.parent):
+            with self.assertRaisesRegex(diablo_launch.LaunchError, "candidate manifest path must not contain a symlink"):
+                diablo_launch.preflight(diablo_launch.ROOT, self.manifest, self.rbf, self.engine, "diablo", self.data,
+                                        self.work / "saves-manifest-parent-symlink", self.work / "runtime-manifest-parent-symlink",
+                                        self.boot_id, "0x20000000", Path("transport.lock"))
+
+    def test_candidate_artifact_rejects_symlinked_parent_before_resolution(self) -> None:
+        manifest = json.loads(self.manifest.read_text(encoding="utf-8"))
+        with mock.patch.object(diablo_launch.candidate_manifest, "first_symlink_component", return_value=self.rbf.parent):
+            with self.assertRaisesRegex(diablo_launch.LaunchError, "RBF path must not contain a symlink"):
+                diablo_launch.require_candidate_artifact(diablo_launch.ROOT, manifest, self.rbf, "RBF")
+
+    def test_supervision_waits_for_ready_and_cleans_admission(self) -> None:
+        context = self.context()
+        loader = self.write_script("loader.py", "from pathlib import Path\nimport sys\nPath(sys.argv[1]).write_text(sys.argv[2] + '\\n')\n")
+        runtime = self.write_script("runtime.py", "import os\nfrom pathlib import Path\nassert Path(os.environ['DIABLO_MISTER_ADMISSION_FILE']).is_file()\nassert os.environ['DIABLO_MISTER_CANDIDATE_ID']\nif os.name == 'nt':\n    import msvcrt\n    fd = msvcrt.open_osfhandle(int(os.environ['DIABLO_MISTER_TRANSPORT_LOCK_HANDLE']), os.O_RDONLY)\nelse:\n    fd = int(os.environ['DIABLO_MISTER_TRANSPORT_LOCK_FD'])\nassert os.fstat(fd).st_ino == os.stat(os.environ['DIABLO_MISTER_TRANSPORT_LOCK']).st_ino\n")
+        result = diablo_launch.run(context, [sys.executable, str(loader), "{ready_file}", "{candidate_id}"],
+                                   [sys.executable, str(runtime)], None, 5, 5, 4096)
+        self.assertEqual("pass", result["status"])
+        self.assertEqual(2, len(result["commands"]))
+        self.assertTrue(result["lock_acquired"])
+        self.assertFalse(Path(result["admission"]).exists())
+        self.assertFalse(Path(result["ready_file"]).exists())
+
+    def test_exclusive_transport_lease_blocks_second_launch_before_loader(self) -> None:
+        context = self.context()
+        holder = diablo_launch.TransportLock.acquire(context.lock_file, context)
+        try:
+            marker = self.work / "loader-started"
+            loader = self.write_script("loader-marker.py", f"from pathlib import Path\nPath({str(marker)!r}).write_text('started')\n")
+            runtime = self.write_script("runtime-noop.py", "raise SystemExit(0)\n")
+            result = diablo_launch.run(context, [sys.executable, str(loader)], [sys.executable, str(runtime)], None, 5, 5, 4096)
+        finally:
+            holder.close()
+        self.assertEqual("fail", result["status"])
+        self.assertFalse(result["lock_acquired"])
+        self.assertIn("another transport owner", result["error"])
+        self.assertFalse(marker.exists())
+        self.assertEqual([], result["commands"])
+
+    def test_transport_lease_rejects_redirected_lock_path(self) -> None:
+        context = self.context()
+        target = self.work / "outside-lock"
+        target.write_bytes(b"\\0")
+        try:
+            context.lock_file.symlink_to(target)
+        except OSError as error:
+            self.skipTest(f"symlink creation unavailable: {error}")
+        with self.assertRaisesRegex(diablo_launch.LaunchError, "must not be a symlink"):
+            diablo_launch.TransportLock.acquire(context.lock_file, context)
+
+    def test_loader_failure_does_not_start_runtime_or_leave_admission(self) -> None:
+        context = self.context()
+        marker = self.work / "runtime-started"
+        loader = self.write_script("loader-fail.py", "raise SystemExit(7)\n")
+        runtime = self.write_script("runtime-marker.py", f"from pathlib import Path\nPath({str(marker)!r}).write_text('started')\n")
+        result = diablo_launch.run(context, [sys.executable, str(loader)], [sys.executable, str(runtime)], None, 5, 5, 4096)
+        self.assertEqual("fail", result["status"])
+        self.assertFalse(marker.exists())
+        self.assertFalse(Path(result["admission"]).exists())
+
+    def test_main_requires_loader_and_runtime_together(self) -> None:
+        code = diablo_launch.main(["--candidate-manifest", str(self.manifest), "--rbf", str(self.rbf), "--engine", str(self.engine),
+                                   "--campaign", "diablo", "--data-root", str(self.data), "--save-root", str(self.work / "saves"),
+                                   "--runtime-root", str(self.work / "runtime"), "--boot-id-file", str(self.boot_id),
+                                   "--physical-base", "0x20000000", "--loader-command", json.dumps([sys.executable])])
+        self.assertEqual(1, code)

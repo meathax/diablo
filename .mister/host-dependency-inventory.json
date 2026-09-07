@@ -1,0 +1,476 @@
+{
+  "schema": "diablo-upstream-dependency-declarations-v1",
+  "engine_commit": "0ff3186238e7c2786c4d52c21ecce1cb83723ed9",
+  "scope": "Declaration inventory only; includes conditional/unused dependencies; transitive downloads and system libraries are not yet locked",
+  "dependency_closure_verified": false,
+  "files": [
+    {
+      "path": "3rdParty/asio/CMakeLists.txt",
+      "sha256": "677d26328638ee1bf0b443f8319c0a63c9447447ceedc170175ac1402efdd9b4",
+      "declarations": [
+        {
+          "line": 4,
+          "text": "FetchContent_Declare_ExcludeFromAll(asio"
+        },
+        {
+          "line": 5,
+          "text": "URL https://github.com/diasurgical/asio/archive/112f011842f4ae713b158a0fc57009f95c761a21.tar.gz"
+        },
+        {
+          "line": 6,
+          "text": "URL_HASH MD5=fb5a399c09bceac6431758f5f772db34"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/benchmark/CMakeLists.txt",
+      "sha256": "8708b2290f833c4f986ac089ae49293ddfe059f218684654026fef81505fcc6b",
+      "declarations": [
+        {
+          "line": 3,
+          "text": "FetchContent_Declare_ExcludeFromAll("
+        },
+        {
+          "line": 5,
+          "text": "URL https://github.com/google/benchmark/archive/refs/tags/v1.8.5.tar.gz"
+        },
+        {
+          "line": 6,
+          "text": "URL_HASH MD5=708d91ce255e8af4c1d7dfec50dff178"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/bzip2/CMakeLists.txt",
+      "sha256": "ff31b9519b2a2fb96d92cb0ab35363d7f6fdc27db8fb8a85165a01db2258eea3",
+      "declarations": [
+        {
+          "line": 5,
+          "text": "FetchContent_Declare_ExcludeFromAll(bzip2"
+        },
+        {
+          "line": 6,
+          "text": "GIT_REPOSITORY https://gitlab.com/bzip2/bzip2"
+        },
+        {
+          "line": 7,
+          "text": "GIT_TAG bzip2-1.0.8"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/discord/CMakeLists.txt",
+      "sha256": "96e99bdca3a8940725588ddd5827cc4af8e4eac02e123e45e642254da58e2ad0",
+      "declarations": [
+        {
+          "line": 10,
+          "text": "FetchContent_Declare_ExcludeFromAll(discordsrc"
+        },
+        {
+          "line": 11,
+          "text": "URL ${Discord_SDK_URL}"
+        },
+        {
+          "line": 12,
+          "text": "URL_HASH MD5=${Discord_SDK_HASH}"
+        },
+        {
+          "line": 15,
+          "text": "FetchContent_Declare_ExcludeFromAll(discordsrc"
+        },
+        {
+          "line": 16,
+          "text": "URL ${Discord_SDK_URL}"
+        },
+        {
+          "line": 17,
+          "text": "URL_HASH MD5=${Discord_SDK_HASH}"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/find_steam_game/CMakeLists.txt",
+      "sha256": "3759455b983c62b0375ef30585bc7a34fc3821816d68d8c39b958e674db8a2cc",
+      "declarations": [
+        {
+          "line": 4,
+          "text": "FetchContent_Declare_ExcludeFromAll(find_steam_game"
+        },
+        {
+          "line": 5,
+          "text": "URL https://github.com/cxong/find_steam_game/archive/a2bd6273fc002214052c2ee3bd48d7c1e7d3f366.tar.gz"
+        },
+        {
+          "line": 6,
+          "text": "URL_HASH MD5=a6950ce5d9ced8a259752bc2dc7f5311"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/googletest/CMakeLists.txt",
+      "sha256": "86a3fd00260344ce2ec23be578d703ef591ecb5532230f14f164bbbc3c0b1236",
+      "declarations": [
+        {
+          "line": 3,
+          "text": "FetchContent_Declare_ExcludeFromAll("
+        },
+        {
+          "line": 5,
+          "text": "URL https://github.com/google/googletest/releases/download/v1.15.2/googletest-1.15.2.tar.gz"
+        },
+        {
+          "line": 6,
+          "text": "URL_HASH MD5=7e11f6cfcf6498324ac82d567dcb891e"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/libpng/CMakeLists.txt",
+      "sha256": "268dd759d9a6c4142e0598b4763fa528bd4994eb73fb2d374f40ae75ed83930d",
+      "declarations": [
+        {
+          "line": 30,
+          "text": "FetchContent_Declare_ExcludeFromAll(libpng"
+        },
+        {
+          "line": 31,
+          "text": "URL https://github.com/pnggroup/libpng/archive/3061454d980de7d53608f594194cfac722721d2a.tar.gz"
+        },
+        {
+          "line": 32,
+          "text": "URL_HASH MD5=2007281c431730eca37a71878efcc858"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/libsmackerdec/CMakeLists.txt",
+      "sha256": "8a865d9d327d821b5ecefca15b338723d7da11dc2ac26c4d9cd07a4391f8bc2b",
+      "declarations": [
+        {
+          "line": 4,
+          "text": "FetchContent_Declare_ExcludeFromAll(libsmackerdec"
+        },
+        {
+          "line": 5,
+          "text": "URL https://github.com/diasurgical/libsmackerdec/archive/0aaaf8c94a097b009d844db0d44dd7cd0ff81922.tar.gz"
+        },
+        {
+          "line": 6,
+          "text": "URL_HASH SHA256=c3a7fbc91531eee8989b1d281415adc0209d84ffc0437c6b0b4f677ae7fd3b41"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/libsodium/CMakeLists.txt",
+      "sha256": "af69b03fea96453a35de897b40bf544bb190c2fdd087822c99df496a2e5cba37",
+      "declarations": [
+        {
+          "line": 14,
+          "text": "FetchContent_Declare_ExcludeFromAll(libsodium"
+        },
+        {
+          "line": 15,
+          "text": "GIT_REPOSITORY https://github.com/robinlinden/libsodium-cmake.git"
+        },
+        {
+          "line": 16,
+          "text": "GIT_TAG a8ac4509b22b84d6c2eb7d7448f08678e4a67da6"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/libzt/CMakeLists.txt",
+      "sha256": "44f44a307e2b5a6302bdb23e4c1534cc34873fcc5f8b7b2513bf15a4fe60d498",
+      "declarations": [
+        {
+          "line": 6,
+          "text": "FetchContent_Declare_ExcludeFromAll(libzt"
+        },
+        {
+          "line": 7,
+          "text": "GIT_REPOSITORY https://github.com/diasurgical/libzt.git"
+        },
+        {
+          "line": 8,
+          "text": "GIT_TAG 1a9d83b8c4c2bdcd7ea6d8ab1dd2771b16eb4e13)"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/Lua/CMakeLists.txt",
+      "sha256": "99074a25b8622913aada1cfdc4424d55acae88eaf9cc0931637ac00dcc688269",
+      "declarations": [
+        {
+          "line": 25,
+          "text": "FetchContent_Declare_ExcludeFromAll(Lua"
+        },
+        {
+          "line": 26,
+          "text": "URL https://github.com/walterschell/Lua/archive/3ed55a56eaa05c9221f40b3c07d0e908eb1067b0.tar.gz"
+        },
+        {
+          "line": 27,
+          "text": "URL_HASH MD5=77907b8209f77c65cb681a5012f2d804"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/magic_enum/CMakeLists.txt",
+      "sha256": "d93a9a10050aace7fb21a8c368d7f207aa3961d049dfd652eb1736e07932e0f4",
+      "declarations": [
+        {
+          "line": 4,
+          "text": "FetchContent_Declare_ExcludeFromAll(magic_enum"
+        },
+        {
+          "line": 5,
+          "text": "URL https://github.com/Neargye/magic_enum/archive/refs/tags/v0.9.7.tar.gz"
+        },
+        {
+          "line": 6,
+          "text": "URL_HASH MD5=5afd218c48c3f7cf094889a182842a50"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/mpqfs/CMakeLists.txt",
+      "sha256": "322464cf1e2d65a6bcce2ea86ebb2ea55410788f0485485c016afcb3884bd386",
+      "declarations": [
+        {
+          "line": 5,
+          "text": "FetchContent_Declare_ExcludeFromAll(mpqfs"
+        },
+        {
+          "line": 6,
+          "text": "URL https://github.com/diasurgical/mpqfs/archive/f9dbf8abc0e5a25b3c76b2b964a707dc72b7d45b.tar.gz"
+        },
+        {
+          "line": 7,
+          "text": "URL_HASH MD5=2994259729289fdc01c368ee31055679"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/SDL2/CMakeLists.txt",
+      "sha256": "d0d823651eed6866b37a5261289e264da1c869aafedcfcf9bd114295c1c92ea1",
+      "declarations": [
+        {
+          "line": 20,
+          "text": "FetchContent_Declare(SDL2"
+        },
+        {
+          "line": 22,
+          "text": "URL https://github.com/diasurgical/SDL/archive/20b47a62a12f0c7be4052fb5b32eb21d709d6f06.tar.gz"
+        },
+        {
+          "line": 23,
+          "text": "URL_HASH MD5=6e77a1d1a79d7f0dd6231b39515a341f"
+        },
+        {
+          "line": 26,
+          "text": "FetchContent_Declare(SDL2"
+        },
+        {
+          "line": 27,
+          "text": "URL https://github.com/libsdl-org/SDL/releases/download/release-2.32.8/SDL2-2.32.8.tar.gz"
+        },
+        {
+          "line": 28,
+          "text": "URL_HASH SHA256=0ca83e9c9b31e18288c7ec811108e58bac1f1bb5ec6577ad386830eac51c787e"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/SDL3/CMakeLists.txt",
+      "sha256": "6fc9313178c475f1cf3d00a2afe198dfeca6a61d6e6c2b9530baa523b899963f",
+      "declarations": [
+        {
+          "line": 18,
+          "text": "FetchContent_Declare(SDL3"
+        },
+        {
+          "line": 19,
+          "text": "URL https://github.com/libsdl-org/SDL/archive/e442a9a5e1d6eb2621e9206f5176c53b0d034e09.tar.gz"
+        },
+        {
+          "line": 20,
+          "text": "URL_HASH SHA256=8ebc84ff04c076c0e6249c885fc1efc6dc5f13a411b31de8621478646ff76bcf"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/SDL3_image/CMakeLists.txt",
+      "sha256": "112324931939c8ed189638539d09168e3ea073bf5b891ea4f0497157da2f7bfe",
+      "declarations": [
+        {
+          "line": 50,
+          "text": "FetchContent_Declare_ExcludeFromAll(SDL_image"
+        },
+        {
+          "line": 51,
+          "text": "URL https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz"
+        },
+        {
+          "line": 52,
+          "text": "URL_HASH SHA256=a725bd6d04261fdda0dd8d950659e1dc15a8065d025275ef460d32ae7dcfc182"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/SDL3_mixer/CMakeLists.txt",
+      "sha256": "016c755c332d202e59058481b53d90fae26aa74b054782896b4550bce2842cb0",
+      "declarations": [
+        {
+          "line": 29,
+          "text": "FetchContent_Declare_ExcludeFromAll(SDL_mixer"
+        },
+        {
+          "line": 30,
+          "text": "URL https://github.com/libsdl-org/SDL_mixer/archive/refs/tags/release-3.2.0.tar.gz"
+        },
+        {
+          "line": 31,
+          "text": "URL_HASH SHA256=1077fef4a6e9513027da0a08e6f1b8645f8c88c8bef001c17befeb52b129b5dd"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/SDL_audiolib/CMakeLists.txt",
+      "sha256": "438a8e5bfaef4931ff0f2c50ab1b1c7b2728684be8e2a7540f8926fbec7bbc0d",
+      "declarations": [
+        {
+          "line": 47,
+          "text": "FetchContent_Declare_ExcludeFromAll(SDL_audiolib"
+        },
+        {
+          "line": 48,
+          "text": "URL https://github.com/realnc/SDL_audiolib/archive/cc1bb6af8d4cf5e200259072bde1edd1c8c5137e.tar.gz"
+        },
+        {
+          "line": 49,
+          "text": "URL_HASH MD5=0e8174264ac9c6b314c6b2d9a5f72efd"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/SDL_image/CMakeLists.txt",
+      "sha256": "d915f87ef491dfb0344af328c31dbb2d96a72fd4222c92e06fa1bacdd3b5ded1",
+      "declarations": [
+        {
+          "line": 22,
+          "text": "FetchContent_Declare_ExcludeFromAll(SDL_image"
+        },
+        {
+          "line": 23,
+          "text": "URL https://github.com/libsdl-org/SDL_image/archive/refs/tags/release-2.0.5.tar.gz"
+        },
+        {
+          "line": 24,
+          "text": "URL_HASH MD5=3446ed7ee3c700065dcb33426a9b0c6e"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/SheenBidi/CMakeLists.txt",
+      "sha256": "f8a5c60ed3cb08f0bdf0978352572388151ce9704434023a2796eea55a04c636",
+      "declarations": [
+        {
+          "line": 8,
+          "text": "FetchContent_Declare_ExcludeFromAll(SheenBidi"
+        },
+        {
+          "line": 9,
+          "text": "URL https://github.com/Tehreer/SheenBidi/archive/refs/tags/v2.9.0.tar.gz"
+        },
+        {
+          "line": 10,
+          "text": "URL_HASH MD5=2c22cfad93a52afa7bd25ad56a3a4089"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/sol2/CMakeLists.txt",
+      "sha256": "2b7077698b3f5f5b2d9cd5f47faf36333496c0d47eb2e0fee29b73ef9839282a",
+      "declarations": [
+        {
+          "line": 8,
+          "text": "FetchContent_Declare_ExcludeFromAll(sol2"
+        },
+        {
+          "line": 19,
+          "text": "URL https://github.com/diasurgical/sol2/archive/832ac772c2cd3d9620d447e9e77897f7b5e806e3.tar.gz"
+        },
+        {
+          "line": 20,
+          "text": "URL_HASH MD5=06c9c0f3242ee803f50e8fd210fdfe4e"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/tolk/CMakeLists.txt",
+      "sha256": "c7fb5e477e75ccf655f3bc21589397acb1e3d20085c669e477ccb7c57f8dcbac",
+      "declarations": [
+        {
+          "line": 7,
+          "text": "FetchContent_Declare_ExcludeFromAll(Tolk"
+        },
+        {
+          "line": 8,
+          "text": "URL https://github.com/sig-a11y/tolk/archive/89de98779e3b6365dc1688538d5de4ecba3fdbab.tar.gz"
+        },
+        {
+          "line": 9,
+          "text": "URL_HASH MD5=724f6022186573dd9c5c2c92ed9e21e6"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/unordered_dense/CMakeLists.txt",
+      "sha256": "cb8b777f6fe234b90e4fb0f4899ad6a74eb9377ba805f183000884f770fa34f1",
+      "declarations": [
+        {
+          "line": 9,
+          "text": "FetchContent_Declare_ExcludeFromAll(unordered_dense"
+        },
+        {
+          "line": 10,
+          "text": "URL ${unordered_dense_URL}"
+        },
+        {
+          "line": 11,
+          "text": "URL_HASH MD5=${unordered_dense_HASH}"
+        },
+        {
+          "line": 15,
+          "text": "FetchContent_Declare_ExcludeFromAll(unordered_dense"
+        },
+        {
+          "line": 16,
+          "text": "URL ${unordered_dense_URL}"
+        },
+        {
+          "line": 17,
+          "text": "URL_HASH MD5=${unordered_dense_HASH}"
+        }
+      ]
+    },
+    {
+      "path": "3rdParty/zlib/CMakeLists.txt",
+      "sha256": "21efc53bfdb8411211ab87440776eafe3e4155ea39f3abbdc505b4f4e41077b8",
+      "declarations": [
+        {
+          "line": 6,
+          "text": "FetchContent_Declare_ExcludeFromAll(zlib"
+        },
+        {
+          "line": 7,
+          "text": "URL https://www.zlib.net/zlib-1.3.tar.gz"
+        },
+        {
+          "line": 10,
+          "text": "URL_HASH MD5=60373b133d630f74f4a1f94c1185a53f"
+        }
+      ]
+    }
+  ]
+}

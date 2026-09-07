@@ -1,0 +1,69 @@
+{
+  "schema": "diablo-arm-input-overflow-recovery-v1",
+  "recorded_at": "2026-09-07",
+  "status": "pass-synthetic-overflow-recovery-physical-input-open",
+  "target": {
+    "platform": "MiSTer DE10-Nano",
+    "host": "192.168.0.69",
+    "kernel": "Linux MiSTer 5.15.1-MiSTer armv7l",
+    "validation_method": "fresh RBF, real ARM DevilutionX process, /dev/mem producer-cursor overflow fixture and read-only shared state dump"
+  },
+  "artifacts": {
+    "rbf": {
+      "path": "/media/fat/_Other/Diablo_pcm_status_20260907.rbf",
+      "bytes": 2495012,
+      "sha256": "c872a3a1c7d2de2e98ffd208ca31b7508d1aedd0b68766b88abab618814729eb"
+    },
+    "engine": {
+      "path": "/media/fat/linux/devilutionx",
+      "sha256": "1915adc9db97637825934f12c71883aba55398d003f1b35e9a5167f057475556"
+    },
+    "injector": {
+      "source": "support/transport/transport_input_injector.cpp",
+      "source_sha256": "610db9f564f812b84d51c03370a232461f2d9bc97aa304882bc9a45bb3d277bf",
+      "path": "/media/fat/linux/transport_input_injector_overflow",
+      "sha256": "31ede4e606101d7f88e9b5ce4769be2df142270ae96749d52a9e09d48602e38f"
+    },
+    "state_dump": {
+      "source": "support/transport/transport_state_dump.cpp",
+      "source_sha256": "e353d843120a477961c478ff0b3bcb865bbb97e594e74f92c2fb1dae37d1c7d5",
+      "path": "/media/fat/linux/transport_state_dump",
+      "sha256": "392fb87b4dfeca93a4b251375c7a7a6030913bb414471103ec7e2a1f15f5f2f3"
+    }
+  },
+  "configuration": {
+    "transport": "DIABLO_MISTER_TRANSPORT=1",
+    "shared_physical": "DIABLO_MISTER_SHARED_PHYS=0x3fe00000",
+    "session_epoch": "0x26090720",
+    "video_driver": "SDL_VIDEODRIVER=dummy",
+    "audio_driver": "SDL_AUDIODRIVER=dummy"
+  },
+  "injection": {
+    "command": "/media/fat/linux/transport_input_injector_overflow --overflow-test",
+    "producer_before": 0,
+    "consumer_before": 0,
+    "producer_after": 257,
+    "consumer_after_injection": 0,
+    "occupied": 257,
+    "injector_output": "input overflow injected epoch=0x26090720 producer=257 consumer=0 occupied=257"
+  },
+  "observations": {
+    "engine_output": "Diablo MiSTer input overflow recovered",
+    "asset_discovery": "pass: Found: DIABDAT",
+    "audio_init": "Aulib sampleRate=22050 channels=2 frameSize=2048 format=0x8010",
+    "timedemo": "883 frames, 29.66 seconds, 29.8 fps",
+    "state_after_recovery": {
+      "epoch": "0x26090720",
+      "arm_state": 1,
+      "fpga_state": 1,
+      "fault_code": 0,
+      "input_producer": 257,
+      "input_consumer": 257,
+      "input_dropped": 0,
+      "pcm_producer": 1435549,
+      "pcm_consumer": 1435549,
+      "pcm_resyncs": 0
+    }
+  },
+  "scope": "The synthetic fixture proves occupied>capacity recovery, focus reset and cursor resynchronization in the real ARM SDL adapter. It does not qualify physical keyboard/mouse/controller traffic, OSD focus, disconnect/reconnect behavior or input-to-visible latency."
+}
