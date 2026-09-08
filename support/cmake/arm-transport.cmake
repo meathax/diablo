@@ -7,6 +7,7 @@ endif()
 
 set(_mister_reference_dir "${CMAKE_CURRENT_LIST_DIR}/../reference")
 set(_mister_overlay_dir "${CMAKE_BINARY_DIR}/mister-engine-overlay")
+set(_mister_svid_expected_sha256 "6e6aa7f4d360c2e3c23206c62342bc008f7b7551d3816c9f217b05182db7e715")
 
 function(diablo_mister_transport)
   file(MAKE_DIRECTORY "${_mister_overlay_dir}/engine")
@@ -65,6 +66,53 @@ function(diablo_mister_transport)
   list(APPEND engine_sources "${dx_output}")
   set_property(TARGET libdevilutionx PROPERTY SOURCES "${engine_sources}")
   set_property(SOURCE "${dx_output}" DIRECTORY "${PROJECT_SOURCE_DIR}/Source"
+    APPEND PROPERTY INCLUDE_DIRECTORIES "${_mister_reference_dir}")
+
+  set(svid_source "${PROJECT_SOURCE_DIR}/Source/storm/storm_svid.cpp")
+  file(SHA256 "${svid_source}" svid_observed)
+  if(NOT svid_observed STREQUAL "${_mister_svid_expected_sha256}")
+    message(FATAL_ERROR "Unexpected pinned storm_svid.cpp input for MiSTer transport")
+  endif()
+  file(READ "${svid_source}" svid_content)
+  set(svid_prefix "#include <cstdint>\n#include <cstdio>\n#include \"mister_movie_frame.hpp\"\n#include \"mister_transport_sdl.hpp\"\n")
+  set(svid_content "${svid_prefix}${svid_content}")
+  set(svid_marker [[bool BlitFrame()
+{
+]])
+  set(svid_hook [[bool BlitFrame()
+{
+  if (::diablo::mister::sdl::Active()) {
+    static ::diablo::mister::movie::IndexedFrameAdapter movie_frame;
+    const auto prepared = movie_frame.Prepare(SVidSurface.get());
+    if (prepared.surface == nullptr) {
+      if (movie_frame.ConsumeErrorNotice()) {
+        std::fprintf(stderr, "Diablo MiSTer cinematic surface rejected: error=%d sdl=%s\n",
+          static_cast<int>(prepared.error), SDL_GetError());
+      }
+      return true;
+    }
+    if (movie_frame.ConsumeApproximateBorderNotice(prepared.approximate_border)) {
+      std::fputs("Diablo MiSTer cinematic letterbox uses nearest palette color for black\n", stderr);
+    }
+    (void)::diablo::mister::sdl::Present(prepared.surface, static_cast<std::uint64_t>(SDL_GetTicks()));
+    return true;
+  }
+]])
+  string(FIND "${svid_content}" "${svid_marker}" svid_marker_at)
+  if(svid_marker_at EQUAL -1)
+    message(FATAL_ERROR "storm_svid.cpp BlitFrame identity marker not found")
+  endif()
+  string(REPLACE "${svid_marker}" "${svid_hook}" svid_content "${svid_content}")
+  set(svid_output "${_mister_overlay_dir}/storm_svid.cpp")
+  file(CONFIGURE OUTPUT "${svid_output}" CONTENT "${svid_content}" @ONLY NEWLINE_STYLE UNIX)
+  file(SHA256 "${svid_output}" svid_patched)
+  file(APPEND "${CMAKE_BINARY_DIR}/mister-transport-fixes.txt"
+    "storm/storm_svid.cpp ${svid_observed} ${svid_patched}\n")
+  get_target_property(svid_sources libdevilutionx SOURCES)
+  list(REMOVE_ITEM svid_sources storm/storm_svid.cpp "${svid_source}")
+  list(APPEND svid_sources "${svid_output}")
+  set_property(TARGET libdevilutionx PROPERTY SOURCES "${svid_sources}")
+  set_property(SOURCE "${svid_output}" DIRECTORY "${PROJECT_SOURCE_DIR}/Source"
     APPEND PROPERTY INCLUDE_DIRECTORIES "${_mister_reference_dir}")
 
   set(sound_source "${PROJECT_SOURCE_DIR}/Source/engine/sound.cpp")
