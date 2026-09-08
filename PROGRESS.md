@@ -61,3 +61,8 @@ Reuse an artifact only when its complete relevant source, tool, configuration an
 - Reviewed Zaparoo PR #430: the reported fbdev mmap failure does not affect the target SDL-dummy/shared-DDR design. Added live Linux RAM overlap rejection before RBF loading/admission and kernel/backend evidence in ready/run records. See support/LINUX_COMPATIBILITY.md.
 - Read-only hardware reports 5.15.1-MiSTer; the real memory map passes the new check. No kernel update or target deployment performed. Linux 6.18 hardware qualification remains open.
 - Validation: wsl.exe -d Ubuntu --cd D:/Arcade/AI/aCORES/Diablo --exec python3 -m unittest support.tests.test_mister_launcher support.tests.test_package_release -q — 14 pass.
+
+## Input latency worklist
+
+- Added six concrete C21 tasks: service input before SDL draining, evaluate pacing waits, reduce aged queued frames safely, optimize measured copying, tune burst pressure only if observed, and measure HDMI button-to-visible latency. Source inventory: .work/input-latency-inventory.md.
+- Existing p95 <=50 ms / p99 <=100 ms physical targets are unchanged. No physical input-latency reduction is claimed; calibrated end-to-end tracing and paired runs come first.
