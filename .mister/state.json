@@ -1,18 +1,18 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "5dabd25282d9538f703facbb223f9d25581ca9c997e85d2c7fe1a802fe6bb42a",
-  "status": "c34-cinematic-arm-requalification-pending",
+  "completion_document_sha256": "2a2d3f0a349d753f8a06128e22462f7866fed846846d291af52340ad92b2d2ea",
+  "status": "c34-cinematic-candidate-live-physical-verification-pending",
   "candidate": {
     "state": "no-current-accepted-candidate",
     "id": null,
-    "development_id": "8530508c0923c8d14766f584019bb4bd5b78ed614c95facb474d5b6788ed1376",
-    "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-c26-0232f7.json",
-    "development_manifest_sha256": "b51d4a9821686cf7032e6c9bb48768df71453b4f30376de196902571a017abf0",
-    "next_gate": "Finish the incremental ARM build and package verification, bind a new candidate with the qualified FPGA and unchanged ABI/assets, then run the full candidate-bound title-to-cinematic-to-title hardware cycle before the remaining physical matrix.",
-    "development_validity": "C26 clean FPGA qualification and the 192-file package passed before the cinematic ARM repair; C26 is activated development-only with the pre-fix behavior, and physical acceptance remains false."
+    "development_id": "b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b",
+    "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-cinematic-d2ccbc3-assets.json",
+    "development_manifest_sha256": "eea1c5c7fdc0716459685ac634d3e8e566880130f4e0f87af3155558cfea7b9f",
+    "next_gate": "Finish the full candidate-bound title-to-cinematic-to-title physical cycle on repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b, record the user-observed visual result, then complete the remaining controls/save/campaign/endurance and C25 gates.",
+    "development_validity": "Candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b packages the d2ccbc3 ARM repair with the qualified FPGA and 191 verified files; it is running development-only, the physical visual result is pending, and physical acceptance remains false."
   },
-  "active_work": "Finish the incremental ARM build and package verification for the cinematic repair, then bind a new immutable development candidate using the qualified FPGA and unchanged ABI/assets. C26 remains the activated development-only pre-fix baseline; the MCP23009 375 kHz local defect and focused cinematic helper/adapter regression are fixed and verified, while the full title-to-cinematic-to-title hardware cycle and C25 external timing/physical gates remain open.",
+  "active_work": "Finish the full title-to-cinematic-to-title physical cycle on repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b; its visual result is pending user observation. Live telemetry has arm/fpga ready and fault=0, but PCM underruns rose 0, 0, 6745 and 13465, so physical audio acceptance remains open. Then complete controls/OSD, save/relaunch, campaign, endurance/performance, installation/rollback and C25 external timing/physical gates. C26 remains the activated development-only pre-fix baseline.",
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],
@@ -29,8 +29,8 @@
     "11": "Qualify candidate43 completely on MiSTer",
     "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "Finish the incremental ARM build and package verification for the cinematic repair, then bind a new immutable development candidate using the qualified FPGA and unchanged ABI/assets. After binding, run the full candidate-bound title-to-cinematic-to-title hardware cycle before the remaining physical matrix. Do not run Quartus unless an FPGA input changes or compile/timing failure requires it.",
-  "next_implementation": "C34/P01-P06 and the cinematic overlay/helper source/test packet are committed through d2ccbc3; retain focused receipt 20260908T070956Z-transport-cinematic-d2918ef76bc7433597d994ee330f8efa.json. Keep C26 as the activated development-only pre-fix baseline and Candidate49 historical; do not promote until the repaired ARM build, package, new candidate binding and full candidate-bound title-to-cinematic-to-title hardware evidence pass alongside the C01-C34/R01-R13 matrix.",
+  "next_action": "Finish the full candidate-bound title-to-cinematic-to-title physical cycle on repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b and record the user-observed visual result, then complete the remaining controls/save/campaign/endurance and C25 gates. Do not run Quartus; the qualified FPGA was reused for this ARM-only repair.",
+  "next_implementation": "C34/P01-P06 and the cinematic overlay/helper source/test packet are committed through d2ccbc3; repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b and package receipt .mister/evidence/receipts/20260908T-c26-cinematic-candidate-package-b537.json are verified development-only. Live receipt .work/c26/cinematic-live-receipt-b537b12c.json records unresolved PCM underrun growth; keep C26 pre-fix and Candidate49 historical, and do not promote until the current candidate visual/audio cycle and the C01-C34/R01-R13 matrix pass.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
   "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
@@ -1276,15 +1276,15 @@
     "scope": "Read-only; target reboot/core changes require fresh admission; no Diablo activation or physical acceptance."
   },
   "quartus_root": "D:/q17/quartus",
-  "latest_arm_engine_rebuild_receipt": ".mister/evidence/receipts/20260908T-c34-arm-engine-rebuild.json",
-  "latest_arm_engine_rebuild_receipt_sha256": "3542278153f30480d9108a8c38b342c4fe466da1a4d6ba125a81320b8a5cfc61",
-  "latest_arm_version_smoke_receipt": ".mister/evidence/receipts/20260908T-c34-arm-version-smoke.json",
-  "latest_arm_version_smoke_receipt_sha256": "14d796998cb9bae630d743f263e9e9131e7c2618adae684791c8d0523025f420",
+  "latest_arm_engine_rebuild_receipt": ".mister/evidence/receipts/20260908T071924Z-c26-cinematic-arm-build.json",
+  "latest_arm_engine_rebuild_receipt_sha256": "84fd4293a01c0372d8643ca0d0bd63b182e99ea61c959ee67c0b5869ac677297",
+  "latest_arm_version_smoke_receipt": null,
+  "latest_arm_version_smoke_receipt_sha256": null,
   "latest_c33_producer_receipt": ".mister/evidence/receipts/20260908T021850Z-c33-producer-proof-4fea2af2-836b-49d1-9936-919113740560.json",
   "latest_engine_input_clean_build_receipt": ".mister/evidence/receipts/20260908T-c34-clean-arm-engine-build.json",
   "next_engine_artifact": {
-    "path": ".work/build/arm-engine-c34-clean/devilutionx",
-    "sha256": "6cfc2c80ff0c2fedf4dd5ea4a91cfad7339fac7f67828421465c4f1d7b324989",
-    "scope": "Engine-input clean build; no current candidate/physical acceptance"
+    "path": ".work/c26/cinematic-arm-artifact-d2ccbc3/devilutionx",
+    "sha256": "67e82c01d45050f4ea7892f75d33cd9f2075be7ce02425aa9529fa11de7909ed",
+    "scope": "Candidate-bound development ARM artifact; QEMU version smoke unavailable; physical visual result pending"
   }
 }

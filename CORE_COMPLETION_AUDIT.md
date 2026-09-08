@@ -1,9 +1,9 @@
 # Diablo MiSTer — completion execution plan
 
 **Active worktree update:** C34 ownership extraction and command-wait accounting
-changes supersede Candidate49 source qualification. The cinematic ARM overlay repair and focused source/test packet are committed
-in d2ccbc3 and locally regression-tested; the incremental ARM rebuild and package
-verification remain before a new candidate. C33 is reopened because its last
+changes supersede Candidate49 source qualification. The cinematic ARM overlay and focused source/test packet are committed in d2ccbc3
+and locally regression-tested. Repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b is packaged and
+running; the physical visual cycle remains pending.  C33 is reopened because its last
 receipt records file absence, not execution of current build/test producers. No
 release is accepted.
 
@@ -260,14 +260,15 @@ Read only the current execution block and active defect in the [detailed plan](r
   Keep every release criterion intact and distinguish missing observations from
   local software work.
 
-**Next action:** finish the incremental ARM build and package verification for the cinematic
-repair, then bind a new immutable development candidate using
-the qualified FPGA and unchanged ABI/assets. After candidate binding, run the
-full candidate-bound title → cinematic → title MiSTer cycle and then the
-remaining physical matrix. C26 is the activated development-only, pre-fix
-baseline; its staged package
-(`\\192.168.0.69\sdcard\_CodexDiabloC26_0232f7`) is retained for rollback and
-is not accepted for the repaired cinematic behavior. The 375 kHz IO fix, actual-source regression,
+**Next action:** finish the full candidate-bound title → cinematic → title MiSTer cycle
+on repaired candidate `b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b` and record the user-observed visual result;
+then complete controls/OSD, save/relaunch, campaign, endurance/performance,
+installation/rollback and remaining physical gates. The ARM artifact and 191-file
+package are verified, the qualified FPGA was reused, and no Quartus run is needed.
+C26 remains the activated development-only, pre-fix baseline; repaired candidate
+`b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b` is running from `/media/fat/_CodexDiabloCinematic_d2ccbc3` and is not
+accepted until the physical visual cycle is observed. Its package receipt is
+`.mister/evidence/receipts/20260908T-c26-cinematic-candidate-package-b537.json` (manifest SHA-256 `c344c81a45503ceb2b25fe939f8f135a1f63028f14f96e6c37cd0cdaa0e64f94`). Live receipt `.work/c26/cinematic-live-receipt-b537b12c.json` (SHA-256 `180e06138e6c7ce5261303a6373b45fded1414c588e3f36651be30d829d0d262`) records arm/fpga ready and fault=0; PCM underruns rose 0, 0, 6745 and 13465, so physical audio acceptance remains open. The 375 kHz IO fix, actual-source regression,
 `files.qip` registration, clean C26 FPGA qualification and focused cinematic
 helper/adapter regression are complete; C25 external IO/physical evidence and
 full cinematic hardware evidence remain open. Do not run Quartus unless an FPGA
