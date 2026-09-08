@@ -1,18 +1,18 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "e2561045551160047f5e5ef099470edf3ee959264d51dc2228fcca44909a3cc7",
-  "status": "c34-in-progress-source-changed-requalification-required",
+  "completion_document_sha256": "424d733872cffce14d6fefa2d9e2137539409aefedbb247fc3791339cbb7dc27",
+  "status": "c26-development-package-staged-awaiting-exclusive-physical-window",
   "candidate": {
     "state": "no-current-accepted-candidate",
     "id": null,
-    "development_id": "d95d4cfd03154bd659343c5a77a1230bcd4efc7c45d81d4f2299a0d754128611",
-    "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-49-final-local.json",
-    "development_manifest_sha256": "f420873962a21317c8a9bdc9ff1ad07db02d9ad4299c2b9b5ff2e1abae802c4b",
-    "next_gate": "Complete the fresh current-SDC FPGA build, durable docs/evidence and clean-checkout qualification; then bind a new candidate and acquire a quiescent target window for exact output-mode, physical audio/input/campaign/performance and clean install/menu/second-launch evidence.",
-    "development_validity": "Candidate49 source inputs superseded by C34 edits; historical artifacts only until rebuilt and requalified."
+    "development_id": "8530508c0923c8d14766f584019bb4bd5b78ed614c95facb474d5b6788ed1376",
+    "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-c26-0232f7.json",
+    "development_manifest_sha256": "b51d4a9821686cf7032e6c9bb48768df71453b4f30376de196902571a017abf0",
+    "next_gate": "At the next exclusive MiSTer window, run read-only boot/data/DDR preflight, then smoke-first launch/video/audio/input/save checks before the full physical matrix.",
+    "development_validity": "C26 clean FPGA qualification and the 192-file package passed; the package is staged, not activated, and physical acceptance remains false."
   },
-  "active_work": "Single active defect: Terra completing native WSL Verilator5.050 actual-source MCP23009 regression. No further Quartus until focused tests, independent review, committed source/file-list and matching snapshot pass. Then clean-checkout qualification, one replacement FPGA build and development package.",
+  "active_work": "Await an exclusive MiSTer test window for the staged C26 development package. The MCP23009 375 kHz local defect is fixed and verified; do not run Quartus for prose or state synchronization.",
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],

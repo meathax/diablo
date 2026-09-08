@@ -2,18 +2,18 @@
 
 ## EXECUTION STATE
 
-- Done: C34 ownership fixes and independent local22/22; clean ARM build/version smoke; C33 producer proof; reviewed source packets through `a65a8ec`; C25 guarded constraints/five-metric validator commit `8e74223`; documentation/evidence commit `4275aa0`; fresh pre-IO-fix FPGA build with four-corner positive timing.
-- In progress: smallest MCP23009 timing correction to375kHz plus actual-source regression. Preserve and commit the required `files.qip` video-policy registration. Independently review the final source packet before one replacement FPGA build.
-- Open external requirements: residual HDMI/IO timing contracts, IO-board/revision and USER_IO configuration, physical output/observer access, and available target window. Latest observation was another Suna8bit arcade; recheck rather than interrupt it. Internal framebuffer capture is not physical output acceptance.
-- Next: finish/review source stabilization; verify a clean checkout; build affected FPGA inputs once; reuse unchanged ARM inputs; bind one development candidate/package; run launch/video/audio/input/save smoke tests before the remaining hardware matrix.
-- Decisions: use bounded Luna MAX packets and independent review for critical changes; Terra handles the proven cross-interface timing decision. Do not repeat broad checks or historical audits without a relevant dependency/failure. Keep all mandatory release gates intact and preserve original receipt scope.
-- Current pre-fix build receipt: `.mister/evidence/receipts/20260908T040336Z-d409d0ee3204-c25-fpga-final.json`. This proves its exact snapshot only; it will not qualify corrected IO source. ARM artifact: `.work/build/arm-engine-c34-clean/devilutionx`.
+- Done: the MCP23009 375 kHz correction, actual-source 375/400/500 kHz regression and `files.qip` registration are committed in `ca6f541`; synchronized source/docs are committed in `0232f7`. Clean C26 FPGA qualification passed with compile/compress/full STA exit 0 and positive four-corner metrics. Development candidate `8530508c0923c8d14766f584019bb4bd5b78ed614c95facb474d5b6788ed1376` is locally verified and staged.
+- In progress: no local FPGA defect remains. The staged 192-file development package `.work/package-board-c26-0232f7` is not activated and awaits an exclusive MiSTer test window.
+- Open external requirements: C25 as a whole remains open for residual HDMI/IO timing contracts, IO-board/revision and USER_IO configuration, and physical output/observer evidence. The target window is also open; recheck the foreign target read-only rather than interrupt it.
+- Next: at the next available exclusive window, run read-only boot/data/DDR preflight, then smoke-first launch/video/audio/input/save checks before the remaining physical matrix. Do not run Quartus for prose or state synchronization.
+- Decisions: the IO-rate defect is locally fixed and separately verified; retain every physical/release gate. Reuse the exact C26 package, candidate and staging receipts; do not mint another candidate for bookkeeping.
+- Current development package: candidate manifest `.mister/evidence/candidates/fpga-candidate-20260908-c26-0232f7.json` (SHA-256 `b51d4a9821686cf7032e6c9bb48768df71453b4f30376de196902571a017abf0`), package manifest SHA-256 `8d4b9deebaf6849fe9487bac93ab8a6d4d00079b7026bcbf5eae434fed92ed9b`, staged at `\\192.168.0.69\sdcard\_CodexDiabloC26_0232f7`; it is development-only and not activated.
 
 ### C25 proven blocker: MCP23009 Fast-mode timing
 
-The architecture review traced the actual 50 MHz clock through the shared divider: the current 500 kHz setting produces 1.000 us SCL low/high periods. MCP23009 DS20002121C Table 2-4 requires Fast-mode SCL low >=1.3 us and frequency <=400 kHz. This is a proven RTL timing defect independent of unknown board RC. A nominal 400 kHz setting still produces 1.24/1.26 us low periods and is insufficient. The smallest fix is the MCP23009-only parameter change `500_000` to `375_000`, giving 66/67 fabric cycles per half-period and a minimum 1.320 us low/high period.
+The architecture review traced the actual 50 MHz clock through the shared divider: 500 kHz produces 1.000 us SCL low/high periods, while Fast mode requires SCL low >=1.3 us and frequency <=400 kHz. The MCP23009-only parameter is now `375_000`, giving 66/67 fabric cycles per half-period and a minimum 1.320 us low/high period. Actual-source regression accepts 375 kHz and rejects 400/500 kHz low timing; the local defect is closed.
 
-Implement that parameter correction and a focused real-divider transaction/ACK regression: reject old500k and400k timing, accept375k timing with completed transactions. Obtain independent review and commit before one replacement FPGA build. Preserve the successful `.work/c25-fpga-final` build as pre-fix evidence; do not bind it to corrected source. Reuse unchanged ARM inputs. The external board RC/skew and physical matrix remain separate open requirements.
+The corrected source packet, clean C26 FPGA build and staged package now bind the implementation evidence. C25 remains open only for the separate external board RC/skew, IO-board/USER_IO and physical matrix requirements; none is evidence for changing the proven local divider correction.
 
 ## Critical path and efficiency decisions
 

@@ -258,8 +258,12 @@ Read only the current execution block and active defect in the [detailed plan](r
   Keep every release criterion intact and distinguish missing observations from
   local software work.
 
-**Next action:** finish the 375 kHz MCP23009 actual-source regression and review,
-commit it with the required `files.qip` registration, qualify the clean checkout,
-then perform one replacement FPGA build and package binding. The earlier C25
-build and candidate27/49 remain historical evidence. Physical completion still
-requires the target configuration, available test window and output observations.
+**Next action:** when an exclusive MiSTer window is available, perform the
+read-only boot/data/DDR preflight for staged development candidate
+`8530508c0923c8d14766f584019bb4bd5b78ed614c95facb474d5b6788ed1376`, then
+run smoke-first launch/video/audio/input/save checks before the full physical
+matrix. Its 192-file package is staged at
+`\\192.168.0.69\sdcard\_CodexDiabloC26_0232f7`, not activated. The 375 kHz
+IO fix, actual-source regression, `files.qip` registration and clean C26 FPGA
+qualification are complete; C25 remains open for external IO/physical evidence.
+Do not run Quartus for this state synchronization.
