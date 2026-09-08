@@ -66,3 +66,9 @@ Reuse an artifact only when its complete relevant source, tool, configuration an
 
 - Added six concrete C21 tasks: service input before SDL draining, evaluate pacing waits, reduce aged queued frames safely, optimize measured copying, tune burst pressure only if observed, and measure HDMI button-to-visible latency. Source inventory: .work/input-latency-inventory.md.
 - Existing p95 <=50 ms / p99 <=100 ms physical targets are unchanged. No physical input-latency reduction is claimed; calibrated end-to-end tracing and paired runs come first.
+
+## Xbox preset implementation
+
+- Native, ARM reference and ARM target builds now share the exact named Xbox defaults and enable Quick Cast/Auto Refill Belt/Auto Gold Pickup. Existing configs can be migrated with python support/scripts/controller_preset.py --apply <diablo.ini>; the tool preserves a byte-exact first backup and unrelated settings. It has not been applied to hardware.
+- Validation: native build receipt uild-host-3a29988f1c6f454384a581556f1b356d.json; cmake --build .work/build/reference-host-dungeon --parallel 8 --target mister_controller_test and mister_controller_test.exe --gtest_filter=MisterController.* — 4 pass after correcting test initialization to use the real INI-loading lifecycle. python -m unittest support.tests.test_controller_preset -q — 7 pass; host build tests — 6 pass. Both campaigns still pass the dungeon scenario with 4 captures. Details: .work/controller-defaults/status.json.
+- The initial wrong-library overlay build was explicitly stopped and corrected; failed test logs remain retained. Defaults are not full controller acceptance: panel transitions, every-button release matrix, safe carried-item restoration, deliberate hold-to-drop, RT overlay, ARM build/deployment and physical/multiplayer qualification remain open.

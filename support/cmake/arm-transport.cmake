@@ -246,6 +246,7 @@ function(diablo_mister_transport)
   target_compile_definitions(devilutionx PRIVATE
     DIABLO_MISTER_TRANSPORT_TARGET=1 ${_mister_controller_definitions})
   target_compile_definitions(libdevilutionx PRIVATE ${_mister_controller_definitions})
+  include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/mister-controller.cmake")
 endfunction()
 
 cmake_language(DEFER CALL diablo_mister_transport)
