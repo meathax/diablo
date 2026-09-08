@@ -12,23 +12,23 @@ class ShowControlsOsdTest(unittest.TestCase):
         self.assertIn('"P1,Show controls;"', self.source)
         lines = re.findall(r'"P1-,([^;]+);"', self.source)
         self.assertEqual(len(lines), 14)
-        self.assertLessEqual(max(map(len, lines)), 53)
+        self.assertLessEqual(max(map(len, lines)), 28)
 
         required = (
-            "A: Attack / talk / lift-place / confirm",
-            "X: Cast / quick equip-belt / hold drop",
-            "Y: Interact / loot / use-equip-stash",
-            "B: Speedbook / panel back / safe stow",
-            "LB/RB: Healing / mana potion",
+            "A: Attack/talk/lift/confirm",
+            "X: Cast/belt equip/hold drop",
+            "Y: Interact/loot/equip/stash",
+            "B: Speedbook/panel back/stow",
+            "LB: health / RB: mana",
             "LT: Stand ground",
-            "RT: Modifier only (no action alone)",
-            "RT+X/Y/A/B: Quick spells 1/2/3/4",
-            "Left stick: Move / Right stick: Cursor",
-            "L3: Labels / R3: Left click / RT+R3: Right click",
-            "D-pad up: Spellbook / right: Inventory",
-            "D-pad down: Quests / left: Character",
+            "RT: Modifier (no action)",
+            "RT+X/Y/A/B: spells 1-4",
+            "LS: move / RS: cursor",
+            "L3 labels/R3: LMB/RT+R3: RMB",
+            "D-pad: up spells/right inv",
+            "D-pad: down quests/left char",
             "RT+D-pad: Pan automap",
-            "View: Automap / Menu: Game menu / Guide: OSD",
+            "View map/Menu game/Guide OSD",
         )
         page = "\n".join(lines)
         for control in required:
