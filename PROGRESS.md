@@ -55,3 +55,9 @@ Reuse an artifact only when its complete relevant source, tool, configuration an
 
 - Root found replay discarded the queued level-transition event. The dungeon replay now dispatches that event explicitly through the normal handler. Captures require actual active level-1 player state after transition, recorded in hashed sidecars; host and ARM runners use the same admission checks as the scene oracle.
 - Validation: python -m unittest support.tests.test_scene_oracle support.tests.test_scenario_arm -q — 20 tests pass. Native build passed (uild-host-4a11e0173b9845c489f831621c225a18.json); Diablo and Hellfire dungeon runs each passed with 4 state-verified captures. Diablo town regression passed with 5 captures; dungeon image visually inspected. ARM comparison and FPGA readback remain unverified. Details: .work/goal-c19/root-scene-repair/validation.json.
+
+## Linux 6.18 compatibility
+
+- Reviewed Zaparoo PR #430: the reported fbdev mmap failure does not affect the target SDL-dummy/shared-DDR design. Added live Linux RAM overlap rejection before RBF loading/admission and kernel/backend evidence in ready/run records. See support/LINUX_COMPATIBILITY.md.
+- Read-only hardware reports 5.15.1-MiSTer; the real memory map passes the new check. No kernel update or target deployment performed. Linux 6.18 hardware qualification remains open.
+- Validation: wsl.exe -d Ubuntu --cd D:/Arcade/AI/aCORES/Diablo --exec python3 -m unittest support.tests.test_mister_launcher support.tests.test_package_release -q — 14 pass.

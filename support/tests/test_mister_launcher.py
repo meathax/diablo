@@ -11,6 +11,33 @@ from unittest import mock
 from support.scripts import mister_launcher
 
 
+class LinuxMemoryAdmissionTest(unittest.TestCase):
+    def test_current_reserved_aperture_is_outside_linux_ram(self):
+        ranges = mister_launcher._validate_linux_memory(
+            0x3FE00000, "00000000-1fefffff : System RAM\n  00008000-00ffffff : Kernel code\n")
+        self.assertEqual(ranges, [{"start": 0, "end_inclusive": 0x1FEFFFFF}])
+
+    def test_kernel_allocating_full_ddr_is_rejected(self):
+        with self.assertRaisesRegex(mister_launcher.LaunchError, "overlaps Linux"):
+            mister_launcher._validate_linux_memory(0x3FE00000, "00000000-3fffffff : System RAM\n")
+
+    def test_split_ram_and_boundary_overlap_are_rejected(self):
+        for second in ("3fe00000-3fffffff", "3fdfffff-3fe00000"):
+            with self.subTest(second=second), self.assertRaisesRegex(mister_launcher.LaunchError, "overlaps Linux"):
+                mister_launcher._validate_linux_memory(
+                    0x3FE00000, "00000000-1fefffff : System RAM\n" + second + " : System RAM\n")
+
+    def test_hidden_missing_or_malformed_ram_cannot_authorize_mapping(self):
+        for text in ("", "00000000-00000000 : System RAM", "bad : System RAM"):
+            with self.subTest(text=text), self.assertRaises(mister_launcher.LaunchError):
+                mister_launcher._validate_linux_memory(0x3FE00000, text)
+
+    def test_transport_must_fit_physical_board_memory(self):
+        for base in (-4096, 0x3FE00001, 0x3FE01000, 0x80000000):
+            with self.subTest(base=base), self.assertRaises(mister_launcher.LaunchError):
+                mister_launcher._validate_linux_memory(base, "00000000-1fefffff : System RAM")
+
+
 @unittest.skipUnless(hasattr(os, "killpg"), "MiSTer process groups require POSIX")
 class EngineOwnershipTest(unittest.TestCase):
     def setUp(self):

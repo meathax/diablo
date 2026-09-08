@@ -1,7 +1,7 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "PLAN.md",
-  "completion_document_sha256": "147af6654b45246c679dff5904baa9947daabeddf1f7ab3fbbad8a922ddfef74",
+  "completion_document_sha256": "268e80dfbedc50ac93e39413d867af0616920482c8be58e7008d1c607efe3e56",
   "status": "implementation-active-local-replay-verified-physical-closure-open",
   "candidate": {
     "state": "no-current-accepted-candidate",
@@ -26,7 +26,11 @@
     "fpga_qualification": {
       "status": "delegated",
       "worktree": ".work/goal-pcm-fpga-9bf880a",
-      "required": ["reproducible compile", "timing", "compress"]
+      "required": [
+        "reproducible compile",
+        "timing",
+        "compress"
+      ]
     }
   },
   "completed_implementation_stages": [

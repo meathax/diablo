@@ -287,6 +287,44 @@ def _admission(path: Path, boot_id: str, physical_base: int, candidate_id: str) 
         os.close(fd)
 
 
+def _validate_linux_memory(physical_base: int, iomem: str) -> list[dict[str, int]]:
+    """Reject Linux-owned RAM before permitting the DE10-Nano DDR transport.
+
+    A boot ID authenticates the session, but cannot establish that an updated
+    kernel still excludes our transport aperture from its page allocator.
+    This check is independent of the kernel version and Linux fbdev support.
+    """
+    end = physical_base + SHARED_BYTES
+    if physical_base < 0 or physical_base % 4096 or end > 0x40000000:
+        raise LaunchError("transport aperture must fit the DE10-Nano 1 GiB DDR and be page aligned")
+    ranges = []
+    for line in iomem.splitlines():
+        match = re.fullmatch(r"\s*([0-9a-fA-F]+)-([0-9a-fA-F]+)\s*:\s*System RAM\s*", line)
+        if match is None:
+            if "System RAM" in line:
+                raise LaunchError("cannot parse System RAM in /proc/iomem")
+            continue
+        start, last = (int(value, 16) for value in match.groups())
+        if last <= start:
+            raise LaunchError("/proc/iomem System RAM addresses are hidden or invalid")
+        ranges.append({"start": start, "end_inclusive": last})
+        if physical_base <= last and end > start:
+            raise LaunchError("transport aperture overlaps Linux System RAM; restore the reserved-DDR boot configuration")
+    if not ranges:
+        raise LaunchError("cannot establish Linux System RAM ranges from /proc/iomem")
+    return ranges
+
+
+def _linux_runtime_evidence(physical_base: int) -> dict[str, Any]:
+    iomem = Path("/proc/iomem").read_text(encoding="ascii")
+    return {"kernel_release": os.uname().release,
+            "video_backend": "fpga-shared-ddr", "sdl_video_driver": "dummy",
+            "fbdev_mmap_required": False,
+            "system_ram": _validate_linux_memory(physical_base, iomem),
+            "iomem_sha256": hashlib.sha256(iomem.encode("ascii")).hexdigest(),
+            "physical_base": physical_base, "mapped_bytes": SHARED_BYTES}
+
+
 def _engine_args(args: argparse.Namespace, package: Path, save_root: Path, config_root: Path, log_path: Path) -> list[str]:
     command = [str(package / "devilutionx"), "--" + args.campaign,
                "--data-dir", str(args.data_root), "--save-dir", str(save_root),
@@ -349,6 +387,7 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
     physical_base = _unsigned(args.physical_base, "physical base")
     if physical_base % 4096 or physical_base + SHARED_BYTES > (1 << 32):
         raise LaunchError("physical base must be page aligned and fit the 32-bit target aperture")
+    linux_runtime = _linux_runtime_evidence(physical_base)
     lock_path = runtime_root / "transport.lock"
     admission_path = runtime_root / "admission.txt"
     ready_path = runtime_root / "ready.json"
@@ -372,7 +411,8 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
         _load_core(args.command_path, package / "Diablo.rbf", args.loader_timeout)
         _admission(admission_path, boot_id, physical_base, candidate_id)
         ready_path.write_text(json.dumps({"schema": "diablo-mister-ready-v1", "candidate_id": candidate_id,
-                                          "boot_id": boot_id, "physical_base": physical_base}) + "\n", encoding="utf-8")
+                                          "boot_id": boot_id, "physical_base": physical_base,
+                                          "linux_runtime": linux_runtime}) + "\n", encoding="utf-8")
         env = dict(os.environ)
         env.update({"DIABLO_MISTER_TRANSPORT": "1", "DIABLO_MISTER_SHARED_PHYS": f"0x{physical_base:x}",
                     "DIABLO_MISTER_CANDIDATE_ID": candidate_id, "DIABLO_MISTER_ADMISSION_FILE": str(admission_path),
@@ -394,6 +434,7 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
                  "core_changed": core_changed,
                  "stop_reason": "core_changed" if core_changed else "duration" if timed_out else "engine_exit",
                 "candidate_id": candidate_id, "source_id": identity["source_id"], "campaign": args.campaign,
+                "linux_runtime": linux_runtime,
                 "command": command, "exit_code": exit_code, "started_utc": started,
                 "log": str(log_path), "admission": str(admission_path), "ready": str(ready_path),
                 "forced_frame_pacing": _force_frame_pacing(args.engine_arg)}

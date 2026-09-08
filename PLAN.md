@@ -58,6 +58,13 @@ The roles are suggestions, not hard-coded spell choices; all four slots remain a
 4. **Safeguard validation:** inspect the upstream inventory, spell-action and panel handlers before implementation evidence is accepted. Safe carried-item cancellation and hold-to-drop are port-side safeguards; do not claim that remapping alone provides them. Choose and document the hold threshold, then test B cancellation, X deliberate drop and both modifier release orders.
 5. **Acceptance evidence:** retain the exact preset/configuration, a context matrix covering gameplay, menus, inventory, stash, automap, quick-spell assignment and Guide/OSD, release-order results, and implementation/validation evidence for the four-icon RT overlay, together with candidate-bound controller-only and multiplayer receipts. A mapping table alone does not close C10–C12 or C24.
 
+## MiSTer Linux update compatibility
+
+- Preserve the existing shared-DDR video/PCM architecture across the MiSTer 5.15 and 6.18 kernel transition. Zaparoo frontend PR #430 concerns fbdev mmap; do not add a dependency on successful `/dev/fb0` mapping to Diablo's SDL-dummy transport path.
+- Before target admission, validate the current kernel's Linux System RAM ranges against the transport aperture and retain kernel/boot/memory evidence. Reject allocator overlap or unavailable evidence rather than trusting an old admission after an update.
+- Under C16/C18/C25, qualify the exact candidate on Linux 6.18 with actual mapping, launch/first frame, cinematic/gameplay/audio, controller, save/relaunch and core-switch cleanup evidence. Existing 5.15 observations do not substitute for this run. Retain the HDMI-only physical scope.
+- Evaluate direct versus staged copying with the existing transport benchmark before claiming any performance benefit. Findings and implementation details: [Linux compatibility review](support/LINUX_COMPATIBILITY.md).
+
 ## Current status and archived history
 
 Current scheduling, live observations and historical progress are maintained in [PROGRESS.md](PROGRESS.md). The full moved material is preserved in [the archived plan history](reports/audit-2026-09-07/archive/PLAN_HISTORY.md); it is context only and does not replace the active acceptance procedures below.
