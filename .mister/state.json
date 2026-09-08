@@ -1,18 +1,18 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "424d733872cffce14d6fefa2d9e2137539409aefedbb247fc3791339cbb7dc27",
-  "status": "c26-development-package-staged-awaiting-exclusive-physical-window",
+  "completion_document_sha256": "38600c71070fbb7174bcd99371754cc93ed49f67be58177b704bc3d5b0547e9b",
+  "status": "c34-cinematic-arm-requalification-pending",
   "candidate": {
     "state": "no-current-accepted-candidate",
     "id": null,
     "development_id": "8530508c0923c8d14766f584019bb4bd5b78ed614c95facb474d5b6788ed1376",
     "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-c26-0232f7.json",
     "development_manifest_sha256": "b51d4a9821686cf7032e6c9bb48768df71453b4f30376de196902571a017abf0",
-    "next_gate": "At the next exclusive MiSTer window, run read-only boot/data/DDR preflight, then smoke-first launch/video/audio/input/save checks before the full physical matrix.",
-    "development_validity": "C26 clean FPGA qualification and the 192-file package passed; the package is staged, not activated, and physical acceptance remains false."
+    "next_gate": "Finish the reviewed arithmetic guard and incremental ARM build, bind a new candidate with the qualified FPGA and unchanged ABI/assets, then run candidate-bound title-to-cinematic-to-title hardware smoke before the remaining physical matrix.",
+    "development_validity": "C26 clean FPGA qualification and the 192-file package passed before the cinematic ARM repair; the package is staged, not activated, and cannot satisfy current cinematic acceptance."
   },
-  "active_work": "Await an exclusive MiSTer test window for the staged C26 development package. The MCP23009 375 kHz local defect is fixed and verified; do not run Quartus for prose or state synchronization.",
+  "active_work": "Finish the reviewed cinematic arithmetic guard and incremental ARM build, then bind a new immutable development candidate using the qualified FPGA and unchanged ABI/assets. The MCP23009 375 kHz local defect and focused cinematic helper/adapter regression are fixed and verified; hardware title-to-cinematic-to-title evidence and C25 external timing/physical gates remain open.",
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],
@@ -29,8 +29,8 @@
     "11": "Qualify candidate43 completely on MiSTer",
     "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "At the next exclusive MiSTer window, recheck boot/data/DDR, then run the staged candidate smoke launch/video/audio/input/save checks before the physical matrix. Do not run another build absent an actual FPGA input change or compile/timing failure.",
-  "next_implementation": "C34/P01-P06 source packets are committed through a65a8ec and C25 source/validator acceptance is committed in 8e74223. Keep Candidate49 historical; do not promote until the current-SDC build, clean-checkout qualification and C13/C15/C16/C17/C21/C23/C24/C31/C32 plus the C01-C34/R01-R13 matrix have candidate-bound physical/acceptance receipts.",
+  "next_action": "Finish the reviewed cinematic arithmetic guard and incremental ARM build, then bind a new immutable development candidate using the qualified FPGA and unchanged ABI/assets. After binding, run candidate-bound title-to-cinematic-to-title hardware smoke before the remaining physical matrix. Do not run Quartus unless an FPGA input changes or compile/timing failure requires it.",
+  "next_implementation": "C34/P01-P06 and the cinematic overlay/helper source packet are locally reviewed; retain the focused receipt 20260908T070956Z-transport-cinematic-d2918ef76bc7433597d994ee330f8efa.json. Keep C26 pre-fix and Candidate49 historical; do not promote until the repaired ARM build, new candidate binding and candidate-bound title-to-cinematic-to-title hardware evidence pass alongside the C01-C34/R01-R13 matrix.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
   "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",

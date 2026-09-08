@@ -1,9 +1,11 @@
 # Diablo MiSTer — completion execution plan
 
 **Active worktree update:** C34 ownership extraction and command-wait accounting
-changes supersede Candidate49 source qualification. New build/qualification is
-required after C34 stabilizes. C33 is reopened because its last receipt records
-file absence, not execution of current build/test producers. No release is accepted.
+changes supersede Candidate49 source qualification. The cinematic ARM overlay
+repair is locally regression-tested; the reviewed arithmetic guard and incremental
+ARM rebuild remain before a new candidate. C33 is reopened because its last
+receipt records file absence, not execution of current build/test producers. No
+release is accepted.
 
 **Status: not release-ready; no current accepted candidate. Updated 8 September
 2026.** Start here. Follow the seven batches below in order. The detailed
@@ -258,12 +260,14 @@ Read only the current execution block and active defect in the [detailed plan](r
   Keep every release criterion intact and distinguish missing observations from
   local software work.
 
-**Next action:** when an exclusive MiSTer window is available, perform the
-read-only boot/data/DDR preflight for staged development candidate
-`8530508c0923c8d14766f584019bb4bd5b78ed614c95facb474d5b6788ed1376`, then
-run smoke-first launch/video/audio/input/save checks before the full physical
-matrix. Its 192-file package is staged at
-`\\192.168.0.69\sdcard\_CodexDiabloC26_0232f7`, not activated. The 375 kHz
-IO fix, actual-source regression, `files.qip` registration and clean C26 FPGA
-qualification are complete; C25 remains open for external IO/physical evidence.
-Do not run Quartus for this state synchronization.
+**Next action:** finish the reviewed arithmetic guard and incremental ARM build
+for the cinematic repair, then bind a new immutable development candidate using
+the qualified FPGA and unchanged ABI/assets. After candidate binding, run the
+candidate-bound title → cinematic → title MiSTer smoke and then the remaining
+physical matrix. The staged C26 package
+(`\\192.168.0.69\sdcard\_CodexDiabloC26_0232f7`) is the pre-fix development
+baseline and remains unactivated. The 375 kHz IO fix, actual-source regression,
+`files.qip` registration, clean C26 FPGA qualification and focused cinematic
+helper/adapter regression are complete; C25 external IO/physical evidence and
+full cinematic hardware evidence remain open. Do not run Quartus unless an FPGA
+input changes or compile/timing failure requires it.
