@@ -86,6 +86,8 @@ struct PcmHealth {{
     std::uint32_t producer_sequence = 0;
     std::uint32_t consumer_sequence = 0;
     std::uint32_t queued_frames = 0;
+    // FPGA-local FIFO occupancy published through RingControl::flags.
+    std::uint32_t local_queue_frames = 0;
     std::uint32_t underrun_count = 0;
     std::uint32_t resync_count = 0;
 }};
@@ -343,12 +345,15 @@ public:
             pcm.consumer_sequence).load(std::memory_order_acquire);
         const std::uint32_t queued = producer - consumer;
         if (queued > PCM_CAPACITY) return std::unexpected(AttachError::BadLayout);
+        const std::uint32_t local_queue = std::atomic_ref<const std::uint32_t>(
+            pcm.flags).load(std::memory_order_acquire);
         const std::uint64_t diagnostics = std::atomic_ref<const std::uint64_t>(
             pcm.dropped).load(std::memory_order_acquire);
         return PcmHealth {{
             .producer_sequence = producer,
             .consumer_sequence = consumer,
             .queued_frames = queued,
+            .local_queue_frames = local_queue,
             .underrun_count = static_cast<std::uint32_t>(diagnostics),
             .resync_count = static_cast<std::uint32_t>(diagnostics >> 32U),
         }};
