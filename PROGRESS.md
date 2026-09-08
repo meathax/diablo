@@ -51,6 +51,8 @@ Reuse an artifact only when its complete relevant source, tool, configuration an
 - Validation: `wsl.exe -d Ubuntu --cd D:/Arcade/AI/aCORES/Diablo --exec python3 -m unittest support.tests.test_mister_launcher -v` — 3 real-process tests pass; `python -m unittest support.tests.test_package_release -q` — 6 pass. Details: `.work/goal-pcm-deploy-9bf880a/launcher-core-loss-validation.json`.
 - Next: finish the root-owned failed scene packet and package the reviewed RBF with the corrected launcher; revalidate target ownership before activation.
 
+- 2026-09-09: the controls candidate installed and Samba preflight passed. The target had a stale `/dev/MiSTer_cmd` FIFO with no frontend reader, so the existing blocking load path stalled. `mister_launcher.py` now uses a non-blocking write and starts `/media/fat/MiSTer` with the verified RBF if no frontend process exists. `python -m unittest support.tests.test_mister_launcher -q` passes 11 tests. The fallback needs a freshly packaged target qualification before it can count as C16 evidence.
+
 ## Dungeon capture repair
 
 - Root found replay discarded the queued level-transition event. The dungeon replay now dispatches that event explicitly through the normal handler. Captures require actual active level-1 player state after transition, recorded in hashed sidecars; host and ARM runners use the same admission checks as the scene oracle.

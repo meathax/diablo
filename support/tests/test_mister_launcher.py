@@ -1,5 +1,6 @@
 """Exercise launcher ownership loss with real, isolated child processes."""
 from pathlib import Path
+import errno
 import os
 import subprocess
 import sys
@@ -36,6 +37,56 @@ class LinuxMemoryAdmissionTest(unittest.TestCase):
         for base in (-4096, 0x3FE00001, 0x3FE01000, 0x80000000):
             with self.subTest(base=base), self.assertRaises(mister_launcher.LaunchError):
                 mister_launcher._validate_linux_memory(base, "00000000-1fefffff : System RAM")
+
+
+class CoreLoadRequestTest(unittest.TestCase):
+    def test_unread_fifo_is_reported_without_blocking(self):
+        unavailable = OSError(errno.ENXIO, "no reader")
+        with mock.patch.object(mister_launcher.os, "open", side_effect=unavailable):
+            self.assertFalse(mister_launcher._request_core_load(
+                Path("/dev/MiSTer_cmd"), Path("/package/Diablo.rbf")))
+
+    def test_fifo_request_is_written_as_one_ascii_command(self):
+        with mock.patch.object(mister_launcher.os, "open", return_value=17) as opened, \
+                mock.patch.object(mister_launcher.os, "write") as write, \
+                mock.patch.object(mister_launcher.os, "close") as close:
+            self.assertTrue(mister_launcher._request_core_load(
+                Path("/dev/MiSTer_cmd"), Path("/package/Diablo.rbf")))
+        opened.assert_called_once()
+        expected = f"load_core {Path('/package/Diablo.rbf')}\n".encode("ascii")
+        write.assert_called_once_with(17, expected)
+        close.assert_called_once_with(17)
+
+    def test_missing_frontend_is_started_with_the_requested_rbf(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            frontend = Path(temporary) / "MiSTer"
+            frontend.write_text("frontend")
+            frontend.chmod(0o700)
+            child = mock.Mock()
+            with mock.patch.object(mister_launcher, "MISTER_FRONTEND_PATH", frontend), \
+                    mock.patch.object(mister_launcher.subprocess, "Popen", return_value=child) as launch:
+                self.assertIs(child, mister_launcher._start_frontend(Path("/package/Diablo.rbf")))
+        launch.assert_called_once_with([str(frontend), str(Path("/package/Diablo.rbf"))],
+                                       stdin=mister_launcher.subprocess.DEVNULL,
+                                       stdout=mister_launcher.subprocess.DEVNULL,
+                                       stderr=mister_launcher.subprocess.DEVNULL,
+                                       start_new_session=True)
+
+    def test_loader_starts_frontend_when_the_fifo_has_no_owner(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            command_path = Path(temporary) / "MiSTer_cmd"
+            command_path.touch()
+            state = mock.Mock()
+            state.read_text.return_value = "operating\n"
+            frontend = mock.Mock()
+            with mock.patch.object(mister_launcher, "_core_process_matches",
+                                   side_effect=[False, True]), \
+                    mock.patch.object(mister_launcher, "_frontend_process_present", return_value=False), \
+                    mock.patch.object(mister_launcher, "_start_frontend", return_value=frontend) as start, \
+                    mock.patch.object(mister_launcher, "Path", return_value=state), \
+                    mock.patch.object(mister_launcher.time, "monotonic", side_effect=[0, 0]):
+                mister_launcher._load_core(command_path, Path("/package/Diablo.rbf"), 1)
+        start.assert_called_once_with(Path("/package/Diablo.rbf"))
 
 
 @unittest.skipUnless(hasattr(os, "killpg"), "MiSTer process groups require POSIX")

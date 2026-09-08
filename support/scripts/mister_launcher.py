@@ -8,6 +8,7 @@ and keeps user game data outside the immutable package.
 from __future__ import annotations
 
 import argparse
+import errno
 import datetime as dt
 try:
     import fcntl
@@ -250,15 +251,61 @@ def _core_process_matches(rbf: Path) -> bool:
     return False
 
 
+MISTER_FRONTEND_PATH = Path("/media/fat/MiSTer")
+
+
+def _frontend_process_present() -> bool:
+    for entry in Path("/proc").glob("[0-9]*"):
+        try:
+            values = entry.joinpath("cmdline").read_bytes().split(b"\0")
+            argv = [value.decode("utf-8", "replace") for value in values if value]
+        except OSError:
+            continue
+        if argv and Path(argv[0]).name == "MiSTer":
+            return True
+    return False
+
+
+def _request_core_load(command_path: Path, rbf: Path) -> bool:
+    """Request a load without blocking forever on an unread MiSTer FIFO."""
+    flags = os.O_WRONLY | getattr(os, "O_NONBLOCK", 0)
+    try:
+        descriptor = os.open(command_path, flags)
+    except OSError as error:
+        if error.errno in (errno.ENXIO, errno.ENODEV):
+            return False
+        raise
+    try:
+        os.write(descriptor, f"load_core {rbf}\n".encode("ascii"))
+    finally:
+        os.close(descriptor)
+    return True
+
+
+def _start_frontend(rbf: Path) -> subprocess.Popen:
+    if MISTER_FRONTEND_PATH.is_symlink() or not MISTER_FRONTEND_PATH.is_file():
+        raise LaunchError(f"MiSTer frontend is missing: {MISTER_FRONTEND_PATH}")
+    if not os.access(MISTER_FRONTEND_PATH, os.X_OK):
+        raise LaunchError(f"MiSTer frontend is not executable: {MISTER_FRONTEND_PATH}")
+    return subprocess.Popen([str(MISTER_FRONTEND_PATH), str(rbf)],
+                            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                            stderr=subprocess.DEVNULL, start_new_session=True)
+
+
 def _load_core(command_path: Path, rbf: Path, timeout: float) -> None:
     if command_path.is_symlink() or not command_path.exists():
         raise LaunchError(f"MiSTer command FIFO is missing: {command_path}")
-    try:
-        with command_path.open("w", encoding="ascii") as command:
-            command.write(f"load_core {rbf}\n")
-            command.flush()
-    except OSError as error:
-        raise LaunchError(f"cannot request RBF load: {error}") from error
+    frontend: subprocess.Popen | None = None
+    if not _core_process_matches(rbf):
+        if _frontend_process_present():
+            try:
+                accepted = _request_core_load(command_path, rbf)
+            except OSError as error:
+                raise LaunchError(f"cannot request RBF load: {error}") from error
+            if not accepted:
+                raise LaunchError("MiSTer frontend is present but its command FIFO has no reader")
+        else:
+            frontend = _start_frontend(rbf)
     state = Path("/sys/class/fpga_manager/fpga0/state")
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
@@ -268,6 +315,8 @@ def _load_core(command_path: Path, rbf: Path, timeout: float) -> None:
                 return
         except OSError:
             pass
+        if frontend is not None and frontend.poll() is not None:
+            raise LaunchError("MiSTer frontend exited before the requested core reached operating state")
         time.sleep(0.25)
     raise LaunchError("FPGA/core loader did not reach operating state for the requested RBF")
 
