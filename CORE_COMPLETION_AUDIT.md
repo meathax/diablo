@@ -1,9 +1,9 @@
 # Diablo MiSTer — completion execution plan
 
 **Active worktree update:** C34 ownership extraction and command-wait accounting
-changes supersede Candidate49 source qualification. The cinematic ARM overlay
-repair is locally regression-tested; the reviewed arithmetic guard and incremental
-ARM rebuild remain before a new candidate. C33 is reopened because its last
+changes supersede Candidate49 source qualification. The cinematic ARM overlay repair and focused source/test packet are committed
+in d2ccbc3 and locally regression-tested; the incremental ARM rebuild and package
+verification remain before a new candidate. C33 is reopened because its last
 receipt records file absence, not execution of current build/test producers. No
 release is accepted.
 
@@ -260,13 +260,14 @@ Read only the current execution block and active defect in the [detailed plan](r
   Keep every release criterion intact and distinguish missing observations from
   local software work.
 
-**Next action:** finish the reviewed arithmetic guard and incremental ARM build
-for the cinematic repair, then bind a new immutable development candidate using
+**Next action:** finish the incremental ARM build and package verification for the cinematic
+repair, then bind a new immutable development candidate using
 the qualified FPGA and unchanged ABI/assets. After candidate binding, run the
-candidate-bound title → cinematic → title MiSTer smoke and then the remaining
-physical matrix. The staged C26 package
-(`\\192.168.0.69\sdcard\_CodexDiabloC26_0232f7`) is the pre-fix development
-baseline and remains unactivated. The 375 kHz IO fix, actual-source regression,
+full candidate-bound title → cinematic → title MiSTer cycle and then the
+remaining physical matrix. C26 is the activated development-only, pre-fix
+baseline; its staged package
+(`\\192.168.0.69\sdcard\_CodexDiabloC26_0232f7`) is retained for rollback and
+is not accepted for the repaired cinematic behavior. The 375 kHz IO fix, actual-source regression,
 `files.qip` registration, clean C26 FPGA qualification and focused cinematic
 helper/adapter regression are complete; C25 external IO/physical evidence and
 full cinematic hardware evidence remain open. Do not run Quartus unless an FPGA
