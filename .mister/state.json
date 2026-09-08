@@ -29,7 +29,7 @@
     "11": "Qualify candidate43 completely on MiSTer",
     "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "Finish/review375kHz MCP23009 regression; commit exact source packet with files.qip. Enforce pre-build gate, reuse unchanged ARM/ABI/assets, then one FPGA build/package and MiSTer smoke before full physical matrix.",
+  "next_action": "At the next exclusive MiSTer window, recheck boot/data/DDR, then run the staged candidate smoke launch/video/audio/input/save checks before the physical matrix. Do not run another build absent an actual FPGA input change or compile/timing failure.",
   "next_implementation": "C34/P01-P06 source packets are committed through a65a8ec and C25 source/validator acceptance is committed in 8e74223. Keep Candidate49 historical; do not promote until the current-SDC build, clean-checkout qualification and C13/C15/C16/C17/C21/C23/C24/C31/C32 plus the C01-C34/R01-R13 matrix have candidate-bound physical/acceptance receipts.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
