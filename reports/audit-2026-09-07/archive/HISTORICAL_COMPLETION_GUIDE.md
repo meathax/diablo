@@ -1,11 +1,13 @@
 # Diablo MiSTer core — completion guide
 
+> Archived 8 September 2026. The live status is [PROGRESS.md](../../../PROGRESS.md); the authoritative acceptance plan is [PLAN.md](../../../PLAN.md). This historical guide is retained for context and does not override either live document.
+
 This is the execution order for bringing the Diablo/Hellfire core to a release
 that is correct, responsive and repeatable on a DE10-Nano. Keep the current
 result and the next exact action in `.mister/state.json`. A step is complete only
 when its listed host, RTL and board checks have evidence.
 
-The detailed closure authority is reports/audit-2026-09-07/PROPOSED_PLAN.md.
+The detailed closure authority is the root `PLAN.md`.
 This guide preserves historical milestones. If it disagrees with that plan or
 .mister/state.json about a current candidate, the audit plan and state control;
 older build and board receipts do not validate later source changes.

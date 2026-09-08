@@ -1,7 +1,7 @@
 {
   "schema": "diablo-closure-gate-matrix-v1",
   "plan": {
-    "path": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
+    "path": "PLAN.md",
     "items": [
       "C01",
       "C02",

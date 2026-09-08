@@ -5,7 +5,7 @@ input transport and indexed rendering acceleration for DE10-Nano. **There is no
 accepted runnable Diablo core or release package yet.**
 
 The detailed execution and closure authority is
-[reports/audit-2026-09-07/PROPOSED_PLAN.md](reports/audit-2026-09-07/PROPOSED_PLAN.md).
+[PLAN.md](PLAN.md). [PROGRESS.md](PROGRESS.md) is the concise status handoff.
 [CORE_COMPLETION_AUDIT.md](CORE_COMPLETION_AUDIT.md) is the compact execution entry point;
 [.mister/state.json](.mister/state.json) identifies the current candidate work and
 marks earlier receipts as historical when the source has changed.

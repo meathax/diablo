@@ -1,6 +1,6 @@
 # ARM runtime bring-up
 
-The [detailed closure plan](../reports/audit-2026-09-07/PROPOSED_PLAN.md) is
+The [detailed closure plan](../PLAN.md) is
 the current acceptance authority. This guide preserves runtime facts and exact
 setup contracts, but historical build observations do not promote a candidate.
 

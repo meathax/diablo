@@ -1,7 +1,7 @@
 {
   "schema": "diablo-project-state-v2",
-  "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "fe5e2eefc15e6c8c01dd3f3a47cf22a73f634f045c513eff2ac7c407132b7769",
+  "completion_document": "PLAN.md",
+  "completion_document_sha256": "147af6654b45246c679dff5904baa9947daabeddf1f7ab3fbbad8a922ddfef74",
   "status": "implementation-active-local-replay-verified-physical-closure-open",
   "candidate": {
     "state": "no-current-accepted-candidate",

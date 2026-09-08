@@ -1,6 +1,6 @@
 # Diablo MiSTer — completion execution plan
 
-**Active execution status, 8 September 2026:** follow the [detailed plan's active execution state](reports/audit-2026-09-07/PROPOSED_PLAN.md#execution-state). The user confirms the repaired full cinematic cycle and good audio, and authorizes HDMI-only physical testing with CRT/direct-video retained as best-effort untested settings. The committed local verification packet and endpoint-aligned ARM replay are complete. PCM underflow-event diagnostic commit `9bf880a` is accepted as diagnostic-only; reproducible FPGA compile/timing/compress is delegated to `.work/goal-pcm-fpga-9bf880a`, and candidate-bound integrated tracing remains active. No hardware or release acceptance is implied, and no release is accepted.
+**Active execution status, 8 September 2026:** follow the concise [progress handoff](PROGRESS.md) and the authoritative [PLAN.md](PLAN.md). The user confirms the repaired full cinematic cycle and good audio, and authorizes HDMI-only physical testing with CRT/direct-video retained as best-effort untested settings. The committed local verification packet and endpoint-aligned ARM replay are complete. PCM underflow-event diagnostic commit `9bf880a` is accepted as diagnostic-only; reproducible FPGA compile/timing/compress is delegated to `.work/goal-pcm-fpga-9bf880a`, and candidate-bound integrated tracing remains active. No hardware or release acceptance is implied, and no release is accepted.
 
 ## Historical next-chat handoff — 8 September 2026
 
@@ -25,13 +25,13 @@ release is accepted.
 
 **Status: not release-ready; no current accepted candidate. Updated 8 September
 2026.** Start here. Follow the seven batches below in order. The detailed
-[C01–C34 work packages](reports/audit-2026-09-07/PROPOSED_PLAN.md) remain the
+[C01–C34 work packages](PLAN.md) remain the
 implementation/closure authority; the
 [audit refresh](reports/audit-2026-09-07/REFRESH_AUDIT.md) adds mandatory R01–R12
 fixes. [Machine state](.mister/state.json) records the active action and evidence;
 the [gate matrix](support/qualification/closure-gates.json) defines measurable
 acceptance. Earlier bring-up claims are preserved in the
-[historical guide](reports/audit-2026-09-07/HISTORICAL_COMPLETION_GUIDE.md).
+[progress handoff](PROGRESS.md) and the [archived historical guide](reports/audit-2026-09-07/archive/HISTORICAL_COMPLETION_GUIDE.md).
 
 C34 now separates input, PCM resampling, command/frame state and profiling.
 The pre-review baseline passed the full local suite (21 checks), ARM ABI/QEMU
@@ -262,7 +262,7 @@ qualified candidate and clean-install observations. Only then call it fully work
 
 ## Token-efficient execution and next action
 
-Read only the current execution block and active defect in the [detailed plan](reports/audit-2026-09-07/PROPOSED_PLAN.md). Its **Critical path and efficiency decisions** section records the current blockers, firm Quartus pre-build gate, and exact route to a working development package.
+Read only the current status and next action in the [progress handoff](PROGRESS.md), then the active defect and acceptance procedure in [PLAN.md](PLAN.md). The archived plan history retains older critical-path decisions and runtime observations; it does not override the live status or gates.
 
 - Resolve known FPGA defects, pass focused production-RTL tests, independently
   review and commit the final source/file-list packet before any new Quartus run.

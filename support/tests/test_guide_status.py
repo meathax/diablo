@@ -14,13 +14,14 @@ class GuideStatusTest(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
         plan = self.root / guide_status.PLAN
-        plan.parent.mkdir(parents=True)
+        plan.parent.mkdir(parents=True, exist_ok=True)
         plan.write_text("# plan\n", encoding="utf-8")
-        (self.root / "README.md").write_text("[plan](reports/audit-2026-09-07/PROPOSED_PLAN.md) [.mister/state.json](.mister/state.json) accepted\n", encoding="utf-8")
-        (self.root / "CORE_COMPLETION_AUDIT.md").write_text("[plan](reports/audit-2026-09-07/PROPOSED_PLAN.md) [.mister/state.json](.mister/state.json)\n", encoding="utf-8")
+        (self.root / "README.md").write_text("[plan](PLAN.md) [progress](PROGRESS.md) [.mister/state.json](.mister/state.json) accepted\n", encoding="utf-8")
+        (self.root / "PROGRESS.md").write_text("Current progress.\n", encoding="utf-8")
+        (self.root / "CORE_COMPLETION_AUDIT.md").write_text("[plan](PLAN.md) [progress](PROGRESS.md) [.mister/state.json](.mister/state.json)\n", encoding="utf-8")
         arm = self.root / "support/ARM_RUNTIME.md"
         arm.parent.mkdir(parents=True)
-        arm.write_text("[plan](../reports/audit-2026-09-07/PROPOSED_PLAN.md) diablo_launch.py DIABLO_MISTER_ADMISSION_FILE\n", encoding="utf-8")
+        arm.write_text("[plan](../PLAN.md) diablo_launch.py DIABLO_MISTER_ADMISSION_FILE\n", encoding="utf-8")
         self.state = self.root / guide_status.STATE
         self.state.parent.mkdir(parents=True)
         self.write_state()

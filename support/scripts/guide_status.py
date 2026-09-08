@@ -15,13 +15,13 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
-PLAN = Path("reports/audit-2026-09-07/PROPOSED_PLAN.md")
+PLAN = Path("PLAN.md")
 STATE = Path(".mister/state.json")
 LINK = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 DOCUMENT_TOKENS = {
-    Path("README.md"): ("reports/audit-2026-09-07/PROPOSED_PLAN.md", ".mister/state.json", "accepted"),
-    Path("CORE_COMPLETION_AUDIT.md"): ("reports/audit-2026-09-07/PROPOSED_PLAN.md", ".mister/state.json"),
-    Path("support/ARM_RUNTIME.md"): ("../reports/audit-2026-09-07/PROPOSED_PLAN.md", "diablo_launch.py",
+    Path("README.md"): ("PLAN.md", "PROGRESS.md", ".mister/state.json", "accepted"),
+    Path("CORE_COMPLETION_AUDIT.md"): ("PLAN.md", "PROGRESS.md", ".mister/state.json"),
+    Path("support/ARM_RUNTIME.md"): ("../PLAN.md", "diablo_launch.py",
                                       "DIABLO_MISTER_ADMISSION_FILE"),
 }
 
