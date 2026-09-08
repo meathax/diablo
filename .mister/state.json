@@ -1,7 +1,7 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "PLAN.md",
-  "completion_document_sha256": "316d3f99915cb27df685b8041f4aaa4cce6e49cb4881ed69ac970a6357d51093",
+  "completion_document_sha256": "66217bd10ade057f747eec631936876eaec36ff9897f38324ea0e2a96bec965e",
   "status": "implementation-active-local-replay-verified-physical-closure-open",
   "candidate": {
     "state": "no-current-accepted-candidate",

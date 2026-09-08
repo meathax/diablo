@@ -477,6 +477,13 @@ frontend process exists starts `/media/fat/MiSTer <verified RBF>` before applyin
 the existing exact-RBF/FPGA-operating gate. Tests cover no-reader detection,
 single-command FIFO writes, and frontend invocation. A newly packaged target
 run must qualify this recovery path; it does not close C16 or any physical gate.
+
+**Recovery candidate status (2026-09-09):** candidate
+`1ca29d634aa7d4bae5ce7846a1baf212b2ea208976f7aabb16b6a9e6ce5a96d6`
+was packaged locally with the unchanged verified FPGA/ARM artifacts and the
+new launcher; local package verification passed. Transactional Samba installation
+was stopped on the user's instruction before remote verification or activation.
+Remote state is unverified and cannot be used as physical evidence.
 **Candidate38 launcher receipt (2026-09-08):** the package38 preflight receipt `20260908T-candidate38-preflight.json` (SHA-256 `01fe2ca6d599c41bbed92b4974ced77c5dc696ee61855792a183e0cf1f7260a2`) and physical normal60 receipt `.mister/evidence/receipts/20260908T-physical-launch-candidate38-normal60.json` (SHA-256 `a1d73353347f08e70d92e64c8f2fc45c58d461437784c7e776e42e07646ba9bb`) now bind candidate38. The launcher pass proves admission, exact RBF process, FPGA operating state, frame publication and controlled termination. Video identity, physical audio/control, campaign/save and second-launch behavior remain open.
 
 **Candidate41 launcher update (2026-09-08):** package41 preflight and the

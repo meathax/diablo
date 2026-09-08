@@ -52,6 +52,7 @@ Reuse an artifact only when its complete relevant source, tool, configuration an
 - Next: finish the root-owned failed scene packet and package the reviewed RBF with the corrected launcher; revalidate target ownership before activation.
 
 - 2026-09-09: the controls candidate installed and Samba preflight passed. The target had a stale `/dev/MiSTer_cmd` FIFO with no frontend reader, so the existing blocking load path stalled. `mister_launcher.py` now uses a non-blocking write and starts `/media/fat/MiSTer` with the verified RBF if no frontend process exists. `python -m unittest support.tests.test_mister_launcher -q` passes 11 tests. The fallback needs a freshly packaged target qualification before it can count as C16 evidence.
+- Candidate `1ca29d634aa7d4bae5ce7846a1baf212b2ea208976f7aabb16b6a9e6ce5a96d6` packages the launcher recovery with unchanged verified FPGA/ARM binaries; local package verification passed. Its Samba deployment was stopped before remote verification or activation at the user's request. Remote state remains unverified.
 
 ## Dungeon capture repair
 
