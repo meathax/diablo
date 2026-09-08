@@ -1,18 +1,18 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "257871f9ca82c32825075d7c0dc9e6763dd7b04ba1ae2545b33c5ce963338bde",
-  "status": "user-stopped-cinematic-physical-verification-pending",
+  "completion_document_sha256": "27ce5edeee9fc763c22e5e00a2fbede90e27e731471f81e7e1d4b11999589f6f",
+  "status": "implementation-active-cinematic-visual-confirmed-audio-diagnosis",
   "candidate": {
     "state": "no-current-accepted-candidate",
     "id": null,
     "development_id": "b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b",
     "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-cinematic-d2ccbc3-assets.json",
     "development_manifest_sha256": "eea1c5c7fdc0716459685ac634d3e8e566880130f4e0f87af3155558cfea7b9f",
-    "next_gate": "Pending repaired title-to-cinematic-to-title physical observation and audio diagnosis; no physical or release acceptance. Resume only in the next chat per user stop request.",
-    "development_validity": "Candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b packages the d2ccbc3 ARM repair with the qualified FPGA and 191 verified files; it is running development-only, the physical visual result is pending, and physical acceptance remains false."
+    "next_gate": "Correlate the user's successful repaired title-to-cinematic-to-title observation with runtime identity, diagnose PCM queues/reset boundaries, and complete remaining physical/release gates.",
+    "development_validity": "Candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b records the d2ccbc3 ARM repair with the qualified FPGA and 191 previously verified files. The user confirms its full cinematic visual cycle; current read-only observation finds no live Diablo engine. Runtime/source identity must be revalidated before another launch. Full physical/release acceptance remains false."
   },
-  "active_work": "Stopped at user request after the bounded passive audio trace. No release accepted. Repaired b537b12c remains development-only; cinematic visual confirmation and audio queue/reset diagnosis are pending. See CORE_COMPLETION_AUDIT.md Next-chat handoff.",
+  "active_work": "Implementation active: add missing PCM queue diagnostics, repair replay binary/role admission following independent review, and encode user-authorized HDMI-only physical scope while retaining non-HDMI modes explicitly untested. Target is reachable on recorded boot but Diablo is not running; core ownership must be checked before launch. No release accepted.",
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],
@@ -29,8 +29,8 @@
     "11": "Qualify candidate43 completely on MiSTer",
     "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "Next chat: obtain missing Git remote URL and push committed work; revalidate the existing MiSTer runtime, collect the pending cinematic visual result, diagnose PCM queues/reset boundaries, then execute the remaining full closure matrix. Do not launch Quartus for this ARM-only repair.",
-  "next_implementation": "Read CORE_COMPLETION_AUDIT.md Next-chat handoff. WSL QEMU 10.2.1 is currently available but repaired-engine replay is unrun. Passive trace omits queue occupancy and contains an underrun reset; no starvation classification is proven. No additional tests or implementation were started after the user stop request.",
+  "next_action": "Revalidate the existing MiSTer runtime and bind the user's successful cinematic visual-cycle observation; diagnose PCM queues/reset boundaries and qualify the exact repaired ARM replay, then execute the remaining full closure matrix. Missing Git remote blocks push only. Reuse FPGA artifacts while their complete inputs remain unchanged.",
+  "next_implementation": "Independently verify diagnostic and replay selection changes; bind replay assets to the repaired package and retain first missing-asset failure; qualify current HDMI runtime/audio safely after ownership admission. C25 gap inventory is in .work/goal-c25/c25-contract-evidence.json. User authorizes HDMI as physical test scope and best-effort untested CRT/direct settings; matrix synchronization is in progress, other requirements unchanged.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
   "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",

@@ -2,13 +2,47 @@
 
 ## EXECUTION STATE
 
-### Stopped by user — next-chat handoff
+### Active entry point — implementation resumed, 8 September 2026
 
-Implementation and testing stopped after the current passive audio trace. The authoritative resume summary is the **Next-chat handoff** at the top of `CORE_COMPLETION_AUDIT.md`: repaired candidate b537b12c is deployed development-only; cinematic visual acceptance and audio diagnosis remain open; the full release matrix remains mandatory. No more work is authorized in this chat beyond committing this handoff and the requested push. Push was attempted and failed because no Git remote is configured; the destination URL is pending.
+This block is the scheduling authority. The C01–C34 procedures and R01–R13 amendments below remain the detailed acceptance specification; `support/qualification/closure-gates.json` remains the machine-enforced scope and numeric-target contract. The root guide's **Next-chat handoff** supplies the last recorded runtime observations. Older sections saying “current”, “next” or “underway” are dated history, not instructions to repeat completed work. Resolve any newer evidence by updating this block once, without rewriting historical receipts.
+
+- **Done, recorded:** 375 kHz IO correction and production-source regression; clean C26 FPGA compile/compress/full timing; cinematic ARM repair `d2ccbc3`, focused regression/independent review, ARM link, package verification and 191/191 target hashes. These are scoped implementation/build results, not release closure.
+- **In progress:** implementation resumed at the user's request. Three bounded packets are active: target identity/PCM queue diagnostics, exact repaired-ARM replay selection, and read-only C25 contract evidence. Last recorded development candidate is `b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b`; no accepted release exists. Runtime ownership, boot and source compatibility are being revalidated, not assumed from the handoff.
+- **Physical observation received:** the user confirms the repaired title → cinematic → title cycle displayed correctly. Record this as visual-cycle evidence only; correlate the live target/package identity in the active diagnostic receipt. It does not close audio, other connectors, full scene equality or campaign coverage.
+- **Authorized output scope, 8 September 2026:** the user specifies a standard MiSTer, says only HDMI can be tested, and requests best-effort CRT/direct-video settings. HDMI is the required physically qualified output for this delivery. Retain CRT/direct-video implementation with documented standard-framework assumptions, explicitly untested/unqualified; do not claim connector measurements or guaranteed CRT compatibility. This narrowly supersedes mandatory physical testing of the two non-HDMI rows in C13/C23/C25/C31/C32. Keep their source/mux safety checks and all HDMI, campaign, audio, controls, lifecycle and performance requirements. Synchronize the machine-enforced matrix/validators before claiming this scope accepted; no whole-item waiver is justified.
+- **Blocked/open:** unresolved PCM pauses/starvation diagnosis; remaining C01–C34/R01–R13 integrated and release evidence, including C25 external board/timing contracts. Missing Git remote blocks the historical push only, not local diagnosis or qualification.
+- **New evidence:** the target is reachable on recorded boot `0cd4f2ef-9ab9-4653-bc72-cba05f3490e2`, but no Diablo engine is running and the old PID 2515 lease is stale; check actual current core ownership before relaunch. C25's bounded residual inventory is `.work/goal-c25/c25-residual-contract-gap-report.md` with structured `.work/goal-c25/c25-contract-evidence.json`: 3 inputs/10 outputs remain; measurements are unknown rather than guessed. The replay-runner selection change has a passing five-test focused result and is under independent review; the first exact repaired-binary QEMU attempt exposed missing staged assets, so replay acceptance remains open.
+- **Next dependency-ready work:** use the sequence below after implementation resumes. Do not rerun the completed IO repair, C34 extraction or FPGA build because an older paragraph calls them pending.
+- **Key decisions:** reuse artifacts only when complete relevant inputs match; retain immutable candidate/evidence identities; one critical-path defect owner and a separate verifier; physical observations and full numeric/coverage requirements remain mandatory.
+- **Completion condition:** implement and independently verify every mandatory C01–C34/R01–R13 gate, update this state as packets land, and accept only the fully qualified integrated result. The earlier plan-only stop instruction is superseded by the user's implementation goal. Hardware observations and missing external inputs remain explicit blockers, not waived gates.
+
+### Resume sequence and packet boundaries
+
+| Order / ownership | Bounded outcome | Admission and completion evidence |
+| --- | --- | --- |
+| 1 — one target owner | Revalidate the existing development runtime and obtain the repaired title → cinematic → title observation. | Read-only boot/core/package/lease check first; preserve the running session and pending observation. Bind the observation to the exact candidate and connector. CRC/counter changes alone cannot pass visual acceptance. |
+| 2 — diagnostic owner, then independent verifier | Resolve PCM pauses versus starvation before selecting a fix. | Use existing ABI queue fields where available; record `queued_frames`, `local_queue_frames`, producer/consumer, callback/drop/underrun/resync counters, epoch and lifecycle phase together. Split traces at resets and startup/steady boundaries. If the installed diagnostic omits fields, repair that bounded diagnostic path first; do not infer occupancy or increase buffers from cursor deltas alone. Preserve raw trace and identify a reproducible failing interval or an explicitly unresolved result. |
+| Parallel local packet, separate files | Make repaired-binary replay select the exact build; run the candidate-bound local deployment lifecycle. | The root handoff records that `scenario_arm.py` hardcodes an older build. Parameterize only the build selection, verify binary role/hash, then replay the repaired transport binary where supported. ARM-reference scenes remain software-oracle evidence. Neither replay nor a local deployment fixture substitutes for physical acceptance. |
+| Parallel read-only packet | Collect the missing C25 board/receiver/configuration contracts. | Record actual board/revision, USER_IO use, receiver limits and RC/skew evidence for unresolved endpoints. Keep unavailable inputs blocked. Do not change SDC/RTL from nominal assumptions. |
+| 3 — source boundary | If diagnosis exposes a defect, implement and independently verify only that defect; qualify affected artifacts once. | Focused regression → independent diff acceptance → reviewed source snapshot → affected build/suite → immutable candidate/package binding. Reuse the qualified FPGA for ARM-only changes. Reopen affected evidence under C31; never relabel old receipts. |
+| 4 — coordinated target session | Pass launch/video/audio/input/OSD/save/relaunch smoke, then complete remaining coverage. | Reuse one compatible candidate and session for C13/C15/C19–C24/C32 when fixtures and observations match. Retain every required campaign, connector, input, multiplayer and lifecycle cell, all duration/latency targets and separate diagnostic/performance configurations. A shared run may support several gates only when it actually satisfies each gate. |
+| 5 — independent integrated acceptance | Validate final candidate-bound evidence, reconcile C30 state, and evaluate every required closure. | Existing validators must pass with no missing mandatory result. Mark implementation complete separately from release acceptance; promote only after the full matrix and R01–R13 amendments close. |
+
+**Dependency decision:** distinguish readiness to collect evidence from permission to close a gate. C18 development identity and C32 development packaging must exist before physical qualification; their final acceptance follows it. C26/C27 build proof, C28/C29 runners and C31 scope can be used while final closure is open. Do not create a deadlock by requiring an accepted release before running its acceptance tests. This does not remove any closure dependency.
+
+**Invalidation decision:** documentation-only edits require guide/link/digest validation, not ARM/FPGA rebuilds or a new candidate. Test/runner changes require their focused checks and affected qualification receipts; ARM inputs require ARM rebuild and affected integration/board checks; RTL/QIP/SDC/ABI changes require the corresponding production regressions and FPGA/timing or peer rebuilds. Inspect transitive inputs, tool/options and configuration before reuse; if the existing manifest validator rejects a changed dependency, retain that rejection and resolve it through the existing workflow rather than bypassing validation.
+
+**Token decision:** on resume read this block, the active C-item and exact referenced evidence only. Keep one compact result/receipt pointer per packet, replacing the active state rather than appending another “current” narrative. Use Context Mode for bounded command/log analysis and Capsule for large/repeated evidence when available. Dispatch Luna MAX with objective, exclusive write scope, constraints, relevant excerpt, acceptance and compact return; use Terra XHIGH after two failed bounded attempts or for a concrete cross-component escalation. Do not redelegate successful exploration or repeat broad qualification without an invalidating change.
+
+**Existing commands:** run from the repository root with the configured Python/tool environment. For this documentation edit, run `python support/scripts/guide_status.py --root .` after synchronizing only `.mister/state.json`'s `completion_document_sha256`; expect `ok=true`. For future implementation, `python support/scripts/diablo.py verify --suite foundation` runs foundation checks and `python support/scripts/diablo.py verify --suite local` runs the configured local tier. These unbound commands do not establish candidate acceptance. Recover candidate/ARM/board-specific arguments, build paths and tool configuration from the exact successful receipt and existing CLI help; do not copy historical candidate paths or omit required identity/profile arguments. Use the existing Quartus snapshot helper in C27 only when FPGA inputs change. Missing prerequisites are `not_run`/blocked, never pass.
+
+### Historical stop and next-chat handoff
+
+Implementation and testing stopped after the passive audio trace recorded below. The **Next-chat handoff** at the top of `CORE_COMPLETION_AUDIT.md` records that checkpoint: repaired candidate b537b12c was deployed development-only; cinematic visual acceptance and audio diagnosis remained open; the full release matrix remains mandatory. That earlier session ended with the handoff and requested push attempt. Push failed because no Git remote is configured; the destination URL remains pending. This is historical session scope, not a new instruction to push during a plan edit.
 
 Final passive trace: `.work/c26/cinematic-pcm-passive-trace-b537b12c.summary.json` (SHA-256 `26961f57e588067e0ecd600389eabacdc202ce0bf3a818587de15964ac5a37f3`). Ninety samples remained ready/fault 0; producer/consumer each advanced 3,802,872 and display frames 1,307, with 13 fully unchanged intervals and three absolute producer/consumer mismatches (maximum 2,229). The underrun counter reset from 121,171 to 0; do not calculate one cumulative delta across reset. Installed diagnostics omit both queue-occupancy fields, so pauses versus starvation remain unresolved. Exact boot is `0cd4f2ef-9ab9-4653-bc72-cba05f3490e2`; earlier `cbaa05` text is a transcription error. WSL QEMU 10.2.1 is currently available, but repaired-binary replay has not run. The runtime was left running; revalidate it on resume.
 
-### Live-test update — cinematic video is the active blocker
+### Recorded live-test checkpoint — cinematic video remains unaccepted
 
 This update supersedes the earlier window/not-activated status below. The user authorized MiSTer testing; C26 remains the pre-fix development baseline, and repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b is now running from `/media/fat/_CodexDiabloCinematic_d2ccbc3`. The user confirms animated title and good audio, followed after approximately 30 seconds by a frozen title while cinematic audio plays. Source tracing proves the generic ARM presentation hook republishes `PalSurface` while movies update a separate indexed `SVidSurface`. The persistent engine and FPGA acknowledgements continue: this is not an ended test or proof of queue deadlock.
 
@@ -45,10 +79,10 @@ The objective remains a fully functional, accepted MiSTer core. The highest-valu
 
 | Current blocker | Shortest next action and required proof |
 | --- | --- |
-| MCP23009 500 kHz setting violates Fast-mode low time | Keep the 375 kHz correction; finish actual-source ACK/timing regression with installed native WSL Verilator 5.050. Prove 375 kHz passes and 400/500 kHz fail the low-time requirement. Resolve fixture startup/stimulus without changing production behavior for the test. |
-| Clean HEAD omits required video-policy file registration | Preserve and commit the existing `files.qip` entry with the reviewed source-stabilization packet. Do not revert a registration required by the instantiated module. |
-| Replacement FPGA and candidate do not yet exist | Pass the pre-build gate below, then compile once and bind the exact artifact. The successful `.work/c25-fpga-final` snapshot is pre-IO-fix evidence only. |
-| Final clean-checkout qualification | Use the existing verification/materialization workflow on the accepted commit; run affected checks and required integrated qualification once. Do not design another qualification framework. |
+| IO-rate regression and video-policy registration are recorded complete | Preserve commits `ca6f541` and `0232f7` and the clean C26 qualification. Reopen only on changed relevant inputs or an observed regression. |
+| Repaired cinematic video remains physically unaccepted | Revalidate candidate b537b12c and observe the full title → cinematic → title cycle; do not rebuild its unchanged FPGA. |
+| PCM trace cannot distinguish pauses from starvation | Collect queue occupancy and lifecycle/reset boundaries before selecting a repair; follow the bounded diagnostic packet above. |
+| Remaining clean-checkout/integrated qualification | Reuse existing producer/build receipts where dependencies still match; execute only missing or invalidated proof through the existing workflow. Do not design another qualification framework. |
 | Remaining external timing contracts | Use known device limits plus actual board/configuration evidence. IO-board/revision, USER_IO use, RC/skew and relevant receiver settings remain inputs to acceptance. Do not invent delays or start speculative RTL work. |
 | Candidate-bound physical acceptance | Obtain an available MiSTer window and physical display/audio observation or capture. Recheck boot/core identity once at admission; do not poll or interrupt a changing foreign workload. |
 
@@ -60,7 +94,7 @@ Rebuild again only for an FPGA input change or an actual compile/timing failure 
 
 ### Fastest route to working hardware
 
-Finish the IO regression and source packet, qualify the clean checkout, build the affected FPGA once, and create one immutable **development** package with rollback. Use it first for supported launch, visible image, active stereo, controls/OSD focus, and save/relaunch. Fix observed failures before long endurance/campaign/performance runs. When the smoke test passes, collect the remaining required output modes, stereo endurance, campaigns, multiplayer, reset/core switch, latency and installation/update/rollback matrix in one coordinated session on that candidate where dependencies permit. A development candidate may collect missing evidence; it is never labeled an accepted release prematurely.
+Start from the recorded repaired cinematic development package, revalidate its identity, finish the physical cycle observation and diagnose audio. If a defect requires a source change, qualify only the affected artifacts under the pre-build gate and bind one immutable **development** package with rollback. Use it first for supported launch, visible image, active stereo, controls/OSD focus, and save/relaunch. Fix observed failures before long endurance/campaign/performance runs. When the smoke test passes, collect the remaining required output modes, stereo endurance, campaigns, multiplayer, reset/core switch, latency and installation/update/rollback matrix in one coordinated session on that candidate where dependencies permit. A development candidate may collect missing evidence; it is never labeled an accepted release prematurely.
 
 ### Execution rules that reduce time and tokens
 
@@ -73,13 +107,13 @@ Finish the IO regression and source packet, qualify the clean checkout, build th
 
 Completion still requires every mandatory gate and candidate-bound evidence. This sequence reduces wasted work; it does not waive timing, physical, campaign, multiplayer, performance or installation acceptance.
 
-## Current execution state — C34 requalification
+## Historical execution state — C34 requalification
 
 There is no accepted release candidate. Candidate49 and its package are historical:
 C34 source changes supersede their source qualification. Freeze the implementation,
 rebuild affected artifacts and qualify a new immutable candidate before promotion.
-Historical checkpoints below retain their original scope; this section governs
-current work.
+Historical checkpoints below retain their original scope; the top execution
+state governs current work and records later qualification.
 
 C34 implementation now separates input reconciliation, callback-local PCM
 resampling, command/frame ownership and profiling into four components documented
@@ -164,12 +198,12 @@ direct RGB, analog/scandoubler, stereo endurance, controls/OSD, campaign/save/re
 multiplayer, performance and install/update/rollback/menu/second-launch gates
 remain open.
 
-## Current execution entry point and mandatory audit amendments
+## Mandatory audit amendments and historical entry-point refresh
 
 **Refresh, 8 September 2026:** use the seven-batch
 [root execution guide](../../CORE_COMPLETION_AUDIT.md) as the compact critical
 path. This document remains the detailed C01–C34 closure authority. The
-[current audit refresh](REFRESH_AUDIT.md) adds R01–R12 with exact evidence,
+[current audit refresh](REFRESH_AUDIT.md) adds R01–R13 with exact evidence,
 reproductions, fixes and acceptance requirements. These amendments override
 older statements below that call candidate `a1fc74f…` current. Its recorded
 artifacts still match, but nine source inputs have changed; candidate-bound
@@ -220,7 +254,7 @@ physical/campaign qualification. Read only the active detailed package and exact
 evidence; keep large outputs in files and rerun checks by dependency invalidation.
 Do not duplicate historical logs into this plan or state.
 
-## Current implementation checkpoint
+## Historical implementation checkpoint — candidate49
 
 R02/R03/R04/R05/R06/R07/R08/R09 are implemented locally and regression-tested.
 R12 is implemented: the board fallback explains that --board-configuration is
@@ -288,7 +322,7 @@ package/tooling change regenerates candidate-bound release receipts.
 
 ## 2026-09-08 continuation: candidate38 fixes and release blockers
 
-This section is the active work order after the candidate38 implementation pass.
+This section records the historical work order after the candidate38 implementation pass.
 It records the bugs found while closing the plan, the fix now in the checkout,
 the evidence already captured and the exact gate that remains. Historical
 candidate33/35/36/37 paragraphs below remain evidence of earlier experiments.
@@ -368,7 +402,7 @@ an exclusive, quiescent board window before repeating candidate41. Then
 capture exact RBF/boot/FPGA identity, HDMI/analog video, stereo audio with zero
 steady underrun/resync/drop deltas, physical controls, Diablo/Hellfire campaign
 and save workflows, performance, and clean install/update/rollback. Do not promote
-or call the core complete until those candidate-bound receipts and the C01–C34/R01–R12
+or call the core complete until those candidate-bound receipts and the C01–C34/R01–R13
 matrix all pass.
 
 A separate candidate41 Diablo timedemo attempt was blocked because a concurrent
@@ -533,7 +567,7 @@ expected result are stated. Use the current execution block and machine state as
 
 1. Introduce an outstanding submission record containing slot, epoch, fence, publication sequence, deadline and state. After publishing commands, retain that record until completion or acknowledged cancellation.
 2. Replace poll-count timing with an absolute monotonic deadline. Normal presentation must not block repeatedly for the full recovery budget; poll/reconcile outstanding work on subsequent service steps.
-3. On timeout, stop new writes to the owned slot and preserve the last display. If the fence arrives late, either publish the completed frame if still useful or retire it safely; never leave the allocation forgotten.
+3. On timeout, stop new writes to the owned slot and preserve the last display. Keep the recorded faulted-slot contract: consume a late fence only for its original submission; never publish or recycle the timed-out slot until the common quiescence/epoch protocol proves late writes impossible. Account for the allocation through acknowledged recovery. This resolves the older optional late-publication wording in favor of the implemented safety invariant.
 4. Publish command consumer errors with code/detail/epoch and make the ARM supervisor observe them. Define behavior for bad records and ring cursor violations without waiting on an unwritten global fault field.
 5. For unrecoverable work, quiesce producer and consumer, acknowledge the stopped epoch, then initialize a fresh one. Do not reset ring cursors or FREE slots while FPGA writes can still arrive.
 
@@ -1102,7 +1136,7 @@ verification passes all 21 registered checks, the configured ARM/QEMU suite
 passes, both role-aware scene-oracle receipts pass, package verification passes,
 and the candidate43 target preflight passes. The board tier remains explicitly
 incomplete because no candidate43 activation or physical observation was run.
-**Current verification record (2026-09-08, candidate49):** the full Python suite
+**Historical verification record (2026-09-08, candidate49):** the full Python suite
 passes 141 tests with one declared Windows privilege skip. Candidate-bound local
 verification, ARM/QEMU, both role-aware scene-oracle receipts, package verify,
 target preflight and the deployment lifecycle receipt pass. `board_runner.py`
@@ -1256,7 +1290,7 @@ launch remain physical gates.
 **Implementation procedure**
 
 1. Define an allowlisted package containing matching ARM/RBF, launcher, ABI/build manifest, redistributable assets, notices and setup instructions. Resolve each component's recorded distribution disposition before including it; do not infer an aggregate license.
-2. Build from immutable accepted artifacts, verify all hashes and scan package contents for MPQs, saves, private captures, donor-only material, credentials and machine-specific paths.
+2. Build qualification packages from immutable development artifacts so clean-install and physical tests can run before release acceptance. Promote only the exact package whose artifacts satisfy every final gate. Verify all hashes and scan package contents for MPQs, saves, private captures, donor-only material, credentials and machine-specific paths.
 3. Implement install/update preflight, enough-space checks, verified staging and a recoverable activation sequence. Preserve existing saves/configuration and keep a compatible previous install recoverable on failure.
 4. Guide users to supply their own data and clearly report missing/incompatible data. Avoid overwriting user content to make a test install pass.
 5. Test on a clean supported MiSTer using the distributed package, then run both campaign launch/play/save/load/quit/reset/core-switch/relaunch workflows and a second independent launch.
@@ -1342,7 +1376,7 @@ Additional original blockers are explicitly owned: active audio C15; launcher C1
 
 ## Final completion checklist
 
-- [ ] Every C01–C34 and R01–R12 has a CLOSED record and its compact checklist box checked, or an explicitly approved scope disposition linked to the original requirement. A blocked item prevents an unqualified “everything complete” statement.
+- [ ] Every C01–C34 and R01–R13 has a CLOSED record and its compact checklist box checked, or an explicitly approved scope disposition linked to the original requirement. R13 installation/update transactions are mandatory, including their physical target requirements. A blocked item prevents an unqualified “everything complete” statement.
 - [ ] Every F01–F18 has its primary fix and listed integration/qualification evidence; all new failures discovered during implementation have their own tracked closure.
 - [ ] All passing evidence matches the final source/ARM/RBF/ABI/configuration; changed components have reopened and re-passed affected gates.
 - [ ] Complete equality, real-vblank cadence, active audio, physical controls, campaigns, save integrity, multiplayer, timing and performance targets pass.

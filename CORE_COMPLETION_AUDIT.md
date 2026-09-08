@@ -1,5 +1,7 @@
 # Diablo MiSTer — completion execution plan
 
+**Implementation resumed, 8 September 2026:** follow the [detailed plan's active execution state](reports/audit-2026-09-07/PROPOSED_PLAN.md#execution-state). The user confirms the repaired full cinematic cycle and authorizes HDMI-only physical testing, with CRT/direct-video retained as best-effort untested settings. The target is reachable but Diablo is no longer running. Queue diagnostics, verified replay selection and machine-enforced output-scope synchronization are in progress. The handoff below is historical; no release is accepted.
+
 ## Next-chat handoff — 8 September 2026
 
 Work stopped at the user's request after the current passive audio trace. No release is accepted. This handoff supersedes older current-status statements below; retain the full C01–C34/R01–R13 closure scope in the detailed plan.
