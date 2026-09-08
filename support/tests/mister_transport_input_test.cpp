@@ -104,26 +104,136 @@ public:
 	Check(adapter.BeginAudioCallback(), "audio callback did not resume after a runtime transition");
 	adapter.audio_callbacks_inflight_.fetch_sub(1, std::memory_order_release);
 
+	// ResetProfile owns every profiler counter, including command metrics. The
+	// command-build helper must reject unavailable/backward timestamps without
+	// creating a wrapped duration sample.
+	adapter.profile_.command_scene_attempts_ = 3;
+	adapter.profile_.command_scene_no_slot_ = 4;
+	adapter.profile_.command_scene_overflow_ = 5;
+	adapter.profile_.command_scene_publish_failures_ = 6;
+	adapter.profile_.command_scene_fence_failures_ = 7;
+	adapter.profile_.command_scene_frame_failures_ = 8;
+	adapter.profile_.command_scene_batches_ = 9;
+	adapter.profile_.command_build_count_ = 4;
+	adapter.profile_.command_build_total_ns_ = 5;
+	adapter.profile_.command_build_max_ns_ = 6;
+	adapter.profile_.command_wait_count_ = 5;
+	adapter.profile_.command_wait_total_ns_ = 6;
+	adapter.profile_.command_wait_max_ns_ = 7;
+	adapter.profile_.ResetProfile();
+	Check(adapter.profile_.command_scene_attempts_ == 0
+	          && adapter.profile_.command_scene_no_slot_ == 0
+	          && adapter.profile_.command_scene_overflow_ == 0
+	          && adapter.profile_.command_scene_publish_failures_ == 0
+	          && adapter.profile_.command_scene_fence_failures_ == 0
+	          && adapter.profile_.command_scene_frame_failures_ == 0
+	          && adapter.profile_.command_scene_batches_ == 0
+	          && adapter.profile_.command_build_count_ == 0
+	          && adapter.profile_.command_build_total_ns_ == 0
+	          && adapter.profile_.command_build_max_ns_ == 0
+	          && adapter.profile_.command_wait_count_ == 0
+	          && adapter.profile_.command_wait_total_ns_ == 0
+	          && adapter.profile_.command_wait_max_ns_ == 0,
+	      "profile reset retained command metrics");
+	adapter.profile_.RecordCommandBuild(100, 0);
+	adapter.profile_.RecordCommandBuild(100, 99);
+	Check(adapter.profile_.command_build_count_ == 0
+	          && adapter.profile_.command_build_total_ns_ == 0,
+	      "invalid command-build timestamps created a sample");
+	adapter.profile_.RecordCommandBuild(100, 125);
+	Check(adapter.profile_.command_build_count_ == 1
+	          && adapter.profile_.command_build_total_ns_ == 25
+	          && adapter.profile_.command_build_max_ns_ == 25,
+	      "valid command-build timestamp was not recorded");
+
+	// Integer SDL ticks must retain the fractional 60 Hz period, with wrap-safe
+	// lateness and a deterministic reset point for excessive lag.
+	adapter.ResetFramePacing();
+	Check(!adapter.frame_pacing_initialized_ && adapter.frame_pacing_deadline_ == 0
+	          && adapter.frame_pacing_fraction_ == 0,
+	      "frame pacing reset retained state");
+	std::uint32_t deadline = 1000;
+	std::uint32_t fraction = 0;
+	for (unsigned frame = 0; frame < 60; ++frame) {
+		const auto next = Adapter::AdvanceFramePacingDeadline(deadline, fraction);
+		const auto delta = next - deadline;
+		Check(delta == 16U || delta == 17U, "frame pacing used an invalid tick step");
+		deadline = next;
+	}
+	Check(deadline == 2000 && fraction == 0,
+	      "frame pacing did not average exactly 60 Hz");
+	std::uint32_t wrap_fraction = 0;
+	const auto wrapped = Adapter::AdvanceFramePacingDeadline(
+	    std::numeric_limits<std::uint32_t>::max() - 4U, wrap_fraction);
+	Check(wrapped == 11U, "frame pacing deadline did not wrap safely");
+	Check(!Adapter::FramePacingIsLate(5U, std::numeric_limits<std::uint32_t>::max() - 5U, 1000U)
+	          && !Adapter::FramePacingIsLate(1500U, 500U, 1000U)
+	          && Adapter::FramePacingIsLate(1501U, 500U, 1000U),
+	      "frame pacing lateness was not wrap-safe or bounded");
+
+	// A core reload resets every ABI frame slot. Adapter-side command shadows
+	// Timeout and late completion belong to one wait sample. Invalid clock
+	// readings must not underflow the distribution or consume that sample.
+	adapter.profile_.command_wait_count_ = 0;
+	adapter.profile_.command_wait_total_ns_ = 0;
+	adapter.profile_.command_wait_max_ns_ = 0;
+	adapter.command_frames_.command_submission_ = {};
+	adapter.command_frames_.command_submission_.submitted_ns = 100;
+	adapter.command_frames_.RecordCommandWait(0, adapter.profile_);
+	adapter.command_frames_.RecordCommandWait(99, adapter.profile_);
+	Check(adapter.profile_.command_wait_count_ == 0, "invalid clock created command wait sample");
+	adapter.command_frames_.command_submission_.timed_out = true;
+	adapter.command_frames_.RecordCommandWait(125, adapter.profile_); // timeout observation
+	adapter.command_frames_.RecordCommandWait(175, adapter.profile_); // late fence observation
+	Check(adapter.profile_.command_wait_count_ == 1 && adapter.profile_.command_wait_total_ns_ == 25
+	          && adapter.profile_.command_wait_max_ns_ == 25,
+	      "late fence counted a timed-out command wait twice");
+	adapter.ResetCommandSceneState();
+	adapter.command_frames_.command_submission_.submitted_ns = 200;
+	adapter.command_frames_.RecordCommandWait(240, adapter.profile_);
+	Check(adapter.profile_.command_wait_count_ == 2 && adapter.profile_.command_wait_total_ns_ == 65
+	          && adapter.profile_.command_wait_max_ns_ == 40,
+	      "new command submission failed to record a new wait");
+
 	// A core reload resets every ABI frame slot. Adapter-side command shadows
 	// must be discarded with that epoch or the next changed-run submission could
 	// omit pixels that no longer exist in the freshly cleared slot.
-	adapter.command_shadow_valid_.fill(true);
-	adapter.command_next_slot_ = 2;
-	adapter.command_attempt_fence_ = 99;
-	adapter.command_submission_.active = true;
-	adapter.command_scene_faulted_ = true;
+	adapter.command_frames_.command_shadow_valid_.fill(true);
+	CommandFrameState independent_commands;
+	independent_commands.command_shadow_valid_.fill(true);
+	independent_commands.command_submission_.active = true;
+	independent_commands.command_submission_.timed_out = true;
+	adapter.command_frames_.command_next_slot_ = 2;
+	adapter.command_frames_.command_attempt_fence_ = 99;
+	adapter.command_frames_.command_submission_.active = true;
+	adapter.command_frames_.command_scene_faulted_ = true;
 	adapter.ResetCommandSceneState();
-	Check(!adapter.command_shadow_valid_[0] && !adapter.command_shadow_valid_[1]
-	          && !adapter.command_shadow_valid_[2]
-	          && adapter.command_next_slot_ == 0 && adapter.command_attempt_fence_ == 1
-	          && !adapter.command_submission_.active && !adapter.command_scene_faulted_,
+	Check(independent_commands.command_submission_.active
+	          && independent_commands.command_submission_.timed_out
+	          && independent_commands.command_shadow_valid_[0],
+	      "reset mutated a different command owner's pending submission");
+	for (unsigned cycle = 0; cycle < 64; ++cycle) {
+		independent_commands.command_submission_.active = true;
+		independent_commands.command_submission_.timed_out = true;
+		independent_commands.command_shadow_valid_.fill(true);
+		independent_commands.Reset();
+		Check(!independent_commands.command_submission_.active
+		          && !independent_commands.command_submission_.timed_out
+		          && !independent_commands.command_shadow_valid_[0]
+		          && independent_commands.command_attempt_fence_ == 1,
+		      "command epoch reset retained pending ownership or cached content");
+	}
+	Check(!adapter.command_frames_.command_shadow_valid_[0] && !adapter.command_frames_.command_shadow_valid_[1]
+	          && !adapter.command_frames_.command_shadow_valid_[2]
+	          && adapter.command_frames_.command_next_slot_ == 0 && adapter.command_frames_.command_attempt_fence_ == 1
+	          && !adapter.command_frames_.command_submission_.active && !adapter.command_frames_.command_scene_faulted_,
 	      "command scene state was not reset with the transport epoch");
 
 	// PS/2 bit 1 means right mouse, but SDL motion uses SDL_BUTTON_RMASK (4),
 	// not the raw PS/2 mask (2).
-	adapter.ResetInputState();
+	adapter.input_.ResetInputState();
 	ClearEvents();
-	adapter.PushMouse(Mouse(0x2, 3, -2));
+	adapter.input_.PushMouse(Mouse(0x2, 3, -2));
 	auto events = Events();
 	Check(events.size() == 2, "right-mouse packet did not publish motion and edge");
 	Check(events[0].type == SDL_MOUSEMOTION && events[0].motion.state == SDL_BUTTON_RMASK,
@@ -132,77 +242,77 @@ public:
 	      "right-button edge was not translated");
 
 	// Extreme signed deltas must clamp without overflowing the cursor addition.
-	adapter.ResetInputState();
-	adapter.mouse_x_ = 0;
-	adapter.mouse_y_ = 0;
+	adapter.input_.ResetInputState();
+	adapter.input_.mouse_x_ = 0;
+	adapter.input_.mouse_y_ = 0;
 	ClearEvents();
-	adapter.PushMouse(Mouse(0, std::numeric_limits<std::int32_t>::max(),
+	adapter.input_.PushMouse(Mouse(0, std::numeric_limits<std::int32_t>::max(),
 	                        std::numeric_limits<std::int32_t>::min()));
-	Check(adapter.mouse_x_ == static_cast<std::int32_t>(diablo::mister::transport::FRAME_WIDTH - 1U)
-	          && adapter.mouse_y_ == 0,
+	Check(adapter.input_.mouse_x_ == static_cast<std::int32_t>(diablo::mister::transport::FRAME_WIDTH - 1U)
+	          && adapter.input_.mouse_y_ == 0,
 	      "extreme mouse deltas did not clamp safely");
 	ClearEvents();
 
 	// OSD focus loss releases delivered state and forces a neutral/repress cycle.
-	adapter.ResetInputState();
+	adapter.input_.ResetInputState();
 	ClearEvents();
-	adapter.PushKeyboard(Keyboard(0x1d, true)); // W
+	adapter.input_.PushKeyboard(Keyboard(0x1d, true)); // W
 	Check(Events().size() == 1, "initial keyboard press was not delivered");
-	adapter.PushFocus(false);
+	adapter.input_.PushFocus(false);
 	events = Events();
 	Check(events.size() == 2 && events[0].type == SDL_WINDOWEVENT
 	          && events[0].window.event == SDL_WINDOWEVENT_FOCUS_LOST
 	          && events[1].type == SDL_KEYUP,
 	      "focus loss did not publish an ordered release");
-	adapter.PushFocus(true);
+	adapter.input_.PushFocus(true);
 	events = Events();
 	Check(events.size() == 1 && events[0].type == SDL_WINDOWEVENT
 	          && events[0].window.event == SDL_WINDOWEVENT_FOCUS_GAINED,
 	      "focus gain did not publish focus only");
-	adapter.PushKeyboard(Keyboard(0x1d, false));
+	adapter.input_.PushKeyboard(Keyboard(0x1d, false));
 	Check(Events().empty(), "release after focus gain should only arm a future repress");
-	adapter.PushKeyboard(Keyboard(0x1d, true));
+	adapter.input_.PushKeyboard(Keyboard(0x1d, true));
 	events = Events();
 	Check(events.size() == 1 && events[0].type == SDL_KEYDOWN,
 	      "key did not require neutral then re-press after focus gain");
 
 	// SDL filtering must leave the desired state pending until a later reconcile
 	// can queue the actual engine event.
-	adapter.ResetInputState();
+	adapter.input_.ResetInputState();
 	ClearEvents();
 	SDL_SetEventFilter(FilterKeyboardDown, nullptr);
-	adapter.PushKeyboard(Keyboard(0x1d, true));
-	Check(!adapter.keyboard_delivered_[SDL_SCANCODE_W], "filtered key was marked delivered");
+	adapter.input_.PushKeyboard(Keyboard(0x1d, true));
+	Check(!adapter.input_.keyboard_delivered_[SDL_SCANCODE_W], "filtered key was marked delivered");
 	SDL_SetEventFilter(nullptr, nullptr);
-	adapter.ReconcileInputState();
+	adapter.input_.ReconcileInputState();
 	events = Events();
 	Check(events.size() == 1 && events[0].type == SDL_KEYDOWN
-	          && adapter.keyboard_delivered_[SDL_SCANCODE_W],
+	          && adapter.input_.keyboard_delivered_[SDL_SCANCODE_W],
 	      "filtered key was not recovered by bounded reconciliation");
 
 	// A physical keyboard and controller can hold the same engine key. Releasing
 	// one source must not prematurely release the shared delivered key.
-	adapter.ResetInputState();
+	adapter.input_.ResetInputState();
 	ClearEvents();
-	adapter.PushKeyboard(Keyboard(0x11, true)); // left Alt
-	adapter.PushJoystick(Joystick(1U << 4));    // maps to left Alt too
+	adapter.input_.PushKeyboard(Keyboard(0x11, true)); // left Alt
+	adapter.input_.PushJoystick(Joystick(1U << 4));    // maps to left Alt too
 	ClearEvents();
-	adapter.PushKeyboard(Keyboard(0x11, false));
-	Check(adapter.KeyWanted(SDL_SCANCODE_LALT), "controller state did not retain shared left Alt");
+	adapter.input_.PushKeyboard(Keyboard(0x11, false));
+	Check(adapter.input_.KeyWanted(SDL_SCANCODE_LALT), "controller state did not retain shared left Alt");
 	events = Events();
 	Check(events.empty(), "shared keyboard/controller key was released too early");
-	adapter.PushJoystick(Joystick(0));
+	adapter.input_.PushJoystick(Joystick(0));
 	events = Events();
 	Check(events.size() == 1 && events[0].type == SDL_KEYUP,
 	      "shared key stayed delivered after every source released it");
 
 	// Text is emitted only while SDL has text input active, using the aggregate
 	// physical modifier state. Controller modifiers do not affect typed text.
-	adapter.ResetInputState();
+	adapter.input_.ResetInputState();
 	ClearEvents();
 	SDL_StartTextInput();
-	adapter.PushKeyboard(Keyboard(0x12, true)); // left Shift
-	adapter.PushKeyboard(Keyboard(0x1c, true)); // A
+	adapter.input_.PushKeyboard(Keyboard(0x12, true)); // left Shift
+	adapter.input_.PushKeyboard(Keyboard(0x1c, true)); // A
 	events = Events();
 	Check(events.size() == 3 && events[0].type == SDL_KEYDOWN && events[1].type == SDL_KEYDOWN
 	          && (events[1].key.keysym.mod & KMOD_SHIFT) != 0 && events[2].type == SDL_TEXTINPUT
@@ -213,27 +323,76 @@ public:
 	// A queued keydown does not prove that the paired text event reached the
 	// engine. Keep the character pending when SDL filters it, then deliver it
 	// exactly once after the filter is removed.
-	adapter.ResetInputState();
+	adapter.input_.ResetInputState();
 	ClearEvents();
 	SDL_StartTextInput();
 	SDL_SetEventFilter(FilterTextInput, nullptr);
-	adapter.PushKeyboard(Keyboard(0x1c, true)); // A
+	adapter.input_.PushKeyboard(Keyboard(0x1c, true)); // A
 	events = Events();
 	Check(events.size() == 1 && events[0].type == SDL_KEYDOWN
-	          && adapter.text_pending_[SDL_SCANCODE_A],
+	          && adapter.input_.text_pending_[SDL_SCANCODE_A],
 	      "filtered text input was not retained after its keydown");
 	SDL_SetEventFilter(nullptr, nullptr);
-	adapter.ReconcileInputState();
+	adapter.input_.ReconcileInputState();
 	events = Events();
 	Check(events.size() == 1 && events[0].type == SDL_TEXTINPUT
 	          && std::strcmp(events[0].text.text, "a") == 0
-	          && !adapter.text_pending_[SDL_SCANCODE_A],
+	          && !adapter.input_.text_pending_[SDL_SCANCODE_A],
 	      "pending text input was not recovered exactly once");
-	adapter.PushKeyboard(Keyboard(0x1c, false));
+	adapter.input_.PushKeyboard(Keyboard(0x1c, false));
 	Check(Events().size() == 1, "key release after recovered text was not delivered");
 	SDL_StopTextInput();
 
+	// Independent owners must not share desired/delivered state. Repeated
+	// reset cycles must still deliver exactly one press and release each.
+	InputReconciler first;
+	InputReconciler second;
+	for (unsigned cycle = 0; cycle < 64; ++cycle) {
+		first.ResetInputState();
+		second.ResetInputState();
+		ClearEvents();
+		first.PushKeyboard(Keyboard(0x1d, true));
+		Check(Events().size() == 1, "reset cycle lost or duplicated key press");
+		second.ResetInputState();
+		Check(first.keyboard_delivered_[SDL_SCANCODE_W]
+		          && !second.keyboard_delivered_[SDL_SCANCODE_W],
+		      "input owners share delivered state");
+		first.PushKeyboard(Keyboard(0x1d, false));
+		auto released = Events();
+		Check(released.size() == 1 && released[0].type == SDL_KEYUP,
+		      "reset cycle lost or duplicated key release");
+		second.ReconcileInputState();
+		Check(Events().empty(), "idle input owner emitted another owner's events");
+	}
+
 	SDL_Quit();
+	// Audio chunk boundaries must not change the resampled stream. Resetting
+	// the generation must produce exactly the same output as a fresh owner.
+	std::vector<std::uint8_t> pcm(1024 * 4);
+	for (std::size_t i = 0; i < pcm.size(); ++i)
+		pcm[i] = static_cast<std::uint8_t>((i * 37U + i / 7U) & 255U);
+	auto whole = std::make_unique<PcmResampler>();
+	auto split = std::make_unique<PcmResampler>();
+	const auto converted = whole->Convert(pcm.data(), pcm.size(), 1);
+	Check(converted.has_value(), "whole PCM conversion failed");
+	std::vector<std::byte> expected(converted->begin(), converted->end());
+	std::vector<std::byte> actual;
+	for (std::size_t offset = 0; offset < pcm.size();) {
+		const auto bytes = std::min<std::size_t>(pcm.size() - offset, 4U * (1U + offset % 53U));
+		const auto chunk = split->Convert(pcm.data() + offset, bytes, 1);
+		Check(chunk.has_value(), "split PCM conversion failed");
+		actual.insert(actual.end(), chunk->begin(), chunk->end());
+		offset += bytes;
+	}
+	Check(actual == expected, "PCM callback boundaries changed sample bytes");
+	for (std::uint32_t generation = 2; generation < 66; ++generation) {
+		const auto reset = split->Convert(pcm.data(), pcm.size(), generation);
+		Check(reset && std::vector<std::byte>(reset->begin(), reset->end()) == expected,
+		      "PCM reset retained previous-stream interpolation history");
+	}
+	Check(!split->Convert(nullptr, 4, 66), "PCM null input accepted");
+	Check(!split->Convert(pcm.data(), 3, 66), "PCM partial frame accepted");
+	Check(!split->Convert(pcm.data(), 8193U * 4U, 66), "PCM oversized callback accepted");
 	std::puts("transport input reconciliation checks passed");
 	return EXIT_SUCCESS;
 }
@@ -250,20 +409,20 @@ public:
 	#else
 		setenv("DIABLO_MISTER_PROFILE_TRACE", "transport-profile-trace-test.jsonl", 1);
 	#endif
-		adapter.ResetProfile();
-		const auto start = adapter.NowNs();
+		adapter.profile_.ResetProfile();
+		const auto start = adapter.profile_.NowNs();
 		Check(start != 0, "monotonic clock was unavailable for profile accounting");
-		adapter.RecordProfile(start, false, true, Adapter::ProfileOutcome::PublishFailed);
-		Check(adapter.profile_present_count_ == 1, "failed presentation was not counted");
-		Check(adapter.profile_published_count_ == 0, "failed presentation was counted as published");
-		Check(adapter.profile_backpressure_count_ == 1, "backpressure was not retained on publish failure");
-		Check(adapter.profile_outcome_counts_[static_cast<std::size_t>(Adapter::ProfileOutcome::PublishFailed)] == 1,
+		adapter.profile_.RecordProfile(start, false, true, Adapter::ProfileOutcome::PublishFailed);
+		Check(adapter.profile_.profile_present_count_ == 1, "failed presentation was not counted");
+		Check(adapter.profile_.profile_published_count_ == 0, "failed presentation was counted as published");
+		Check(adapter.profile_.profile_backpressure_count_ == 1, "backpressure was not retained on publish failure");
+		Check(adapter.profile_.profile_outcome_counts_[static_cast<std::size_t>(Adapter::ProfileOutcome::PublishFailed)] == 1,
 		      "publish-failure outcome was not counted");
-		adapter.RecordProfile(0, false, false, Adapter::ProfileOutcome::RuntimeUnavailable);
-		Check(adapter.profile_present_count_ == 2 && adapter.profile_timing_invalid_count_ == 1,
+		adapter.profile_.RecordProfile(0, false, false, Adapter::ProfileOutcome::RuntimeUnavailable);
+		Check(adapter.profile_.profile_present_count_ == 2 && adapter.profile_.profile_timing_invalid_count_ == 1,
 		      "invalid monotonic sample was not retained as an outcome");
-		Check(adapter.EmitProfileTrace(), "profile trace write unexpectedly failed");
-		Check(!adapter.profile_trace_write_failed_, "successful profile trace was marked failed");
+		Check(adapter.profile_.EmitProfileTrace(), "profile trace write unexpectedly failed");
+		Check(!adapter.profile_.profile_trace_write_failed_, "successful profile trace was marked failed");
 		std::FILE *trace = std::fopen("transport-profile-trace-test.jsonl", "rb");
 		Check(trace != nullptr, "profile trace was not written");
 		char contents[2048] {};
@@ -274,16 +433,16 @@ public:
 		          && std::strstr(contents, "runtime_unavailable") != nullptr
 		          && std::strstr(contents, "timing_invalid_records\":1") != nullptr,
 		      "profile trace did not preserve mixed outcomes and invalid timing");
-		Check(!adapter.EmitProfileTrace() && adapter.profile_trace_write_failed_,
+		Check(!adapter.profile_.EmitProfileTrace() && adapter.profile_.profile_trace_write_failed_,
 		      "profile trace silently replaced an existing evidence path");
 		std::remove("transport-profile-trace-test.jsonl");
-		adapter.ResetProfile();
-		for (std::size_t index = 0; index < Adapter::kProfileTraceCapacity + 2; ++index)
-			adapter.RecordProfile(start, false, false, Adapter::ProfileOutcome::BackpressureDropped);
-		Check(adapter.profile_trace_count_ == Adapter::kProfileTraceCapacity
-		          && adapter.profile_trace_dropped_ == 2,
+		adapter.profile_.ResetProfile();
+		for (std::size_t index = 0; index < TransportProfiler::kProfileTraceCapacity + 2; ++index)
+			adapter.profile_.RecordProfile(start, false, false, Adapter::ProfileOutcome::BackpressureDropped);
+		Check(adapter.profile_.profile_trace_count_ == TransportProfiler::kProfileTraceCapacity
+		          && adapter.profile_.profile_trace_dropped_ == 2,
 		      "bounded trace did not count overwritten telemetry records");
-		Check(adapter.EmitProfileTrace(), "overflow profile trace write unexpectedly failed");
+		Check(adapter.profile_.EmitProfileTrace(), "overflow profile trace write unexpectedly failed");
 		trace = std::fopen("transport-profile-trace-test.jsonl", "rb");
 		Check(trace != nullptr, "overflow profile trace was not written");
 		std::memset(contents, 0, sizeof(contents));

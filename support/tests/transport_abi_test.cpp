@@ -101,9 +101,11 @@ int main(int argc, char **argv)
 	Header &header = view.header();
 	header.pcm.producer_sequence = 128;
 	header.pcm.consumer_sequence = 96;
+	header.pcm.flags = 2048;
 	header.pcm.dropped = (std::uint64_t { 7 } << 32U) | 3U;
 	auto pcm_health = view.ReadPcmHealth(0xA5010204U);
 	Require(pcm_health.has_value() && pcm_health->queued_frames == 32
+	            && pcm_health->local_queue_frames == 2048
 	            && pcm_health->underrun_count == 3 && pcm_health->resync_count == 7,
 	        "PCM health snapshot was not observable");
 	header.pcm.consumer_sequence = header.pcm.producer_sequence;
