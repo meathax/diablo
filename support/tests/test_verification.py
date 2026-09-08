@@ -38,6 +38,38 @@ class VerificationReceiptTests(unittest.TestCase):
         log = self.root / result["log"]
         self.assertIn("expected failure", log.read_text(encoding="utf-8"))
 
+    def test_source_only_generated_input_is_deterministic_and_cleaned(self):
+        path = self.root / "build_id.v"
+        records = verification.materialize_source_only_inputs(self.root)
+        self.assertEqual(records[0]["path"], "build_id.v")
+        self.assertEqual(path.read_bytes(), b'`define BUILD_DATE "000000"\n')
+        verification.remove_source_only_inputs(self.root, records)
+        self.assertFalse(path.exists())
+
+    def test_run_materializes_only_allowed_input_and_keeps_other_missing_inputs_strict(self):
+        with patch.object(verification, "DEPENDENCY_INPUTS", ("build_id.v",)), \
+                patch.object(verification, "selected_steps", return_value=([], [])):
+            code, receipt, _ = verification.run(self.root, "foundation", None, None)
+        self.assertEqual(code, 0)
+        self.assertEqual(receipt["generated_source_inputs"][0]["path"], "build_id.v")
+        self.assertFalse((self.root / "build_id.v").exists())
+
+        with patch.object(verification, "DEPENDENCY_INPUTS", ("build_id.v", "missing.txt")), \
+                patch.object(verification, "selected_steps", return_value=([], [])):
+            code, receipt, _ = verification.run(self.root, "foundation", None, None)
+        self.assertEqual(code, 1)
+        self.assertEqual(receipt["results"][0]["id"], "candidate-validation")
+        self.assertIn("candidate input is missing: missing.txt", receipt["results"][0]["reason"])
+        self.assertFalse((self.root / "build_id.v").exists())
+
+        with patch.object(verification, "DEPENDENCY_INPUTS", ("build_id.v",)), \
+                patch.object(verification, "selected_steps", return_value=([], [])):
+            code, receipt, _ = verification.run(self.root, "foundation", self.root / "candidate.json", None)
+        self.assertEqual(code, 1)
+        self.assertIn("candidate input is missing: build_id.v", receipt["results"][0]["reason"])
+        self.assertEqual(receipt["generated_source_inputs"], [])
+        self.assertFalse((self.root / "build_id.v").exists())
+
     def test_mutating_step_invalidates_isolated_source_snapshot(self):
         input_path = self.root / "input.txt"
         input_path.write_text("before", encoding="utf-8")
