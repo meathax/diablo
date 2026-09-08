@@ -1,18 +1,18 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "811ad8be944f7738cbff26c858ea6217b18af098e5815d416ef2b1c7bddb8c38",
-  "status": "implementation-active-cinematic-visual-confirmed-audio-diagnosis",
+  "completion_document_sha256": "f95ca2a6846f5500dae9b93e9ed0c43dd49bcf48e2a15e53f423f12f2c3dedf1",
+  "status": "implementation-active-local-replay-verified-physical-closure-open",
   "candidate": {
     "state": "no-current-accepted-candidate",
     "id": null,
     "development_id": "b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b",
     "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-cinematic-d2ccbc3-assets.json",
     "development_manifest_sha256": "eea1c5c7fdc0716459685ac634d3e8e566880130f4e0f87af3155558cfea7b9f",
-    "next_gate": "Correlate the user's successful repaired title-to-cinematic-to-title observation with runtime identity, diagnose PCM queues/reset boundaries, and complete remaining physical/release gates.",
-    "development_validity": "Candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b records the d2ccbc3 ARM repair with the qualified FPGA and 191 previously verified files. The user confirms its full cinematic visual cycle; current read-only observation finds no live Diablo engine. Runtime/source identity must be revalidated before another launch. Full physical/release acceptance remains false."
+    "next_gate": "Complete the candidate-bound integrated target trace, then close the remaining HDMI physical, PCM, campaign, lifecycle, performance and C25 evidence gates.",
+    "development_validity": "Candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b records the d2ccbc3 ARM repair with the qualified FPGA and 191 previously verified files. The user confirms its full cinematic visual cycle and good audio; integrated target tracing remains active. Full physical/release acceptance remains false."
   },
-  "active_work": "Implementation active: add missing PCM queue diagnostics, repair replay binary/role admission following independent review, and encode user-authorized HDMI-only physical scope while retaining non-HDMI modes explicitly untested. Target is reachable on recorded boot but Diablo is not running; core ownership must be checked before launch. No release accepted.",
+  "active_work": "Implementation active: committed local verification and endpoint-aligned ARM replay are complete; candidate-bound integrated target tracing and the remaining physical/release matrix are active. HDMI is the required physical scope; CRT/direct-video remain explicitly untested. No release accepted.",
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],
@@ -29,8 +29,8 @@
     "11": "Qualify candidate43 completely on MiSTer",
     "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "Revalidate the existing MiSTer runtime and bind the user's successful cinematic visual-cycle observation; diagnose PCM queues/reset boundaries and qualify the exact repaired ARM replay, then execute the remaining full closure matrix. Missing Git remote blocks push only. Reuse FPGA artifacts while their complete inputs remain unchanged.",
-  "next_implementation": "Independently verify diagnostic and replay selection changes; bind replay assets to the repaired package and retain first missing-asset failure; qualify current HDMI runtime/audio safely after ownership admission. C25 gap inventory is in .work/goal-c25/c25-contract-evidence.json. User authorizes HDMI as physical test scope and best-effort untested CRT/direct settings; matrix synchronization is in progress, other requirements unchanged.",
+  "next_action": "Finish and record the candidate-bound integrated target trace and delegated underflow-event diagnostic, then execute the remaining HDMI physical, PCM zero-underrun, campaign/save/input, performance, lifecycle and C25 closure checks. Missing Git remote blocks push only; do not rebuild unchanged FPGA or replay artifacts.",
+  "next_implementation": "Use the passing committed local receipt, completed ARM replay comparison and stable 120-sample PCM trace as current evidence. Continue integrated target admission/trace and underflow-event capture under the authorized HDMI-only physical scope; retain CRT/direct-video as explicitly untested and keep all remaining requirements unchanged. C25 gap inventory is in .work/goal-c25/c25-contract-evidence.json.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
   "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
@@ -931,17 +931,19 @@
     }
   ],
   "latest_reference_receipt": ".mister/evidence/step-1-host-reference-acceptance.json",
-  "latest_local_verification_receipt": ".mister/evidence/receipts/20260908T025424Z-9aba44bd-ac7c-4391-9675-2f1f15f75e05.json",
-  "latest_local_verification_receipt_sha256": "6578d3846a06bbfb4761add8f7b5a4f8b6f390257d6491a7956f01e250f015f3",
+  "latest_local_verification_receipt": ".work/goal-integrated/committed-0782c88/.mister/evidence/receipts/20260908T101424Z-ed322804-db33-493c-adfb-48d53ed5bc46.json",
+  "latest_local_verification_receipt_sha256": "b579fb957a1be252e9f832fdb9da0644ef6180ef675ffca47a648ca03ad3bfe7",
   "latest_candidate_bound_foundation_receipt": ".mister/evidence/receipts/20260907T232642Z-5aaae170-204c-4b42-be7f-48e1cc9e4853.json",
   "latest_candidate_bound_foundation_receipt_sha256": "3b1d7bd8c89f7ee5b6e7bb187673633178a4f52650a7a7c3a1e168d1843a96ef",
   "latest_candidate_bound_host_receipt": ".mister/evidence/receipts/20260907T154930Z-b18c688f-47a0-4057-b23c-e206ff16ab69.json",
   "latest_candidate_bound_host_receipt_sha256": "942c0b064b51a270abe48c4e79f57f2bf6620ff9570264533930726e57082ff8",
   "latest_candidate_bound_rtl_receipt": ".mister/evidence/receipts/20260907T154930Z-b18c688f-47a0-4057-b23c-e206ff16ab69.json",
   "latest_candidate_bound_rtl_receipt_sha256": "942c0b064b51a270abe48c4e79f57f2bf6620ff9570264533930726e57082ff8",
-  "latest_arm_qemu_verification_receipt": ".mister/evidence/receipts/20260908T015737Z-1654e8e0-ebc5-4e8a-889d-ef85c8b95009.json",
-  "latest_arm_qemu_verification_receipt_sha256": "955b2b07a6db703ed3b58f250d92e5f1d76bc73d2a74c4a7b8210b21d63e3594",
-  "latest_arm_qemu_verification_status": "pass",
+  "latest_arm_qemu_verification_receipt": ".work/goal-replay-endpoint/completed-comparison.json",
+  "latest_arm_qemu_verification_receipt_sha256": "6144f175f5e319bed4b64b840da2e9ef376a762715cfb180a75330b8ad778bad",
+  "latest_arm_qemu_verification_status": "pass; exact reference and repaired ARM replay both completed 4853 logical ticks with original comparator pass and byte-identical final archives; no hardware/release claim",
+  "latest_arm_replay_comparison": ".work/goal-replay-endpoint/completed-comparison.json",
+  "latest_arm_replay_comparison_sha256": "6144f175f5e319bed4b64b840da2e9ef376a762715cfb180a75330b8ad778bad",
   "latest_board_verification_receipt": null,
   "latest_board_verification_status": "Current SSH access succeeds; MAME not observed in latest process snapshot. Changed source requires rebuild and qualification before physical acceptance.",
   "latest_target_preflight_receipt": ".mister/evidence/receipts/20260908T-candidate49-preflight.json",
@@ -1285,6 +1287,6 @@
   "next_engine_artifact": {
     "path": ".work/c26/cinematic-arm-artifact-d2ccbc3/devilutionx",
     "sha256": "67e82c01d45050f4ea7892f75d33cd9f2075be7ce02425aa9529fa11de7909ed",
-    "scope": "Candidate-bound development ARM artifact; QEMU version smoke unavailable; physical visual result pending"
+    "scope": "Candidate-bound development ARM artifact; user-confirmed cinematic visual cycle and good audio, while integrated target tracing and physical/release gates remain open"
   }
 }
