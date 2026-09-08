@@ -1,18 +1,18 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "2a2d3f0a349d753f8a06128e22462f7866fed846846d291af52340ad92b2d2ea",
-  "status": "c34-cinematic-candidate-live-physical-verification-pending",
+  "completion_document_sha256": "257871f9ca82c32825075d7c0dc9e6763dd7b04ba1ae2545b33c5ce963338bde",
+  "status": "user-stopped-cinematic-physical-verification-pending",
   "candidate": {
     "state": "no-current-accepted-candidate",
     "id": null,
     "development_id": "b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b",
     "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-cinematic-d2ccbc3-assets.json",
     "development_manifest_sha256": "eea1c5c7fdc0716459685ac634d3e8e566880130f4e0f87af3155558cfea7b9f",
-    "next_gate": "Finish the full candidate-bound title-to-cinematic-to-title physical cycle on repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b, record the user-observed visual result, then complete the remaining controls/save/campaign/endurance and C25 gates.",
+    "next_gate": "Pending repaired title-to-cinematic-to-title physical observation and audio diagnosis; no physical or release acceptance. Resume only in the next chat per user stop request.",
     "development_validity": "Candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b packages the d2ccbc3 ARM repair with the qualified FPGA and 191 verified files; it is running development-only, the physical visual result is pending, and physical acceptance remains false."
   },
-  "active_work": "Finish the full title-to-cinematic-to-title physical cycle on repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b; its visual result is pending user observation. Live telemetry has arm/fpga ready and fault=0, but PCM underruns rose 0, 0, 6745 and 13465, so physical audio acceptance remains open. Then complete controls/OSD, save/relaunch, campaign, endurance/performance, installation/rollback and C25 external timing/physical gates. C26 remains the activated development-only pre-fix baseline.",
+  "active_work": "Stopped at user request after the bounded passive audio trace. No release accepted. Repaired b537b12c remains development-only; cinematic visual confirmation and audio queue/reset diagnosis are pending. See CORE_COMPLETION_AUDIT.md Next-chat handoff.",
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],
@@ -29,8 +29,8 @@
     "11": "Qualify candidate43 completely on MiSTer",
     "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "Finish the full candidate-bound title-to-cinematic-to-title physical cycle on repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b and record the user-observed visual result, then complete the remaining controls/save/campaign/endurance and C25 gates. Do not run Quartus; the qualified FPGA was reused for this ARM-only repair.",
-  "next_implementation": "C34/P01-P06 and the cinematic overlay/helper source/test packet are committed through d2ccbc3; repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b and package receipt .mister/evidence/receipts/20260908T-c26-cinematic-candidate-package-b537.json are verified development-only. Live receipt .work/c26/cinematic-live-receipt-b537b12c.json records unresolved PCM underrun growth; keep C26 pre-fix and Candidate49 historical, and do not promote until the current candidate visual/audio cycle and the C01-C34/R01-R13 matrix pass.",
+  "next_action": "Next chat: obtain missing Git remote URL and push committed work; revalidate the existing MiSTer runtime, collect the pending cinematic visual result, diagnose PCM queues/reset boundaries, then execute the remaining full closure matrix. Do not launch Quartus for this ARM-only repair.",
+  "next_implementation": "Read CORE_COMPLETION_AUDIT.md Next-chat handoff. WSL QEMU 10.2.1 is currently available but repaired-engine replay is unrun. Passive trace omits queue occupancy and contains an underrun reset; no starvation classification is proven. No additional tests or implementation were started after the user stop request.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
   "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",

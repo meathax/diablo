@@ -2,6 +2,12 @@
 
 ## EXECUTION STATE
 
+### Stopped by user — next-chat handoff
+
+Implementation and testing stopped after the current passive audio trace. The authoritative resume summary is the **Next-chat handoff** at the top of `CORE_COMPLETION_AUDIT.md`: repaired candidate b537b12c is deployed development-only; cinematic visual acceptance and audio diagnosis remain open; the full release matrix remains mandatory. No more work is authorized in this chat beyond committing this handoff and the requested push. Push was attempted and failed because no Git remote is configured; the destination URL is pending.
+
+Final passive trace: `.work/c26/cinematic-pcm-passive-trace-b537b12c.summary.json` (SHA-256 `26961f57e588067e0ecd600389eabacdc202ce0bf3a818587de15964ac5a37f3`). Ninety samples remained ready/fault 0; producer/consumer each advanced 3,802,872 and display frames 1,307, with 13 fully unchanged intervals and three absolute producer/consumer mismatches (maximum 2,229). The underrun counter reset from 121,171 to 0; do not calculate one cumulative delta across reset. Installed diagnostics omit both queue-occupancy fields, so pauses versus starvation remain unresolved. Exact boot is `0cd4f2ef-9ab9-4653-bc72-cba05f3490e2`; earlier `cbaa05` text is a transcription error. WSL QEMU 10.2.1 is currently available, but repaired-binary replay has not run. The runtime was left running; revalidate it on resume.
+
 ### Live-test update — cinematic video is the active blocker
 
 This update supersedes the earlier window/not-activated status below. The user authorized MiSTer testing; C26 remains the pre-fix development baseline, and repaired candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b is now running from `/media/fat/_CodexDiabloCinematic_d2ccbc3`. The user confirms animated title and good audio, followed after approximately 30 seconds by a frozen title while cinematic audio plays. Source tracing proves the generic ARM presentation hook republishes `PalSurface` while movies update a separate indexed `SVidSurface`. The persistent engine and FPGA acknowledgements continue: this is not an ended test or proof of queue deadlock.
