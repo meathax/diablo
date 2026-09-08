@@ -50,9 +50,43 @@ def as_wsl_path(path: Path, environment: dict, distribution: str) -> str:
                                    text=True, env=environment).strip()
 
 
+def run_state_dump_diagnostic(root: Path, build: Path, cxx: str,
+                              distribution: str | None,
+                              commands: list[list[str]]) -> None:
+    state_dump = build / 'transport_state_dump.exe'
+    state_dump_test = build / 'transport_state_dump_test.exe'
+    source = root / 'support/transport/transport_state_dump.cpp'
+    test_source = root / 'support/tests/transport_state_dump_test.cpp'
+    include = root / 'support/reference'
+    if os.name != 'nt':
+        run([cxx, '-std=c++23', '-Wall', '-Wextra', '-Werror', '-I', str(include),
+             str(source), '-o', str(state_dump)], commands)
+        run([cxx, '-std=c++23', '-Wall', '-Wextra', '-Werror', '-I', str(include),
+             str(test_source), '-o', str(state_dump_test)], commands)
+        run([str(state_dump_test), str(state_dump)], commands)
+        return
+
+    selected_distribution = distribution or 'Ubuntu'
+    wsl_env = wsl_environment()
+    source_wsl = as_wsl_path(source, wsl_env, selected_distribution)
+    test_source_wsl = as_wsl_path(test_source, wsl_env, selected_distribution)
+    include_wsl = as_wsl_path(include, wsl_env, selected_distribution)
+    state_dump_wsl = as_wsl_path(state_dump, wsl_env, selected_distribution)
+    state_dump_test_wsl = as_wsl_path(state_dump_test, wsl_env, selected_distribution)
+    run(wsl_command(['g++', '-std=c++23', '-Wall', '-Wextra', '-Werror', '-I', include_wsl,
+                     source_wsl, '-o', state_dump_wsl], selected_distribution),
+        commands, env=wsl_env)
+    run(wsl_command(['g++', '-std=c++23', '-Wall', '-Wextra', '-Werror', '-I', include_wsl,
+                     test_source_wsl, '-o', state_dump_test_wsl], selected_distribution),
+        commands, env=wsl_env)
+    run(wsl_command([state_dump_test_wsl, state_dump_wsl], selected_distribution),
+        commands, env=wsl_env)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--skip-arm', action='store_true')
+    parser.add_argument('--diagnostic-only', action='store_true')
     parser.add_argument('--wsl-distribution', default=os.getenv('DIABLO_WSL_DISTRIBUTION'))
     parser.add_argument('--arm-cxx', default=os.getenv('DIABLO_ARM_CXX'))
     parser.add_argument('--arm-sysroot', default=os.getenv('DIABLO_ARM_SYSROOT'))
@@ -67,16 +101,22 @@ def main() -> int:
     cxx = shutil.which('g++') or shutil.which('g++.exe')
     iverilog = shutil.which('iverilog') or shutil.which('iverilog.exe')
     vvp = shutil.which('vvp') or shutil.which('vvp.exe')
-    if not cxx or not iverilog or not vvp:
-        raise RuntimeError('g++, iverilog and vvp are required')
+    if not cxx or (not args.diagnostic_only and (not iverilog or not vvp)):
+        raise RuntimeError('g++ is required' if args.diagnostic_only else 'g++, iverilog and vvp are required')
     build = root / '.work/build/transport-abi'
     build.mkdir(parents=True, exist_ok=True)
+    if args.diagnostic_only:
+        run_state_dump_diagnostic(root, build, cxx, args.wsl_distribution, commands)
+        print(json.dumps({'status': 'passed', 'checks': [
+            'transport state dump file-backed output and missing/short/malformed fixture rejection']}))
+        return 0
     run([str(python), str(root / 'support/scripts/generate_transport_abi.py'), '--check'], commands)
     native = build / 'transport_abi_test.exe'
     fixture = build / 'header.hex'
     run([cxx, '-std=c++23', '-Wall', '-Wextra', '-Werror', '-I', str(root / 'support/reference'),
          str(root / 'support/tests/transport_abi_test.cpp'), '-o', str(native)], commands)
     run([str(native), str(fixture)], commands)
+    run_state_dump_diagnostic(root, build, cxx, args.wsl_distribution, commands)
     rtl = build / 'transport_abi_tb.vvp'
     run([iverilog, '-g2012', '-I', str(root / 'rtl'), '-s', 'transport_abi_tb', '-o', str(rtl),
          str(root / 'support/tests/transport_abi_tb.sv')], commands)
@@ -147,6 +187,8 @@ def main() -> int:
             root / 'rtl/diablo_transport_abi.svh',
             root / 'rtl/diablo_frame_ownership.sv',
             root / 'support/tests/transport_abi_test.cpp',
+            root / 'support/transport/transport_state_dump.cpp',
+            root / 'support/tests/transport_state_dump_test.cpp',
             root / 'support/transport/transport_runtime_probe.cpp',
             root / 'support/tests/transport_abi_tb.sv',
             root / 'support/tests/diablo_frame_ownership_tb.sv')},
@@ -154,6 +196,7 @@ def main() -> int:
         'checks': [
             'generator freshness',
             'C++ record sizes, offsets, bounded attachment, epoch rejection, frame ownership, fault publication, input reduction and snapshot recovery',
+            'transport state dump file-backed output and missing/short/malformed fixture rejection',
             'ARM transport session: indexed frame/palette publication, CRC metadata, slot backpressure and recycling',
             'ARM runtime mapping: explicit source selection, epoch initialization, file-backed frame publication and flush',
             'C++ walking-bit fixture decoded by RTL constants',

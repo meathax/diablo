@@ -210,6 +210,9 @@ def selected_steps(root: Path, suite: str) -> tuple[list[Step], list[dict[str, s
             (str(root / ".work/build/verification/transport_abi_test.exe"),
              str(root / ".work/build/verification/transport_abi_header.hex")),
         ), ("g++",), 180),
+        Step("transport-state-dump", (
+            (python, str(root / "support/scripts/test_transport_abi.py"), "--diagnostic-only"),
+        ), ("g++",), 180),
         Step("indexed-frame-probe", (
             (compiler, "-std=c++23", "-Wall", "-Wextra", "-Werror", "-I", str(root / "support/reference"),
              str(root / "support/tests/indexed_frame_probe.cpp"), "-o",
