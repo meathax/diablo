@@ -1,0 +1,53 @@
+{
+  "artifact": {
+    "bytes": 8469528,
+    "path": "/home/meath/.cache/diablo-arm-engine-portable/devilutionx",
+    "sha256": "4ef9b4b1557174908809da0fee8c424a1a12e83b10caa45b11db0969925189e2"
+  },
+  "configure": {
+    "build_log": {
+      "path": ".work/build/arm-engine-portable/replay-loading-build.log",
+      "sha256": "d9704fdfa7d2acf7cdb9ab2273e07418727604b943c8cd7ecd342c1ae588d5a6"
+    },
+    "build_type": "Release",
+    "command": {
+      "path": ".work/build/arm-engine-portable/reference-configure-command.json",
+      "sha256": "2b6274f6a9636f79926f323d4570cd2e7632ab97bfccfb4d3fa808324838d2db"
+    },
+    "configure_log": {
+      "path": ".work/build/arm-engine-portable/replay-loading-configure.log",
+      "sha256": "654cfb787b93b6662fc110f78bef4eb86ca3d819b2c27f4fa121285d962eb16a"
+    },
+    "generator": "Ninja",
+    "include": {
+      "path": "support/cmake/arm-reference.cmake",
+      "sha256": "5ff67c311cce16677de32614f2357fce2eed7e51042ed8290858f39472d9c545"
+    },
+    "toolchain_file": "support/cmake/arm-portable.cmake"
+  },
+  "provenance": {
+    "capture_evidence": {
+      "path": ".mister/evidence/arm-native-capture-pass.json",
+      "sha256": "5acf099213cb1120e9d1e1f93582af69e23d411eee96cfbd61fdc1135627f185"
+    },
+    "kind": "retained-arm-reference-build-adapter-v1",
+    "run": {
+      "path": ".work/runtime/arm-scenarios/51185829844d47bca166d4b03e162787/run.json",
+      "sha256": "5cd5c4e04881805e14b291ca17354545c7269ff5cd03ad0fa9f17975f77018dc"
+    },
+    "scope": "Historical successful ARM-reference build provenance only; no new build, hardware acceptance, or performance qualification."
+  },
+  "schema": "diablo-arm-build-receipt-v1",
+  "source": {
+    "engine_revision": "0ff3186238e7c2786c4d52c21ecce1cb83723ed9",
+    "overlay_manifest": {
+      "path": "/home/meath/.cache/diablo-arm-engine-portable/host-engine-fixes.txt",
+      "sha256": "6a4d8d74af9530bdadc52b9151e570f11d239855ff38fb79345c67d44696ddb0"
+    },
+    "source_lock": {
+      "path": ".mister/source-lock.json",
+      "sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5"
+    }
+  },
+  "status": "pass"
+}

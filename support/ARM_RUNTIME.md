@@ -110,10 +110,33 @@ reported frame rate nor elapsed duration is a MiSTer performance measurement.
 The first emulated engine replay passed all 4,853 frames and the engine's final
 state comparison. Evidence: `.mister/evidence/arm-gameplay-replay-pass.json`.
 
-Optional `arm-reference.cmake` instrumentation also builds successfully. Both
-`scenario_arm.py diablo` and `scenario_arm.py hellfire` complete their native640
-town scenarios, save, and produce five valid captures. The initial cursor mismatch
-is preserved in `.mister/evidence/arm-native-capture-mismatch.json`.
+Optional `arm-reference.cmake` instrumentation also builds successfully. The
+native640 scenario runner requires an explicit build directory and a successful
+`diablo-arm-build-receipt-v1` record. The retained reference record is an adapter
+derived from the recorded successful capture, matching run, CMake command/logs,
+source-lock revision and generated overlay manifest; it is regenerated only by
+`record_arm_reference_provenance.py` after those inputs and the surviving ELF
+hash agree. Its role comes from the recorded CMake include
+`support/cmake/arm-reference.cmake`, not from a caller-supplied JSON role. The
+optional `--build-role` only cross-checks that derived role. For the retained
+reference artifact, this usable command verifies the exact path and hash before
+QEMU starts:
+
+```powershell
+python support/scripts/scenario_arm.py diablo `
+  --build-dir /home/meath/.cache/diablo-arm-engine-portable `
+  --build-receipt .mister/evidence/receipts/arm-reference-portable-build-20260908.json `
+  --build-role arm-reference
+```
+
+The same command with `hellfire` completes the second campaign scenario. The
+deployable `arm-transport` binary intentionally has no native scenario hooks;
+use `replay_arm.py --build-dir <arm-transport-build-dir>` for its timedemo
+replay. An arbitrary `{ "build_role", "binary_sha256" }` object, a failed typed
+record, a changed recipe, or a selected path other than the receipt artifact is
+rejected before QEMU. This provenance is a local reproducibility binding to the
+retained evidence and ELF, not a signed supply-chain attestation. The initial cursor mismatch is preserved in
+`.mister/evidence/arm-native-capture-mismatch.json`.
 
 The loading trace confirmed that a live SDL mouse-motion event overwrites the
 recorded cursor `(320, 180)` with `(0, 0)` inside `HandleProgressBarUpdate`.
