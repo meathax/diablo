@@ -48,7 +48,7 @@ def main():
                '--data-dir', linux(diablo.ROOT / 'game'), '--save-dir', output_dir,
                '--config-dir', output_dir, '--lang', 'en', '-n', '--verbose',
                '--log-to-file', output_dir + '/engine.log']
-    record = {'status': 'running', 'campaign': args.campaign, 'scenario': 'town-v1',
+    record = {'status': 'running', 'build_role': 'arm-reference', 'campaign': args.campaign, 'scenario': 'town-v1',
               'command': command, 'binary_sha256': binary_hash,
               'demo_sha256': diablo.sha256(runtime / 'demo_0.dmo'),
               'scope': 'ARM emulation, real drawing at native640; not hardware or FPS qualification'}

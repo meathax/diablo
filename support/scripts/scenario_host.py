@@ -67,7 +67,7 @@ def main():
                '--data-dir', str(root / 'game'), '--save-dir', str(runtime),
                '--config-dir', str(runtime), '--lang', 'en', '-n', '--verbose',
                '--log-to-file', str(runtime / 'engine.log')]
-    record = {'scenario': 'town-v1', 'campaign': args.campaign, 'command': command,
+    record = {'scenario': 'town-v1', 'build_role': 'host-reference', 'campaign': args.campaign, 'command': command,
               'mod_sha256': mod_inputs,
               'executable_sha256': diablo.sha256(executable),
               'demo_sha256': diablo.sha256(runtime / 'demo_0.dmo'),

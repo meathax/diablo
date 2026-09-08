@@ -45,8 +45,12 @@ function(diablo_mister_transport)
 
 	if (::diablo::mister::sdl::Active()
 	    && ::diablo::mister::sdl::Present(PalSurface, static_cast<std::uint64_t>(SDL_GetTicks()))) {
-		if (::diablo::mister::sdl::CpuPacingEnabled())
-			LimitFrameRate();
+		if (::diablo::mister::sdl::CpuPacingEnabled()) {
+			if (::diablo::mister::sdl::ForceFramePacing())
+				::diablo::mister::sdl::PaceFrame();
+			else
+				LimitFrameRate();
+		}
 		return;
 	}
 ]]
@@ -88,7 +92,13 @@ function(diablo_mister_transport)
 	const int transport_channels = ::diablo::mister::sdl::Requested()
 	    ? 2
 	    : static_cast<int>(*GetOptions().Audio.channels);
-	if (!Aulib::init(transport_sample_rate, AUDIO_S16, transport_channels, *GetOptions().Audio.bufferSize, *GetOptions().Audio.device)) {]]
+	// Keep callbacks large enough to avoid starving the SDL audio thread on the
+	// ARM target while the framebuffer is being copied.  The FPGA-side FIFO
+	// absorbs the resulting bounded chunk latency.
+	const int transport_buffer_size = ::diablo::mister::sdl::Requested()
+	    ? 1024
+	    : static_cast<int>(*GetOptions().Audio.bufferSize);
+	if (!Aulib::init(transport_sample_rate, AUDIO_S16, transport_channels, transport_buffer_size, *GetOptions().Audio.device)) {]]
     sound_content "${sound_content}")
   string(REPLACE
     [[	specHint.channels = *audioOptions.channels;]]
