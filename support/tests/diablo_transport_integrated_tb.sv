@@ -28,7 +28,7 @@ module diablo_transport_integrated_tb;
   wire [7:0] ib; wire [28:0] ia; wire ir; wire [63:0] idin; wire [7:0] ibe; wire iwe, ibusy; wire [63:0] idout; wire iready;
   wire [7:0] mb; wire [28:0] ma; wire mr; wire [63:0] mdin; wire [7:0] mbe; wire mwe, mbusy; wire [63:0] mdout; wire mready;
   wire [7:0] db; wire [28:0] da; wire dr; wire [63:0] ddin; wire [7:0] dbe; wire dwe;
-  wire ddram_fault;
+  wire ddram_fault; wire [63:0] arbiter_diagnostic;
   reg dbusy = 0; reg [63:0] ddout = 0; reg ddout_ready = 0;
 
   wire framebuffer_valid; wire [31:0] framebuffer_base; wire framebuffer_blank;
@@ -52,6 +52,7 @@ module diablo_transport_integrated_tb;
     .fb_pal_addr(fb_pal_addr), .fb_pal_dout(fb_pal_dout), .fb_pal_wr(fb_pal_wr));
   diablo_pcm_player #(.SAMPLE_DIVISOR(4), .POLL_INTERVAL_CYCLES(3), .PRIME_SAMPLES(2), .ACK_BATCH(2)) audio (
     .clk(clk), .reset(reset), .session_valid(session_valid), .session_epoch(session_epoch), .ddram_busy(abusy),
+    .arbiter_diagnostic(arbiter_diagnostic),
     .ddram_dout(adout), .ddram_dout_ready(aready), .ddram_burstcnt(ab), .ddram_addr(aa), .ddram_rd(ar),
     .ddram_din(adin), .ddram_be(abe), .ddram_we(awe), .audio_l(audio_l), .audio_r(audio_r),
     .underrun_count(underruns), .resync_count(resyncs), .queue_depth(pcm_depth), .ring_valid(pcm_valid));
@@ -73,7 +74,7 @@ module diablo_transport_integrated_tb;
     .audio_burstcnt(ab), .audio_addr(aa), .audio_rd(ar), .audio_din(adin), .audio_be(abe), .audio_we(awe), .audio_busy(abusy), .audio_dout(adout), .audio_dout_ready(aready),
     .input_burstcnt(ib), .input_addr(ia), .input_rd(ir), .input_din(idin), .input_be(ibe), .input_we(iwe), .input_busy(ibusy), .input_dout(idout), .input_dout_ready(iready),
     .command_burstcnt(mb), .command_addr(ma), .command_rd(mr), .command_din(mdin), .command_be(mbe), .command_we(mwe), .command_busy(mbusy), .command_dout(mdout), .command_dout_ready(mready),
-    .ddram_busy(dbusy), .ddram_dout(ddout), .ddram_dout_ready(ddout_ready), .ddram_burstcnt(db), .ddram_addr(da), .ddram_rd(dr), .ddram_din(ddin), .ddram_be(dbe), .ddram_we(dwe), .fault(ddram_fault));
+    .ddram_busy(dbusy), .ddram_dout(ddout), .ddram_dout_ready(ddout_ready), .ddram_burstcnt(db), .ddram_addr(da), .ddram_rd(dr), .ddram_din(ddin), .ddram_be(dbe), .ddram_we(dwe), .fault(ddram_fault), .diagnostic(arbiter_diagnostic));
 
   reg [31:0] frame_state [0:2]; reg [31:0] frame_generation [0:2]; reg [63:0] frame_id [0:2];
   reg [31:0] input_producer = 0, input_consumer = 0; reg [63:0] input_dropped = 0;

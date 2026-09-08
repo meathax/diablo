@@ -67,6 +67,7 @@ int main()
 		return 1;
 	}
 	const auto pcm_health = attached->ReadPcmHealth(header.session_epoch);
+	const auto pcm_underflow = attached->ReadPcmUnderflowSnapshot(header.session_epoch);
 	std::printf("magic=%c%c%c%c%c%c%c%c abi=%u.%u control=%" PRIu32
 	            " shared=%" PRIu32 " endian=0x%08" PRIx32
 	            " capabilities=0x%08" PRIx32 "\n",
@@ -118,6 +119,21 @@ int main()
 				header.command_payload.producer_sequence,
 				header.command_payload.consumer_sequence,
 				header.last_completed_fence);
+	}
+	if (pcm_underflow.has_value()) {
+		const auto &snapshot = *pcm_underflow;
+		std::printf("pcm_underflow_event_cycle=%" PRIu32 " epoch=0x%08" PRIx32
+		            " producer=%" PRIu32 " fetch=%" PRIu32 " consumer=%" PRIu32
+		            " underruns=%" PRIu32 " queue=%" PRIu32 " player_state=0x%08" PRIx32
+		            " arbiter=0x%016" PRIx64 " resyncs=%" PRIu32 " commit=%" PRIu32 "\n",
+		            snapshot.event_cycle, snapshot.session_epoch, snapshot.producer_sequence,
+		            snapshot.fetch_sequence, snapshot.published_consumer, snapshot.underrun_count,
+		            snapshot.queue_depth, snapshot.player_state, snapshot.arbiter_diagnostic,
+		            snapshot.resync_count, snapshot.commit_sequence);
+	} else {
+		// New ARM utilities can safely inspect an old FPGA image: session setup
+		// clears the reserved tail, leaving the optional record uncommitted.
+		std::printf("pcm_underflow=unavailable\n");
 	}
 	for (std::uint32_t slot = 0; slot < FRAME_SLOTS; ++slot) {
 		const auto &frame = header.frames[slot];

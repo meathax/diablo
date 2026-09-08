@@ -200,6 +200,7 @@ wire [31:0] pcm_underrun_count;
 wire [31:0] pcm_resync_count;
 wire [14:0] pcm_queue_depth;
 wire pcm_ring_valid;
+wire [63:0] transport_ddram_diagnostic;
 diablo_pcm_player #(
     // Keep several callback intervals resident locally.  The FPGA can then
     // absorb DDR arbitration and ARM callback jitter without presenting a
@@ -207,6 +208,7 @@ diablo_pcm_player #(
     .PRIME_SAMPLES(8192), .FIFO_SAMPLES(16384)
 ) pcm_player (
     .clk(clk_sys), .reset(reset), .session_valid(transport_session_valid), .session_epoch(transport_epoch),
+    .arbiter_diagnostic(transport_ddram_diagnostic),
     .ddram_busy(audio_ddram_busy), .ddram_dout(audio_ddram_dout), .ddram_dout_ready(audio_ddram_dout_ready),
     .ddram_burstcnt(audio_ddram_burstcnt), .ddram_addr(audio_ddram_addr), .ddram_rd(audio_ddram_rd),
     .ddram_din(audio_ddram_din), .ddram_be(audio_ddram_be), .ddram_we(audio_ddram_we),
@@ -286,7 +288,7 @@ diablo_transport_ddram_arbiter transport_ddram_arbiter (
     .ddram_busy(DDRAM_BUSY), .ddram_dout(DDRAM_DOUT), .ddram_dout_ready(DDRAM_DOUT_READY),
     .ddram_burstcnt(DDRAM_BURSTCNT), .ddram_addr(DDRAM_ADDR), .ddram_rd(DDRAM_RD),
     .ddram_din(DDRAM_DIN), .ddram_be(DDRAM_BE), .ddram_we(DDRAM_WE),
-    .fault(transport_ddram_fault)
+    .fault(transport_ddram_fault), .diagnostic(transport_ddram_diagnostic)
 );
 
 assign AUDIO_S = 1'b1;

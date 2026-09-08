@@ -15,7 +15,7 @@ module diablo_transport_ddram_arbiter_tb;
   reg ddram_busy = 0; reg [63:0] ddram_dout = 64'h0123456789abcdef; reg ddram_dout_ready = 0;
   wire [7:0] ddram_burstcnt; wire [28:0] ddram_addr; wire ddram_rd;
   wire [63:0] ddram_din; wire [7:0] ddram_be; wire ddram_we;
-  wire fault;
+  wire fault; wire [63:0] diagnostic;
 
   diablo_transport_ddram_arbiter #(.READ_RESPONSE_TIMEOUT_CYCLES(4), .BUSY_TIMEOUT_CYCLES(4)) dut (.*);
   always #5 clk = ~clk;
@@ -45,8 +45,9 @@ module diablo_transport_ddram_arbiter_tb;
     command_rd = 1;
     ddram_busy = 1;
     #1;
-    if (!ddram_rd || ddram_addr != audio_addr || audio_busy != 1 || input_busy != 1 || frame_busy != 1)
-      $fatal(1, "DDR backpressure was not propagated to every pending client");
+    if (!ddram_rd || ddram_addr != audio_addr || audio_busy != 1 || input_busy != 1 || frame_busy != 1
+        || diagnostic[2:0] != 3'd2 || !diagnostic[55])
+      $fatal(1, "DDR backpressure was not propagated to every pending client diag=%h", diagnostic);
     @(posedge clk);
     ddram_busy = 0;
     #1;
@@ -58,8 +59,9 @@ module diablo_transport_ddram_arbiter_tb;
     @(posedge clk);
     audio_rd = 0;
     #1;
-    if (ddram_rd || !frame_busy || audio_busy != 0)
-      $fatal(1, "outstanding audio read was not locked rd=%b frame_busy=%b audio_busy=%b fault=%b pending=%b", ddram_rd, frame_busy, audio_busy, fault, dut.read_pending);
+    if (ddram_rd || !frame_busy || audio_busy != 0 || diagnostic[2:0] != 3'd2
+        || !diagnostic[3] || diagnostic[7:5] != 3'd2)
+      $fatal(1, "audio arbitration snapshot was not coherent diag=%h rd=%b frame_busy=%b audio_busy=%b fault=%b pending=%b", diagnostic, ddram_rd, frame_busy, audio_busy, fault, dut.read_pending);
     ddram_dout_ready = 1;
     #1;
     if (!audio_dout_ready || frame_dout_ready || audio_dout != ddram_dout)
@@ -137,6 +139,28 @@ module diablo_transport_ddram_arbiter_tb;
     if (!ddram_we || ddram_addr != audio_addr || ddram_be != 8'hf0 || ddram_din != audio_din)
       $fatal(1, "audio acknowledgement write was not forwarded");
     audio_we = 0;
+
+    // A write burst retains its owner and remaining-beat count. The diagnostic
+    // is captured by PCM only on an event, so assert the raw packed fields here.
+    command_burstcnt = 3;
+    command_we = 1;
+    #1;
+    if (!ddram_we || ddram_addr != command_addr || diagnostic[2:0] != 3'd4)
+      $fatal(1, "command burst did not start with command selected diag=%h", diagnostic);
+    @(posedge clk);
+    #1;
+    if (!diagnostic[4] || diagnostic[10:8] != 3'd4 || diagnostic[18:11] != 8'd2)
+      $fatal(1, "command burst diagnostic did not retain first accepted beat diag=%h", diagnostic);
+    @(posedge clk);
+    #1;
+    if (!diagnostic[4] || diagnostic[18:11] != 8'd1)
+      $fatal(1, "command burst diagnostic did not decrement remaining beats diag=%h", diagnostic);
+    @(posedge clk);
+    #1;
+    if (diagnostic[4] || diagnostic[18:11] != 0)
+      $fatal(1, "command burst diagnostic did not release after final beat diag=%h", diagnostic);
+    command_we = 0;
+    command_burstcnt = 1;
 
     // A missing reply must fail closed.  A very late reply may only reach the
     // client that issued the timed-out read; no later transaction is issued.

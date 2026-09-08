@@ -8,6 +8,7 @@ module diablo_pcm_player_long_tb;
   reg reset = 1;
   reg session_valid = 0;
   reg [31:0] session_epoch = EPOCH;
+  reg [63:0] arbiter_diagnostic = 0;
   reg ddram_busy = 0;
   reg [63:0] ddram_dout = 0;
   reg ddram_dout_ready = 0;
@@ -26,6 +27,7 @@ module diablo_pcm_player_long_tb;
   reg read_pending = 0;
   reg [28:0] read_address = 0;
   integer cycles = 0;
+  integer trace_clear_count = 0;
 
   diablo_pcm_player #(
     .SAMPLE_DIVISOR(10), .POLL_INTERVAL_CYCLES(30), .PRIME_SAMPLES(16), .ACK_BATCH(32)
@@ -64,6 +66,8 @@ module diablo_pcm_player_long_tb;
       end else if (ddram_addr == BASE + 13 && ddram_be == 8'hff) begin
         if (ddram_din[31:0] !== EPOCH)
           $fatal(1, "PCM local queue status epoch was not preserved");
+      end else if (ddram_addr == BASE + 58 && ddram_be == 8'hff && ddram_din == 0) begin
+        trace_clear_count <= trace_clear_count + 1;
       end else begin
         $fatal(1, "PCM write ownership violated");
       end
@@ -75,6 +79,8 @@ module diablo_pcm_player_long_tb;
     reset <= 0;
     session_valid <= 1;
     wait (consumer_sequence == producer_sequence);
+    if (trace_clear_count != 1)
+      $fatal(1, "PCM startup did not invalidate the optional underflow commit marker count=%0d", trace_clear_count);
     $display("PCM long queue checks passed consumer=%0d cycles=%0d", consumer_sequence, cycles);
     $finish;
   end

@@ -72,6 +72,19 @@ int main(int argc, char **argv)
 	header.pcm.consumer_sequence = 96;
 	header.pcm.flags = 2048;
 	header.pcm.dropped = (std::uint64_t {7} << 32U) | 3U;
+	header.pcm_underflow_snapshot = PcmUnderflowSnapshot {
+		.event_cycle = 1234U,
+		.session_epoch = epoch,
+		.producer_sequence = 128U,
+		.fetch_sequence = 128U,
+		.published_consumer = 128U,
+		.underrun_count = 4U,
+		.queue_depth = 0U,
+		.player_state = 0x5d3U,
+		.arbiter_diagnostic = 0x0123456789abcdefULL,
+		.resync_count = 0U,
+		.commit_sequence = 1U,
+	};
 
 	const auto prefix = std::filesystem::temp_directory_path()
 	                  / ("diablo-transport-state-dump-" + std::to_string(::getpid()));
@@ -99,6 +112,25 @@ int main(int argc, char **argv)
 	        "shared PCM queue occupancy was not printed");
 	Require(dump.find("pcm_local_queue_frames=2048 pcm_underruns=3 pcm_resyncs=7") != std::string::npos,
 	        "FPGA-local PCM health was not printed");
+	Require(dump.find("pcm_underflow_event_cycle=1234 epoch=0xa5010204 producer=128 fetch=128 consumer=128") != std::string::npos,
+	        "committed PCM underflow snapshot was not printed");
+	Require(dump.find("arbiter=0x0123456789abcdef resyncs=0 commit=1") != std::string::npos,
+	        "PCM underflow arbitration diagnostic was not printed");
+
+	// The same ARM utility must remain read-only and useful with a pre-snapshot
+	// FPGA image, which leaves the session-cleared optional tail uncommitted.
+	header.pcm_underflow_snapshot = {};
+	{
+		std::ofstream stream(fixture, std::ios::binary | std::ios::trunc);
+		Require(stream.good(), "could not rewrite old-FPGA fixture");
+		stream.write(reinterpret_cast<const char *>(memory.data()),
+		            static_cast<std::streamsize>(memory.size()));
+		Require(stream.good(), "could not write old-FPGA fixture");
+	}
+	Require(RunDump(utility, fixture, output) == 0,
+	        "diagnostic executable failed on uncommitted PCM snapshot");
+	Require(ReadText(output).find("pcm_underflow=unavailable") != std::string::npos,
+	        "uncommitted optional PCM snapshot was not reported as unavailable");
 
 	{
 		std::ofstream stream(short_fixture, std::ios::binary | std::ios::trunc);

@@ -37,6 +37,9 @@ using diablo::mister::transport::FRAME_HEIGHT;
 using diablo::mister::transport::FRAME_PIXEL_BYTES;
 using diablo::mister::transport::FRAME_WIDTH;
 using diablo::mister::transport::PALETTE_BYTES;
+using diablo::mister::transport::PCM_UNDERFLOW_SNAPSHOT_BYTES;
+using diablo::mister::transport::PCM_UNDERFLOW_SNAPSHOT_OFFSET;
+using diablo::mister::transport::PcmUnderflowSnapshot;
 
 [[noreturn]] void Fail(const char *message)
 {
@@ -99,6 +102,42 @@ int main(int argc, char **argv)
 
 	Require(view.InitializeArm(0xA5010204U), "fixture initialization failed");
 	Header &header = view.header();
+	static_assert(offsetof(Header, input) == 48);
+	static_assert(offsetof(Header, pcm) == 80);
+	static_assert(offsetof(Header, frames) == 176);
+	static_assert(offsetof(Header, input_snapshot) == 392);
+	static_assert(offsetof(Header, pcm_underflow_snapshot) == PCM_UNDERFLOW_SNAPSHOT_OFFSET);
+	static_assert(sizeof(PcmUnderflowSnapshot) == PCM_UNDERFLOW_SNAPSHOT_BYTES);
+	static_assert(sizeof(Header) == diablo::mister::transport::CONTROL_BYTES);
+	Require(!view.ReadPcmUnderflowSnapshot(0xA5010204U).has_value(),
+	        "uncommitted optional PCM underflow diagnostic was accepted");
+	header.pcm_underflow_snapshot = PcmUnderflowSnapshot {
+		.event_cycle = 0x12345678U,
+		.session_epoch = 0xA5010204U,
+		.producer_sequence = 144U,
+		.fetch_sequence = 128U,
+		.published_consumer = 120U,
+		.underrun_count = 9U,
+		.queue_depth = 0U,
+		.player_state = 0x000005d3U,
+		.arbiter_diagnostic = 0x0123456789abcdefULL,
+		.resync_count = 7U,
+		.commit_sequence = 3U,
+	};
+	auto pcm_underflow = view.ReadPcmUnderflowSnapshot(0xA5010204U);
+	Require(pcm_underflow.has_value() && pcm_underflow->event_cycle == 0x12345678U
+	            && pcm_underflow->producer_sequence == 144U
+	            && pcm_underflow->arbiter_diagnostic == 0x0123456789abcdefULL
+	            && pcm_underflow->commit_sequence == 3U,
+	        "committed PCM underflow diagnostic was not observable");
+	header.pcm_underflow_snapshot.session_epoch = 0xA5010205U;
+	Require(!view.ReadPcmUnderflowSnapshot(0xA5010204U).has_value(),
+	        "stale PCM underflow epoch was accepted");
+	header.pcm_underflow_snapshot.session_epoch = 0xA5010204U;
+	header.pcm_underflow_snapshot.commit_sequence = 0;
+	Require(!view.ReadPcmUnderflowSnapshot(0xA5010204U).has_value(),
+	        "cleared PCM underflow commit was accepted");
+	header.pcm_underflow_snapshot = {};
 	header.pcm.producer_sequence = 128;
 	header.pcm.consumer_sequence = 96;
 	header.pcm.flags = 2048;

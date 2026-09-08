@@ -30,5 +30,8 @@
     "pcm": { "capacity": 32768, "record_bytes": 4 },
     "command_records": { "capacity": 2048, "record_bytes": 32 },
     "command_payload": { "capacity": 196608, "record_bytes": 1 }
+  },
+  "diagnostics": {
+    "pcm_underflow_snapshot": { "offset": 424, "bytes": 48 }
   }
 }

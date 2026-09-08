@@ -17,6 +17,7 @@ def cpp(spec: dict) -> str:
     identity = spec['identity']
     layout = spec['layout']
     rings = spec['rings']
+    underflow_snapshot = spec['diagnostics']['pcm_underflow_snapshot']
     magic = identity['magic'].encode('ascii')
     if len(magic) != 8:
         raise ValueError('transport ABI magic must be exactly eight ASCII bytes')
@@ -30,8 +31,10 @@ def cpp(spec: dict) -> str:
               'pcm_record_bytes': rings['pcm']['record_bytes'],
               'command_records_capacity': rings['command_records']['capacity'],
               'command_records_record_bytes': rings['command_records']['record_bytes'],
-              'command_payload_capacity': rings['command_payload']['capacity'],
-              'command_payload_record_bytes': rings['command_payload']['record_bytes']}
+               'command_payload_capacity': rings['command_payload']['capacity'],
+               'command_payload_record_bytes': rings['command_payload']['record_bytes'],
+               'pcm_underflow_snapshot_offset': underflow_snapshot['offset'],
+               'pcm_underflow_snapshot_bytes': underflow_snapshot['bytes']}
     constants = '\n'.join(
         f'inline constexpr std::uint32_t {key.upper()} = {value}U;'
         for key, value in values.items())
@@ -45,6 +48,7 @@ def cpp(spec: dict) -> str:
 #include <cstdint>
 #include <cstring>
 #include <expected>
+#include <optional>
 #include <span>
 
 namespace diablo::mister::transport {{
@@ -91,6 +95,23 @@ struct PcmHealth {{
     std::uint32_t underrun_count = 0;
     std::uint32_t resync_count = 0;
 }};
+
+// FPGA-owned first active-starvation record. A zero commit_sequence means an
+// older FPGA image has not exported this optional tail diagnostic.
+struct alignas(8) PcmUnderflowSnapshot {{
+    std::uint32_t event_cycle;
+    std::uint32_t session_epoch;
+    std::uint32_t producer_sequence;
+    std::uint32_t fetch_sequence;
+    std::uint32_t published_consumer;
+    std::uint32_t underrun_count;
+    std::uint32_t queue_depth;
+    std::uint32_t player_state;
+    std::uint64_t arbiter_diagnostic;
+    std::uint32_t resync_count;
+    std::uint32_t commit_sequence;
+}};
+static_assert(sizeof(PcmUnderflowSnapshot) == PCM_UNDERFLOW_SNAPSHOT_BYTES);
 
 struct alignas(8) FrameSlot {{
     std::uint32_t state;
@@ -157,12 +178,15 @@ struct alignas(8) Header {{
     std::uint32_t display_epoch;
     std::uint32_t input_snapshot_sequence;
     InputSnapshot input_snapshot;
-    std::array<std::byte, CONTROL_BYTES - 424U> reserved;
+    PcmUnderflowSnapshot pcm_underflow_snapshot;
+    std::array<std::byte, CONTROL_BYTES - PCM_UNDERFLOW_SNAPSHOT_OFFSET
+                                    - PCM_UNDERFLOW_SNAPSHOT_BYTES> reserved;
 }};
 static_assert(sizeof(Header) == CONTROL_BYTES);
 static_assert(offsetof(Header, input) == 48);
 static_assert(offsetof(Header, frames) == 176);
 static_assert(offsetof(Header, input_snapshot) == 392);
+static_assert(offsetof(Header, pcm_underflow_snapshot) == PCM_UNDERFLOW_SNAPSHOT_OFFSET);
 
 inline constexpr std::uint32_t FrameOffset(std::uint32_t slot) {{ return FRAME_REGION_OFFSET + slot * FRAME_SLOT_BYTES; }}
 inline constexpr std::uint32_t PaletteOffset(std::uint32_t slot) {{ return FrameOffset(slot) + FRAME_PALETTE_DELTA; }}
@@ -359,6 +383,40 @@ public:
         }};
     }}
 
+    // Commit is written after the payload and cleared before a replacement.
+    // A zero or epoch-mismatched record is the compatibility result for an
+    // older FPGA image and must not be treated as an event.
+    [[nodiscard]] std::optional<PcmUnderflowSnapshot> ReadPcmUnderflowSnapshot(
+        std::uint32_t epoch) const {{
+        if (epoch == 0 || header().session_epoch != epoch) return std::nullopt;
+        const PcmUnderflowSnapshot &source = header().pcm_underflow_snapshot;
+        const auto load32 = [](const std::uint32_t &value) {{
+            return std::atomic_ref<const std::uint32_t>(value).load(std::memory_order_acquire);
+        }};
+        const auto load64 = [](const std::uint64_t &value) {{
+            return std::atomic_ref<const std::uint64_t>(value).load(std::memory_order_acquire);
+        }};
+        const std::uint32_t before = load32(source.commit_sequence);
+        if (before == 0) return std::nullopt;
+        PcmUnderflowSnapshot snapshot {{
+            .event_cycle = load32(source.event_cycle),
+            .session_epoch = load32(source.session_epoch),
+            .producer_sequence = load32(source.producer_sequence),
+            .fetch_sequence = load32(source.fetch_sequence),
+            .published_consumer = load32(source.published_consumer),
+            .underrun_count = load32(source.underrun_count),
+            .queue_depth = load32(source.queue_depth),
+            .player_state = load32(source.player_state),
+            .arbiter_diagnostic = load64(source.arbiter_diagnostic),
+            .resync_count = load32(source.resync_count),
+            .commit_sequence = before,
+        }};
+        const std::uint32_t after = load32(source.commit_sequence);
+        if (before != after || header().session_epoch != epoch || snapshot.session_epoch != epoch)
+            return std::nullopt;
+        return snapshot;
+    }}
+
     // The audio callback runs at roughly 23 callbacks per second. The runtime
     // already validated the complete ABI at attachment; keep this hot path to
     // the epoch and ring ownership checks instead of rereading every descriptor.
@@ -514,6 +572,7 @@ private:
 
 def sv(spec: dict) -> str:
     identity, layout, rings = spec['identity'], spec['layout'], spec['rings']
+    underflow_snapshot = spec['diagnostics']['pcm_underflow_snapshot']
     magic = identity['magic'].encode('ascii')
     if len(magic) != 8:
         raise ValueError('transport ABI magic must be exactly eight ASCII bytes')
@@ -555,6 +614,8 @@ localparam [31:0] DIABLO_TRANSPORT_COMMAND_RECORDS_CAPACITY = 32'd{rings['comman
 localparam [31:0] DIABLO_TRANSPORT_COMMAND_RECORD_BYTES = 32'd{rings['command_records']['record_bytes']};
 localparam [31:0] DIABLO_TRANSPORT_COMMAND_PAYLOAD_CAPACITY = 32'd{rings['command_payload']['capacity']};
 localparam [31:0] DIABLO_TRANSPORT_COMMAND_PAYLOAD_RECORD_BYTES = 32'd{rings['command_payload']['record_bytes']};
+localparam [31:0] DIABLO_TRANSPORT_PCM_UNDERFLOW_SNAPSHOT_OFFSET = 32'd{underflow_snapshot['offset']};
+localparam [31:0] DIABLO_TRANSPORT_PCM_UNDERFLOW_SNAPSHOT_BYTES = 32'd{underflow_snapshot['bytes']};
 
 localparam [31:0] DIABLO_TRANSPORT_HEADER_INPUT_OFFSET = 32'd48;
 localparam [31:0] DIABLO_TRANSPORT_HEADER_PCM_OFFSET = 32'd80;

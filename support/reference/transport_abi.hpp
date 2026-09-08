@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <cstring>
 #include <expected>
+#include <optional>
 #include <span>
 
 namespace diablo::mister::transport {
@@ -41,6 +42,8 @@ inline constexpr std::uint32_t COMMAND_RECORDS_CAPACITY = 2048U;
 inline constexpr std::uint32_t COMMAND_RECORDS_RECORD_BYTES = 32U;
 inline constexpr std::uint32_t COMMAND_PAYLOAD_CAPACITY = 196608U;
 inline constexpr std::uint32_t COMMAND_PAYLOAD_RECORD_BYTES = 1U;
+inline constexpr std::uint32_t PCM_UNDERFLOW_SNAPSHOT_OFFSET = 424U;
+inline constexpr std::uint32_t PCM_UNDERFLOW_SNAPSHOT_BYTES = 48U;
 inline constexpr std::uint32_t FRAME_SLOT_REGION_BYTES = FRAME_SLOT_BYTES * FRAME_SLOTS;
 inline constexpr std::uint32_t FRAME_PALETTE_DELTA = FRAME_PIXEL_BYTES;
 inline constexpr std::uint32_t FRAME_RECORD_BYTES = 64U;
@@ -81,6 +84,23 @@ struct PcmHealth {
     std::uint32_t underrun_count = 0;
     std::uint32_t resync_count = 0;
 };
+
+// FPGA-owned first active-starvation record. A zero commit_sequence means an
+// older FPGA image has not exported this optional tail diagnostic.
+struct alignas(8) PcmUnderflowSnapshot {
+    std::uint32_t event_cycle;
+    std::uint32_t session_epoch;
+    std::uint32_t producer_sequence;
+    std::uint32_t fetch_sequence;
+    std::uint32_t published_consumer;
+    std::uint32_t underrun_count;
+    std::uint32_t queue_depth;
+    std::uint32_t player_state;
+    std::uint64_t arbiter_diagnostic;
+    std::uint32_t resync_count;
+    std::uint32_t commit_sequence;
+};
+static_assert(sizeof(PcmUnderflowSnapshot) == PCM_UNDERFLOW_SNAPSHOT_BYTES);
 
 struct alignas(8) FrameSlot {
     std::uint32_t state;
@@ -147,12 +167,15 @@ struct alignas(8) Header {
     std::uint32_t display_epoch;
     std::uint32_t input_snapshot_sequence;
     InputSnapshot input_snapshot;
-    std::array<std::byte, CONTROL_BYTES - 424U> reserved;
+    PcmUnderflowSnapshot pcm_underflow_snapshot;
+    std::array<std::byte, CONTROL_BYTES - PCM_UNDERFLOW_SNAPSHOT_OFFSET
+                                    - PCM_UNDERFLOW_SNAPSHOT_BYTES> reserved;
 };
 static_assert(sizeof(Header) == CONTROL_BYTES);
 static_assert(offsetof(Header, input) == 48);
 static_assert(offsetof(Header, frames) == 176);
 static_assert(offsetof(Header, input_snapshot) == 392);
+static_assert(offsetof(Header, pcm_underflow_snapshot) == PCM_UNDERFLOW_SNAPSHOT_OFFSET);
 
 inline constexpr std::uint32_t FrameOffset(std::uint32_t slot) { return FRAME_REGION_OFFSET + slot * FRAME_SLOT_BYTES; }
 inline constexpr std::uint32_t PaletteOffset(std::uint32_t slot) { return FrameOffset(slot) + FRAME_PALETTE_DELTA; }
@@ -347,6 +370,40 @@ public:
             .underrun_count = static_cast<std::uint32_t>(diagnostics),
             .resync_count = static_cast<std::uint32_t>(diagnostics >> 32U),
         };
+    }
+
+    // Commit is written after the payload and cleared before a replacement.
+    // A zero or epoch-mismatched record is the compatibility result for an
+    // older FPGA image and must not be treated as an event.
+    [[nodiscard]] std::optional<PcmUnderflowSnapshot> ReadPcmUnderflowSnapshot(
+        std::uint32_t epoch) const {
+        if (epoch == 0 || header().session_epoch != epoch) return std::nullopt;
+        const PcmUnderflowSnapshot &source = header().pcm_underflow_snapshot;
+        const auto load32 = [](const std::uint32_t &value) {
+            return std::atomic_ref<const std::uint32_t>(value).load(std::memory_order_acquire);
+        };
+        const auto load64 = [](const std::uint64_t &value) {
+            return std::atomic_ref<const std::uint64_t>(value).load(std::memory_order_acquire);
+        };
+        const std::uint32_t before = load32(source.commit_sequence);
+        if (before == 0) return std::nullopt;
+        PcmUnderflowSnapshot snapshot {
+            .event_cycle = load32(source.event_cycle),
+            .session_epoch = load32(source.session_epoch),
+            .producer_sequence = load32(source.producer_sequence),
+            .fetch_sequence = load32(source.fetch_sequence),
+            .published_consumer = load32(source.published_consumer),
+            .underrun_count = load32(source.underrun_count),
+            .queue_depth = load32(source.queue_depth),
+            .player_state = load32(source.player_state),
+            .arbiter_diagnostic = load64(source.arbiter_diagnostic),
+            .resync_count = load32(source.resync_count),
+            .commit_sequence = before,
+        };
+        const std::uint32_t after = load32(source.commit_sequence);
+        if (before != after || header().session_epoch != epoch || snapshot.session_epoch != epoch)
+            return std::nullopt;
+        return snapshot;
     }
 
     // The audio callback runs at roughly 23 callbacks per second. The runtime

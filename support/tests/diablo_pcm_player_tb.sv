@@ -8,6 +8,7 @@ module diablo_pcm_player_tb;
   reg reset = 1;
   reg session_valid = 0;
   reg [31:0] session_epoch = EPOCH;
+  reg [63:0] arbiter_diagnostic = 64'h0123456789abcdef;
   reg ddram_busy = 0;
   reg [63:0] ddram_dout = 0;
   reg ddram_dout_ready = 0;
@@ -29,6 +30,21 @@ module diablo_pcm_player_tb;
   reg [15:0] previous_left = 0;
   reg saw_consumer_byte_enable = 0;
   reg saw_status_word = 0;
+  integer starvation_edges = 0;
+  integer trace_clear_count = 0;
+  integer trace_payload_writes = 0;
+  integer trace_commit_count = 0;
+  reg [63:0] trace_words [0:5];
+  reg [31:0] expected_event_cycle = 0;
+  reg [31:0] expected_epoch = 0;
+  reg [31:0] expected_producer = 0;
+  reg [31:0] expected_fetch = 0;
+  reg [31:0] expected_consumer = 0;
+  reg [31:0] expected_underruns = 0;
+  reg [31:0] expected_queue_depth = 0;
+  reg [31:0] expected_player_state = 0;
+  reg [31:0] expected_resyncs = 0;
+  integer snapshot_index;
 
   diablo_pcm_player #(
     .SAMPLE_DIVISOR(5), .POLL_INTERVAL_CYCLES(3), .PRIME_SAMPLES(4), .ACK_BATCH(2)
@@ -55,6 +71,20 @@ module diablo_pcm_player_tb;
 
   always @(posedge clk) begin
     ddram_dout_ready <= 0;
+    if (session_valid && dut.playback_started && dut.sample_tick
+        && dut.queue_depth == 0 && !dut.starvation_active) begin
+      starvation_edges = starvation_edges + 1;
+      expected_event_cycle = dut.event_cycle;
+      expected_epoch = dut.active_epoch;
+      expected_producer = dut.producer_sequence;
+      expected_fetch = dut.fetch_sequence;
+      expected_consumer = dut.published_consumer;
+      expected_underruns = dut.underrun_count + 1'b1;
+      expected_queue_depth = dut.queue_depth;
+      expected_player_state = {21'd0, dut.fetch_pair, dut.status_to_verify, dut.layout_valid,
+                               dut.ring_valid, dut.playback_started, dut.playback_running, dut.state};
+      expected_resyncs = dut.resync_count;
+    end
     if (read_pending) begin
       ddram_dout <= read_word(read_address);
       ddram_dout_ready <= 1;
@@ -75,6 +105,26 @@ module diablo_pcm_player_tb;
       end else if (ddram_addr == BASE + 13 && ddram_be == 8'hff) begin
         if (ddram_din[31:0] !== EPOCH)
           $fatal(1, "PCM local queue status epoch was not preserved");
+      end else if (ddram_addr >= BASE + 53 && ddram_addr <= BASE + 58 && ddram_be == 8'hff) begin
+        // Model the actual six-word reserved-tail memory by decoded address;
+        // do not infer validity from the writer state or a sideband signal.
+        trace_words[ddram_addr - (BASE + 53)] = ddram_din;
+        if (ddram_addr == BASE + 58 && ddram_din == 0) begin
+          trace_clear_count = trace_clear_count + 1;
+        end else begin
+          trace_payload_writes = trace_payload_writes + 1;
+          if (ddram_addr == BASE + 58) begin
+            trace_commit_count = trace_commit_count + 1;
+            if (ddram_din !== {trace_commit_count[31:0], expected_resyncs}
+                || trace_words[0] !== {expected_epoch, expected_event_cycle}
+                || trace_words[1] !== {expected_fetch, expected_producer}
+                || trace_words[2] !== {expected_underruns, expected_consumer}
+                || trace_words[3] !== {expected_player_state, expected_queue_depth}
+                || trace_words[4] !== arbiter_diagnostic)
+              $fatal(1, "PCM underflow snapshot was not coherent commit=%h words=%h/%h/%h/%h/%h",
+                     ddram_din, trace_words[0], trace_words[1], trace_words[2], trace_words[3], trace_words[4]);
+          end
+        end
       end else begin
         $fatal(1, "PCM write ownership violated");
       end
@@ -89,21 +139,48 @@ module diablo_pcm_player_tb;
   end
 
   initial begin
+    for (snapshot_index = 0; snapshot_index < 6; snapshot_index = snapshot_index + 1)
+      trace_words[snapshot_index] = 0;
     repeat (4) @(posedge clk);
     reset <= 0;
     session_valid <= 1;
     wait (observed == 8);
+    if (trace_clear_count != 1 || trace_payload_writes != 0 || trace_commit_count != 0
+        || trace_words[5] != 0)
+      $fatal(1, "healthy PCM playback did not leave the optional snapshot unavailable clear=%0d payload=%0d commits=%0d marker=%h",
+             trace_clear_count, trace_payload_writes, trace_commit_count, trace_words[5]);
     wait (underrun_count != 0);
+    wait (trace_commit_count == 1);
+    repeat (10) @(posedge clk);
+    if (starvation_edges != 1 || trace_clear_count != 2 || trace_payload_writes != 6
+        || trace_commit_count != 1 || underrun_count < 2)
+      $fatal(1, "PCM starvation event was not one bounded snapshot edges=%0d clear=%0d payload=%0d commits=%0d underruns=%0d",
+             starvation_edges, trace_clear_count, trace_payload_writes, trace_commit_count, underrun_count);
     @(posedge clk);
     if (audio_l != 0 || audio_r != 0)
       $fatal(1, "PCM underrun did not output silence");
     producer_sequence <= 12;
     wait (observed == 12);
+    wait (trace_commit_count == 2);
     @(posedge clk);
     if (!ring_valid || consumer_sequence != 12 || !saw_consumer_byte_enable || !saw_status_word)
       $fatal(1, "PCM ring was not validated and acknowledged");
     if (underrun_count == 0 || resync_count != 0)
       $fatal(1, "PCM underrun/recovery counters incorrect underruns=%0d resyncs=%0d", underrun_count, resync_count);
+    if (starvation_edges != 2 || trace_clear_count != 3 || trace_payload_writes != 12
+        || trace_commit_count != 2)
+      $fatal(1, "PCM second starvation episode did not replace snapshot cleanly edges=%0d clear=%0d payload=%0d commits=%0d",
+             starvation_edges, trace_clear_count, trace_payload_writes, trace_commit_count);
+    // A hardware reset can see the same ARM epoch again. It must explicitly
+    // clear the shared commit marker so an ARM reader reports unavailable until
+    // another active starvation edge is captured.
+    reset <= 1;
+    @(posedge clk);
+    reset <= 0;
+    wait (trace_clear_count == 4);
+    if (trace_words[5] != 0 || trace_payload_writes != 12 || trace_commit_count != 2)
+      $fatal(1, "same-epoch PCM reset did not invalidate the shared event commit marker=%h payload=%0d commits=%0d",
+             trace_words[5], trace_payload_writes, trace_commit_count);
     $display("PCM player checks passed");
     $finish;
   end

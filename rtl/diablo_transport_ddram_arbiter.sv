@@ -71,7 +71,9 @@ module diablo_transport_ddram_arbiter #(
     output reg [63:0] ddram_din,
     output reg [7:0] ddram_be,
     output reg ddram_we,
-    output reg fault = 1'b0
+    output reg fault = 1'b0,
+    // Read-only pre-edge arbitration state for bounded PCM event capture.
+    output wire [63:0] diagnostic
 );
     // A zero timeout is a legal parameter value in some generated builds. It
     // must mean the smallest observable one-cycle deadline, rather than
@@ -120,8 +122,15 @@ module diablo_transport_ddram_arbiter #(
                                : (command_rd || command_we) ? OWNER_COMMAND
                                : OWNER_CONTROL;
     wire [2:0] selected_owner = burst_lock ? burst_owner
-                              : read_pending ? read_owner
-                              : priority_owner;
+                               : read_pending ? read_owner
+                               : priority_owner;
+    // [2:0] selected owner, then the pending/lock/owner/counter fields in
+    // increasing bit order. This is sampled by the player only on starvation.
+    assign diagnostic = {2'b00, force_command_service, audio_busy, fault,
+                         audio_we, audio_rd, ddram_dout_ready, ddram_busy,
+                         command_wait_grants, busy_wait, read_response_wait,
+                         burst_remaining, burst_owner, read_owner, burst_lock,
+                         read_pending, selected_owner};
 
     always @* begin
         ddram_burstcnt = 0;

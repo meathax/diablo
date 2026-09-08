@@ -14,6 +14,9 @@ module diablo_pcm_player #(
     input wire reset,
     input wire session_valid,
     input wire [31:0] session_epoch,
+    // A pre-edge arbitration sample, captured only on the first active
+    // starvation edge. It is diagnostic-only and cannot affect scheduling.
+    input wire [63:0] arbiter_diagnostic,
 
     input wire ddram_busy,
     input wire [63:0] ddram_dout,
@@ -39,6 +42,8 @@ module diablo_pcm_player #(
     localparam [28:0] PCM_LAYOUT_WORD = SHARED_BASE_WORD + 29'd11;
     localparam [28:0] PCM_STATUS_WORD = SHARED_BASE_WORD + 29'd12;
     localparam [28:0] PCM_EPOCH_WORD = SHARED_BASE_WORD + 29'd13;
+    localparam [28:0] PCM_UNDERFLOW_SNAPSHOT_WORD = SHARED_BASE_WORD
+                                        + (DIABLO_TRANSPORT_PCM_UNDERFLOW_SNAPSHOT_OFFSET >> 3);
     localparam [28:0] PCM_DATA_BASE_WORD = SHARED_BASE_WORD
                                               + (DIABLO_TRANSPORT_PCM_REGION_OFFSET >> 3);
     // Clamp zero-valued timing parameters so simulation and constrained builds
@@ -59,6 +64,15 @@ module diablo_pcm_player #(
     localparam [4:0] WAIT_REVERIFY = 5'd9;
     localparam [4:0] STATUS_REQUEST = 5'd10;
     localparam [4:0] QUEUE_STATUS_REQUEST = 5'd11;
+    // The commit clear makes a replacement snapshot a real bounded seqlock:
+    // readers cannot accept a previous nonzero commit alongside new payload.
+    localparam [4:0] TRACE_CLEAR_COMMIT_REQUEST = 5'd12;
+    localparam [4:0] TRACE_WORD0_REQUEST = 5'd13;
+    localparam [4:0] TRACE_WORD1_REQUEST = 5'd14;
+    localparam [4:0] TRACE_WORD2_REQUEST = 5'd15;
+    localparam [4:0] TRACE_WORD3_REQUEST = 5'd16;
+    localparam [4:0] TRACE_WORD4_REQUEST = 5'd17;
+    localparam [4:0] TRACE_COMMIT_REQUEST = 5'd18;
     localparam integer FIFO_ADDR_BITS = $clog2(FIFO_SAMPLES);
 
     reg [4:0] state = INACTIVE;
@@ -76,6 +90,23 @@ module diablo_pcm_player #(
     reg status_to_verify = 1'b0;
     reg playback_running = 1'b0;
     reg playback_started = 1'b0;
+    reg starvation_active = 1'b0;
+    reg [31:0] event_cycle = 0;
+    // A reset can reattach to the same ARM epoch. Invalidate the DDR commit
+    // before that session can expose a pre-reset event as current evidence.
+    reg trace_invalidate_pending = 1'b1;
+    reg trace_pending = 1'b0;
+    reg [31:0] trace_commit_sequence = 0;
+    reg [31:0] trace_event_cycle = 0;
+    reg [31:0] trace_epoch = 0;
+    reg [31:0] trace_producer_sequence = 0;
+    reg [31:0] trace_fetch_sequence = 0;
+    reg [31:0] trace_published_consumer = 0;
+    reg [31:0] trace_underrun_count = 0;
+    reg [31:0] trace_queue_depth = 0;
+    reg [31:0] trace_player_state = 0;
+    reg [63:0] trace_arbiter_diagnostic = 0;
+    reg [31:0] trace_resync_count = 0;
 
     (* ramstyle = "M10K" *) reg [31:0] fifo [0:FIFO_SAMPLES - 1];
     reg [FIFO_ADDR_BITS - 1:0] fifo_read_pointer = 0;
@@ -100,26 +131,51 @@ module diablo_pcm_player #(
     assign ddram_burstcnt = 8'd1;
     assign ddram_rd = (state == VERIFY_REQUEST) || (state == SAMPLE_REQUEST);
     assign ddram_we = (state == ACK_REQUEST) || (state == STATUS_REQUEST)
-                    || (state == QUEUE_STATUS_REQUEST);
+                    || (state == QUEUE_STATUS_REQUEST)
+                    || (state == TRACE_CLEAR_COMMIT_REQUEST)
+                    || (state == TRACE_WORD0_REQUEST)
+                    || (state == TRACE_WORD1_REQUEST)
+                    || (state == TRACE_WORD2_REQUEST)
+                    || (state == TRACE_WORD3_REQUEST)
+                    || (state == TRACE_WORD4_REQUEST)
+                    || (state == TRACE_COMMIT_REQUEST);
     assign ddram_addr = (state == VERIFY_REQUEST)
                       ? ((verify_index == 0) ? PCM_CONTROL_WORD
                        : (verify_index == 1) ? PCM_LAYOUT_WORD : PCM_EPOCH_WORD)
-                      : (state == SAMPLE_REQUEST) ? pcm_data_address(fetch_sequence)
-                       : (state == STATUS_REQUEST) ? PCM_STATUS_WORD
-                       : (state == QUEUE_STATUS_REQUEST) ? PCM_EPOCH_WORD
-                       : PCM_CONTROL_WORD;
+                       : (state == SAMPLE_REQUEST) ? pcm_data_address(fetch_sequence)
+                        : (state == STATUS_REQUEST) ? PCM_STATUS_WORD
+                        : (state == QUEUE_STATUS_REQUEST) ? PCM_EPOCH_WORD
+                        : (state == TRACE_WORD1_REQUEST) ? PCM_UNDERFLOW_SNAPSHOT_WORD + 1'b1
+                        : (state == TRACE_WORD2_REQUEST) ? PCM_UNDERFLOW_SNAPSHOT_WORD + 2'd2
+                        : (state == TRACE_WORD3_REQUEST) ? PCM_UNDERFLOW_SNAPSHOT_WORD + 2'd3
+                        : (state == TRACE_WORD4_REQUEST) ? PCM_UNDERFLOW_SNAPSHOT_WORD + 3'd4
+                        : (state == TRACE_CLEAR_COMMIT_REQUEST || state == TRACE_COMMIT_REQUEST)
+                        ? PCM_UNDERFLOW_SNAPSHOT_WORD + 3'd5
+                        : (state == TRACE_WORD0_REQUEST) ? PCM_UNDERFLOW_SNAPSHOT_WORD
+                        : PCM_CONTROL_WORD;
     // The ARM owns the producer cursor in the low half of PCM_CONTROL_WORD.
     // PCM_STATUS_WORD is FPGA-owned and publishes underrun/resync counters as
     // {resync_count, underrun_count}; the ARM only reads this diagnostic word.
     assign ddram_din = (state == STATUS_REQUEST)
-                     ? {resync_count, underrun_count}
-                     : (state == QUEUE_STATUS_REQUEST)
-                     ? {{(32-$bits(queue_depth)){1'b0}}, queue_depth, active_epoch}
-                     : {fetch_sequence, 32'd0};
+                      ? {resync_count, underrun_count}
+                      : (state == QUEUE_STATUS_REQUEST)
+                      ? {{(32-$bits(queue_depth)){1'b0}}, queue_depth, active_epoch}
+                      : (state == TRACE_CLEAR_COMMIT_REQUEST) ? 64'd0
+                      : (state == TRACE_WORD0_REQUEST) ? {trace_epoch, trace_event_cycle}
+                      : (state == TRACE_WORD1_REQUEST) ? {trace_fetch_sequence, trace_producer_sequence}
+                      : (state == TRACE_WORD2_REQUEST) ? {trace_underrun_count, trace_published_consumer}
+                      : (state == TRACE_WORD3_REQUEST) ? {trace_player_state, trace_queue_depth}
+                      : (state == TRACE_WORD4_REQUEST) ? trace_arbiter_diagnostic
+                      : (state == TRACE_COMMIT_REQUEST) ? {trace_commit_sequence, trace_resync_count}
+                      : {fetch_sequence, 32'd0};
     // ARM owns producer_sequence in the low half. FPGA publishes only the
     // high consumer_sequence half, in bounded batches after local buffering.
-    assign ddram_be = (state == STATUS_REQUEST || state == QUEUE_STATUS_REQUEST)
-                    ? 8'hff : 8'hf0;
+    assign ddram_be = (state == STATUS_REQUEST || state == QUEUE_STATUS_REQUEST
+                    || state == TRACE_CLEAR_COMMIT_REQUEST || state == TRACE_WORD0_REQUEST
+                    || state == TRACE_WORD1_REQUEST || state == TRACE_WORD2_REQUEST
+                    || state == TRACE_WORD3_REQUEST || state == TRACE_WORD4_REQUEST
+                    || state == TRACE_COMMIT_REQUEST)
+                     ? 8'hff : 8'hf0;
 
     always @(posedge clk) begin
         if (reset || !session_valid) begin
@@ -138,6 +194,21 @@ module diablo_pcm_player #(
             status_to_verify <= 1'b0;
             playback_running <= 1'b0;
             playback_started <= 1'b0;
+            starvation_active <= 1'b0;
+            event_cycle <= 0;
+            trace_invalidate_pending <= 1'b1;
+            trace_pending <= 1'b0;
+            trace_commit_sequence <= 0;
+            trace_event_cycle <= 0;
+            trace_epoch <= 0;
+            trace_producer_sequence <= 0;
+            trace_fetch_sequence <= 0;
+            trace_published_consumer <= 0;
+            trace_underrun_count <= 0;
+            trace_queue_depth <= 0;
+            trace_player_state <= 0;
+            trace_arbiter_diagnostic <= 0;
+            trace_resync_count <= 0;
             fifo_read_pointer <= 0;
             fifo_write_pointer <= 0;
             queue_depth <= 0;
@@ -147,6 +218,7 @@ module diablo_pcm_player #(
             resync_count <= 0;
             ring_valid <= 1'b0;
         end else begin
+            event_cycle <= event_cycle + 1'b1;
             if (sample_tick) sample_divider <= 0;
             else sample_divider <= sample_divider + 1'b1;
 
@@ -165,6 +237,10 @@ module diablo_pcm_player #(
                 status_to_verify <= 1'b0;
                 playback_running <= 1'b0;
                 playback_started <= 1'b0;
+                starvation_active <= 1'b0;
+                trace_invalidate_pending <= 1'b1;
+                trace_pending <= 1'b0;
+                trace_commit_sequence <= 0;
                 fifo_read_pointer <= 0;
                 fifo_write_pointer <= 0;
                 queue_depth <= 0;
@@ -210,8 +286,30 @@ module diablo_pcm_player #(
                  && (queue_depth + (fifo_push ? 1'b1 : 1'b0) >= PRIME_SAMPLES)) begin
                     playback_running <= 1'b1;
                     playback_started <= 1'b1;
+                    starvation_active <= 1'b0;
                 end else if (playback_pop && queue_depth == 1 && !fifo_push) begin
                     playback_running <= 1'b0;
+                end
+
+                // underrun_count remains a per-empty-output-tick counter. The
+                // event record is deliberately separate and latches only the
+                // first active starvation edge until playback starts again.
+                if (playback_started && sample_tick && queue_depth == 0 && !starvation_active) begin
+                    starvation_active <= 1'b1;
+                    trace_pending <= 1'b1;
+                    trace_event_cycle <= event_cycle;
+                    trace_epoch <= active_epoch;
+                    trace_producer_sequence <= producer_sequence;
+                    trace_fetch_sequence <= fetch_sequence;
+                    trace_published_consumer <= published_consumer;
+                    trace_underrun_count <= underrun_count + 1'b1;
+                    trace_queue_depth <= {{(32-$bits(queue_depth)){1'b0}}, queue_depth};
+                    trace_player_state <= {21'd0, fetch_pair, status_to_verify, layout_valid,
+                                           ring_valid, playback_started, playback_running, state};
+                    trace_arbiter_diagnostic <= arbiter_diagnostic;
+                    trace_resync_count <= resync_count;
+                    trace_commit_sequence <= (trace_commit_sequence == 32'hffffffff)
+                                           ? 32'd1 : trace_commit_sequence + 1'b1;
                 end
 
                 case (state)
@@ -259,6 +357,12 @@ module diablo_pcm_player #(
                         if (!ring_valid) begin
                             poll_counter <= 0;
                             state <= WAIT_REVERIFY;
+                        end else if (trace_invalidate_pending) begin
+                            // This one full-word clear is the reset/epoch
+                            // ownership boundary. It is not a playback-timing
+                            // operation and occurs only before a reattached
+                            // session can publish a new event.
+                            state <= TRACE_CLEAR_COMMIT_REQUEST;
                         end else if (available_samples > DIABLO_TRANSPORT_PCM_CAPACITY) begin
                             // A producer reset or overrun invalidates local
                             // sequencing. Drop local data and validate anew.
@@ -280,6 +384,10 @@ module diablo_pcm_player #(
                             // 32-record batch) would remain permanently
                             // invisible to the ARM producer.
                             state <= ACK_REQUEST;
+                        end else if (trace_pending) begin
+                            // Preserve source-first behavior: a pending PCM word
+                            // is fetched above before this diagnostic is exported.
+                            state <= TRACE_CLEAR_COMMIT_REQUEST;
                         end else begin
                             poll_counter <= 0;
                             state <= WAIT_PRODUCER;
@@ -308,15 +416,38 @@ module diablo_pcm_player #(
                             state <= FILL_CHECK;
                         end
                     end
+                    TRACE_CLEAR_COMMIT_REQUEST: if (!ddram_busy) begin
+                        trace_invalidate_pending <= 1'b0;
+                        if (trace_pending) state <= TRACE_WORD0_REQUEST;
+                        else state <= FILL_CHECK;
+                    end
+                    TRACE_WORD0_REQUEST: if (!ddram_busy)
+                        state <= TRACE_WORD1_REQUEST;
+                    TRACE_WORD1_REQUEST: if (!ddram_busy)
+                        state <= TRACE_WORD2_REQUEST;
+                    TRACE_WORD2_REQUEST: if (!ddram_busy)
+                        state <= TRACE_WORD3_REQUEST;
+                    TRACE_WORD3_REQUEST: if (!ddram_busy)
+                        state <= TRACE_WORD4_REQUEST;
+                    TRACE_WORD4_REQUEST: if (!ddram_busy)
+                        state <= TRACE_COMMIT_REQUEST;
+                    TRACE_COMMIT_REQUEST: if (!ddram_busy) begin
+                        trace_pending <= 1'b0;
+                        state <= FILL_CHECK;
+                    end
                     WAIT_PRODUCER: begin
-                        if (poll_counter == POLL_INTERVAL_LIMIT - 1) begin
+                        if (trace_invalidate_pending || trace_pending) begin
+                            state <= TRACE_CLEAR_COMMIT_REQUEST;
+                        end else if (poll_counter == POLL_INTERVAL_LIMIT - 1) begin
                             poll_counter <= 0;
                             status_to_verify <= 1'b1;
                             state <= STATUS_REQUEST;
                         end else poll_counter <= poll_counter + 1'b1;
                     end
                     WAIT_REVERIFY: begin
-                        if (poll_counter == POLL_INTERVAL_LIMIT - 1) begin
+                        if (trace_invalidate_pending || trace_pending) begin
+                            state <= TRACE_CLEAR_COMMIT_REQUEST;
+                        end else if (poll_counter == POLL_INTERVAL_LIMIT - 1) begin
                             poll_counter <= 0;
                             state <= VERIFY_REQUEST;
                             verify_index <= 0;
