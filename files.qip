@@ -1,4 +1,5 @@
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/native_test_pattern.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/diablo_video_source_policy.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/diablo_frame_ownership.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/diablo_ddr_probe.sv
 set_global_assignment -name SYSTEMVERILOG_FILE rtl/diablo_transport_control_reader.sv

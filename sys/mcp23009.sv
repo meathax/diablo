@@ -24,7 +24,7 @@ reg        rw;
 wire [7:0] dout;
 reg [15:0] din;
 
-i2c #(50_000_000, 500_000) i2c
+i2c #(50_000_000, 375_000) i2c
 (
 	.CLK(clk),
 	.START(start),
