@@ -18,6 +18,7 @@ class CandidateManifestTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
+
         for input_name in candidate.SOURCE_INPUTS:
             path = self.root / input_name
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -30,6 +31,17 @@ class CandidateManifestTests(unittest.TestCase):
         self.artifact = self.root / "output_files" / "Diablo.rbf"
         self.artifact.parent.mkdir(parents=True)
         self.artifact.write_bytes(b"candidate-one")
+
+    def test_git_identity_preserves_leading_porcelain_space(self):
+        def fake_run(args, **_kwargs):
+            if args[1:3] == ["status", "--porcelain=v1"]:
+                return mock.Mock(returncode=0, stdout=" M .gitignore\\n", stderr="")
+            return mock.Mock(returncode=0, stdout="head\\n", stderr="")
+
+        with mock.patch.object(candidate.subprocess, "run", side_effect=fake_run):
+            identity = candidate.git_identity(self.root, [".gitignore"])
+
+        self.assertEqual(identity["status_porcelain_v1"], " M .gitignore")
 
     def test_source_and_artifact_changes_invalidate_identity(self):
         first = candidate.make_manifest(self.root, [self.artifact], {"quartus": "17.1"})

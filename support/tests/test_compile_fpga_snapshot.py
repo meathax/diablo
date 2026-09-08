@@ -22,6 +22,20 @@ def powershell() -> str | None:
 
 @unittest.skipUnless(powershell(), "PowerShell is required for FPGA snapshot tests")
 class FpgaSnapshotTests(unittest.TestCase):
+    def setUp(self) -> None:
+        # Quartus normally creates this ignored include through
+        # ``sys/build_id.tcl``.  Snapshot tests must also run from a clean
+        # checkout, before any other test has had a chance to bootstrap it.
+        self.generated_build_id = False
+        build_id = ROOT / "build_id.v"
+        if not build_id.exists():
+            build_id.write_text('`define BUILD_DATE "000000"\n', encoding="utf-8")
+            self.generated_build_id = True
+
+    def tearDown(self) -> None:
+        if self.generated_build_id:
+            (ROOT / "build_id.v").unlink(missing_ok=True)
+
     def run_helper(self, destination: Path, action: str, *extra: str) -> subprocess.CompletedProcess[str]:
         command = [powershell(), "-NoProfile", "-File", str(SCRIPT),
                    "-SourceDirectory", str(destination), "-Action", action, *extra]
@@ -29,6 +43,10 @@ class FpgaSnapshotTests(unittest.TestCase):
                               encoding="utf-8", errors="replace", check=False)
 
     def temporary_snapshot(self):
+        # A clean checkout does not contain ignored build output.  The test
+        # owns this temporary parent so it does not depend on a prior Quartus
+        # run having created ``.work/build``.
+        (ROOT / ".work" / "build").mkdir(parents=True, exist_ok=True)
         return tempfile.TemporaryDirectory(
             dir=ROOT / ".work" / "build", prefix="fpga snapshot test "
         )
@@ -69,6 +87,19 @@ class FpgaSnapshotTests(unittest.TestCase):
                                           str(destination / "missing-quartus"))
             self.assertNotEqual(validation.returncode, 0)
             self.assertIn("Snapshot files no longer match", validation.stderr + validation.stdout)
+
+    def test_quartus_generated_build_id_is_restored_for_followup_actions(self) -> None:
+        # Quartus' pre-flow hook rewrites build_id.v.  The helper must preserve
+        # the recorded snapshot bytes so timing/compression can validate the
+        # same source manifest after compile.  The clean Quartus integration
+        # receipt exercises the native mutation; this regression keeps the
+        # preservation contract visible even when Quartus is unavailable.
+        source = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("Invoke-QuartusPreservingGeneratedInputs", source)
+        self.assertIn("foreach ($relative in @('build_id.v'))", source)
+        self.assertGreaterEqual(
+            source.count("Invoke-QuartusPreservingGeneratedInputs $quartus"), 3
+        )
 
 
 if __name__ == "__main__":

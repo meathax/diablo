@@ -33,10 +33,12 @@ SOURCE_INPUTS = (
     "support/reference",
     "support/scripts",
     "support/qualification",
+    "support/tests",
+    "LICENSE.fpga",
 )
 DIRECTORY_INPUTS = frozenset({
     "rtl", "support/cmake", "support/patches", "support/reference", "support/scripts", "support/qualification",
-    "support/transport", "sys",
+    "support/tests", "support/transport", "sys",
 })
 IGNORED_SOURCE_DIRECTORY_PARTS = frozenset({"__pycache__", ".pytest_cache"})
 IGNORED_SOURCE_SUFFIXES = frozenset({".pyc", ".pyo"})
@@ -121,7 +123,10 @@ def files_for_inputs(root: Path, inputs: Iterable[str] = SOURCE_INPUTS) -> list[
 def git_identity(root: Path, source_paths: Iterable[str]) -> dict[str, object]:
     def run(*args: str) -> str | None:
         result = subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, timeout=20)
-        return result.stdout.strip() if result.returncode == 0 else None
+        # Preserve the leading porcelain status column.  ``str.strip()`` would
+        # remove the first line's leading worktree-space and make a manifest
+        # fail verification whenever that file sorts first in git status.
+        return result.stdout.rstrip("\\r\\n") if result.returncode == 0 else None
 
     tracked_paths = set(source_paths)
     status = run("status", "--porcelain=v1", "--untracked-files=all")
@@ -172,6 +177,7 @@ def make_manifest(root: Path, artifacts: Iterable[Path], tool_versions: dict[str
     candidate_id = hashlib.sha256(canonical_bytes({"source_id": source_id, "artifacts": output_artifacts})).hexdigest()
     return {
         "schema": SCHEMA,
+        "status": "pass",
         "candidate_id": candidate_id,
         "source_id": source_id,
         "created_utc": dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),

@@ -166,6 +166,29 @@ function Invoke-Quartus([string]$Executable, [string[]]$Arguments, [string]$LogN
     Write-Output ([ordered]@{ executable = $Executable; arguments = $Arguments; log = $log; exit_code = $exitCode } | ConvertTo-Json -Compress)
 }
 
+function Invoke-QuartusPreservingGeneratedInputs([string]$Executable, [string[]]$Arguments, [string]$LogName) {
+    # sys/build_id.tcl is a Quartus pre-flow hook.  It rewrites this generated
+    # source file with the current date, which would otherwise make the
+    # immutable snapshot fail its next timing/compression action.  Preserve the
+    # snapshot bytes around every native Quartus invocation; the generated date
+    # remains embedded in the output artifact, while the source contract stays
+    # reproducible and all later actions see the same manifest.
+    $backups = @{}
+    foreach ($relative in @('build_id.v')) {
+        $path = Join-Path $SourceDirectory $relative
+        if (Test-Path -LiteralPath $path -PathType Leaf) {
+            $backups[$path] = [System.IO.File]::ReadAllBytes($path)
+        }
+    }
+    try {
+        Invoke-Quartus $Executable $Arguments $LogName
+    } finally {
+        foreach ($entry in $backups.GetEnumerator()) {
+            [System.IO.File]::WriteAllBytes($entry.Key, $entry.Value)
+        }
+    }
+}
+
 if ($Action -eq 'sync') {
     Assert-EmptySnapshot $SourceDirectory
     Copy-SnapshotInputs $RepositoryDirectory $SourceDirectory $snapshotInputs
@@ -187,12 +210,12 @@ $quartusCpf = Join-Path $quartusRootResolved 'bin64/quartus_cpf.exe'
 Push-Location -LiteralPath $SourceDirectory
 try {
     if ($Action -eq 'compile') {
-        Invoke-Quartus $quartusSh @('--flow', 'compile', 'Diablo') 'quartus-compile.log'
+        Invoke-QuartusPreservingGeneratedInputs $quartusSh @('--flow', 'compile', 'Diablo') 'quartus-compile.log'
     } elseif ($Action -eq 'timing') {
         $timingScript = Join-Path $SourceDirectory 'support/scripts/report_fpga_timing.tcl'
-        Invoke-Quartus $quartusSta @('-t', $timingScript, 'Diablo') 'quartus-timing.log'
+        Invoke-QuartusPreservingGeneratedInputs $quartusSta @('-t', $timingScript, 'Diablo') 'quartus-timing.log'
     } elseif ($Action -eq 'compress') {
-        Invoke-Quartus $quartusCpf @('-c', '-o', 'bitstream_compression=on',
+        Invoke-QuartusPreservingGeneratedInputs $quartusCpf @('-c', '-o', 'bitstream_compression=on',
             'output_files/Diablo.sof', 'output_files/Diablo.compressed.rbf') 'quartus-compress.log'
     }
 } finally {
