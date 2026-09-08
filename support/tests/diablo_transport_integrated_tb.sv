@@ -33,7 +33,10 @@ module diablo_transport_integrated_tb;
 
   wire framebuffer_valid; wire [31:0] framebuffer_base; wire framebuffer_blank;
   wire [7:0] fb_pal_addr; wire [23:0] fb_pal_dout; wire fb_pal_wr;
-  wire [15:0] audio_l, audio_r; wire [31:0] underruns, resyncs; wire [10:0] pcm_depth; wire pcm_valid;
+  // The production default FIFO is 4096 samples, so queue_depth is
+  // [$clog2(FIFO_SAMPLES):0] = [12:0]. Keep the integration harness width
+  // aligned with the instantiated client instead of truncating telemetry.
+  wire [15:0] audio_l, audio_r; wire [31:0] underruns, resyncs; wire [12:0] pcm_depth; wire pcm_valid;
   wire input_valid; wire [31:0] input_overflows;
   wire command_valid, command_fault; wire [31:0] commands_executed, commands_rejected; wire [63:0] last_fence;
 
@@ -169,14 +172,15 @@ module diablo_transport_integrated_tb;
     frame_state[0] <= DIABLO_FRAME_READY; frame_generation[0] <= EPOCH; frame_id[0] <= 64'h101;
     repeat (6) begin pulse_vblank(); repeat (50) @(posedge clk); end
     repeat (4000) @(posedge clk);
-    // Stop at a responder boundary: clients may issue another request on the
-    // next clock, but no accepted read may be left without its own response.
-    while (pending) @(posedge clk);
+    // Sample away from the responder's posedge.  A client may issue one new
+    // read on the same clock that retires the previous response, so the final
+    // accounting may legitimately contain exactly one in-flight request.
+    @(negedge clk);
     #1;
     if (frame_state[0] != DIABLO_FRAME_FPGA_DISPLAYING || input_producer == 0 || input_writes == 0 || pcm_writes == 0 || commands_executed < 3 || command_pixel_writes == 0 || observed_fence != 64'h9abcdef012345678)
       $fatal(1,"FAIL integrated service frame=%b blank=%b states=%h/%h/%h vblankwrites=%0d input=%0d pcmwrites=%0d command=%0d pixelwrites=%0d fence=%h",framebuffer_valid,framebuffer_blank,frame_state[0],frame_state[1],frame_state[2],vblank_writes,input_producer,pcm_writes,commands_executed,command_pixel_writes,observed_fence);
-    if (reads != responses || vblank_writes < 1 || command_fault || ddram_fault)
-      $fatal(1,"FAIL integrated ownership reads=%0d responses=%0d vblankwrites=%0d command_fault=%b ddram_fault=%b",reads,responses,vblank_writes,command_fault,ddram_fault);
+    if (reads < responses || reads - responses > (pending ? 1 : 0) || vblank_writes < 1 || command_fault || ddram_fault)
+      $fatal(1,"FAIL integrated ownership reads=%0d responses=%0d pending=%b vblankwrites=%0d command_fault=%b ddram_fault=%b",reads,responses,pending,vblank_writes,command_fault,ddram_fault);
     $display("integrated transport DDR checks passed reads=%0d writes=%0d pcm_depth=%0d underruns=%0d",reads,writes,pcm_depth,underruns);
     $finish;
   end

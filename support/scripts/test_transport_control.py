@@ -76,6 +76,12 @@ def main():
          str(root / 'support/tests/diablo_input_capture_tb.sv')], commands)
     run(['vvp', str(input_rtl)], commands)
 
+    policy_rtl = build / 'diablo_video_source_policy_tb.vvp'
+    run(['iverilog', '-g2012', '-s', 'diablo_video_source_policy_tb', '-o', str(policy_rtl),
+         str(root / 'rtl/diablo_video_source_policy.sv'),
+         str(root / 'support/tests/diablo_video_source_policy_tb.sv')], commands)
+    run(['vvp', str(policy_rtl)], commands)
+
     source = root / 'support' / 'transport' / 'transport_header_probe.cpp'
     include = root / 'support' / 'reference'
     wsl_env = wsl_environment()

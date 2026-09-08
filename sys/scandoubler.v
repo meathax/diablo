@@ -17,7 +17,12 @@
 // You should have received a copy of the GNU General Public License 
 // along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-// TODO: Delay vsync one line
+// The framework's scandoubler pipeline is retained for the supported
+// progressive 31 kHz row.  VSync is sampled at the input hsync boundary and
+// traverses the same three-line pipeline as VBlank; a separate extra line
+// would move the frame boundary away from the first active doubled line.  The
+// mode contract and assertions for this relationship live in the release
+// qualification matrix.  Interlaced/field timing is outside this core's scope.
 
 module scandoubler #(parameter LENGTH, parameter HALF_DEPTH)
 (
@@ -107,6 +112,7 @@ Hq2x #(.LENGTH(LENGTH), .HALF_DEPTH(HALF_DEPTH)) Hq2x
 	.ce_in(ce_x4i),
 	.inputpixel({b_d,g_d,r_d}),
 	.disable_hq2x(~hq2x),
+	.mono(1'b0),
 	.reset_frame(vb_in),
 	.reset_line(req_line_reset),
 

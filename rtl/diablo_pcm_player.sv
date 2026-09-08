@@ -3,9 +3,12 @@
 module diablo_pcm_player #(
     parameter integer SAMPLE_DIVISOR = 1050,      // 50.4 MHz / 48 kHz
     parameter integer POLL_INTERVAL_CYCLES = 50400,
-    parameter integer PRIME_SAMPLES = 256,
+    // Aulib's MiSTer callback is intentionally serviced in bounded chunks.
+    // Keep enough local audio to cover one callback plus DDR arbitration jitter;
+    // 1,024 samples was shorter than the observed ARM callback interval.
+    parameter integer PRIME_SAMPLES = 1024,
     parameter integer ACK_BATCH = 32,
-    parameter integer FIFO_SAMPLES = 1024
+    parameter integer FIFO_SAMPLES = 4096
 ) (
     input wire clk,
     input wire reset,
@@ -55,6 +58,7 @@ module diablo_pcm_player #(
     localparam [4:0] WAIT_PRODUCER = 5'd8;
     localparam [4:0] WAIT_REVERIFY = 5'd9;
     localparam [4:0] STATUS_REQUEST = 5'd10;
+    localparam [4:0] QUEUE_STATUS_REQUEST = 5'd11;
     localparam integer FIFO_ADDR_BITS = $clog2(FIFO_SAMPLES);
 
     reg [4:0] state = INACTIVE;
@@ -95,22 +99,27 @@ module diablo_pcm_player #(
 
     assign ddram_burstcnt = 8'd1;
     assign ddram_rd = (state == VERIFY_REQUEST) || (state == SAMPLE_REQUEST);
-    assign ddram_we = (state == ACK_REQUEST) || (state == STATUS_REQUEST);
+    assign ddram_we = (state == ACK_REQUEST) || (state == STATUS_REQUEST)
+                    || (state == QUEUE_STATUS_REQUEST);
     assign ddram_addr = (state == VERIFY_REQUEST)
                       ? ((verify_index == 0) ? PCM_CONTROL_WORD
                        : (verify_index == 1) ? PCM_LAYOUT_WORD : PCM_EPOCH_WORD)
                       : (state == SAMPLE_REQUEST) ? pcm_data_address(fetch_sequence)
-                      : (state == STATUS_REQUEST) ? PCM_STATUS_WORD
-                      : PCM_CONTROL_WORD;
+                       : (state == STATUS_REQUEST) ? PCM_STATUS_WORD
+                       : (state == QUEUE_STATUS_REQUEST) ? PCM_EPOCH_WORD
+                       : PCM_CONTROL_WORD;
     // The ARM owns the producer cursor in the low half of PCM_CONTROL_WORD.
     // PCM_STATUS_WORD is FPGA-owned and publishes underrun/resync counters as
     // {resync_count, underrun_count}; the ARM only reads this diagnostic word.
     assign ddram_din = (state == STATUS_REQUEST)
                      ? {resync_count, underrun_count}
+                     : (state == QUEUE_STATUS_REQUEST)
+                     ? {{(32-$bits(queue_depth)){1'b0}}, queue_depth, active_epoch}
                      : {fetch_sequence, 32'd0};
     // ARM owns producer_sequence in the low half. FPGA publishes only the
     // high consumer_sequence half, in bounded batches after local buffering.
-    assign ddram_be = (state == STATUS_REQUEST) ? 8'hff : 8'hf0;
+    assign ddram_be = (state == STATUS_REQUEST || state == QUEUE_STATUS_REQUEST)
+                    ? 8'hff : 8'hf0;
 
     always @(posedge clk) begin
         if (reset || !session_valid) begin
@@ -288,6 +297,9 @@ module diablo_pcm_player #(
                         state <= STATUS_REQUEST;
                     end
                     STATUS_REQUEST: if (!ddram_busy) begin
+                        state <= QUEUE_STATUS_REQUEST;
+                    end
+                    QUEUE_STATUS_REQUEST: if (!ddram_busy) begin
                         poll_counter <= 0;
                         if (status_to_verify) begin
                             verify_index <= 0;

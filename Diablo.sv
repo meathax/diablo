@@ -37,8 +37,19 @@ assign VGA_F1 = 0;
 // otherwise the core's direct RGB bus would expose the diagnostic generator.
 // The diagnostic OSD option deliberately leaves the native pattern selected.
 wire diagnostic_video = status[6];
-wire gameplay_video_valid = transport_session_valid && framebuffer_valid && !diagnostic_video;
-assign VGA_SCALER  = gameplay_video_valid;
+wire gameplay_video_valid;
+wire video_startup_error;
+wire video_direct_diagnostic;
+diablo_video_source_policy video_source_policy (
+    .transport_session_valid(transport_session_valid),
+    .framebuffer_valid(framebuffer_valid),
+    .diagnostic_video(diagnostic_video),
+    .gameplay_video_valid(gameplay_video_valid),
+    .startup_error(video_startup_error),
+    .vga_scaler_enable(VGA_SCALER),
+    .framebuffer_enable(FB_EN),
+    .direct_diagnostic_enable(video_direct_diagnostic)
+);
 assign VGA_DISABLE = 0;
 assign HDMI_FREEZE = 0;
 assign HDMI_BLACKOUT = 0;
@@ -172,7 +183,6 @@ wire frame_ddram_dout_ready;
 // is selected. This prevents stale indexed metadata from being presented as
 // gameplay during pattern/startup screens; the framework's cfg[12]/cfg[2]
 // routing still requires per-mode qualification in C13.
-assign FB_EN = gameplay_video_valid;
 assign FB_BASE = framebuffer_base;
 
 wire [7:0] audio_ddram_burstcnt;
@@ -188,9 +198,14 @@ wire [15:0] pcm_audio_l;
 wire [15:0] pcm_audio_r;
 wire [31:0] pcm_underrun_count;
 wire [31:0] pcm_resync_count;
-wire [10:0] pcm_queue_depth;
+wire [14:0] pcm_queue_depth;
 wire pcm_ring_valid;
-diablo_pcm_player pcm_player (
+diablo_pcm_player #(
+    // Keep several callback intervals resident locally.  The FPGA can then
+    // absorb DDR arbitration and ARM callback jitter without presenting a
+    // zero-length run to the DAC.
+    .PRIME_SAMPLES(8192), .FIFO_SAMPLES(16384)
+) pcm_player (
     .clk(clk_sys), .reset(reset), .session_valid(transport_session_valid), .session_epoch(transport_epoch),
     .ddram_busy(audio_ddram_busy), .ddram_dout(audio_ddram_dout), .ddram_dout_ready(audio_ddram_dout_ready),
     .ddram_burstcnt(audio_ddram_burstcnt), .ddram_addr(audio_ddram_addr), .ddram_rd(audio_ddram_rd),
@@ -237,8 +252,8 @@ wire command_fault;
 wire [31:0] command_count;
 wire [31:0] command_rejected;
 wire [63:0] command_last_fence;
-// The first integration target is slot zero. A later scene publisher will
-// select a free slot explicitly before handing a command batch to the FPGA.
+// The scene publisher acquires a free framebuffer slot. The consumer uses
+// the explicit target slot carried by each command record.
 diablo_command_consumer command_consumer (
     .clk(clk_sys), .reset(reset), .session_valid(transport_session_valid),
     .session_epoch(transport_epoch), .target_pixel_base(32'h3fe01000),
@@ -281,7 +296,7 @@ assign AUDIO_MIX = 0;
 
 native_test_pattern pattern (
     .clk(clk_sys), .ready(ready_sync[1]), .reset(reset), .mode(status[4:3]),
-    .diagnostic_enable(diagnostic_video), .startup_error(!gameplay_video_valid && !diagnostic_video),
+    .diagnostic_enable(video_direct_diagnostic), .startup_error(video_startup_error),
     .ddr_probe_pass(transport_session_valid), .ddr_probe_fault(transport_fault || transport_ddram_fault),
     .ce_pixel(CE_PIXEL), .hs(VGA_HS), .vs(VGA_VS), .de(VGA_DE),
     .red(VGA_R), .green(VGA_G), .blue(VGA_B)

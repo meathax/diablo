@@ -19,7 +19,7 @@ module diablo_pcm_player_tb;
   wire ddram_we;
   wire [15:0] audio_l, audio_r;
   wire [31:0] underrun_count, resync_count;
-  wire [10:0] queue_depth;
+  wire [12:0] queue_depth;
   wire ring_valid;
   reg [31:0] producer_sequence = 8;
   reg [31:0] consumer_sequence = 0;
@@ -72,6 +72,9 @@ module diablo_pcm_player_tb;
         if (ddram_din[63:32] !== resync_count || ddram_din[31:0] !== underrun_count)
           $fatal(1, "PCM status counters were not published");
         saw_status_word <= 1;
+      end else if (ddram_addr == BASE + 13 && ddram_be == 8'hff) begin
+        if (ddram_din[31:0] !== EPOCH)
+          $fatal(1, "PCM local queue status epoch was not preserved");
       end else begin
         $fatal(1, "PCM write ownership violated");
       end
