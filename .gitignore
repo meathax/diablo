@@ -10,3 +10,6 @@
 /build_id.v
 /jtag.cdf
 /Diablo.qws
+# Tool-generated root simulation and pin-model output.
+/a.out
+/c5_pin_model_dump.txt
