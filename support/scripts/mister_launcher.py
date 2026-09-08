@@ -300,6 +300,42 @@ def _force_frame_pacing(engine_args: list[str]) -> bool:
 	return any(str(value).casefold() == "--timedemo" for value in engine_args)
 
 
+def _stop_engine(process: subprocess.Popen) -> int:
+    """Stop only our engine process group, never the replacement MiSTer core."""
+    if process.poll() is not None:
+        return process.wait()
+    try:
+        os.killpg(process.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        return process.wait()
+    try:
+        return process.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        return process.wait(timeout=5)
+
+
+def _wait_for_engine(process: subprocess.Popen, rbf: Path, duration: float) -> tuple[int, bool, bool]:
+    """Invalidate this run if its core disappears, including unlimited sessions."""
+    deadline = time.monotonic() + duration if duration > 0 else None
+    while True:
+        exit_code = process.poll()
+        if exit_code is not None:
+            return exit_code, False, False
+        if not _core_process_matches(rbf):
+            return _stop_engine(process), False, True
+        remaining = deadline - time.monotonic() if deadline is not None else None
+        if remaining is not None and remaining <= 0:
+            return _stop_engine(process), True, False
+        try:
+            return process.wait(timeout=min(0.25, remaining) if remaining is not None else 0.25), False, False
+        except subprocess.TimeoutExpired:
+            pass
+
+
 def launch(args: argparse.Namespace) -> dict[str, Any]:
     package = args.package_root.resolve()
     identity = verify_package(package)
@@ -351,19 +387,12 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
             process = subprocess.Popen(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,
                                        start_new_session=True, pass_fds=(lock_handle.fileno(),))
             started = dt.datetime.now(dt.timezone.utc).isoformat()
-            try:
-                exit_code = process.wait(timeout=args.duration if args.duration > 0 else None)
-                timed_out = False
-            except subprocess.TimeoutExpired:
-                timed_out = True
-                os.killpg(process.pid, signal.SIGTERM)
-                try:
-                    exit_code = process.wait(timeout=10)
-                except subprocess.TimeoutExpired:
-                    os.killpg(process.pid, signal.SIGKILL)
-                    exit_code = process.wait(timeout=5)
-        return {"status": ("pass" if timed_out and args.duration > 0 else ("pass" if exit_code == 0 else "fail")),
-                "timed_out": timed_out,
+            exit_code, timed_out, core_changed = _wait_for_engine(process, package / "Diablo.rbf", args.duration)
+        return {"status": ("fail" if core_changed else
+                           "pass" if timed_out and args.duration > 0 else ("pass" if exit_code == 0 else "fail")),
+                 "timed_out": timed_out,
+                 "core_changed": core_changed,
+                 "stop_reason": "core_changed" if core_changed else "duration" if timed_out else "engine_exit",
                 "candidate_id": candidate_id, "source_id": identity["source_id"], "campaign": args.campaign,
                 "command": command, "exit_code": exit_code, "started_utc": started,
                 "log": str(log_path), "admission": str(admission_path), "ready": str(ready_path),

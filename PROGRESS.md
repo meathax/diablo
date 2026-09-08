@@ -43,3 +43,10 @@ Reuse an artifact only when its complete relevant source, tool, configuration an
 - Root took ownership under the user instruction to handle difficult/failed work directly. Compared map/fitter warnings against `.work/c26-fpga-0232f7`: no new normalized warnings; unconstrained external endpoints unchanged.
 - Checked all 16 four-corner setup/hold/recovery/removal summaries: positive slack (minimum 0.106 ns), zero negative TNS. Verified all 18 recorded artifact hashes. Accepted only for diagnostic development deployment; C25 external timing and release acceptance remain open.
 - Evidence: `.work/goal-pcm-fpga-9bf880a/root-development-review.json`. No target deployment yet. Next: prepare an identity-bound diagnostic package and safely obtain the underflow event; root also owns the failed scene-capture work.
+
+## Current runtime and launcher correction
+
+- Read-only admission found I, Robot active while the old Diablo engine and launcher remain running. The foreign workload was left untouched; diagnostic activation is deferred. Evidence: `.work/goal-pcm-deploy-9bf880a/identity-results.json` and `lifecycle-results.json`.
+- Root fixed indefinite launcher waiting after core replacement: monitor the requested RBF, stop only the owned engine group, invalidate the run and clean admission/ready files. Hardware installation remains unchanged; C16 is not closed.
+- Validation: `wsl.exe -d Ubuntu --cd D:/Arcade/AI/aCORES/Diablo --exec python3 -m unittest support.tests.test_mister_launcher -v` — 3 real-process tests pass; `python -m unittest support.tests.test_package_release -q` — 6 pass. Details: `.work/goal-pcm-deploy-9bf880a/launcher-core-loss-validation.json`.
+- Next: finish the root-owned failed scene packet and package the reviewed RBF with the corrected launcher; revalidate target ownership before activation.
