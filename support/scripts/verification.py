@@ -16,18 +16,24 @@ import shutil
 import signal
 import subprocess
 import sys
+import tempfile
 import uuid
+from contextlib import contextmanager
 
 
 SCRIPT_DIRECTORY = Path(__file__).resolve().parent
 if str(SCRIPT_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIRECTORY))
 import candidate_manifest
+import board_runner
 
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = "diablo-verification-receipt-v1"
-DEPENDENCY_INPUTS = (*candidate_manifest.SOURCE_INPUTS, "support/tests")
+# Include the FPGA snapshot helper's declared legal input as well as the
+# candidate inputs and test corpus.  Keeping this list explicit prevents a
+# verification snapshot from silently depending on files in the checkout.
+DEPENDENCY_INPUTS = candidate_manifest.SOURCE_INPUTS
 
 
 @dataclass(frozen=True)
@@ -65,6 +71,57 @@ def source_snapshot(root: Path) -> dict[str, object]:
     }
 
 
+def copy_source_snapshot(root: Path, destination: Path) -> list[dict[str, object]]:
+    """Copy every verification input into an isolated execution tree.
+
+    Verification commands compile and test this tree, so a test cannot mutate
+    the checkout that is used to identify the receipt.  The returned records
+    are the exact pre-run bytes expected in the snapshot after execution.
+    """
+    records = candidate_manifest.files_for_inputs(root, DEPENDENCY_INPUTS)
+    for record in records:
+        source = root / str(record["path"])
+        target = destination / str(record["path"])
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+    return records
+
+
+def source_records(root: Path) -> list[dict[str, object]]:
+    return candidate_manifest.files_for_inputs(root, DEPENDENCY_INPUTS)
+
+
+@contextmanager
+def resolved_dependency_environment(root: Path):
+    """Resolve relative optional dependency paths before running in a snapshot."""
+    default_build = root / ".work" / "build" / "reference-host"
+    defaults = {
+        "DIABLO_HOST_BUILD_DIR": default_build,
+        "DIABLO_TRANSPORT_SDL_BUILD_INCLUDE": default_build / "_deps/sdl2-build/include/SDL2",
+        "DIABLO_TRANSPORT_SDL_SOURCE_INCLUDE": default_build / "_deps/sdl2-src/include",
+        "DIABLO_TRANSPORT_SDL_LIBRARY": default_build / "_deps/sdl2-build/libSDL2.a",
+    }
+    names = tuple(defaults)
+    previous: dict[str, str | None] = {}
+    try:
+        for name in names:
+            previous[name] = os.environ.get(name)
+            value = previous[name]
+            if value:
+                if not Path(value).is_absolute():
+                    value = str((root / value).resolve())
+                os.environ[name] = value
+            elif defaults[name].exists():
+                os.environ[name] = str(defaults[name].resolve())
+        yield
+    finally:
+        for name, value in previous.items():
+            if value is None:
+                os.environ.pop(name, None)
+            else:
+                os.environ[name] = value
+
+
 def read_candidate(root: Path, manifest_argument: Path | None) -> dict[str, object]:
     snapshot = source_snapshot(root)
     if manifest_argument is None:
@@ -77,6 +134,7 @@ def read_candidate(root: Path, manifest_argument: Path | None) -> dict[str, obje
     snapshot.update({
         "kind": "candidate-manifest",
         "candidate_id": manifest["candidate_id"],
+        "manifest_source_id": manifest["source_id"],
         "candidate_manifest": str(manifest_path.resolve().relative_to(root.resolve())).replace("\\", "/"),
         "artifact_count": len(manifest["artifacts"]),
         "limitation": None,
@@ -211,9 +269,21 @@ def selected_steps(root: Path, suite: str) -> tuple[list[Step], list[dict[str, s
                  "rtl/diablo_transport_ddram_arbiter.sv", "rtl/diablo_transport_control_reader.sv",
                  "rtl/diablo_framebuffer_scanout.sv", "rtl/diablo_pcm_player.sv", "rtl/diablo_input_capture.sv",
                  "rtl/diablo_command_consumer.sv", "support/tests/diablo_transport_integrated_tb.sv")),
-        rtl_step(root, "transport-abi-rtl", "transport_abi_tb", ("support/tests/transport_abi_tb.sv",)),
+        Step("transport-abi-rtl", (
+            (compiler, "-std=c++23", "-Wall", "-Wextra", "-Werror", "-I", str(root / "support/reference"),
+             str(root / "support/tests/transport_abi_test.cpp"), "-o",
+             str(root / ".work/build/verification/transport_abi_fixture.exe")),
+            (str(root / ".work/build/verification/transport_abi_fixture.exe"),
+             str(root / ".work/build/transport-abi/header.hex")),
+            ((tool_path("iverilog") or "iverilog"), "-g2012", "-I", str(root / "rtl"), "-s", "transport_abi_tb",
+             "-o", str(root / ".work/build/verification/transport-abi-rtl.vvp"),
+             str(root / "support/tests/transport_abi_tb.sv")),
+            ((tool_path("vvp") or "vvp"), str(root / ".work/build/verification/transport-abi-rtl.vvp")),
+        ), ("g++", "iverilog", "vvp"), 240),
         rtl_step(root, "native-test-pattern", "native_test_pattern_tb",
                  ("rtl/native_test_pattern.sv", "support/tests/native_test_pattern_tb.sv"), 240),
+        rtl_step(root, "video-source-policy", "diablo_video_source_policy_tb",
+                 ("rtl/diablo_video_source_policy.sv", "support/tests/diablo_video_source_policy_tb.sv")),
     ]
     deferred = [
         {"id": "host-png", "status": "not_run",
@@ -246,10 +316,10 @@ def selected_steps(root: Path, suite: str) -> tuple[list[Step], list[dict[str, s
         return [Step("transport-abi-arm", ((python, str(root / "support/scripts/test_transport_abi.py")),),
                      ("g++", "iverilog", "vvp", "wsl"), 600)], []
     return [], [{"id": "board", "status": "not_run",
-                 "reason": "a board adapter is intentionally not implemented by the local verification runner."}]
+                 "reason": "board verification requires --board-configuration; configured board runs are dispatched through support/scripts/board_runner.py."}]
 
 
-def record_step(step: Step, root: Path, logs: Path) -> dict[str, object]:
+def record_step(step: Step, root: Path, logs: Path, report_root: Path | None = None) -> dict[str, object]:
     missing = [name for name in step.required_tools if tool_path(name) is None]
     if missing:
         return {"id": step.identifier, "status": "not_run", "reason": "required tools unavailable: " + ", ".join(missing)}
@@ -269,10 +339,11 @@ def record_step(step: Step, root: Path, logs: Path) -> dict[str, object]:
             status, exit_code = "fail", code
             break
     log.write_text("\n".join(sections), encoding="utf-8")
+    relative_root = report_root or root
     return {"id": step.identifier, "status": status, "exit_code": exit_code,
             "timeout_seconds": step.timeout_seconds,
             "commands": [list(command) for command in step.commands],
-            "log": str(log.relative_to(root)).replace("\\", "/"), "log_sha256": sha256(log),
+            "log": str(log.relative_to(relative_root)).replace("\\", "/"), "log_sha256": sha256(log),
             "log_bytes": log.stat().st_size}
 
 
@@ -298,8 +369,10 @@ def run(root: Path, suite: str, candidate: Path | None, board_configuration: Pat
     started = dt.datetime.now(dt.timezone.utc)
     logs = root / ".mister" / "evidence" / "runs" / run_id
     (root / ".work" / "build" / "verification").mkdir(parents=True, exist_ok=True)
-    steps, not_run = selected_steps(root, suite)
+    snapshot_directory: Path | None = None
+    source_before: dict[str, object] | None = None
     try:
+        source_before = source_snapshot(root)
         candidate_record = read_candidate(root, candidate)
         candidate_error = None
     except (OSError, RuntimeError, ValueError, json.JSONDecodeError) as error:
@@ -311,16 +384,63 @@ def run(root: Path, suite: str, candidate: Path | None, board_configuration: Pat
             "limitation": str(error),
         }
         candidate_error = str(error)
-    if suite == "board" and board_configuration is None:
-        not_run.insert(0, {"id": "board-configuration", "status": "not_run",
-                           "reason": "--board-configuration is required for the board suite."})
-    elif suite == "board" and not board_configuration.is_file():
-        not_run.insert(0, {"id": "board-configuration", "status": "not_run",
-                           "reason": f"board configuration does not exist: {board_configuration}"})
-    if candidate_error is not None:
-        results = [{"id": "candidate-validation", "status": "fail", "reason": candidate_error}] + not_run
-    else:
-        results = [record_step(step, root, logs) for step in steps] + not_run
+    try:
+        if candidate_error is not None:
+            results: list[dict[str, object]] = [{"id": "candidate-validation", "status": "fail", "reason": candidate_error}]
+        elif suite == "board":
+            if board_configuration is None:
+                results = [{"id": "board-configuration", "status": "not_run",
+                            "reason": "--board-configuration is required for the board suite."}]
+            else:
+                configuration_path = board_configuration if board_configuration.is_absolute() else root / board_configuration
+                if not configuration_path.is_file():
+                    results = [{"id": "board-configuration", "status": "not_run",
+                                "reason": f"board configuration does not exist: {configuration_path}"}]
+                else:
+                    logs.mkdir(parents=True, exist_ok=True)
+                    results = [board_runner.run_configuration(
+                        root, configuration_path, str(candidate_record.get("candidate_id")),
+                        candidate_record.get("manifest_source_id"), logs / "board-qualification.log")]
+                    if candidate is not None:
+                        manifest_path = candidate if candidate.is_absolute() else root / candidate
+                        manifest_problems = candidate_manifest.verify_manifest(root, manifest_path)
+                        if manifest_problems:
+                            results.append({"id": "candidate-integrity", "status": "fail",
+                                            "reason": "candidate changed during board qualification: " + "; ".join(manifest_problems)})
+        else:
+            snapshot_directory = Path(tempfile.mkdtemp(prefix=f"diablo-verify-{run_id}-",
+                                                        dir=root / ".work" / "build" / "verification"))
+            expected_records = copy_source_snapshot(root, snapshot_directory)
+            (snapshot_directory / ".work" / "build" / "verification").mkdir(parents=True, exist_ok=True)
+            (snapshot_directory / ".work" / "build" / "transport-abi").mkdir(parents=True, exist_ok=True)
+            with resolved_dependency_environment(root):
+                steps, not_run = selected_steps(snapshot_directory, suite)
+            if suite == "board" and board_configuration is None:
+                not_run.insert(0, {"id": "board-configuration", "status": "not_run",
+                                   "reason": "--board-configuration is required for the board suite."})
+            elif suite == "board" and not board_configuration.is_file():
+                not_run.insert(0, {"id": "board-configuration", "status": "not_run",
+                                   "reason": f"board configuration does not exist: {board_configuration}"})
+            results = [record_step(step, snapshot_directory, logs, root) for step in steps] + not_run
+            observed_records = source_records(snapshot_directory)
+            if observed_records != expected_records:
+                results.append({"id": "source-integrity", "status": "fail",
+                                "reason": "isolated verification source snapshot changed during execution"})
+            source_after = source_snapshot(root)
+            if source_before is not None and source_after["inputs"]["source_files"] != source_before["inputs"]["source_files"]:
+                results.append({"id": "checkout-integrity", "status": "fail",
+                                "reason": "verification checkout inputs changed during execution"})
+            if candidate is not None:
+                manifest_path = candidate if candidate.is_absolute() else root / candidate
+                manifest_problems = candidate_manifest.verify_manifest(root, manifest_path)
+                if manifest_problems:
+                    results.append({"id": "candidate-integrity", "status": "fail",
+                                    "reason": "candidate changed during verification: " + "; ".join(manifest_problems)})
+    except (OSError, RuntimeError, ValueError, json.JSONDecodeError) as error:
+        results = [{"id": "verification-infrastructure", "status": "fail", "reason": str(error)}]
+    finally:
+        if snapshot_directory is not None:
+            shutil.rmtree(snapshot_directory, ignore_errors=True)
     statuses = {str(item["status"]) for item in results}
     status = "fail" if statuses & {"fail", "timed_out"} else "incomplete" if "not_run" in statuses else "pass"
     receipt = {
@@ -338,7 +458,9 @@ def run(root: Path, suite: str, candidate: Path | None, board_configuration: Pat
         "candidate": candidate_record,
         "dependency_snapshot": candidate_record["inputs"]["source_files"],
         "results": results,
-        "scope": "Local host/RTL verification only. This receipt is not ARM, hardware, audio, video, input-device or campaign acceptance evidence.",
+        "scope": ("Configured candidate-bound board adapter and operator observations; this receipt is not a substitute for an independent physical observer."
+                  if suite == "board" else
+                  "Local host/RTL verification only. This receipt is not ARM, hardware, audio, video, input-device or campaign acceptance evidence."),
     }
     timestamp = started.strftime("%Y%m%dT%H%M%SZ")
     target = root / ".mister" / "evidence" / "receipts" / (timestamp + "-" + run_id + ".json")

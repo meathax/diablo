@@ -11,7 +11,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
+import re
 from typing import Any
 
 
@@ -22,6 +24,22 @@ RECEIPT_SCHEMA = "diablo-verification-receipt-v1"
 ITEM_IDS = tuple(f"C{number:02d}" for number in range(1, 35))
 VALID_STATES = {"open", "in_progress", "blocked", "closed", "waived"}
 VALID_EVIDENCE_KINDS = {"receipt", "artifact"}
+HEX64 = re.compile(r"^[0-9a-f]{64}$")
+
+# Closure evidence is a typed contract.  A hash proves that a file is the file
+# named by the record; it does not prove that the file describes a passing test.
+# These schemas keep the release evaluator from accepting arbitrary JSON/text as
+# campaign, timing, performance or package evidence.
+ARTIFACT_SCHEMAS = {
+    "candidate-manifest": "diablo-candidate-manifest-v1",
+    "benchmark-analysis": "diablo-benchmark-analysis-v1",
+    "physical-matrix": "diablo-physical-matrix-v1",
+    "controller-multiplayer-matrix": "diablo-controller-multiplayer-matrix-v1",
+    "timing-report": "diablo-timing-report-v1",
+    "inventory": "diablo-source-inventory-v1",
+    "snapshot-build": "diablo-snapshot-build-v1",
+    "package-manifest": "diablo-package-manifest-v2",
+}
 
 
 class GateError(RuntimeError):
@@ -103,6 +121,16 @@ def validate_matrix(root: Path, matrix: dict[str, Any]) -> list[str]:
             raise GateError("scope section is missing")
         for field in ("campaigns", "output_modes", "control_devices", "multiplayer", "workflows"):
             require_strings(scope.get(field), f"scope.{field}")
+        # Output evidence is connector/mux specific.  Keep the release matrix
+        # from silently collapsing back to the old two-line descriptions that
+        # could make an HDMI result look like proof for analog/direct paths.
+        output_modes = scope["output_modes"]
+        required_mode_tokens = ("HDMI", "Direct RGB", "Analog/scandoubler")
+        if len(output_modes) != len(required_mode_tokens) or any(
+            not any(token.lower() in mode.lower() for mode in output_modes)
+            for token in required_mode_tokens
+        ):
+            raise GateError("scope.output_modes must enumerate HDMI, Direct RGB and Analog/scandoubler rows")
         targets = matrix.get("targets")
         if not isinstance(targets, dict):
             raise GateError("numeric target section is missing")
@@ -165,6 +193,27 @@ def validate_matrix(root: Path, matrix: dict[str, Any]) -> list[str]:
     return problems
 
 
+def valid_identity(value: object) -> bool:
+    return isinstance(value, str) and HEX64.fullmatch(value) is not None
+
+
+def validate_log(root: Path, result: dict[str, Any]) -> list[str]:
+    problems: list[str] = []
+    try:
+        path = relative_path(root, result.get("log"), "receipt log path")
+        if not path.is_file():
+            raise GateError(f"receipt log is missing: {path}")
+        observed_hash = sha256_file(path)
+        if result.get("log_sha256") != observed_hash:
+            raise GateError(f"receipt log hash does not match result: {path}")
+        observed_bytes = path.stat().st_size
+        if result.get("log_bytes") != observed_bytes:
+            raise GateError(f"receipt log byte count does not match result: {path}")
+    except GateError as error:
+        problems.append(str(error))
+    return problems
+
+
 def validate_receipt(root: Path, evidence: dict[str, Any], requirement: dict[str, Any], record: dict[str, Any]) -> list[str]:
     problems: list[str] = []
     try:
@@ -183,20 +232,97 @@ def validate_receipt(root: Path, evidence: dict[str, Any], requirement: dict[str
         if not isinstance(candidate, dict) or candidate.get("source_id") != record.get("source_id"):
             raise GateError(f"receipt source identity differs from closure record: {path}")
         expected_candidate = record.get("candidate_id")
-        if expected_candidate is not None and candidate.get("candidate_id") != expected_candidate:
+        if not valid_identity(expected_candidate) or candidate.get("candidate_id") != expected_candidate:
             raise GateError(f"receipt candidate identity differs from closure record: {path}")
+        results = receipt.get("results")
+        if not isinstance(results, list) or not results:
+            raise GateError(f"receipt has no result records: {path}")
+        result_ids: set[str] = set()
+        for result in results:
+            if not isinstance(result, dict) or not isinstance(result.get("id"), str) or not result["id"]:
+                raise GateError(f"receipt has an invalid result record: {path}")
+            if result["id"] in result_ids:
+                raise GateError(f"receipt has duplicate result id {result['id']}: {path}")
+            result_ids.add(result["id"])
+            if result.get("status") != "pass":
+                raise GateError(f"receipt result {result['id']} is not pass: {path}")
+            problems.extend(validate_log(root, result))
     except GateError as error:
         problems.append(str(error))
     return problems
 
 
-def validate_artifact(root: Path, evidence: dict[str, Any]) -> list[str]:
+def validate_artifact(root: Path, evidence: dict[str, Any], requirement: dict[str, Any],
+                      matrix: dict[str, Any], record: dict[str, Any]) -> list[str]:
     try:
         path = relative_path(root, evidence.get("path"), "artifact evidence path")
         if not path.is_file():
             raise GateError(f"artifact is missing: {path}")
         if evidence.get("sha256") != sha256_file(path):
             raise GateError(f"artifact hash does not match evidence record: {path}")
+        try:
+            artifact = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise GateError(f"typed artifact is not valid JSON: {path}") from error
+        if not isinstance(artifact, dict):
+            raise GateError(f"typed artifact must be a JSON object: {path}")
+        evidence_id = requirement.get("id")
+        expected_schema = ARTIFACT_SCHEMAS.get(evidence_id)
+        if expected_schema is None:
+            raise GateError(f"no typed schema is registered for artifact evidence {evidence_id}")
+        if artifact.get("schema") != expected_schema:
+            raise GateError(f"artifact schema does not match {evidence_id}: {path}")
+        if artifact.get("status") != "pass":
+            raise GateError(f"artifact status is not pass: {path}")
+        if artifact.get("candidate_id") != record.get("candidate_id") or not valid_identity(artifact.get("candidate_id")):
+            raise GateError(f"artifact candidate identity differs from closure record: {path}")
+        expected_artifact_source = ((record.get("manifest_source_id") or record.get("source_id"))
+                                    if evidence_id == "candidate-manifest" else record.get("source_id"))
+        if artifact.get("source_id") != expected_artifact_source or not valid_identity(artifact.get("source_id")):
+            raise GateError(f"artifact source identity differs from closure record: {path}")
+        if evidence_id == "candidate-manifest":
+            inputs = artifact.get("inputs")
+            artifacts = artifact.get("artifacts")
+            if not isinstance(inputs, dict) or not isinstance(inputs.get("source_files"), list) or not inputs["source_files"]:
+                raise GateError(f"candidate manifest has no source input inventory: {path}")
+            if not isinstance(artifacts, list) or not artifacts:
+                raise GateError(f"candidate manifest has no build artifacts: {path}")
+        elif evidence_id == "benchmark-analysis":
+            targets = matrix["targets"]
+            metrics = artifact.get("metrics")
+            runs = artifact.get("runs")
+            if not isinstance(metrics, dict) or not isinstance(runs, list) or len(runs) < targets["performance"]["paired_runs"]:
+                raise GateError(f"benchmark artifact lacks the required paired runs: {path}")
+            required_metrics = ("fps", "p99_presentation_ms", "late_prepared_percent")
+            if any(not isinstance(metrics.get(name), (int, float)) or isinstance(metrics.get(name), bool)
+                   or not math.isfinite(float(metrics[name])) for name in required_metrics):
+                raise GateError(f"benchmark artifact lacks finite headline metrics: {path}")
+            if metrics["fps"] < targets["performance"]["target_fps"]:
+                raise GateError(f"benchmark FPS is below target: {path}")
+            if metrics["p99_presentation_ms"] > targets["performance"]["p99_presentation_ms"]:
+                raise GateError(f"benchmark p99 presentation time exceeds target: {path}")
+            if metrics["late_prepared_percent"] > targets["performance"]["max_late_prepared_percent"]:
+                raise GateError(f"benchmark late-prepared rate exceeds target: {path}")
+        elif evidence_id in {"physical-matrix", "controller-multiplayer-matrix"}:
+            coverage = artifact.get("coverage")
+            if not isinstance(coverage, dict):
+                raise GateError(f"physical artifact has no coverage object: {path}")
+            for field, required in matrix["scope"].items():
+                observed = coverage.get(field)
+                if not isinstance(observed, list) or any(value not in observed for value in required):
+                    raise GateError(f"physical artifact does not cover scope.{field}: {path}")
+        elif evidence_id == "timing-report":
+            if artifact.get("all_corners") is not True or artifact.get("unconstrained_endpoints") != 0:
+                raise GateError(f"timing artifact does not prove all-corner constrained timing: {path}")
+        elif evidence_id == "inventory":
+            if artifact.get("private_inputs_excluded") is not True or not isinstance(artifact.get("source_files"), list):
+                raise GateError(f"inventory artifact lacks source/private-input disposition: {path}")
+        elif evidence_id == "snapshot-build":
+            if artifact.get("reproducible") is not True or not isinstance(artifact.get("tools"), dict) or not artifact["tools"]:
+                raise GateError(f"snapshot-build artifact lacks reproducibility/tool evidence: {path}")
+        elif evidence_id == "package-manifest":
+            if artifact.get("private_data_excluded") is not True or not isinstance(artifact.get("files"), list) or not artifact["files"]:
+                raise GateError(f"package artifact lacks allowlisted files/private-data disposition: {path}")
     except GateError as error:
         return [str(error)]
     return []
@@ -210,8 +336,14 @@ def evaluate(root: Path, matrix: dict[str, Any], record: dict[str, Any], expecte
     if record.get("matrix_sha256") != matrix_digest(matrix):
         problems.append("closure record was made for a different gate matrix")
     source_id = record.get("source_id")
-    if not isinstance(source_id, str) or not source_id:
-        problems.append("closure record requires a source_id")
+    if not valid_identity(source_id):
+        problems.append("closure record requires a 64-hex source_id")
+    candidate_id = record.get("candidate_id")
+    if not valid_identity(candidate_id):
+        problems.append("closure record requires a non-null 64-hex candidate_id for release evaluation")
+    manifest_source_id = record.get("manifest_source_id")
+    if manifest_source_id is not None and not valid_identity(manifest_source_id):
+        problems.append("closure record manifest_source_id must be a 64-hex identity")
     if expected_source is not None and source_id != expected_source:
         problems.append("closure record source_id does not match the expected current source")
     if expected_candidate is not None and record.get("candidate_id") != expected_candidate:
@@ -240,7 +372,18 @@ def evaluate(root: Path, matrix: dict[str, Any], record: dict[str, Any], expecte
                 if not isinstance(supplied, list):
                     item_problems.append("closed item has no evidence list")
                     supplied = []
-                by_id = {value.get("id"): value for value in supplied if isinstance(value, dict) and isinstance(value.get("id"), str)}
+                by_id: dict[str, dict[str, Any]] = {}
+                required_ids = {requirement.get("id") for requirement in specification.get("evidence", [])}
+                for value in supplied:
+                    if not isinstance(value, dict) or not isinstance(value.get("id"), str) or not value["id"]:
+                        item_problems.append("closed item has an invalid evidence entry")
+                        continue
+                    evidence_id = value["id"]
+                    if evidence_id in by_id:
+                        item_problems.append(f"duplicate evidence id {evidence_id}")
+                    by_id[evidence_id] = value
+                for supplied_id in set(by_id) - required_ids:
+                    item_problems.append(f"unexpected evidence {supplied_id}")
                 for requirement in specification.get("evidence", []):
                     evidence = by_id.get(requirement.get("id"))
                     if evidence is None:
@@ -250,7 +393,7 @@ def evaluate(root: Path, matrix: dict[str, Any], record: dict[str, Any], expecte
                     elif requirement.get("kind") == "receipt":
                         item_problems.extend(validate_receipt(root, evidence, requirement, record))
                     else:
-                        item_problems.extend(validate_artifact(root, evidence))
+                        item_problems.extend(validate_artifact(root, evidence, requirement, matrix, record))
             elif status == "waived":
                 decision = entry.get("scope_decision")
                 if not isinstance(decision, dict) or not all(isinstance(decision.get(field), str) and decision[field]
