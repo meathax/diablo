@@ -1,6 +1,6 @@
 # Diablo MiSTer — completion execution plan
 
-**Active execution status, 8 September 2026:** follow the [detailed plan's active execution state](reports/audit-2026-09-07/PROPOSED_PLAN.md#execution-state). The user confirms the repaired full cinematic cycle and good audio, and authorizes HDMI-only physical testing with CRT/direct-video retained as best-effort untested settings. The committed local verification packet and endpoint-aligned ARM replay are complete; the candidate-bound integrated target trace remains active. No release is accepted.
+**Active execution status, 8 September 2026:** follow the [detailed plan's active execution state](reports/audit-2026-09-07/PROPOSED_PLAN.md#execution-state). The user confirms the repaired full cinematic cycle and good audio, and authorizes HDMI-only physical testing with CRT/direct-video retained as best-effort untested settings. The committed local verification packet and endpoint-aligned ARM replay are complete. PCM underflow-event diagnostic commit `9bf880a` is accepted as diagnostic-only; reproducible FPGA compile/timing/compress is delegated to `.work/goal-pcm-fpga-9bf880a`, and candidate-bound integrated tracing remains active. No hardware or release acceptance is implied, and no release is accepted.
 
 ## Historical next-chat handoff — 8 September 2026
 

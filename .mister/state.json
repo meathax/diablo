@@ -1,7 +1,7 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "f95ca2a6846f5500dae9b93e9ed0c43dd49bcf48e2a15e53f423f12f2c3dedf1",
+  "completion_document_sha256": "fe5e2eefc15e6c8c01dd3f3a47cf22a73f634f045c513eff2ac7c407132b7769",
   "status": "implementation-active-local-replay-verified-physical-closure-open",
   "candidate": {
     "state": "no-current-accepted-candidate",
@@ -12,7 +12,23 @@
     "next_gate": "Complete the candidate-bound integrated target trace, then close the remaining HDMI physical, PCM, campaign, lifecycle, performance and C25 evidence gates.",
     "development_validity": "Candidate b537b12c1dc8afbd36cb2c5e82d0a58cff4be2f50ca60d0cf38badb540b49c7b records the d2ccbc3 ARM repair with the qualified FPGA and 191 previously verified files. The user confirms its full cinematic visual cycle and good audio; integrated target tracing remains active. Full physical/release acceptance remains false."
   },
-  "active_work": "Implementation active: committed local verification and endpoint-aligned ARM replay are complete; candidate-bound integrated target tracing and the remaining physical/release matrix are active. HDMI is the required physical scope; CRT/direct-video remain explicitly untested. No release accepted.",
+  "active_work": "Implementation active: committed local verification and endpoint-aligned ARM replay are complete; accepted PCM underflow-event diagnostic commit 9bf880a is diagnostic-only, while delegated FPGA compile/timing/compress, candidate-bound integrated tracing and the remaining physical/release matrix are active. HDMI is the required physical scope; CRT/direct-video remain explicitly untested. No hardware or release acceptance is implied.",
+  "pcm_underflow_diagnostic": {
+    "commit": "9bf880a52d72e0935d6a4299063583cf7be86648",
+    "status": "accepted-diagnostic-only",
+    "abi_snapshot": {
+      "offset": 424,
+      "bytes": 48,
+      "semantics": "first active starvation edge; commit/epoch coherent read; reset/reattach invalidation; older FPGA image reports unavailable"
+    },
+    "independent_review": "pass; player, long-queue, DDR-arbiter and integrated RTL checks, host ABI checks, WSL state-dump checks, ABI generator freshness and diff checks",
+    "hardware_acceptance": false,
+    "fpga_qualification": {
+      "status": "delegated",
+      "worktree": ".work/goal-pcm-fpga-9bf880a",
+      "required": ["reproducible compile", "timing", "compress"]
+    }
+  },
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],
@@ -29,8 +45,8 @@
     "11": "Qualify candidate43 completely on MiSTer",
     "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "Finish and record the candidate-bound integrated target trace and delegated underflow-event diagnostic, then execute the remaining HDMI physical, PCM zero-underrun, campaign/save/input, performance, lifecycle and C25 closure checks. Missing Git remote blocks push only; do not rebuild unchanged FPGA or replay artifacts.",
-  "next_implementation": "Use the passing committed local receipt, completed ARM replay comparison and stable 120-sample PCM trace as current evidence. Continue integrated target admission/trace and underflow-event capture under the authorized HDMI-only physical scope; retain CRT/direct-video as explicitly untested and keep all remaining requirements unchanged. C25 gap inventory is in .work/goal-c25/c25-contract-evidence.json.",
+  "next_action": "Finish the delegated reproducible FPGA compile/timing/compress for PCM diagnostic commit 9bf880a, then record the candidate-bound integrated target trace and execute the remaining HDMI physical, PCM endurance/zero-steady-delta, campaign/save/input, performance, lifecycle and C25 closure checks. Missing Git remote blocks push only; do not deploy or claim hardware/release acceptance.",
+  "next_implementation": "Use the accepted diagnostic-only PCM snapshot commit 9bf880a after its delegated FPGA qualification; combine event queue/fetch/producer/player/DDR-arbiter state with the stable 120-sample trace, then continue candidate-bound target admission/trace under the authorized HDMI-only physical scope. Retain CRT/direct-video as explicitly untested and keep all remaining requirements unchanged. C25 gap inventory is in .work/goal-c25/c25-contract-evidence.json.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
   "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
