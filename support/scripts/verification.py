@@ -143,6 +143,8 @@ def selected_steps(root: Path, suite: str) -> tuple[list[Step], list[dict[str, s
              ("g++",), 180),
         Step("command-transport", ((python, str(root / "support/scripts/test_command_transport.py")),),
              ("g++",), 180),
+        Step("transport-lifecycle", ((python, str(root / "support/scripts/test_mister_transport_lifecycle.py")),),
+             ("wsl",), 300),
         Step("transport-abi-host", (
             (compiler, "-std=c++23", "-Wall", "-Wextra", "-Werror", "-I", str(root / "support/reference"),
              str(root / "support/tests/transport_abi_test.cpp"), "-o",
