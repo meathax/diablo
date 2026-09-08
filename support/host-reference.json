@@ -3,6 +3,8 @@
   "toolchain_prefix": "D:/vibes/fpga/toolchains/msys64/ucrt64",
   "cmake_options": {
     "CMAKE_BUILD_TYPE": "Release",
+    "DISABLE_LTO": "ON",
+    "DISABLE_ZERO_TIER": "ON",
     "CMAKE_POLICY_VERSION_MINIMUM": "3.5",
     "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
     "USE_SDL1": "OFF",

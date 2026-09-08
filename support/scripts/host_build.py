@@ -21,6 +21,7 @@ def integration_files(root):
              'support/cmake/host-scenario.cmake', 'support/reference/host_scenario.hpp',
              'support/cmake/replay-loading.cmake',
              'support/cmake/mister-controller.cmake', 'support/reference/mister_controller_bindings.hpp',
+             'support/reference/mister_controller_safety.hpp',
              'support/tests/mister_controller_test.cpp',
              'support/reference/indexed_frame.hpp', 'support/tests/host_png_test.cpp',
              'support/patches/host-dependency-fixes.json')

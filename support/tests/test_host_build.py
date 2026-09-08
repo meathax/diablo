@@ -12,6 +12,11 @@ spec.loader.exec_module(host)
 
 
 class BuildDirectoryTests(unittest.TestCase):
+    def test_reference_recipe_disables_lto_for_fast_host_validation(self):
+        recipe = json.loads((Path(__file__).parents[1] / 'host-reference.json').read_text())
+        self.assertEqual(recipe['cmake_options'].get('DISABLE_LTO'), 'ON')
+        self.assertEqual(recipe['cmake_options'].get('DISABLE_ZERO_TIER'), 'ON')
+
     def test_default_and_clean_directories_are_separate(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

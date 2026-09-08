@@ -109,4 +109,16 @@ inline constexpr std::array XboxControllerBindings {
 	return std::nullopt;
 }
 
+[[nodiscard]] constexpr bool HasXboxQuickSpellLayer(
+    const ControllerButtonCombo &quickSpell1,
+    const ControllerButtonCombo &quickSpell2,
+    const ControllerButtonCombo &quickSpell3,
+    const ControllerButtonCombo &quickSpell4)
+{
+	return quickSpell1.modifier == ControllerButton_AXIS_TRIGGERRIGHT && quickSpell1.button == ControllerButton_BUTTON_X
+	    && quickSpell2.modifier == ControllerButton_AXIS_TRIGGERRIGHT && quickSpell2.button == ControllerButton_BUTTON_Y
+	    && quickSpell3.modifier == ControllerButton_AXIS_TRIGGERRIGHT && quickSpell3.button == ControllerButton_BUTTON_A
+	    && quickSpell4.modifier == ControllerButton_AXIS_TRIGGERRIGHT && quickSpell4.button == ControllerButton_BUTTON_B;
+}
+
 } // namespace devilution::mister
