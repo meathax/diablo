@@ -65,6 +65,58 @@ class SceneOracleTests(unittest.TestCase):
         self.assertEqual(result["status"], "fail")
         self.assertIn("ARM run build role is not arm-reference", result["errors"])
 
+    def dungeon_records(self):
+        for directory, side in ((self.host, "host"), (self.arm, "arm")):
+            data = json.loads((directory / "run.json").read_text())
+            data["scenario"] = "dungeon-v1"
+            data["capture_start_logic_ms"] = 5000
+            if side == "host":
+                data["build_role"] = "host-reference"
+            else:
+                data["build_role"] = "arm-reference"
+            if side == "arm":
+                data["status"] = "passed"
+            (directory / "run.json").write_text(json.dumps(data))
+            (directory / "frames/frame-128.d8f.state.json").write_text(json.dumps({
+                "schema": "diablo-capture-scene-state-v1", "frame": 128, "logic_ms": 6400,
+                "level": 1, "player_level": 1, "player_active": True, "transition_complete": True,
+            }))
+
+    def test_dungeon_scenario_requires_typed_capture_boundary(self):
+        self.dungeon_records()
+        result = oracle.qualify(
+            self.host, self.arm,
+            host_role="host-reference", arm_role="arm-reference", scenario="dungeon-v1")
+        self.assertEqual(result["status"], "pass")
+        self.assertEqual(result["scenario"]["name"], "dungeon-v1")
+
+    def test_dungeon_scenario_rejects_missing_capture_boundary(self):
+        host = json.loads((self.host / "run.json").read_text())
+        arm = json.loads((self.arm / "run.json").read_text())
+        host.update(scenario="dungeon-v1", build_role="host-reference")
+        arm.update(scenario="dungeon-v1", build_role="arm-reference", status="passed")
+        (self.host / "run.json").write_text(json.dumps(host))
+        (self.arm / "run.json").write_text(json.dumps(arm))
+        result = oracle.qualify(
+            self.host, self.arm,
+            host_role="host-reference", arm_role="arm-reference", scenario="dungeon-v1")
+        self.assertEqual(result["status"], "fail")
+        self.assertIn("host capture start is not 5000ms for dungeon-v1", result["errors"])
+
+    def test_dungeon_label_cannot_admit_town_loading_or_mismatched_frame_state(self):
+        self.dungeon_records()
+        state_path = self.host / "frames/frame-128.d8f.state.json"
+        original = json.loads(state_path.read_text())
+        for field, value in (("level", 0), ("player_level", 0), ("transition_complete", False),
+                             ("player_active", False), ("frame", 0), ("logic_ms", 1)):
+            with self.subTest(field=field):
+                state_path.write_text(json.dumps({**original, field: value}))
+                result = oracle.qualify(self.host, self.arm, scenario="dungeon-v1")
+                self.assertEqual("fail", result["status"])
+                self.assertTrue(any("not a completed level-1" in e for e in result["errors"]))
+        state_path.unlink()
+        self.assertEqual("fail", oracle.qualify(self.host, self.arm, scenario="dungeon-v1")["status"])
+
 
 if __name__ == "__main__":
     unittest.main()

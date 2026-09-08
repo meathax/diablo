@@ -21,7 +21,14 @@ namespace diablo_reference {
 inline bool NativeScenarioEnabled()
 {
     const char *value = std::getenv("DIABLO_NATIVE_SCENARIO");
-    return value != nullptr && std::strcmp(value, "town-v1") == 0;
+    return value != nullptr
+        && (std::strcmp(value, "town-v1") == 0 || std::strcmp(value, "dungeon-v1") == 0);
+}
+
+inline bool NativeDungeonScenarioEnabled()
+{
+    const char *value = std::getenv("DIABLO_NATIVE_SCENARIO");
+    return value != nullptr && std::strcmp(value, "dungeon-v1") == 0;
 }
 
 inline void BeginNativeScenario(devilution::GameData *gameData)
@@ -43,16 +50,38 @@ inline void BeginNativeScenario(devilution::GameData *gameData)
     gbLoadGame = false;
 }
 
+inline void NativeScenarioTick(unsigned ticks)
+{
+    using namespace devilution;
+    if (!NativeDungeonScenarioEnabled() || ticks != 64)
+        return;
+    if (MyPlayer == nullptr || !MyPlayer->plractive || currlevel != 0)
+        std::abort();
+    // Use the same level-change path as the real town stair trigger. This keeps
+    // save, level generation and player-entry state on the production path.
+    StartNewLvl(*MyPlayer, WM_DIABNEXTLVL, 1);
+}
+
 inline void FinishNativeScenario(unsigned ticks)
 {
     using namespace devilution;
     if (!NativeScenarioEnabled()) return;
-    if (ticks != 512 || MyPlayer == nullptr || !MyPlayer->plractive
-        || MyPlayer->_pHitPoints <= 0 || currlevel != 0 || HeadlessMode || gbIsSpawn)
+    const bool dungeon = NativeDungeonScenarioEnabled();
+    const bool valid = ticks == 512 && MyPlayer != nullptr && MyPlayer->plractive
+        && MyPlayer->_pHitPoints > 0 && currlevel == (dungeon ? 1 : 0)
+        && !HeadlessMode && !gbIsSpawn;
+    if (!valid) {
+        LogError("Native scenario {} failed: ticks={}, player={}, active={}, hp={}, level={}, headless={}, spawn={}",
+            dungeon ? "dungeon-v1" : "town-v1", ticks, MyPlayer != nullptr,
+            MyPlayer != nullptr && MyPlayer->plractive,
+            MyPlayer != nullptr ? MyPlayer->_pHitPoints : 0, currlevel, HeadlessMode, gbIsSpawn);
         std::abort();
+    }
     pfile_write_hero(true);
-    LogInfo("Native scenario town-v1 complete: campaign={}, ticks={}, position={},{}",
+    LogInfo("Native scenario {} complete: campaign={}, ticks={}, level={}, position={},{}",
+        dungeon ? "dungeon-v1" : "town-v1",
         gbIsHellfire ? "hellfire" : "diablo", ticks,
+        currlevel,
         MyPlayer->position.tile.x, MyPlayer->position.tile.y);
 }
 } // namespace diablo_reference

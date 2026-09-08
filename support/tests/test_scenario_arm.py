@@ -63,6 +63,24 @@ spec.loader.exec_module(scenario)
 
 
 class ScenarioArmSelectionTests(unittest.TestCase):
+    def test_dungeon_replay_dispatches_transition_after_preparation_tick(self):
+        # Decode event boundaries, rather than searching for bytes which may
+        # also occur inside key codes or replay header fields.
+        for name, expected in [('town-v1', []), ('dungeon-v1', [64])]:
+            data = scenario.scenario_demo(name)
+            cursor, ticks, transitions = 32, 0, []
+            while cursor < len(data):
+                event = data[cursor]
+                size = {0: 2, 9: 6, 13: 8, 14: 8, 64: 2}[event]
+                self.assertLessEqual(cursor + size, len(data))
+                if event == 0:
+                    ticks += 1
+                elif event == 64:
+                    transitions.append(ticks)
+                cursor += size
+            self.assertEqual(ticks, 512)
+            self.assertEqual(transitions, expected)
+
     @staticmethod
     def synthetic_reference_receipt() -> dict:
         return {

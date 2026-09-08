@@ -18,6 +18,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = "diablo-scene-oracle-v1"
+SCENARIO_CAPTURE_START_MS = {"dungeon-v1": 5000}
 
 try:
     from compare_frames import compare_series, read_frame
@@ -56,13 +57,13 @@ def _load_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def _run_success(record: dict[str, Any], side: str) -> bool:
+def _run_success(record: dict[str, Any], side: str, scenario: str) -> bool:
     if side == "host":
-        return record.get("scenario") == "town-v1" and record.get("passed") is True
-    return record.get("scenario") == "town-v1" and record.get("status") == "passed"
+        return record.get("scenario") == scenario and record.get("passed") is True
+    return record.get("scenario") == scenario and record.get("status") == "passed"
 
 
-def _capture_records(directory: Path) -> list[dict[str, Any]]:
+def capture_records(directory: Path, scenario: str = "town-v1") -> list[dict[str, Any]]:
     if not directory.is_dir():
         raise ValueError(f"capture directory is missing: {directory}")
     if list(directory.glob("*.partial")):
@@ -70,13 +71,27 @@ def _capture_records(directory: Path) -> list[dict[str, Any]]:
     captures = []
     for path in sorted(directory.glob("*.d8f")):
         frame = read_frame(path)
-        captures.append({
+        capture = {
             "file": path.name,
             "bytes": path.stat().st_size,
             "sha256": frame["sha256"],
             "frame": frame["frame"],
             "logic_ms": frame["logic_ms"],
-        })
+        }
+        if scenario == "dungeon-v1":
+            state_path = Path(str(path) + ".state.json")
+            state = _load_json(state_path)
+            if (state.get("schema") != "diablo-capture-scene-state-v1"
+                    or state.get("frame") != frame["frame"]
+                    or state.get("logic_ms") != frame["logic_ms"]
+                    or frame["logic_ms"] < SCENARIO_CAPTURE_START_MS[scenario]
+                    or state.get("level") != 1 or state.get("player_level") != 1
+                    or state.get("player_active") is not True
+                    or state.get("transition_complete") is not True):
+                raise ValueError(f"capture is not a completed level-1 dungeon frame: {path}")
+            capture["scene_state"] = state
+            capture["scene_state_sha256"] = sha256(state_path)
+        captures.append(capture)
     if not captures:
         raise ValueError(f"no indexed captures found: {directory}")
     return captures
@@ -97,16 +112,23 @@ def _immutable_write(path: Path, value: dict[str, Any]) -> None:
 
 
 def qualify(host_dir: Path, arm_dir: Path, candidate: dict[str, Any] | None = None,
-            host_role: str | None = None, arm_role: str | None = None) -> dict[str, Any]:
+            host_role: str | None = None, arm_role: str | None = None,
+            scenario: str = "town-v1") -> dict[str, Any]:
     host_dir = host_dir.resolve()
     arm_dir = arm_dir.resolve()
     host_run_path, arm_run_path = host_dir / "run.json", arm_dir / "run.json"
     host_run, arm_run = _load_json(host_run_path), _load_json(arm_run_path)
     errors: list[str] = []
-    if not _run_success(host_run, "host"):
-        errors.append("host scenario is not a passed town-v1 run")
-    if not _run_success(arm_run, "arm"):
-        errors.append("ARM scenario is not a passed town-v1 run")
+    if not _run_success(host_run, "host", scenario):
+        errors.append(f"host scenario is not a passed {scenario} run")
+    if not _run_success(arm_run, "arm", scenario):
+        errors.append(f"ARM scenario is not a passed {scenario} run")
+    expected_capture_start = SCENARIO_CAPTURE_START_MS.get(scenario)
+    if expected_capture_start is not None:
+        for side, record in (("host", host_run), ("ARM", arm_run)):
+            if record.get("capture_start_logic_ms") != expected_capture_start:
+                errors.append(
+                    f"{side} capture start is not {expected_capture_start}ms for {scenario}")
     if host_role is not None and host_run.get("build_role") != host_role:
         errors.append(f"host run build role is not {host_role}")
     if arm_role is not None and arm_run.get("build_role") != arm_role:
@@ -117,8 +139,8 @@ def qualify(host_dir: Path, arm_dir: Path, candidate: dict[str, Any] | None = No
     host_captures: list[dict[str, Any]] = []
     arm_captures: list[dict[str, Any]] = []
     try:
-        host_captures = _capture_records(host_dir / "frames")
-        arm_captures = _capture_records(arm_dir / "frames")
+        host_captures = capture_records(host_dir / "frames", scenario)
+        arm_captures = capture_records(arm_dir / "frames", scenario)
         comparison = compare_series(host_dir / "frames", arm_dir / "frames")
         if not comparison.get("equal"):
             errors.append("capture series are not exactly equal")
@@ -176,12 +198,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--host", type=Path, required=True, help="host-reference run directory")
     parser.add_argument("--arm", type=Path, required=True, help="ARM/QEMU run directory")
     parser.add_argument("--candidate-manifest", type=Path)
+    parser.add_argument("--scenario", choices=("town-v1", "dungeon-v1"), default="town-v1")
     parser.add_argument("--host-role", default="host-reference")
     parser.add_argument("--arm-role", default="arm-reference")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     candidate = _candidate_record(args.candidate_manifest)
-    receipt = qualify(args.host, args.arm, candidate, args.host_role, args.arm_role)
+    receipt = qualify(args.host, args.arm, candidate, args.host_role, args.arm_role, args.scenario)
     _immutable_write(args.output, receipt)
     print(json.dumps({"status": receipt["status"], "output": str(args.output),
                       "campaign": receipt["scenario"]["campaign"],

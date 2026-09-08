@@ -2,7 +2,10 @@
 
 #include "indexed_frame.hpp"
 #include "engine/surface.hpp"
+#include "levels/gendung.h"
+#include "player.h"
 #include <cstdlib>
+#include <cstring>
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
@@ -10,12 +13,31 @@
 
 namespace diablo_reference {
 
+inline std::uint64_t CaptureStartLogicMs()
+{
+    static const std::uint64_t value = [] {
+        const char *text = std::getenv("DIABLO_CAPTURE_START_MS");
+        if (text == nullptr || *text == '\0') return std::uint64_t { 0 };
+        char *end = nullptr;
+        const auto parsed = std::strtoull(text, &end, 10);
+        if (end == text || *end != '\0') std::abort();
+        return static_cast<std::uint64_t>(parsed);
+    }();
+    return value;
+}
+
 // Called only after the complete indexed gameplay draw, before presentation.
 // Capture runs intentionally perform disk I/O and must not be used for FPS claims.
 inline void CaptureRenderedFrame(const devilution::Surface &frame, std::uint64_t logicMs)
 {
     static const char *directory = std::getenv("DIABLO_CAPTURE_DIR");
     if (directory == nullptr || *directory == '\0') return;
+    if (logicMs < CaptureStartLogicMs()) return;
+    const char *scenario = std::getenv("DIABLO_NATIVE_SCENARIO");
+    const bool dungeon = scenario != nullptr && std::strcmp(scenario, "dungeon-v1") == 0;
+    if (dungeon && (devilution::currlevel != 1 || devilution::MyPlayer == nullptr
+        || !devilution::MyPlayer->plractive || devilution::MyPlayer->plrlevel != 1
+        || devilution::MyPlayer->_pmode == devilution::PM_NEWLVL)) return;
     static std::uint64_t frameNumber = 0;
     const auto id = frameNumber++;
     if (id % 128 != 0) return;
@@ -51,6 +73,21 @@ inline void CaptureRenderedFrame(const devilution::Surface &frame, std::uint64_t
     if (!output) fail();
     std::filesystem::rename(temporary, path, error);
     if (error) fail();
+    if (dungeon) {
+        const std::filesystem::path statePath(path.string() + ".state.json");
+        const std::filesystem::path stateTemporary(statePath.string() + ".partial");
+        if (std::filesystem::exists(statePath, error) || error
+            || std::filesystem::exists(stateTemporary, error) || error) fail();
+        std::ofstream state(stateTemporary);
+        state << "{\"schema\":\"diablo-capture-scene-state-v1\",\"frame\":" << id
+              << ",\"logic_ms\":" << logicMs << ",\"level\":" << unsigned(devilution::currlevel)
+              << ",\"player_level\":" << unsigned(devilution::MyPlayer->plrlevel)
+              << ",\"player_active\":true,\"transition_complete\":true}\n";
+        state.close();
+        if (!state) fail();
+        std::filesystem::rename(stateTemporary, statePath, error);
+        if (error) fail();
+    }
 }
 
 } // namespace diablo_reference

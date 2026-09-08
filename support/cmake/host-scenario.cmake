@@ -13,6 +13,24 @@ diablo_host_patch_file(engine/demomode.cpp
 {
     diablo_reference::FinishNativeScenario(LogicTick);]]
   "${overlay}/engine/demomode.cpp")
+file(READ "${overlay}/engine/demomode.cpp" demomode_content)
+string(FIND "${demomode_content}" [[if (isGameTick)
+		LogicTick++;]] scenario_tick_site)
+if(scenario_tick_site LESS 0)
+  message(FATAL_ERROR "Pinned replay tick hook site is missing")
+endif()
+string(REPLACE [[if (isGameTick)
+		LogicTick++;]] [[if (isGameTick) {
+		LogicTick++;
+		diablo_reference::NativeScenarioTick(LogicTick);
+	}]] demomode_content "${demomode_content}")
+foreach(required_hook "FinishNativeScenario(LogicTick)" "NativeScenarioTick(LogicTick)")
+  string(FIND "${demomode_content}" "${required_hook}" hook_position)
+  if(hook_position LESS 0)
+    message(FATAL_ERROR "Scenario overlay lost ${required_hook}")
+  endif()
+endforeach()
+file(CONFIGURE OUTPUT "${overlay}/engine/demomode.cpp" CONTENT "${demomode_content}" @ONLY NEWLINE_STYLE UNIX)
 foreach(relative menu.cpp engine/demomode.cpp)
   set(output "${overlay}/${relative}")
   file(READ "${output}" content)

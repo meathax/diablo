@@ -7,7 +7,7 @@ This file is the concise status handoff. The authoritative implementation and ac
 - The workspace is implementation-active. No accepted release or current accepted candidate exists.
 - The HDMI output is the required physical scope. CRT/direct-video paths remain implemented but explicitly untested and unqualified; their source and mux safety checks remain required.
 - The local verification packet, endpoint-aligned ARM replay, cinematic repair, and PCM underflow-event diagnostic implementation are recorded. PCM commit `9bf880a` is diagnostic-only: the 48-byte snapshot tail at ABI offset 424 has independent player, long-queue, arbiter, integrated, host ABI and state-dump checks, but it does not prove physical sound quality or close C15.
-- The reproducible `9bf880a` FPGA build packet now has a source-bound compile, timing and compressed-artifact receipt. Independent review, MiSTer deployment, active-load PCM attribution/endurance, controller and multiplayer workflows, and the remaining C01–C34/R01–R13 integrated, physical and release evidence remain open.
+- The reproducible `9bf880a` FPGA build packet now has a source-bound compile, timing and compressed-artifact receipt. MiSTer deployment, active-load PCM attribution/endurance, controller and multiplayer workflows, and the remaining C01–C34/R01–R13 integrated, physical and release evidence remain open.
 - The user reports that gameplay and audio are good for the observed session. That observation is retained separately from counter-based diagnostic evidence and does not close endurance, stereo or release gates.
 
 ## Next actions
@@ -50,3 +50,8 @@ Reuse an artifact only when its complete relevant source, tool, configuration an
 - Root fixed indefinite launcher waiting after core replacement: monitor the requested RBF, stop only the owned engine group, invalidate the run and clean admission/ready files. Hardware installation remains unchanged; C16 is not closed.
 - Validation: `wsl.exe -d Ubuntu --cd D:/Arcade/AI/aCORES/Diablo --exec python3 -m unittest support.tests.test_mister_launcher -v` — 3 real-process tests pass; `python -m unittest support.tests.test_package_release -q` — 6 pass. Details: `.work/goal-pcm-deploy-9bf880a/launcher-core-loss-validation.json`.
 - Next: finish the root-owned failed scene packet and package the reviewed RBF with the corrected launcher; revalidate target ownership before activation.
+
+## Dungeon capture repair
+
+- Root found replay discarded the queued level-transition event. The dungeon replay now dispatches that event explicitly through the normal handler. Captures require actual active level-1 player state after transition, recorded in hashed sidecars; host and ARM runners use the same admission checks as the scene oracle.
+- Validation: python -m unittest support.tests.test_scene_oracle support.tests.test_scenario_arm -q — 20 tests pass. Native build passed (uild-host-4a11e0173b9845c489f831621c225a18.json); Diablo and Hellfire dungeon runs each passed with 4 state-verified captures. Diablo town regression passed with 5 captures; dungeon image visually inspected. ARM comparison and FPGA readback remain unverified. Details: .work/goal-c19/root-scene-repair/validation.json.

@@ -8,8 +8,8 @@ import subprocess
 import uuid
 
 import diablo
-from compare_frames import read_frame
-from scenario_host import scenario_demo
+from scene_oracle import capture_records
+from scenario_host import SCENARIO_CONFIG, scenario_demo
 
 
 BUILD_DIR_ENV = 'DIABLO_ARM_SCENARIO_BUILD_DIR'
@@ -127,6 +127,7 @@ def validate_role(role: str) -> None:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('campaign', choices=('diablo', 'hellfire'))
+    parser.add_argument('--scenario', choices=tuple(SCENARIO_CONFIG), default='town-v1')
     parser.add_argument('--build-dir', default=os.environ.get(BUILD_DIR_ENV),
                         help=f'WSL or Windows ARM reference build directory '
                              f'(or {BUILD_DIR_ENV})')
@@ -140,6 +141,7 @@ def main():
     args = parser.parse_args()
     if args.timeout <= 0:
         parser.error('--timeout must be positive')
+    scenario = SCENARIO_CONFIG[args.scenario]
     try:
         receipt_path = Path(args.build_receipt)
         if not receipt_path.is_absolute():
@@ -171,11 +173,13 @@ def main():
                         output_dir + '/mods/hf'], check=True)
         if not (runtime / 'mods/hf/manifest.ini').is_file():
             parser.error('Missing bundled Hellfire mod')
-    (runtime / 'demo_0.dmo').write_bytes(scenario_demo())
+    (runtime / 'demo_0.dmo').write_bytes(scenario_demo(args.scenario))
     (runtime / 'diablo.ini').write_text(
         '[Graphics]\nWidth=640\nHeight=480\nFullscreen=0\nFit to Screen=0\nUpscale=0\n')
     command = ['wsl', '-d', 'Ubuntu', '--cd', build, '--', 'env',
-               'DIABLO_NATIVE_SCENARIO=town-v1', 'DIABLO_CAPTURE_DIR=' + output_dir + '/frames',
+               'DIABLO_NATIVE_SCENARIO=' + args.scenario,
+               'DIABLO_CAPTURE_START_MS=' + str(scenario['capture_start_logic_ms']),
+               'DIABLO_CAPTURE_DIR=' + output_dir + '/frames',
                'SDL_VIDEODRIVER=dummy', 'SDL_RENDER_DRIVER=software', 'SDL_AUDIODRIVER=dummy',
                'timeout', '--signal=TERM', '--kill-after=10s', str(args.timeout) + 's',
                qemu, '-cpu', 'cortex-a9', '-L', sysroot, build + '/devilutionx',
@@ -184,7 +188,8 @@ def main():
                '--config-dir', output_dir, '--lang', 'en', '-n', '--verbose',
                '--log-to-file', output_dir + '/engine.log']
     record = {'status': 'running', 'build_role': receipt['build_role'], 'campaign': args.campaign,
-              'scenario': 'town-v1', 'build_receipt': receipt['path'],
+              'scenario': args.scenario, 'capture_start_logic_ms': scenario['capture_start_logic_ms'],
+              'build_receipt': receipt['path'],
               'build_receipt_sha256': diablo.sha256(Path(receipt['path'])),
               'build_dir': build, 'binary_path': binary['path'],
               'binary_sha256': binary['sha256'], 'command': command,
@@ -197,19 +202,16 @@ def main():
     log_path = runtime / 'engine.log'
     log = log_path.read_text(errors='replace') if log_path.exists() else ''
     errors = []
-    marker = f'Native scenario town-v1 complete: campaign={args.campaign}, ticks=512,'
+    marker = f'Native scenario {args.scenario} complete: campaign={args.campaign}, ticks=512,'
     if result.returncode or marker not in log or 'Demo queue empty' in log:
         errors.append('Scenario did not complete and quit normally')
     if not (runtime / 'single_0.sv').is_file():
         errors.append('Missing full-campaign save')
     captures = []
-    for path in sorted((runtime / 'frames').glob('*.d8f')):
-        try:
-            frame = read_frame(path)
-            captures.append({'file': path.name, 'sha256': frame['sha256'],
-                             'frame': frame['frame'], 'logic_ms': frame['logic_ms']})
-        except ValueError as error:
-            errors.append(str(error))
+    try:
+        captures = capture_records(runtime / 'frames', args.scenario)
+    except (ValueError, OSError) as error:
+        errors.append(str(error))
     if len(captures) < 4 or list((runtime / 'frames').glob('*.partial')):
         errors.append('Missing or incomplete captures')
     record.update(status='passed' if not errors else 'failed', exit_code=result.returncode,
