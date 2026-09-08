@@ -244,31 +244,22 @@ qualified candidate and clean-install observations. Only then call it fully work
 
 ## Token-efficient execution and next action
 
-- Read this guide/state first; open only the active C-package and exact evidence
-  needed. Keep logs/captures in files via Context Mode or bounded Capsule output.
-  Never reread the entire detailed plan each turn.
-- Use one work ledger with status, dependency, next action, source/candidate ID
-  and receipt pointer. Do not duplicate long histories in state or chat.
-- Batch related checks once per snapshot. Finish cheap regressions before ARM/
-  Quartus/board runs. Reuse receipts only when complete dependency identity still
-  matches; `not_run` is never a pass.
-- Stabilize ABI/ownership changes before expensive builds. Keep a known-good
-  rollback package and change one measured bottleneck at a time. Avoid concurrent
-  writers to shared mutable build paths.
+Read only the current execution block and active defect in the [detailed plan](reports/audit-2026-09-07/PROPOSED_PLAN.md). Its **Critical path and efficiency decisions** section records the current blockers, firm Quartus pre-build gate, and exact route to a working development package.
 
-- Follow the detailed plan's **Critical path and efficiency decisions**: resolve
-  proven defects, stabilize inputs, build one development package, and prioritize
-  launch/video/audio/input/save smoke tests before long hardware runs. Keep all
-  release gates intact; a development test candidate is not release acceptance.
-- Time-box investigations and historical evidence work. Reuse unchanged ARM
-  inputs and receipts, batch routine metadata checks, and request specific missing
-  board observations instead of repeating local audits or occupied-target polls.
+- Resolve known FPGA defects, pass focused production-RTL tests, independently
+  review and commit the final source/file-list packet before any new Quartus run.
+- Build once per stabilized FPGA input identity. Reuse unchanged qualified ARM,
+  ABI and assets. Prose, receipt and test-only changes do not trigger synthesis.
+- Use one defect owner and one necessary reviewer; stop speculative preparation
+  and repeated historical audits. Reuse verified tool commands; escalate repeated
+  failures rather than repairing unrelated environments.
+- Bind one development package, run MiSTer launch/video/audio/input/save smoke
+  tests, fix observed failures, then complete the remaining physical matrix.
+  Keep every release criterion intact and distinguish missing observations from
+  local software work.
 
-**Next action:** C25 source review and validator acceptance are complete in
-commit `8e74223`; finish the fresh current-SDC FPGA build now underway, then
-accept the durable docs/evidence packet and clean-checkout qualification before
-binding a new candidate. Activate only a newly bound candidate in a quiescent
-MiSTer window and complete physical output, audio, input, campaign, performance
-and installation acceptance. Do not reuse candidate27/49 as current-source
-qualification or treat SSH/SMB access and artifact hashes as proof of physical
-behavior.
+**Next action:** finish the 375 kHz MCP23009 actual-source regression and review,
+commit it with the required `files.qip` registration, qualify the clean checkout,
+then perform one replacement FPGA build and package binding. The earlier C25
+build and candidate27/49 remain historical evidence. Physical completion still
+requires the target configuration, available test window and output observations.

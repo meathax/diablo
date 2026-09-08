@@ -1,7 +1,7 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "8ab4c8cc0e4d411751b1536f4c5a404f8e4fb91dd66adba3bbb502854df527bd",
+  "completion_document_sha256": "e2561045551160047f5e5ef099470edf3ee959264d51dc2228fcca44909a3cc7",
   "status": "c34-in-progress-source-changed-requalification-required",
   "candidate": {
     "state": "no-current-accepted-candidate",
@@ -12,7 +12,7 @@
     "next_gate": "Complete the fresh current-SDC FPGA build, durable docs/evidence and clean-checkout qualification; then bind a new candidate and acquire a quiescent target window for exact output-mode, physical audio/input/campaign/performance and clean install/menu/second-launch evidence.",
     "development_validity": "Candidate49 source inputs superseded by C34 edits; historical artifacts only until rebuilt and requalified."
   },
-  "active_work": "C25 source/validator acceptance commit 8e74223 is complete; a fresh current-SDC FPGA build is underway. C34/P01-P06 source packets and C33 producer proof are complete; durable docs/evidence and clean-checkout qualification remain, with physical capture pending.",
+  "active_work": "Single active defect: Terra completing native WSL Verilator5.050 actual-source MCP23009 regression. No further Quartus until focused tests, independent review, committed source/file-list and matching snapshot pass. Then clean-checkout qualification, one replacement FPGA build and development package.",
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],
@@ -29,7 +29,7 @@
     "11": "Qualify candidate43 completely on MiSTer",
     "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "Finish bounded IO-rate decision; fix only a proven defect and stabilize FPGA inputs. Qualify the exact new FPGA/unchanged ARM artifacts and one development package, then run MiSTer smoke tests before the remaining physical matrix. Keep external timing and observation requirements open.",
+  "next_action": "Finish/review375kHz MCP23009 regression; commit exact source packet with files.qip. Enforce pre-build gate, reuse unchanged ARM/ABI/assets, then one FPGA build/package and MiSTer smoke before full physical matrix.",
   "next_implementation": "C34/P01-P06 source packets are committed through a65a8ec and C25 source/validator acceptance is committed in 8e74223. Keep Candidate49 historical; do not promote until the current-SDC build, clean-checkout qualification and C13/C15/C16/C17/C21/C23/C24/C31/C32 plus the C01-C34/R01-R13 matrix have candidate-bound physical/acceptance receipts.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
