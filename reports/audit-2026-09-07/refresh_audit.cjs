@@ -14,7 +14,9 @@ function inventory() {
     try { const s = fs.statSync(path.join(root, p)); return { path: p, bytes: s.size }; }
     catch { return { path: p, missing: true }; }
   });
-  const candidatePath = '.mister/evidence/candidates/fpga-candidate-20260907-5-arm.json';
+  const statePath = path.join(root, '.mister/state.json');
+  const state = JSON.parse(fs.readFileSync(statePath));
+  const candidatePath = state.candidate?.development_manifest || '.mister/evidence/candidates/fpga-candidate-20260907-9-arm.json';
   const candidate = JSON.parse(fs.readFileSync(path.join(root, candidatePath)));
   const inspect = list => list.map(f => {
     try { const h = hash(fs.readFileSync(path.join(root, f.path))); return { path: f.path, expected: f.sha256, actual: h, matches: h === f.sha256 }; }

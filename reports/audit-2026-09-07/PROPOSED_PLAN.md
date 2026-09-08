@@ -1,11 +1,129 @@
 # Plan to complete and close every September 7 audit item
 
+## EXECUTION STATE
+
+- Done: C34 ownership extraction and three review fixes; independent local 22/22 verification; clean ARM build/version smoke; C33 foundation/RTL/snapshot producer proof; fresh pre-C25 FPGA compile and positive five-category timing. C34 commit `643f806`; six reviewed source packets committed through `a65a8ec`.
+- In progress: C25 validator repair and independent re-review; documentation/evidence commit preparation. The narrow C25 SDC patch passes review and reduces unconstrained ports from 4 inputs/22 outputs to 3 inputs/10 outputs, with unchanged internal timing. The validator must gate all five timing categories before acceptance.
+- Open external requirements: residual HDMI/IO interface timing contracts and candidate-bound physical acceptance. Latest read-only target observation saw Super Ranger (`Suna8bit`); the core/boot changes dynamically. Recheck target identity before activation. Physical capture/observer answer is pending; internal framebuffer capture alone does not prove physical output.
+- Next: accept and commit the repaired C25 packet; rebuild FPGA with current SDC; finish durable documentation/evidence and clean-checkout qualification; freeze one new candidate/package; obtain current-boot target admission and run the physical matrix.
+- Decisions: Luna MAX owns bounded implementation/build/tests; a different worker verifies critical changes; commit accepted packets. Preserve historical receipts and keep C33/C34 open until their dependencies and acceptance pass. Reuse unchanged qualified ARM inputs; do not repeat broad tests without a relevant change.
+- Commands: `python support/scripts/diablo.py verify --suite local` (configured SDL); `python support/scripts/guide_status.py`; `python support/scripts/closure_gates.py`. ARM and Quartus exact commands/logs are retained under `.work/build/arm-engine-c34-clean` and `.work/c34`.
+
+### C25 follow-up: IO expander rate qualification
+
+Official MCP23009 documentation lists Standard, Fast and High-speed modes; the local instantiation requests 500 kHz. This is a potential timing blocker pending verification of the actual divider waveform and mode protocol, not evidence of physical failure. A separate architecture review must determine actual SCL rate/high/low times and supported operation before choosing a parameter or divider fix. If a defect is proved, apply the smallest change, run a focused transaction/timing simulation, independently review it, and rebuild the affected FPGA snapshot before candidate qualification. Do not reuse a pre-fix artifact as current-source evidence. Device limits alone do not supply the installed IO-board RC budget.
+
+## Critical path and efficiency decisions
+
+The objective remains a fully functional, accepted MiSTer core. Optimize time to demonstrated end-to-end operation without weakening the existing completion criteria.
+
+1. **Close proven defects before more qualification.** Finish the bounded MCP23009 actual-waveform review. If a defect is confirmed, implement the smallest correction, exercise transactions and timing in a focused regression, and obtain independent review. If not, record the evidence and stop the investigation. A missing board measurement is an external acceptance requirement, not permission for speculative RTL changes.
+2. **Stabilize inputs before the next expensive rebuild.** The current isolated Quartus run can finish as evidence of its exact snapshot. If an IO fix changes FPGA inputs, finish all accepted FPGA edits before one replacement build. Reuse the qualified ARM executable while its complete engine dependency identity is unchanged. Do not rebuild for prose or bookkeeping changes.
+3. **Make one development package for the end-to-end test.** After source stabilization and required clean-checkout checks, bind the exact ARM/RBF/ABI/assets/launcher into one immutable candidate and preserve rollback. Full release acceptance can remain open while that development candidate is used to collect its missing board evidence; never label it a completed release.
+4. **Use the MiSTer test window first for basic operation.** Recheck availability and identity, then verify the supported launch path, visible image, active stereo, controls/OSD focus, and save/relaunch. Fix an observed failure before spending time on long campaign or performance runs. Once the smoke test passes, collect the remaining physical mode, endurance, campaign, multiplayer, latency and installation matrix in one coordinated session on the same candidate wherever dependencies permit.
+5. **Keep external requirements explicit and actionable.** Obtain IO-board/revision, USER_IO use and physical observation/capture access. Pair each missing timing contract with its exact datasheet fact, required configuration or measurement, and acceptance check. Official limits can expose defects; they cannot replace unknown board RC/skew or actual output observations. Do not repeatedly poll an occupied target or interrupt another workload.
+6. **Bound orchestration and evidence work.** Each worker packet should finish one decision/fix/check, return compact evidence and stop. Run independent review for critical code and acceptance changes; batch ordinary documentation/link/hash checks. Preserve existing receipts and historical labels; do not expand historical audits or reorganize evidence unless a broken dependency prevents reproducibility. Keep one current execution block and receipt pointers rather than repeated narrative status sections.
+7. **Revalidate only affected dependencies.** Run cheap focused regressions first, one integrated qualification per stable implementation snapshot, and hardware tests after a usable package exists. Repeat a check only for a relevant change, actual failure or unresolved result. A failed check produces a concrete fix packet; an external requirement produces a precise user/measurement request, not another broad local audit.
+
+Completion still requires every mandatory gate and candidate-bound evidence. These sequencing changes accelerate useful testing; they do not waive timing, physical, campaign, multiplayer, performance or installation requirements.
+
+## Current execution state — C34 requalification
+
+There is no accepted release candidate. Candidate49 and its package are historical:
+C34 source changes supersede their source qualification. Freeze the implementation,
+rebuild affected artifacts and qualify a new immutable candidate before promotion.
+Historical checkpoints below retain their original scope; this section governs
+current work.
+
+C34 implementation now separates input reconciliation, callback-local PCM
+resampling, command/frame ownership and profiling into four components documented
+in `support/TRANSPORT_OWNERSHIP.md`. Adapter retains runtime lifetime, callback
+admission and transport orchestration. Command publication/reconciliation borrows
+runtime per synchronous call. The adapter is approximately 490 lines. Duplicate
+initialization and the obsolete slot-zero RTL comment were corrected. Command
+wait accounting now records one sample per submission, including timeout followed
+by late completion, and rejects invalid/backward timestamps.
+
+Pre-review baseline evidence (source snapshot
+`affa173cd5e6639ed5e43a9a4baa972e51e54aaaf6862723d31268ffa4a96465`):
+
+| Check | Result and receipt |
+| --- | --- |
+| Full local suite | All 21 registered checks pass; `.mister/evidence/receipts/20260908T015436Z-febcee74-f4f6-4c7c-b610-3d6bb84a559f.json`. Includes independent owners, 64 reset cycles, PCM chunk equivalence, malformed callbacks, command wait and bounded trace regressions. |
+| Configured ARM ABI/QEMU suite | Pass; `.mister/evidence/receipts/20260908T015737Z-1654e8e0-ebc5-4e8a-889d-ef85c8b95009.json`. The earlier missing-toolchain attempt remains incomplete. |
+| Production ARM incremental rebuild | Pass with unchanged before/after source identity; `.mister/evidence/receipts/20260908T-c34-arm-engine-rebuild.json`. Executable `.work/build/arm-engine-c34-ownership/devilutionx`, SHA-256 `d790990953427fa3df2146529b9a17f91f4549b9cd749e7c504793651a39e214`. This is not clean-build proof. |
+| ARM executable startup | QEMU `--version` exits 0; `.mister/evidence/receipts/20260908T-c34-arm-version-smoke.json`. Startup only; no gameplay or hardware acceptance. |
+
+Independent review found no extraction ownership/lifetime regression, but identified
+three corrections now implemented and passing the focused host regression.
+Full qualification must be refreshed for these changed headers:
+
+| Bug | Fix and acceptance |
+| --- | --- |
+| Profiler reset leaves command metrics behind; Adapter compensates with direct field writes. | Move all metric clearing into `ResetProfile`, remove compensating writes, and verify dirty counters all reset through the owner API. |
+| Command-build duration subtracts a zero/backward clock reading. | Guard the timing sample before subtraction, apply the existing invalid-sample policy, and test zero/backward/valid samples. |
+| The stated 60 Hz limiter uses fixed 16 ms intervals (62.5 Hz) and static shared deadline state. | Use per-adapter resettable fractional 60 Hz deadlines, retain wrap/lag recovery, and test deterministic cadence/reset/wrap behavior. |
+
+C33 producer execution now passes in
+`.mister/evidence/receipts/20260908T021850Z-c33-producer-proof-4fea2af2-836b-49d1-9936-919113740560.json`
+(SHA-256 `5d201bf40dbb634b5be47d8f2762e192167c4dd31edc41ec7eb8ba870d703b4b`).
+The isolated snapshot ran foundation (141 tests, one declared privilege skip),
+all 14 RTL steps and the FPGA snapshot-sync producer. Inputs stayed byte-identical;
+no direct root files appeared. Logs, generated simulations and nested receipts
+identify actual output destinations. Quartus compile-output proof and C18/C26
+closure dependencies remain separate; this is not full C33 closure.
+
+The fresh ARM build passes with all 1,537 engine inputs unchanged in
+`.mister/evidence/receipts/20260908T-c34-clean-arm-engine-build.json`. The exact
+executable `.work/build/arm-engine-c34-clean/devilutionx` has SHA-256
+`6cfc2c80ff0c2fedf4dd5ea4a91cfad7339fac7f67828421465c4f1d7b324989` and passes
+QEMU startup in `.mister/evidence/receipts/20260908T-c34-clean-arm-version-smoke.json`.
+Concurrent changes were confined to test infrastructure; engine-input provenance
+is valid. Whole-source/candidate and physical acceptance remain separate gates.
+Use the fresh FPGA paths under `.work/c34/output_files`, not an older build's
+path merely because its RBF hash is identical.
+
+The real file-backed adapter lifecycle regression is implemented in commit
+`bb2bf6f`: 64 production initialize/shutdown/rebind cycles, idempotence, frame
+ownership reset and concurrent PCM callback admission pass. Focused receipt:
+`.mister/evidence/receipts/20260908T023835Z-transport-lifecycle-232e187fbf42483db41fe6dc472bd781.json`
+(SHA-256 `4ef96eca52af2e020063a34af25c3d39ba3fcaa7ad86cffe600f30beb6647fea`).
+The registered host suite passes all seven checks in
+`.mister/evidence/receipts/20260908T023847Z-934b4267-5c05-45fd-beac-064a0ac8614a.json`.
+Independent verification accepted the C34 packet in commit `643f806`, including
+the prerequisite decode of existing PCM health flags without packed ABI changes.
+The full local suite passes 22/22 with no deferrals/failures/timeouts in
+`.mister/evidence/receipts/20260908T025424Z-9aba44bd-ac7c-4391-9675-2f1f15f75e05.json`
+(SHA-256 `6578d3846a06bbfb4761add8f7b5a4f8b6f390257d6491a7956f01e250f015f3`).
+Review receipt `.mister/evidence/receipts/20260908T030000Z-c34-independent-acceptance.json`
+records hash checks and guide/matrix validation. No candidate or board promotion follows;
+these are Linux/WSL file-backed results, not FPGA or physical evidence.
+
+C34 remains open for independent acceptance, scene/profiling qualification
+and current artifact/candidate acceptance. C33 is reopened: the previous receipt
+proved absence of two root outputs only. Run representative current build/test
+producers in a fresh source snapshot and retain before/after inventories, output
+destinations and closure dependencies. Ignore rules and directory listings alone
+cannot close it.
+
+User-provided Quartus is available at `D:/q17/quartus/bin64`. SSH access to
+`192.168.0.69` succeeds; the last read-only snapshot showed only MiSTer, no matching
+MAME/Diablo/installer process, on boot
+`618a6107-3cbc-42ca-970e-b44c7c057a4d`. Recheck immediately before activation.
+A subsequent SSH observation found an active NFS_SE deployment shell (PID 1504)
+modifying runtime assets and MiSTer.ini. Activation is deferred until it finishes;
+receipt `.mister/evidence/receipts/20260908T-c34-target-contention-observation.json`.
+Earlier MAME-contention statements are historical observations. Physical HDMI,
+direct RGB, analog/scandoubler, stereo endurance, controls/OSD, campaign/save/reset,
+multiplayer, performance and install/update/rollback/menu/second-launch gates
+remain open.
+
 ## Current execution entry point and mandatory audit amendments
 
-**Refresh, 7 September 2026:** use the seven-batch
+**Refresh, 8 September 2026:** use the seven-batch
 [root execution guide](../../CORE_COMPLETION_AUDIT.md) as the compact critical
 path. This document remains the detailed C01–C34 closure authority. The
-[current audit refresh](REFRESH_AUDIT.md) adds R01–R05 with exact evidence,
+[current audit refresh](REFRESH_AUDIT.md) adds R01–R12 with exact evidence,
 reproductions, fixes and acceptance requirements. These amendments override
 older statements below that call candidate `a1fc74f…` current. Its recorded
 artifacts still match, but nine source inputs have changed; candidate-bound
@@ -18,14 +136,30 @@ verification now rejects it. Earlier passes remain historical receipts.
 | R03 — source mutation during verification | C18/C27/C28/C29 | Run isolated snapshots; revalidate dependencies/artifacts before publishing. Preserve drift evidence and fail the mutation regression. |
 | R04 — checkout-dependent runtime admission | C16/C18/C26/C32 | Add deployment-manifest validation independent of developer source/Git; clean runtime-only relocation must launch and mismatched files must fail. |
 | R05 — missing board/menu adapter | C16/C17/C23/C24/C28/C29/C32 | Implement a concrete target profile and board runner; bind current boot, reserved memory, loaded artifacts, physical observations and safe cleanup. A configured `not_run` stub cannot close a board gate. |
+| R06 — candidate identity parser could corrupt Git status | C18/C26/C28/C29 | `git_identity()` used `str.strip()`, which removed the leading porcelain status column on the first line. A source tree whose first changed path was worktree-only could therefore produce a manifest that immediately failed verification. Preserve only line endings, add a regression with a leading ` M .gitignore` record, regenerate the final candidate and rerun all bound receipts. |
+| R07 — remote package metadata was not integrity-bound | C28/C29/C32 | `mister_preflight.py` previously trusted the remote `package-manifest.json` while checking only the four listed runtime files. Hash the metadata file before consuming its records, add tamper/missing regressions, and rerun the staged preflight. |
+| R08 — clean-checkout fixtures depended on ignored build outputs | C26/C27/C28/C29 | A detached checkout failed 13 tests because `.work/build` and ignored `build_id.v` were assumed to exist. Make the affected tests bootstrap deterministic temporary fixtures and clean them up; retain a fresh-checkout receipt and keep clean Quartus/ARM rebuilds as separate open gates. |
+| R09 — Quartus pre-flow mutated an immutable snapshot input | C18/C26/C27/C28/C29 | `sys/build_id.tcl` rewrites `build_id.v` during Quartus compile, so later timing/compression actions rejected the same snapshot. Preserve generated inputs around every native Quartus action, add a regression, and retain a clean compile/compress/timing receipt with all setup corners passing. |
+| R10 — scandoubler vertical-sync timing is unqualified | C13/C25/C31 | The former `sys/scandoubler.v:20` TODO is now replaced by an explicit progressive 31 kHz disposition with VSync/VBlank sampled on the same input-hsync pipeline and deterministic colour mode. Candidate43 has fresh Quartus timing evidence, but no connector capture or sync/geometry observation exists yet. Keep C25/C31 open until each advertised row is physically observed on the same candidate. |
+| R11 — ARM transport and reference build roles were conflated in scene qualification | C18/C19/C26/C28/C29 | The deployable `arm-transport.cmake` binary and the `arm-reference.cmake` scene binary are different roles. Running the clean transport binary with `DIABLO_NATIVE_SCENARIO` produced no captures because the reference-only scenario hooks are absent. Record role, recipe and binary hash in every scene receipt; use the reference artifact only for software equality and the transport artifact for ABI/board qualification. A role/hash mismatch must fail admission. |
+| R12 — board-suite fallback text is stale and contradicts the configured adapter | C28/C29 | **Implemented.** The generic fallback now explains that --board-configuration is required and points to board_runner.py; test_verification.py covers it. Regenerate candidate-bound receipts. |
+| R13 — package acceptance lacked an executable install/update transaction | C16/C18/C29/C32 | **Implemented locally.** `package_release.py` now emits NOTICE/SETUP documents; `deploy_package.py` performs verified staging and atomic activation; `deployment_lifecycle.py` records clean install, interrupted update, rollback and save-preservation evidence. Physical menu/target execution remains open. |
 
 C01–C05/C08 already have implemented local fixes; preserve them and prove their
 remaining integrated/target requirements rather than repeating the original audit.
-C26's original untracked-file observation is historical; the current index has
-staged implementation, while clean-checkout reproducibility remains open. The
-fresh local receipt ran 104 Python tests with one skip, four host checks and
-thirteen RTL fixtures; overall status was incomplete pending explicit optional
-host/SDL paths. Evidence and supplemental results are in REFRESH_AUDIT.md.
+C26's original untracked-file observation is historical; the intended source
+overlay now runs from a detached checkout with no private data. Candidate43 is
+the FPGA source-policy/build lineage remains historical, and candidate49 is a
+historical release-tooling development checkpoint superseded by C34/P01-P06 source commits. Candidate49 has candidate-bound local and
+ARM/QEMU receipts, both role-aware scene-oracle passes, package verification,
+read-only target preflight and a passing local deployment lifecycle receipt.
+Promotion is still deliberately withheld: source review/commit,
+connector-specific video, active physical audio, controls,
+campaign/save/multiplayer, performance, menu activation and clean-target
+acceptance remain open. The scene receipts explicitly use the separately
+identified ARM-reference role under R11. Evidence and remaining acceptance
+requirements are in REFRESH_AUDIT.md.
+
 
 For full completion, supplement town/scene benchmarks with campaign progression
 coverage: early/mid/late game, bosses/endings, relevant class/skill/spell/UI,
@@ -34,159 +168,234 @@ controller-only workflows, multiplayer and clean-install/update/rollback checks.
 Existing numeric targets remain mandatory. An approved exception must be stated
 as reduced scope, never silently reported as absolute total completion.
 
-The next implementation is evidence admission (R02/R03), the missing target/
-deployment contract and integrated gaps, then a frozen source snapshot and its
-matching build/qualification. Read only the active detailed package and exact
+The current implementation checkpoint is recorded below. The next work is the
+remaining integrated transport gaps, a real target profile/configuration and
+physical/campaign qualification. Read only the active detailed package and exact
 evidence; keep large outputs in files and rerun checks by dependency invalidation.
 Do not duplicate historical logs into this plan or state.
 
-This is the detailed execution and closure plan for **all 34 recommendations C01–C34 and all 18 findings F01–F18** in this audit. It is the reference to use when implementing, verifying and closing those items. The earlier audit remains the historical evidence baseline; the compact checklist remains an index into this document. The status and recorded-implementation paragraphs below reflect the current worktree and immutable receipts; an item remains open whenever its stated closure evidence is still missing.
+## Current implementation checkpoint
 
-Retain the project's pinned sources, read-only `game/` and donor rules, real-board evidence requirement, and hash-recorded RBF builds after functional RTL changes. Do not restore the intentionally removed old implementation plan. Keep this plan, `.mister/state.json`, the root completion guide and evidence receipts synchronized as implementation advances; installed board artifacts and Git history remain outside this worktree plan until their explicit gates are satisfied.
+R02/R03/R04/R05/R06/R07/R08/R09 are implemented locally and regression-tested.
+R12 is implemented: the board fallback explains that --board-configuration is
+required and points to board_runner.py. C33 is reopened pending producer
+execution evidence; C34 remains open because the
+ownership refactor and regression/profiling proof are not complete. These
+code fixes move implementation status forward without closing physical or
+release evidence gates.
 
-**Historical verification snapshot (2026-09-07; superseded as current by R01):** candidate-bound local receipt `20260907T070202Z-696eb1c8-c7eb-4f48-bb87-a82772780688.json` passed foundation, host, SDL transport and RTL checks for dependency source snapshot `6d458c7eb45cb2658bed13a50e8b7b6509a5246d4a95bce094f6104959dc8666` and candidate `a1fc74fdbf27f9759691391fe576480b5f4e8d4548a287ed08f34ec272a7058c`. Receipt SHA-256 is `cce8691a32ea2bb573465d9cc8a6e6882405c877aa55ecb9458808b768bb9211`; its scope remains local host/RTL only. The same candidate-bound ARM/QEMU receipt `20260907T070404Z-0885edba-e8a3-486d-a31a-2de1815dd881.json` also passes with receipt SHA-256 `8da0bc58cf17efcb70b58da3654071559580ccb598ce96975fa8dc51b92ff8b6`; it is ABI/emulation evidence, not target or physical acceptance. The superseded four-artifact manifest was `.mister/evidence/candidates/fpga-candidate-20260907-5-arm.json` with manifest SHA-256 `8d2b603ec3e91cb0240cdda00c37317d32366cc8d616a9890326eac55183a214` and manifest source ID `dfe50a9cc7af178954cc819e4b93fdd21993148fe70ac9663858062e5a4a1a4e`. Earlier receipts named in individual records remain valid historical evidence for their recorded snapshots and are not substituted for the current-source result.
+Candidate49 is a historical artifact-bound development candidate whose source inputs are superseded by C34/P01-P06; the following receipts are historical:
+`d95d4cfd03154bd659343c5a77a1230bcd4efc7c45d81d4f2299a0d754128611`, manifest
+`.mister/evidence/candidates/fpga-candidate-20260908-49-final-local.json`
+(SHA-256 `f420873962a21317c8a9bdc9ff1ad07db02d9ad4299c2b9b5ff2e1abae802c4b`),
+source `59d9a616708db186946cab362d6c66627a99d9a21a18b4bf6f97cb70a3e9eda0`.
+Its FPGA/ARM artifact lineage remains candidate43. It binds the ARM transport executable SHA-256
+`ead7cc2ac6417ce88833a66e7fcf400d85058061964a96f43a44658fb3bee87c`, fresh
+SOF SHA-256 `ae7f6bbc69f6d52f00f9e3bb7637de35b8495dac7f72aadc8a2794889dce98e7`
+and raw/compressed RBF SHA-256
+`7b5eb62411233b96adc244d87fe3ee96b16da13b271fa608d9a70cafd4917b10`.
+The build receipt `.mister/evidence/fpga-build-candidate43.json` (SHA-256
+`f825d7ab8eaaccfd2f03699bb775c329b759d1bee5eebba648354334317fe2e2`) records
+direct compile, compression and four setup corners with three paths per corner,
+zero violations and 0.188 ns minimum positive slack.
 
-**Current development candidate (2026-09-07; not board-accepted):** `.mister/evidence/candidates/fpga-candidate-20260907-6-arm.json` verifies with manifest SHA-256 `8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762`, source ID `48cbaf2d4ff36ac820e22ca0008b213d539629ef1880c40634ba203a0e8fa5e7` and candidate ID `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`. It binds ARM `11ed2bf67edfc99b80ed6ff541cd991d20cd39cbd82f6b43c9b038dbb06f3ced`, compressed/raw RBF `56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c` and SOF `d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`. The configured local receipt `20260907T074147Z-ba696aab-f304-4da2-a56d-2be0789aadf7.json` (SHA-256 `7cc30a86a0e88e015a0506021f4cdbe4923779e0bf07331983ec8558a88a21a3`) and ARM/QEMU receipt `20260907T074417Z-b62331e3-9ad0-42b7-b56f-b472c5e22bed.json` (SHA-256 `14d687bb116f5be66bfa30fec23791b2ce1fb0437852f0109d9f590c4469530f`) pass for that exact candidate. Their scope is local host/RTL and ARM ABI emulation; current-boot loader admission, target mapping, physical I/O, campaign equality, performance and acceptance promotion remain open. The earlier unconfigured local run is retained as an incomplete prerequisite receipt and is not the current pass.
+Candidate49 local verification passes all 21 registered checks in
+`.mister/evidence/receipts/20260908T005425Z-a0fbb81c-2ec1-4c90-813d-68bcf2de6e30.json`
+(SHA-256 `8e63f45062e56abcba6c5806e4910198eda2f2a32cc8e0b4c479e8bccd0d68b3`),
+and its configured ARM/QEMU suite passes in
+`.mister/evidence/receipts/20260908T005732Z-35359e71-54c4-434f-9d29-91c9ec427c70.json`
+(SHA-256 `286b11f449a9fb52eb3f22858782aa5ae8c683fa4b9d5913bdaf4f0118c6f585`).
+Diablo and Hellfire role-aware scene-oracle receipts pass with five frames each
+(`734578c7b6c8f5d2b9f8753087a6c5b6783fc528c1f94a4d5d2d74d5fe7ea278` and
+`3e1075671cc486b5cf8cf5c253e52c080513acba8037aae3b722fe3844ec4331`).
+Package49 contains 192 files/184 assets, verifies with package manifest SHA-256
+`f09bd76e1b4c80d7eb6391409dc1724f573a5931d4cf644ed7092573e49e63f3`, and is
+staged at `\\192.168.0.69\sdcard\_CodexDiabloCandidate49FinalLocal`. Its
+passing target preflight is `.mister/evidence/receipts/20260908T-candidate49-preflight.json`
+(SHA-256 `64d827d9d29953396c55be9314ae19fde04aa63820370573fab9de3d594a1b78`).
+The candidate49 lifecycle receipt
+`.mister/evidence/receipts/20260908T-candidate49-deployment-lifecycle.json`
+(SHA-256 `324d8ad330f940de78d52d77f372b8c04cbf7dce10eeb3278e899410dee14c01`)
+passes clean install, interrupted update preservation, update, rollback, save
+preservation, manifest verification and staging cleanup. The full Python suite
+now passes 141 tests with one declared Windows privilege skip.
+
+Candidate42's old-RBF source-policy record remains historical and cannot be
+promoted. Candidate49 is still development-only because the target is owned by
+an external MAME core and no candidate49 physical HDMI/direct-RGB/analog capture,
+active stereo-audio trace, controls, campaign/save/multiplayer, performance, menu
+activation or clean-target acceptance evidence exists. Any source/RTL/ABI change
+creates a new immutable candidate and invalidates affected receipts; a
+package/tooling change regenerates candidate-bound release receipts.
+
+## Bugs found and fixes recorded in this plan
+
+| Finding | Impact | Fix now in the checkout | Remaining proof |
+| --- | --- | --- | --- |
+| The v1 package copied only runtime roles and omitted the redistributable asset tree. | A target launch could pass manifest checks and then fail on missing assets such as `ui_art/diablo.pal`. | Deployment and package manifests are v2; package creation requires `--assets`, verifies the complete tree and rejects private-looking paths. Package33 contains 184 assets and the package regression covers omission and hash drift. | Clean install/update/rollback and a real Diablo/Hellfire launch from the package. |
+| The launcher opened the transport lease but did not inherit its POSIX file descriptor into the engine. | The engine could report transport ownership error 7 even though the launcher held the lock. | `mister_launcher.py` now passes the lock descriptor through `subprocess.Popen(..., pass_fds=...)`; the candidate31 normal target smoke proved the ownership path. | Repeat on candidate32 and complete the controlled exit receipt. |
+| Loader admission did not prove that the exact requested RBF was the running MiSTer process. | A stale or different core could make FPGA state look healthy while the wrong core was being tested. | The launcher now matches `/proc/*/cmdline` against the exact requested RBF, records the current boot ID and requires FPGA `operating` state. | Resolve the observed AO486-versus-Diablo identity conflict with an independent target capture. |
+| Timedemo disables the normal frame limiter and can flood the finite transport ring. | Candidate29/31 timedemo attempts rebooted the target during startup. | The ARM transport overlay adds an opt-in 60 Hz `PaceFrame()` deadline for `DIABLO_MISTER_FORCE_FRAME_PACING`; the launcher enables it only for `--timedemo`. Candidate32 survived its first six seconds. | Finish a candidate32 Diablo and Hellfire demo run with no reboot, no fault counter increase and a launcher pass receipt. |
+| The board verification fallback returned a stale “board runner missing” explanation. | A CLI run without a board profile reported the wrong blocker and obscured the actionable configuration requirement. | The fallback now says `--board-configuration` is required and points to `support/scripts/board_runner.py`; a regression test locks the diagnostic. | Regenerate candidate-bound verification receipts after the hardware run. |
+| The release package had no user-facing setup/notices and no executable update transaction. | A clean target could not verify data ownership, interrupted-update recovery or rollback from the distributed package. | `package_release.py` emits `NOTICE.txt` and `SETUP.md`; `deploy_package.py` uses verified staging, candidate-named releases and atomic activation; `deployment_lifecycle.py` records the full local transaction matrix. | Run the same package through a clean MiSTer install, menu entry, both campaigns and a second launch; retain physical acceptance receipts. |
+| The board runner was import-only and could not publish a qualification receipt from its documented path. | Operators could not execute the candidate-bound configuration as a stable CLI result, encouraging ad-hoc evidence. | `board_runner.py` now exposes a shell-free CLI, bounded command capture and immutable JSON result publication; the regression covers repeat-run refusal. | Supply a real board configuration with candidate-bound video/audio/input/campaign/performance observations and run it on a quiescent target. |
+
+## 2026-09-08 continuation: candidate38 fixes and release blockers
+
+This section is the active work order after the candidate38 implementation pass.
+It records the bugs found while closing the plan, the fix now in the checkout,
+the evidence already captured and the exact gate that remains. Historical
+candidate33/35/36/37 paragraphs below remain evidence of earlier experiments.
+
+| Finding | Implemented fix and evidence | Remaining blocker / next action |
+| --- | --- | --- |
+| ARM overlay configure failure | Restored the lost `string(REPLACE ...)` match string in `support/cmake/arm-transport.cmake`; the portable ARM overlay now configures and builds all 742 targets. | Keep a clean-snapshot configure/build receipt bound to the next promoted candidate. |
+| Quartus PCM instantiation failure | Corrected `Diablo.sv` to pass `.PRIME_SAMPLES(8192)` and `.FIFO_SAMPLES(16384)` through the module parameter list. Candidate38 compiles, compresses and closes timing with zero violations. | Run the larger FIFO through the active campaign and long-duration board gates. |
+| PCM starvation under active load | Changed the target callback to 1024 frames, enlarged the FPGA local FIFO, added local queue telemetry in `RingControl::flags`, and separated startup from steady counter deltas. Candidate38 normal60 shows queue 7257, startup underrun 6766 and steady delta 0. | C15 still requires 30 minutes per campaign, physical stereo inspection, no active drops and zero steady underrun/resync delta. |
+| Candidate/package role drift | Candidate38 binds ARM transport, FPGA RBF, ABI, launcher and the complete 184-file asset tree. Package verification and target preflight pass; the package manifest SHA is `115998423d0409a2f10c192cf5c8487d340bc4bfd3cae2e2d88d37c1d3182896`. | C32 still requires clean-image install, update interruption, rollback, second launch, notices and both campaign workflows. |
+| Target physical identity remains contradictory | The launcher observes the exact candidate38 RBF process and FPGA `operating` state, while the observer is black/stale and reports AO486. A target memory probe saw nonzero framebuffer/palette data. | C13/C25/C31 need an independent HDMI/analog capture and mode-matrix proof that identifies the displayed Diablo frame. |
+| Licensed data is not distributable | The target launch uses `/media/fat/tmp_esc/diablo-transport-assets` for user-owned MPQs; the package excludes MPQs, saves and private captures. An assets-only root correctly fails with `missing campaign data: diabdat.mpq`. | C16/C32 need documented user-data setup plus Diablo/Hellfire launch, save/load, reset, switch-away/back and second-launch receipts. |
+| Scandoubler timing is still unqualified | The imported `sys/scandoubler.v` TODO is replaced by the documented progressive 31 kHz VSync/VBlank pipeline and deterministic `.mono(1'b0)` connection; candidate43 timing passes all four setup corners. | Capture gameplay, sync and geometry on the analog/scandoubler row and retain the HDMI/direct-RGB rows as separate physical gates. |
+
+**Historical gate order from candidate41 (superseded):** (1) use the candidate41 package and licensed target data to
+complete Diablo and Hellfire normal/timedemo campaign runs; (2) capture physical
+video identity and audio/control behavior; (3) measure 60-FPS/p99/latency and
+30-minute endurance; (4) exercise install/update/rollback and second launch; and
+(5) regenerate candidate-bound receipts, update `.mister/state.json`, evaluate
+the C01–C34 matrix, and promote only if every required item is closed. A package
+or launcher pass cannot bypass an open physical or performance gate.
+
+## Candidate40 historical update — integrated-test fix and board-contingency record
+
+Candidate40 was a historical source-bound development checkpoint after the
+integrated DDR harness fix. The production PCM client now has a 13-bit queue
+telemetry port for the 4096-sample default FIFO, while the integrated testbench
+had retained an 11-bit wire and a race-prone final `reads == responses` assertion.
+The harness now uses `[12:0]` and samples at a safe edge while accounting for at
+most one in-flight read. This fixed the candidate-bound local failure; the full
+local suite passes all 20 registered checks and 132 Python tests with one declared
+Windows privilege skip.
+
+| Current evidence | Result | Limit |
+| --- | --- | --- |
+| Candidate manifest `.mister/evidence/candidates/fpga-candidate-20260908-40-integrated-tb.json` | Candidate `56860713d38990ae28f1846e5f22850ed68b9ee228f6178c11e53fcb0f2d8a9b`; source `13b93de9eb32d9fc72701886c164853622bc744c18cddec1b660f127ffc70c7d`; manifest SHA `41bd0513171bda2f72751eecc6f8a1573086efab05f789ae24838f3990bce900` | Development-only; no promotion until physical gates pass. |
+| Package/preflight | Package40 verifies; target preflight `.mister/evidence/receipts/20260908T-candidate40-preflight.json` SHA `db016d77aaf5c97f5d3f2703314019d9952cb65554c9fe91220064f4a34315a3` passes on `\\192.168.0.69\sdcard\_CodexDiabloCandidate40` | Does not prove activation or user workflows. |
+| Candidate-bound local suite | `.mister/evidence/receipts/20260907T220754Z-d52bc971-6283-4dce-b2c5-67f13d4828f8.json` SHA `c879632aee708ee0d6c831459cb296918aabf0c9eeca1a80fc6908644e4f30df` passes all 20 registered checks; the full Python suite is 132 tests / one skip | Host and QEMU replay remain software/emulation evidence. |
+| Target launcher smoke | Clean five-second candidate40 smoke returned launcher `status=pass`, `exit_code=0`, exact candidate/source IDs and exact requested RBF process | The longer attempt was blocked by a concurrent NFS_SE installation/rollback process and is not physical acceptance. |
+| Target PCM observation | The blocked attempt observed local queue 8,700 then 6,329, underrun 6,777 then 13,502, four dropped callback chunks and a later reset/change of target state | C15 requires a quiescent board, 30-minute Diablo/Hellfire traces, physical stereo inspection and zero steady underrun/resync/drop deltas. |
+
+The blocked board receipt is
+`.mister/evidence/receipts/20260908T-physical-launch-candidate40-attempt.json`
+(SHA `9ce81ad97fddeaf01ce178d3453d1096a7c5e623dfde04318508869195f8bdae`). It is
+retained as a first-class blocker, not counted as a pass. Before another board
+run, acquire an exclusive maintenance window, confirm no other MiSTer/NFS
+installer process, seed the menu RBF, verify the exact requested RBF and boot ID,
+then run candidate41 with the licensed data root. A clean board run must capture
+video identity, stereo audio, controls, campaign/save behavior, performance and
+safe teardown in one candidate-bound receipt.
+
+## Candidate41 superseding doc-sync checkpoint — 8 September 2026
+
+Candidate41 historically superseded candidate40 as a documentation checkpoint; it is not current after C34/P01-P06 source commits.
+identity after the qualification README was synchronized with the integrated DDR
+harness fix. The source change is documentation-only; the ARM executable and FPGA
+RBF remain byte-identical to candidate40. The candidate manifest is
+`.mister/evidence/candidates/fpga-candidate-20260908-41-doc-sync.json` (candidate `a5f2b83c0191d56e44a7b1babd5988e3fc0530a9f973f6e6bb739b13479ab989`, source `7901cdc0d54c3d8d3a527a85445c78d4d1ad5330e1b223f426a3ed15dc914d0d`, manifest SHA
+`c87c3b7dc214f23c4dc299c9010cbf2e8e031c2962a1a05604d59fa7452b0579`). The 190-file package is `.work/package-board-candidate-41` (package manifest
+SHA `3c2b274f139b8b50a4a7107b395c1685f321985c9daacd8ddfb4290556d711c9`) and is staged at
+`\\192.168.0.69\sdcard\_CodexDiabloCandidate41`; target preflight passes
+with receipt `.mister/evidence/receipts/20260908T-candidate41-preflight.json` (SHA `d917dafcefb058d51f4de183543ca6e36d7cbc3c98645eb5a5b15e835befcacf`). Candidate-bound local
+verification passes all 20 registered checks in `.mister/evidence/receipts/20260907T221825Z-1b8d996d-61dc-41d2-b5bd-e72fc2e178a4.json` (SHA
+`e28aaedf6096ed519ecf792a8736284cb3b288300a73f9bd3c669b95e5eec74e`), while the full Python suite remains 132 tests with one declared
+Windows privilege skip.
+
+Candidate41's clean normal-session board run completed with launcher pass, exact RBF
+process matching, FPGA operating state and controlled exit. Its observer remained
+black/stale, startup PCM underruns were 6,732, and no steady underrun/resync/drop
+delta was observed after the startup sample; receipt
+`.mister/evidence/receipts/20260908T-physical-launch-candidate41-normal60.json`
+(SHA `3a1f7e97d3be5429000b27e9d3c1319dd42cf1291f02cba52e505651b5f845fb`) records
+the result as blocked. Candidate40's ownership-contended attempt remains a separate
+historical blocker at `.mister/evidence/receipts/20260908T-physical-launch-candidate40-attempt.json`
+(SHA `9ce81ad97fddeaf01ce178d3453d1096a7c5e623dfde04318508869195f8bdae`). Acquire
+an exclusive, quiescent board window before repeating candidate41. Then
+capture exact RBF/boot/FPGA identity, HDMI/analog video, stereo audio with zero
+steady underrun/resync/drop deltas, physical controls, Diablo/Hellfire campaign
+and save workflows, performance, and clean install/update/rollback. Do not promote
+or call the core complete until those candidate-bound receipts and the C01–C34/R01–R12
+matrix all pass.
+
+A separate candidate41 Diablo timedemo attempt was blocked because a concurrent
+MAME core owned MiSTer while the launcher waited for exact candidate-RBF admission;
+it was aborted without accepting timedemo evidence. The diagnostic receipt is
+`.mister/evidence/receipts/20260908T-physical-timedemo-candidate41-blocked.json`
+(SHA `028404ad383e53cfc8ff545f0ca5682afc11046d4799fba67debabae40731758`). The
+next target window must exclude all MiSTer, MAME and installer processes, not only
+the NFS updater.
+
+## Candidate42 source-policy checkpoint — 8 September 2026
+
+The source-policy pass added an explicit `diablo_video_source_policy` RTL module,
+its Verilog regression, an exact HDMI/direct-RGB/analog-scandoubler mode matrix,
+and a deterministic progressive scandoubler disposition. The provisional source
+manifest `.mister/evidence/candidates/fpga-candidate-20260908-42-video-policy.json`
+has candidate `de8698de6291397fdd019bbd63ea5929151966b07fffebefc63cef1079b9e959`,
+source `178e240bb3801db824cdeaaf18208884d59ea981c65f369c27128fd771763e29`,
+and manifest SHA `fec717647f63c873317168d96b2d9aef71e588ef9ee2ff44c133f285cb0ffeae`.
+It is retained as a source-policy development record only: the RTL and
+`files.qip` changed, so the unchanged candidate38 FPGA RBF cannot be promoted
+under this source identity. Candidate-bound local verification passed all
+registered checks in `.mister/evidence/receipts/20260907T230230Z-0afb5fdf-2d2f-474a-91d0-f685b14c45bb.json`,
+but its old artifact set is intentionally not a release candidate.
+
+Candidate43 supersedes the provisional source-policy checkpoint. Its immutable
+manifest is `.mister/evidence/candidates/fpga-candidate-20260908-43-video-policy.json`
+(candidate `82ebd70596f62e5c3e60c00d6609a728359da1186b8ad140c1cd2e90ef6f534f`,
+source `10486a2923b134085cbdb7d71e65b419545a4bce979e2fd5d6e9f73907a9c87f`,
+manifest SHA `680c79298f3db7747e40dc20087861c193416aa6a0590e1820e561a17fcc2ddd`).
+The direct Quartus build/compression/timing receipt is
+`.mister/evidence/fpga-build-candidate43.json` (SHA
+`f825d7ab8eaaccfd2f03699bb775c329b759d1bee5eebba648354334317fe2e2`) with all
+four setup corners passing. Candidate-bound local, ARM/QEMU, Diablo/Hellfire
+scene-oracle, package and read-only target-preflight evidence all pass; the
+package is `.work/package-board-candidate-43` and is staged at
+`\\192.168.0.69\sdcard\_CodexDiabloCandidate43`.
+
+This closes the source-policy implementation and clean-build portion of C13/R10,
+but does not close physical output qualification. C13/R10 remain open until the
+three exact mode rows have connector-specific gameplay captures and sync/geometry
+evidence. C31 remains open against matrix digest
+`09bb6127f33e110b5a676358d892fe588f216d41027726948dac749311dccbe7` until those
+rows and final approval are recorded. The target is currently owned by an
+external MAME core, so no candidate43 RBF activation was attempted.
+
+## Historical Candidate49 release-lifecycle checkpoint — 8 September 2026
+
+Candidate49 carries the final local release-tooling changes after the candidate43
+video-policy build: package documents now state the user-data and update contract,
+`deploy_package.py` installs verified packages into candidate-named immutable
+release directories and atomically switches a small activation record, and
+`deployment_lifecycle.py` exercises clean install, interrupted update, successful
+update, rollback, save preservation, manifest verification and staging cleanup.
+`board_runner.py` now has a shell-free CLI that publishes a no-replace
+candidate-bound board result; its required physical observations still prevent a
+synthetic board pass.
+
+Candidate49's package has 192 files/184 assets and passes local package verify and
+read-only target preflight. The lifecycle receipt is deliberately scoped to a
+mounted/local transaction fixture and does not claim menu activation or physical
+qualification. The target remains owned by an external MAME core, so the next
+action is still a quiescent maintenance window followed by exact RBF/boot
+admission and the three output-mode captures, audio, controls, campaign/save,
+performance and clean-target workflows. Candidate49 is not an accepted release.
 
 ## How to execute and maintain this plan
 
-Each C-item below contains its dependencies, affected code, implementation procedure, verification and closure evidence. Follow the stage overview first, then the detailed work packages. Proposed new scripts, interfaces and tests are implementation deliverables, not commands that already exist.
-
-Use these item states: **OPEN → IN_PROGRESS → IMPLEMENTED → VERIFYING → CLOSED**. Use **BLOCKED** when a named prerequisite, fixture, hardware observation or decision prevents progress. A blocked physical gate is not a pass; continue independent local items. Reopen CLOSED items if relevant source, ABI, configuration or artifact changes invalidate their evidence.
-
-For each item, maintain a closure record immediately below its heading when execution begins:
-
-| Field | Required content |
-| --- | --- |
-| Status / owner / updated | Current state, responsible implementer and UTC date |
-| Implementation | Commit or exact source-snapshot ID; changed files and behavioral summary |
-| Checks | Exact commands, environment/tool versions, seed/configuration, exit codes and test names |
-| Evidence | Immutable receipt paths and hashes; private capture references stay private |
-| Candidate | ARM, RBF and ABI/build IDs where applicable |
-| Result | Measured result against every acceptance criterion |
-| Remaining / next action | Specific unfulfilled requirement and executable next action |
-| Closure | Date, reason each criterion is satisfied and any separately tracked residual issue |
-
-Until such a record exists, the heading's OPEN status applies. Check the corresponding box in `SUGGESTED_CHANGES.md` only when the item's complete closure gate passes. If code is fixed but board verification is pending, record IMPLEMENTED or VERIFYING. Do not claim closure from compilation, a zero fault counter, a matching ring cursor or a historical receipt alone.
-
-Before changing code, rerun the relevant failing reproduction against the current source. If another change already fixed it, record that evidence and still complete the regression and integration requirements. Keep patches to imported sources in reproducible overlays where practical; do not alter the pinned engine or donor checkout as a shortcut.
-
-### Execution order and dependency handling
-
-1. **Baseline/tools:** start C18, C26–C31 and C33. Implement their infrastructure first; their final clean-build/release checks occur after the candidate stabilizes.
-2. **Pure correctness:** C01, C02, C08 and C22. Prepare integrated fixtures for C09/C19 at the same time.
-3. **Ownership/display/recovery:** C03–C07 and C09. Treat C03/C04/C05 as one coordinated design change with separately verified closure criteria.
-4. **Runtime and I/O:** C10–C17. Implement admission before real launcher writes; use C07's lifecycle protocol for audio and input resets.
-5. **Measurement and target correctness:** C19–C22, C25 and candidate rebuilding through C18/C27. Local test development may start earlier; final board checks use matching artifacts.
-6. **Physical/performance acceptance:** C15, C21, C23 and C24, followed by C32 and final clean-checkout closure of C26–C31.
-7. **Maintenance:** C34 after functional responsibilities stabilize, followed by appropriate regression checks. Rebuild/requalify if refactoring changes generated binaries used for acceptance.
-
-Dependencies below mean the named interface or capability must exist before dependent work can be accepted; they do not require waiting for that dependency's final package-level closure. This permits building the C18 manifest and C29 receipt infrastructure together without a circular release gate.
-
-### Acceptance targets to encode before qualification
-
-The following are planning targets, not achieved measurements. Put them into the versioned test configuration before collecting acceptance runs, and record any subsequent change with its rationale. Do not loosen a target merely to make a failing run pass.
-
-- **Correctness:** zero differing indexed pixels/palette bytes in deterministic equality runs; zero mixed palette/frame activations; zero writes outside admitted regions or into an active/pending slot.
-- **Cadence:** with frames prepared in time, one new display activation at every 60 Hz boundary after warm-up. In RTL, verify at least 1,000 consecutive refreshes with no unexplained missed activation.
-- **Recovery:** under an operational DDR interface and a live FPGA, a deliberately delayed fence or software-requested reset must return to a usable session within a configured 1-second recovery budget. Loss of the DDR interface must fail visibly and stop new writes; it must never be “recovered” by unsafe slot reuse.
-- **Audio:** zero underrun/resync deltas during the declared active-playback qualification interval after priming; report startup, drain and stopped-producer counts separately.
-- **Steady gameplay performance:** preserve the existing approximately 60 FPS goal. Initial proposed numeric gate: p99 presentation interval no greater than 16.67 ms plus measured timer/refresh tolerance, and at most 0.1% late prepared-frame submissions in each qualified steady scene. Record actual refresh period instead of rounding where relevant. Report p99.9 and maximum even if not used as a gate; loading transitions get their own bounded-duration report.
-- **Input:** proposed target p95 input-to-visible latency ≤50 ms and p99 ≤100 ms for specified repeatable actions, including loaded rendering; separate transport-only latency from physical end-to-end measurements.
-- **Durations:** 30 minutes combined gameplay/audio/input stress per campaign, 2 hours idle with active service checks, and 100 automated lifecycle cycles where safe. Multiplayer: 30 minutes per campaign pairing plus targeted disconnect/failure cases. These are minimum planned fixtures, not a substitute for complete workflow coverage.
-
-If a target or advertised mode cannot be delivered, leave the corresponding item open and propose a scope decision explicitly. Removing a requirement or declaring a failing mode unsupported does not by itself close the original issue.
-
-## Stage A — identify the candidate and preserve evidence
-
-Related changes: C18, C26–C30, C33.
-
-1. Preserve the known board-tested RBF/ARM identities as historical acceptance of transport activity only.
-2. Identify the current local RBF and ARM candidates; record source snapshot, ABI, QSF/SDC, compiler/toolchain options and hashes in an immutable build directory.
-3. Review and version the intended implementation; repair README/status drift. Keep private data and generated files excluded.
-4. Establish a single verification entry point, immutable receipts and complete build snapshots.
-
-Exit gate: a clean checkout can run host/RTL verification and construct a candidate with no undocumented local runner/source dependencies. Every reused receipt either matches its artifact or is explicitly historical. An in-progress build is never treated as a stable candidate.
-
-## Stage B — restore rendering and ownership correctness
-
-Related changes: C01–C09, C19, C22.
-
-1. Fix changed-run coalescing and mixed-writer palette/pixel cache invalidation.
-2. Pipeline next-frame preparation independently of vblank and retire superseded frames safely.
-3. Make palette/frame activation atomic.
-4. Implement outstanding-fence lifecycle, observable command faults and bounded recovery without premature buffer reuse.
-5. Quiesce audio for epoch recovery and revalidate all content caches.
-6. Expand differential and integrated RTL tests; include full capacity/wrap, sparse run patterns, continuous producer overload, delayed DDR, late fence, reset and relaunch cases.
-
-Exit gate: the audit reproductions pass after their expected results are turned into regressions; randomized source/command/frame comparisons agree; no slot remains permanently owned after bounded recovery; a periodic 60 Hz test activates 60 distinct ready frames per second after warm-up. All twelve existing RTL fixtures and the host/Python suites remain green.
-
-This stage supersedes the current guide's blanket “ABI/frame/audio/input checks pass” and “command path validated” wording. Preserve the narrower historical test results, but reopen integrated ownership and full-scene correctness acceptance.
-
-## Stage C — complete the runtime lifecycle and control boundary
-
-Related changes: C10–C17.
-
-1. Add actual OSD focus transport and robust input-state reconciliation.
-2. Implement modifier/text behavior and correct mouse masks; verify engine consumers, not only generated event logs.
-3. Make transport configuration and startup errors explicit.
-4. Add the minimal menu launcher with campaign data discovery, isolated configuration/saves, matching artifacts and exclusive reserved-memory ownership.
-5. Implement required analog/direct-video modes before advertising them; keep any undelivered mode open pending an explicit scope decision.
-6. Diagnose active-playback PCM starvation with proper priming and stop accounting.
-
-Exit gate: automated adapter/lifecycle tests pass; expected launch failures are visible; a second instance/probe cannot corrupt an active transport; both campaigns can be launched through the intended workflow. Physical peripheral/audio acceptance remains separately open until Stage E.
-
-## Stage D — rebuild and prove complete target frames
-
-Related changes: C18, C19, C22, C25.
-
-1. Rebuild ARM and FPGA from the fixed snapshot, using configured Quartus at `D:/Q17` on this host.
-2. Review every timing corner, inferred resources, relevant warnings and active external interfaces for that exact candidate.
-3. Load only hash-verified matching artifacts on the board.
-4. Capture completed target-slot indices and palettes for deterministic Diablo/Hellfire scenes and compare every byte with the independent software reference.
-5. Separately verify physical displayed RGB/palette transitions and ownership/pacing using the intended output modes.
-
-Exit gate: complete scene equality and displayed output are correct; no stale frame/palette, transport fault or buffer ownership violation occurs. Full-capture overhead is excluded from subsequent production-performance comparisons or separately reported.
-
-## Stage E — qualify physical gameplay and sustained service
-
-Related changes: C15, C23, C24.
-
-Use the launcher and exact Stage D artifacts. Test both campaigns across town, dungeon, combat, cinematics, menus, naming, inventory, spells, save/load, quit, reset, core switching and relaunch. Exercise keyboard/mouse, controller-only use, device reconnects, mixed input and OSD focus. Verify speaker left/right output and zero active-playback underrun delta under combined DDR/render/input load. Test multiplayer host/join/chat/disconnect and incompatible campaign handling.
-
-Proposed durations to adopt explicitly: short per-workflow checks, at least 30 minutes of combined gameplay/audio/input stress, and a multi-hour idle/relaunch/storage qualification. Record the exact duration, scene, active-playback interval, initial/final counters and failures; do not silently mark a shorter run equivalent.
-
-Exit gate: every required physical workflow has a passing receipt; no stuck controls, unbounded queues, data loss or unrecovered transport faults. Any undelivered required output/control/network mode remains open unless an explicit scope decision changes that requirement.
-
-## Stage F — measure and then optimize
-
-Related changes: C20, C21, C31.
-
-1. Define four independent rates: deterministic simulation ticks, render/present calls, successfully published frames and newly displayed frames.
-2. Establish a paired software-only versus accelerated benchmark on identical scenes, settings, pacing and artifacts. Measure warm-up separately from steady state and loading/transitions.
-3. Instrument all outcomes, including failed command builds and fence timeouts. Record frame-time histograms, deadline misses, per-stage costs, queue age, input-to-visible latency and audio/input service health.
-4. Optimize only the measured limiting stage. Candidate work includes an early command-versus-copy cost estimate, bounded record reduction, command batching and independent ARM work; no assumption that higher FPGA/CPU utilization is itself beneficial.
-5. Re-run equality plus the same paired benchmark after each functional optimization.
-
-Exit gate: quantified acceleration improvement without correctness regressions or service starvation, plus the planned approximately 60 FPS deadline/tail-latency targets and one distinct prepared frame displayed per refresh. Average FPS alone is insufficient. If these targets are not achieved, retain the performance blocker; a different release scope requires an explicit recorded decision and disclosure of actual measured behavior.
-
-## Stage G — package and clean-install acceptance
-
-Related changes: C25, C32.
-
-Package matching RBF, ARM executable, launcher, ABI/build manifest, redistributable assets and required notices. Exclude commercial MPQs, saves, captures and donor-only artifacts. Verify installation/update failure behavior and preservation of existing saves/configuration. Install on a clean supported MiSTer and repeat both campaign launch/play/quit/reset/core-switch/relaunch workflows and an independent second launch.
-
-Exit gate: installable, reproducible package with validated source/artifact identities, complete supported-mode documentation and all required physical/performance gates closed.
-
-## State-document structure to implement under C30
-
-Keep a small current-state document with: schema version; completion-guide hash; current stage; development candidate ID; board-accepted candidate ID; per-gate status (`not_started`, `implemented`, `host_pass`, `rtl_pass`, `board_pass`, `blocked`); evidence IDs; blocking finding IDs; next executable command and expected result. Store historical build/process narratives in immutable receipts. Include observation method, date, artifact hashes, configuration, duration, test result and scope limitations in each receipt.
-
-The next immediate action is Stage A candidate identification followed by the Stage B bug fixes, not another performance qualification run of the currently documented command binary.
-
----
-
-## Detailed work packages
+Each C-item contains its dependencies, affected code, implementation procedure,
+verification and closure evidence. Follow the stage overview first, then the
+detailed work packages. Proposed scripts and interfaces are implementation
+deliverables; a documented command is only executable when its prerequisites and
+expected result are stated. Use the current execution block and machine state as the active checkpoint; treat Candidate49 and older candidate paragraphs as historical evidence.
 
 ### C01 — Fix changed-run rectangle coalescing
 
@@ -396,6 +605,23 @@ The next immediate action is Stage A candidate identification followed by the St
 
 **Recorded implementation (2026-09-07):** `Diablo.sv` still sets `FB_FORMAT=5'b00011`, `FB_WIDTH=640`, `FB_HEIGHT=480` and `FB_STRIDE=640`; `FB_EN` and `VGA_SCALER` now share `gameplay_video_valid`, so diagnostic/startup states cannot advertise stale indexed framebuffer metadata. It adds a `Video source` OSD option (Gameplay by default, Diagnostics explicit), drives the framework path only when a valid gameplay frame is available, and passes diagnostic/startup state into `native_test_pattern`. The native generator keeps its 640×480/60 Hz timing, emits the selected bars/pixels/ramps only in explicit Diagnostics mode, emits a dark-red startup/fault screen before a valid frame, and emits black on the direct RGB bus for normal gameplay while the framework scaler is selected. `support/NATIVE_VIDEO.md` records the actual `sys_top.v` mux (`cfg[12]`, `cfg[2]`, `direct_video`, `vgas_en`) and the absence of a core-side inverse direct-video override. The native RTL fixture passes the original timing/pattern checks plus source-guard checks. This proves source-selection intent and local timing only; framework mux behavior, indexed/palette consumption, target modes and physical gameplay output remain open. Preserve `.mister/evidence/native-hdmi-delay12-build.json` as historical timing evidence while keeping the output acceptance gate open.
 
+**Recorded implementation (2026-09-08, candidate42 source-policy pass):** the
+source decision is now factored into `rtl/diablo_video_source_policy.sv` and
+wired from `Diablo.sv`. Its regression covers attach-without-frame,
+frame-ready gameplay, explicit diagnostics, and return-to-gameplay; it asserts
+that `FB_EN` and `VGA_SCALER` cannot advertise a partial/stale frame and that
+the direct diagnostic generator is disabled during gameplay. The closure matrix
+now enumerates separate HDMI framebuffer/scaler, direct RGB and
+analog/scandoubler rows, and `support/NATIVE_VIDEO.md` records the connector,
+geometry, source and MiSTer configuration contract for each. The imported
+scandoubler's old vertical-sync TODO is replaced with a documented progressive
+three-line VSync/VBlank pipeline disposition and a deterministic `.mono(1'b0)`
+connection. Local policy, matrix and full-suite regressions pass. Candidate43
+now binds a fresh direct Quartus compile, compressed/raw RBF and SOF; the
+four-corner timing receipt has zero setup violations and 0.188 ns minimum
+positive slack. This closes the source/build portion of the item while physical
+connector qualification remains open.
+
 **Implementation procedure**
 
 1. Freeze the C31 output matrix before changing wiring. For each row, record connector, progressive/interlaced mode, active width/height, pixel clock or `CE_PIXEL` relationship, sync polarity, RGB depth/order, palette ownership, `FB_*` versus direct-`VGA_*` source, forced-scandoubler/scaler setting, and the required physical observation. Mark a row `supported`, `diagnostic-only`, `unsupported-by-scope-decision`, or `blocked-by-equipment`; do not let an unmarked row inherit the HDMI result.
@@ -434,6 +660,23 @@ The next immediate action is Stage A candidate identification followed by the St
 
 **Recorded implementation (2026-09-07):** the ARM can read a coherent PCM health snapshot containing producer, consumer, queued frames, FPGA underruns and resyncs. The SDL adapter samples it on a bounded presentation cadence and logs any diagnostic delta with local successful/dropped callback and frame totals. The ABI regression sets packed FPGA diagnostics and verifies the decoded values. This makes future active-playback traces able to distinguish ring priming from starvation; it does not turn historical or idle counters into a zero-underrun claim.
 
+**Candidate38 continuation (2026-09-08):** the FPGA now publishes local FIFO occupancy through the ABI flags word. The target callback uses 1024 frames and candidate38 instantiates an 8,192-sample prime / 16,384-sample local FIFO. The physical normal60 trace records `local_queue=7257`, startup `underrun=6766`, `resync=0`, `drops=0` and no further underrun/resync delta during the observed steady interval. This is a promising priming result, not closure: C15 still requires 30-minute active Diablo and Hellfire traces, physical stereo inspection and zero steady deltas.
+
+**Candidate41 physical update (2026-09-08):** the quiescent candidate41 Diablo
+normal-session receipt records `local_queue=8033`, startup `underrun=6732`,
+`resync=0`, `drops=0` and no observed steady underrun/resync/drop delta after the
+startup sample. It remains blocked because the observer was black/stale and no
+speaker output was physically inspected. The required 30-minute Diablo/Hellfire
+traces, physical stereo inspection and zero steady deltas remain open. The
+separate candidate41 timedemo attempt was blocked by a concurrent MAME core and
+was aborted without timedemo evidence.
+
+**Candidate43 continuation (2026-09-08):** the ARM transport binary is unchanged
+and candidate-bound local/ARM/QEMU checks pass, but no candidate43 board run was
+started because the target remains owned by an external MAME core. C15 therefore
+still requires an exclusive target window, 30-minute active Diablo and Hellfire
+traces, physical stereo inspection, and zero steady underrun/resync/drop deltas.
+
 **Implementation procedure**
 
 1. Establish counter meaning and sample units. Add or expose queue occupancy, high/low watermarks, source callbacks, published/dropped frames, consumed frames, underruns and resyncs with epoch and lifecycle phase.
@@ -451,6 +694,48 @@ The next immediate action is Stage A candidate identification followed by the St
 **Status: IN PROGRESS · project-owned preflight and foreground supervision exist; target menu/profile binding, matching accepted artifacts and physical lifecycle qualification remain open · P1.** Dependencies: C14 startup contract, C17 admission, C18 artifact manifest; C10 focus. Code: `support/scripts/diablo_launch.py`, new project-owned launcher/install scripts, runtime entry point and packaging configuration.
 
 **Recorded implementation (2026-09-07):** `diablo_launch.py` defines a shell-free loader contract rather than assuming an undocumented menu API. It accepts only hash-verified RBF and ARM engine artifacts from an immutable candidate manifest; validates Diablo/Hellfire archives without modifying them; creates campaign-specific writable saves; generates one no-replace current-boot admission record; and passes candidate, mapping and lock configuration to the runtime. A loader must exit successfully and write the selected candidate ID to a per-run ready file before the foreground engine is started. Loader, engine and optional menu-return commands have bounded timeouts, process-tree termination, capped logs and explicit cleanup of transient readiness/admission records. The launcher now acquires an OS advisory lease on the configured transport lock before creating the admission record and holds it through loader, runtime and optional unload; a second launch fails before starting either command, and a crashed process releases the lease through descriptor lifetime. The locked descriptor is handed into each child (`pass_fds`/Windows handle list), and the Linux runtime validates and adopts a duplicate of that exact file instead of reopening the held pathname, eliminating a parent/child lock race. Artifact preflight now rejects a symlink before resolving it, so a redirected RBF or engine cannot inherit a trusted target's hash. Unit fixtures prove matching-artifact preflight, symlink rejection, readiness sequencing, inherited-lock metadata, failed-loader non-start of the runtime, cleanup and exclusive-lease rejection; foundation receipt `20260907T042145Z-f9d97680-9394-49c0-81ec-20af9e1fa566.json` passed for source snapshot `fa6681649351b8187470f9ed7aad730d98f4251bb4fbd578283494c7a07df50f`. The development ARM/RBF candidate and host/RTL/ARM-QEMU evidence now exist in C18; C16 still needs a supported MiSTer menu/profile binding, current-boot loader readiness, data compatibility evidence and physical Diablo/Hellfire campaign/save/core-switch qualification before it can close.
+
+**Deployment preflight update (2026-09-08):** `mister_preflight.py` performs a
+read-only SMB/package hash check and target probe without loading an RBF or
+claiming physical acceptance. Candidate33 matches the complete 190-file package,
+including `package-manifest.json`, on
+`\\192.168.0.69\sdcard\_CodexDiabloCandidate33`. It found `MiSTer`, `menu.rbf`,
+root `MiSTer.ini` and `config/cores_recent.cfg`. Receipt
+`20260908T-preflight-candidate33b.json` has SHA-256
+`51723c30cba19d5a1098f89d7b9bebb8271d10b0dec661f5e1e5f2176d7d4152`.
+Activation, current-boot admission, installed-engine execution, campaign/save
+behavior and physical observer evidence remain required.
+The reachable target's existing `Scripts/wifi.sh` and `Scripts/MiSTer_SAM_on.sh`
+also document a local loader command of the form
+`load_core /media/fat/<path>` written to `/dev/MiSTer_cmd`. The read-only
+observation is recorded in
+`.mister/evidence/receipts/20260908T-loader-interface-candidate27.json`
+(SHA-256 `8a1ffe1a1b56e9f1da5e224c50d11afe8e0065bd9a40f3e37e044a522f94665a`).
+This is a target interface to bind into the authorized board profile, not yet a
+successful Diablo activation receipt.
+
+**Current implementation addendum (2026-09-08):** support/scripts/mister_launcher.py
+is the self-contained target entry point. It verifies deployment/package v2,
+requires the complete asset tree, creates a current-boot admission, owns the
+POSIX lease and passes the locked FD to the ARM child. Its loader gate requires
+both FPGA operating state and an exact /proc MiSTer process carrying the requested
+RBF path. Candidate31 normal target smoke passed those checks and published live
+frames; the observation is limited because capture was black/unavailable, the
+API/OSD reported AO486 and PCM underruns increased. Candidate32 added a paced
+timedemo path; candidate38 carries the current source/package identity and the
+large-FIFO/local-queue telemetry fix. Its physical normal60 pass proves admission
+and frame publication, while video identity, active audio, controls, campaign/save
+and second-launch behavior remain open.
+**Candidate38 launcher receipt (2026-09-08):** the package38 preflight receipt `20260908T-candidate38-preflight.json` (SHA-256 `01fe2ca6d599c41bbed92b4974ced77c5dc696ee61855792a183e0cf1f7260a2`) and physical normal60 receipt `.mister/evidence/receipts/20260908T-physical-launch-candidate38-normal60.json` (SHA-256 `a1d73353347f08e70d92e64c8f2fc45c58d461437784c7e776e42e07646ba9bb`) now bind candidate38. The launcher pass proves admission, exact RBF process, FPGA operating state, frame publication and controlled termination. Video identity, physical audio/control, campaign/save and second-launch behavior remain open.
+
+**Candidate41 launcher update (2026-09-08):** package41 preflight and the
+candidate-bound local suite pass. A quiescent 60-second Diablo normal-session
+receipt proves exact RBF admission, FPGA `operating`, controlled exit and no
+steady PCM drop/resync delta after startup, but records a black observer and
+6,732 startup underruns. A separate Diablo timedemo attempt was blocked by a
+concurrent MAME core and aborted without evidence. C16 therefore remains open
+for menu/profile binding, physical video/audio/input, both campaigns, save/load,
+core-switch/relaunch and clean lifecycle qualification.
 
 **Implementation procedure**
 
@@ -487,7 +772,21 @@ The next immediate action is Stage A candidate identification followed by the St
 
 **Status: IN PROGRESS · candidate manifests are content-addressed and immutable; source/artifact mutation and overwrite refusal are unit-tested. A current development ARM/RBF candidate now exists, while target admission, qualification and acceptance promotion remain open · P1 · closes F12.** Dependencies: C27 build inputs and C29 receipt schema developed together. Code: `support/scripts/candidate_manifest.py`, build helpers, state links.
 
-**Recorded implementation (2026-09-07):** `candidate_manifest.py create` records every configured source input, relevant dirty source status, supplied tool identities and artifact hashes. Its source ID and candidate ID change when their respective inputs change; `verify` rejects mutation. Publication uses a unique temporary file plus a no-replace link, so an existing manifest cannot be overwritten. Source inputs, launcher artifact paths, manifest paths and all parent path components are now rejected before symlink resolution; malformed manifests fail as bounded verification errors; generated `__pycache__`/`.pyc` files are excluded from the canonical source set so test runs cannot mutate candidate identity; the candidate/launcher regressions pass. The earlier FPGA-only manifest `.mister/evidence/candidates/fpga-candidate-20260907-1.json` remains preserved as historical evidence (manifest SHA-256 `ac7298722bae3b26d43c022234d84fb54b6d04e25130b109b19b6ee76bbe60ee`, candidate ID `b9979b1ca4f2640aa10516b53a88959e84f7767588363340df7243f4c11b4110`); the first artifact-path symlink fix correctly invalidated it. The four-artifact candidates `.mister/evidence/candidates/fpga-candidate-20260907-2-arm.json` (manifest SHA-256 `c97cd7a8b30a409b4d69a540d2532ab520dabd494b7020822519bd0d1729303d`, source ID `fd1c317bdafcc9179107fe21ccaa13813a4f8a8ada68feafb741c09a226ec37a`, candidate ID `f3ca93d3816c12d8a3f8c724e924357cb1b034d300052a5378eb47b7c4b41901`) and `.mister/evidence/candidates/fpga-candidate-20260907-5-arm.json` (manifest SHA-256 `8d2b603ec3e91cb0240cdda00c37317d32366cc8d616a9890326eac55183a214`, source ID `dfe50a9cc7af178954cc819e4b93fdd21993148fe70ac9663858062e5a4a1a4e`, candidate ID `a1fc74fdbf27f9759691391fe576480b5f4e8d4548a287ed08f34ec272a7058c`) are preserved as historical development evidence and were superseded by subsequent source hardening. The current development manifest `.mister/evidence/candidates/fpga-candidate-20260907-6-arm.json` verifies with four artifacts (manifest SHA-256 `8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762`, source ID `48cbaf2d4ff36ac820e22ca0008b213d539629ef1880c40634ba203a0e8fa5e7`, candidate ID `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`). The bound ARM artifact is 8,518,704 bytes with SHA-256 `11ed2bf67edfc99b80ed6ff541cd991d20cd39cbd82f6b43c9b038dbb06f3ced`; the compressed and raw RBF both have SHA-256 `56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c`, and the SOF has SHA-256 `d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`. The configured candidate-bound local and ARM/QEMU receipts pass, but this remains development-only: target loader admission, current-boot mapping proof, physical I/O, deterministic campaign equality, performance and acceptance promotion remain open.
+**Recorded implementation (2026-09-07):** `candidate_manifest.py create` records every configured source input, relevant dirty source status, supplied tool identities and artifact hashes. Its source ID and candidate ID change when their respective inputs change; `verify` rejects mutation. Publication uses a unique temporary file plus a no-replace link, so an existing manifest cannot be overwritten. Source inputs, launcher artifact paths, manifest paths and all parent path components are now rejected before symlink resolution; malformed manifests fail as bounded verification errors; generated `__pycache__`/`.pyc` files are excluded from the canonical source set so test runs cannot mutate candidate identity; the candidate/launcher regressions pass. The earlier FPGA-only manifest `.mister/evidence/candidates/fpga-candidate-20260907-1.json` remains preserved as historical evidence (manifest SHA-256 `ac7298722bae3b26d43c022234d84fb54b6d04e25130b109b19b6ee76bbe60ee`, candidate ID `b9979b1ca4f2640aa10516b53a88959e84f7767588363340df7243f4c11b4110`); the first artifact-path symlink fix correctly invalidated it. The four-artifact candidates `.mister/evidence/candidates/fpga-candidate-20260907-2-arm.json` (manifest SHA-256 `c97cd7a8b30a409b4d69a540d2532ab520dabd494b7020822519bd0d1729303d`, source ID `fd1c317bdafcc9179107fe21ccaa13813a4f8a8ada68feafb741c09a226ec37a`, candidate ID `f3ca93d3816c12d8a3f8c724e924357cb1b034d300052a5378eb47b7c4b41901`) and `.mister/evidence/candidates/fpga-candidate-20260907-5-arm.json` (manifest SHA-256 `8d2b603ec3e91cb0240cdda00c37317d32366cc8d616a9890326eac55183a214`, source ID `dfe50a9cc7af178954cc819e4b93fdd21993148fe70ac9663858062e5a4a1a4e`, candidate ID `a1fc74fdbf27f9759691391fe576480b5f4e8d4548a287ed08f34ec272a7058c`) are preserved as historical development evidence and were superseded by subsequent source hardening. The historical development manifest `.mister/evidence/candidates/fpga-candidate-20260907-6-arm.json` verifies with four artifacts (manifest SHA-256 `8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762`, source ID `48cbaf2d4ff36ac820e22ca0008b213d539629ef1880c40634ba203a0e8fa5e7`, candidate ID `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`). The bound ARM artifact is 8,518,704 bytes with SHA-256 `11ed2bf67edfc99b80ed6ff541cd991d20cd39cbd82f6b43c9b038dbb06f3ced`; the compressed and raw RBF both have SHA-256 `56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c`, and the SOF has SHA-256 `d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`. The configured candidate-bound local and ARM/QEMU receipts pass, but this remains development-only: target loader admission, current-boot mapping proof, physical I/O, deterministic campaign equality, performance and acceptance promotion remain open.
+
+**Historical candidate record (2026-09-08):** candidate25 `.mister/evidence/candidates/fpga-candidate-20260907-25-arm.json` has candidate ID `14eaf763fab2f4ced58d72dc095a03d65293f4609631a098a0f0eb5b5d162bdf`, manifest SHA-256 `27c4d2b04c0d00bab6aa3f3df04a33327f6107cc8b73dfd5baed37c631237416` and source ID `4ae4640bfc0888e7899eeac37e337f8a703e517ffff6a326b8e40a304c305797`. It binds the existing 8,518,704-byte ARM engine (`11ed2bf67edfc99b80ed6ff541cd991d20cd39cbd82f6b43c9b038dbb06f3ced`), raw/compressed RBF (`56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c`) and SOF (`d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`) because only test-fixture/bootstrap source changed after the prior artifact build. Candidate-bound local, ARM/QEMU, Diablo/Hellfire scene-oracle, package and read-only target-preflight receipts all pass. This candidate remains development-only until clean native rebuild/timing, target activation, physical qualification and release lifecycle evidence are complete.
+**Historical candidate record (2026-09-08, candidate27):** candidate27 `.mister/evidence/candidates/fpga-candidate-20260908-27-arm-clean.json` has candidate ID `95eaf3535aaf52d55b63f85b9bc566178c8e24b0d6f00d1e29d28a54021bcaf8`, manifest SHA-256 `e83b4d6a3142ab930419bf04caf9f273df4d628619010906e51e7f0fd16a0f13` and source ID `29e74b2685e333470ee383d40a977aa8b5a6da87a1a3d5106025890f1e9a42f4`. It binds the clean ARM transport engine (`6a623b7f4c94215f51ff7e6ebfcfd46c4d48072d434ba5ccb19bf0f70a30c4a3`), clean Quartus SOF (`53ccc445cec939d29128bae87272d7861b84a6403117e2757e9ad44ece4516f2`), raw/compressed RBF (`566f24bd1d667265648173b8d4fba255f7035718540d5ef6046bf6f572758d3f`) and ABI (`aefc42fc0a1969800ef9ed8cbddb5d76155b7433ecaa1b6dc1a04a507e1737cd`). Candidate-bound local/ARM/QEMU, Diablo/Hellfire scene-oracle, clean ARM/FPGA build, package and read-only target-preflight receipts all pass; the scene oracle records the separate ARM-reference role. Target activation, physical qualification, R10/R11/R12 closure and release lifecycle evidence remain open.
+
+**Historical candidate record (2026-09-08, candidate43):** candidate43
+`.mister/evidence/candidates/fpga-candidate-20260908-43-video-policy.json`
+(candidate `82ebd70596f62e5c3e60c00d6609a728359da1186b8ad140c1cd2e90ef6f534f`,
+manifest SHA-256 `680c79298f3db7747e40dc20087861c193416aa6a0590e1820e561a17fcc2ddd`,
+source `10486a2923b134085cbdb7d71e65b419545a4bce979e2fd5d6e9f73907a9c87f`)
+verifies with 190 artifact records. It binds the transport ARM ELF, fresh SOF,
+raw/compressed RBF and ABI; the build receipt records four passing setup
+corners. Candidate-bound local, ARM/QEMU, scene-oracle, package and target
+preflight receipts pass. Physical activation and release acceptance remain open
+because the target is currently owned by an external MAME core.
 
 **Implementation procedure**
 
@@ -503,7 +802,27 @@ The next immediate action is Stage A candidate identification followed by the St
 
 ### C19 — Prove complete accelerated scene equality
 
-**Status: OPEN · P1.** Dependencies: C01–C08, C18, C22; C23 covers physical workflow breadth. Code: scenario/capture runners, independent renderer oracle and target readback tooling.
+**Status: IN PROGRESS · the independent host-versus-ARM scene oracle now passes both maintained town scenarios for candidate27's separately identified ARM-reference role; FPGA readback, complete campaign coverage, role-aware evidence schema and physical displayed-frame agreement remain open · P1.** Dependencies: C01–C08, C18, C22; C23 covers physical workflow breadth. Code: scenario/capture runners, `support/scripts/scene_oracle.py`, independent renderer oracle and target readback tooling.
+
+**Recorded implementation (2026-09-08, candidate27):** `scene_oracle.py`
+validates both run envelopes, requires matching campaign/scenario/demo identity,
+rejects missing or partial captures, compares every indexed pixel and all 256
+RGB888 palette entries, and publishes a no-replace candidate-bound receipt.
+Diablo and Hellfire `town-v1` each compare five native640 frames exactly between
+the host reference and the separately identified ARM-reference build
+(`20260908T-scene-oracle-diablo-candidate27.json`, SHA-256
+`86af2b4e5d74bee51786d485a58c6b7350c17e46cb35a860107b0cfd49be3c30`;
+`20260908T-scene-oracle-hellfire-candidate27.json`, SHA-256
+`945c4b226a9cd62093fd2fc035a953d107309ff3f8cbc887602f3478e4a1b764`).
+These receipts establish a reusable software oracle only; they do not claim
+FPGA scanout, physical HDMI/audio/input, FPS or full-campaign acceptance.
+
+**Candidate43 continuation (2026-09-08):** the same role-separated town oracle
+was rebound to candidate43. Diablo and Hellfire each compare five indexed/palette
+frames and pass in the candidate43 receipts recorded in the current checkpoint.
+This refresh proves the new candidate identity is attached to the software
+oracle; it does not replace the remaining dungeon/combat/campaign coverage or
+physical displayed-frame and palette checks.
 
 **Implementation procedure**
 
@@ -603,7 +922,41 @@ The next immediate action is Stage A candidate identification followed by the St
 
 ### C25 — Close final-candidate timing, inference and endpoint coverage
 
+**Current timing gap (8 September):** reviewed C34 evidence passes constrained
+setup/hold/recovery/removal/minimum-pulse summaries at all four corners. C25
+source review and validator acceptance are complete in commit `8e74223`: the
+independent validator passes its 18 fixtures, correctly rejects the separate
+infinity fixture, and real setup, hold, recovery, removal and minimum-pulse
+results are positive at all four corners. A fresh current-SDC FPGA build is
+underway. The reviewed unconstrained scope is narrowed from 4 input ports/22
+output ports to 3 input ports/10 output ports. The pre-patch C34 scope receipt
+`.mister/evidence/receipts/20260908T023811Z-c34-unconstrained-io-scope.json`
+(SHA-256 `9d76b9cf1d1aa797bd081b9162f340c2a56d818393e20d7bb328606163a80219`)
+records the original 4-input/22-output baseline and identifies residual
+I2C/audio/multifunction interfaces and the unmatched
+`LED_*` exception. Resolve each real launch/capture or asynchronous boundary;
+use documented external requirements or narrow justified exceptions. Do not
+invent delays or use blanket false paths. Terra corrected the initial SD interpretation: this core tristates SD SPI, and
+these pins are analog-video/Z aliases. Narrow status/analog-alias exceptions are
+authorized; residual I2C/audio contracts remain unresolved.
+The residual external-contract review records missing board/software contracts
+for HDMI_I2C_SCL/SDA, HDMI_TX_INT, HDMI_I2S/LRCLK/SCLK, IO_SCL/SDA and
+USER_IO[2,4,5]. The repository has no board schematic, ADV7513/MCP23009
+datasheets or measured RC/trace/cable budget; nominal device claims and fitted
+diagnostics do not supply production timing constraints. The 3-input/10-output
+residual set remains unresolved. Fully constrained acceptance stays open, and
+no physical acceptance is inferred from this timing evidence.
+
+
 **Status: OPEN · P2.** Dependencies: C13 supported modes, C18/C27 immutable builds; final check after RTL changes. Code: QSF/SDC, report contracts/parser, `support/EXTERNAL_INTERFACES.md` and relevant framework boundaries.
+
+**Candidate43 build evidence (2026-09-08):** direct Quartus compile,
+compression and timing ran from the immutable snapshot
+`.work/build/fpga-candidate-20260908-43-video-policy/source`. The build receipt
+`.mister/evidence/fpga-build-candidate43.json` records four setup corners, three
+paths per corner, zero violations and 0.188 ns minimum positive slack. This
+closes the reproducible native-build portion of the item; endpoint review,
+connector-specific electrical behavior and physical mode evidence remain open.
 
 **Implementation procedure**
 
@@ -619,9 +972,14 @@ The next immediate action is Stage A candidate identification followed by the St
 
 ### C26 — Make the complete implementation reproducible from version control
 
-**Status: OPEN · P1 · closes F13.** Dependencies: initial inventory now; final verification uses C27–C29 and candidate source C18.
+**Status: VERIFYING · P1 · closes F13.** Dependencies: initial inventory now; final verification uses C27–C29 and candidate source C18.
 
-**Recorded implementation (2026-09-07):** the candidate source inventory now hashes the reviewed top-level, RTL, framework, overlay, test and support inputs while excluding generated interpreter/test caches such as `__pycache__`, `.pyc` and `.pyo`; a regression mutates a generated cache and proves the source ID remains unchanged. Current candidate-6 inventory contains 151 source files and no generated bytecode. This removes one machine-local reproducibility hazard, but a fresh checkout, reviewed source inclusion, dependency acquisition and commit/package audit are still required before C26 can close.
+
+**Recorded implementation (2026-09-08):** the candidate source inventory now hashes the reviewed top-level, RTL, framework, overlay, test and support inputs while excluding generated interpreter/test caches such as `__pycache__`, `.pyc` and `.pyo`; a regression mutates a generated cache and proves the source ID remains unchanged. Candidate27 contains 194 source files, including the verification tests, `LICENSE.fpga`, `mister_preflight.py`, the scene oracle and its package-manifest regression, with no generated bytecode. This removes one machine-local reproducibility hazard, but a reviewed source inclusion, dependency acquisition and commit/package audit are still required before C26 can close.
+**Recorded implementation (2026-09-08, R06/R07):** `candidate_manifest.py` now preserves the leading Git porcelain status column by trimming only CR/LF terminators. `mister_preflight.py` also rejects empty/dot/parent/absolute probe paths with bounded `ValueError` results instead of indexing an empty path tuple, and now hashes the remote `package-manifest.json` before consuming its file records. Candidate27 was regenerated after this metadata-integrity hardening; its local, ARM/QEMU, scene-oracle, package and target-preflight evidence is bound to the resulting IDs. The preflight probe uses the observed MiSTer layout with `MiSTer.ini` at the SD-card root rather than under `config/`; focused preflight coverage passes 4 tests plus the missing/tampered-manifest regression.
+**Recorded implementation (2026-09-08, R08):** a detached worktree from committed `HEAD` with the intended source/support overlay now runs `python -m unittest discover -s support/tests -p test_*.py -q` without private data or pre-existing generated outputs. The run passed 129 tests with one declared Windows privilege skip and zero failures/errors. `test_compile_fpga_snapshot.py` creates and removes its temporary `.work/build`; `test_diablo_launch.py` creates and removes a deterministic temporary `build_id.v`, eliminating the ignored-build-output dependency that previously caused 13 clean-checkout failures. Receipt `.mister/evidence/receipts/20260908T-clean-checkout-candidate26.json` (SHA-256 `382496e1f7ac129b208bc8ae4926506c6d622c580093feaff11eb62925ae54b7`) remains valid for the unchanged Python/RTL source snapshot. This advances C26 to VERIFYING; source review/commit, dependency acquisition and package audit remain required for closure.
+**Recorded implementation (2026-09-08, R11):** the clean deployable ARM transport build was reproduced from the pinned engine checkout with the portable ARM toolchain and `support/cmake/arm-transport.cmake`; receipt `.mister/evidence/receipts/20260908T-clean-arm-build-candidate27.json` (SHA-256 `2355fd68ed569464d7ee604ab0405ed83fda3f3638db09dec670414658fa644b`) binds the 8,518,704-byte ELF to candidate27. The separate `arm-reference.cmake` build remains the scene-oracle role. The clean source/build result advances reproducibility, but review/commit, dependency acquisition, role-aware scene evidence and package audit remain open.
+**Recorded implementation (2026-09-08, committed source packets):** P01-P06 are committed through `a65a8ec0708fcbc0d4c3e390fc2c0056d935c437`. The durable packet records are [the source-packet classification](refresh-evidence/c26-source-packet-classification.json) (SHA-256 `ef21ea107eea6f3f3c6a381e6024e54ff97220c1bf35b2ad39f01b803c1242e2`) and [the commit ledger](refresh-evidence/c26-commit-ledger.json) (SHA-256 `07fb9d6de77f77281544e09bf7f846ab18738a2fb372875f6fc729053bd30e28`), copied byte-identically from the private work ledger. C26 remains VERIFYING until the current docs/evidence packet and clean-checkout qualification are accepted.
 
 **Implementation procedure**
 
@@ -639,7 +997,27 @@ The next immediate action is Stage A candidate identification followed by the St
 
 **Status: VERIFYING · P2 · closes F14.** Dependencies: C18 manifest contract; C26 complete source. Code: `compile_fpga_snapshot.ps1`, build helpers/configuration.
 
-**Recorded implementation (2026-09-07):** `support/scripts/compile_fpga_snapshot.ps1` now selects Quartus directly from `-QuartusRoot` or `DIABLO_QUARTUS_ROOT`, retaining `D:/Q17/quartus` only as this host's default; it no longer invokes the external `D:/vibes/fpga/bin/quartus-safe.ps1` wrapper. `-Action sync` requires an empty destination, copies the complete FPGA input set (top-level project/constraint files, `rtl`, `sys` and the timing Tcl script), and writes `.mister/fpga-source-snapshot.json` with per-file size/SHA-256 records. Compile, timing and compression validate that manifest before running the configured executable and write bounded per-action logs. `support/tests/test_compile_fpga_snapshot.py` passes clean-copy, path-with-spaces, non-empty-destination refusal, tamper detection and missing-Quartus-root cases. A fresh identified snapshot at `.work/build/fpga-candidate-20260907-2` then passed direct Quartus compile, STA and compression: 84 source inputs, snapshot manifest SHA-256 `9acb434d09aec3edbefaccf4a8d447c168ed28d945744146e8fe0dd1b258d8ec`, SOF SHA-256 `d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`, raw and compressed RBF SHA-256 `56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c`, and timing report SHA-256 `23a552cd2a649d56bf838ca8d3572a427b8a817e23efba8008589753549da9df`; STA reported three setup groups with zero violations and a conservative 0.161 ns worst-case slack. The FPGA and rebuilt ARM artifacts are bound to the current development-only C18 manifest `.mister/evidence/candidates/fpga-candidate-20260907-6-arm.json` (manifest SHA-256 `8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762`, candidate ID `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`); final C27/C18 closure still requires reproduction from a clean checkout and current-boot target qualification. This snapshot is complete for the allowlisted FPGA input set; it does not substitute for a clean-checkout rebuild or target qualification.
+**Recorded implementation (2026-09-07):** `support/scripts/compile_fpga_snapshot.ps1` now selects Quartus directly from `-QuartusRoot` or `DIABLO_QUARTUS_ROOT`, retaining `D:/Q17/quartus` only as this host's default; it no longer invokes the external `D:/vibes/fpga/bin/quartus-safe.ps1` wrapper. `-Action sync` requires an empty destination, copies the complete FPGA input set (top-level project/constraint files, `rtl`, `sys` and the timing Tcl script), and writes `.mister/fpga-source-snapshot.json` with per-file size/SHA-256 records. Compile, timing and compression validate that manifest before running the configured executable and write bounded per-action logs. `support/tests/test_compile_fpga_snapshot.py` passes clean-copy, path-with-spaces, non-empty-destination refusal, tamper detection and missing-Quartus-root cases. A fresh identified snapshot at `.work/build/fpga-candidate-20260907-2` then passed direct Quartus compile, STA and compression: 84 source inputs, snapshot manifest SHA-256 `9acb434d09aec3edbefaccf4a8d447c168ed28d945744146e8fe0dd1b258d8ec`, SOF SHA-256 `d44b772d6e62bc29ac402c0e24b66ef0ff4b340a5a84792f09edf90b78ab6cb1`, raw and compressed RBF SHA-256 `56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c`, and timing report SHA-256 `23a552cd2a649d56bf838ca8d3572a427b8a817e23efba8008589753549da9df`; STA reported three setup groups with zero violations and a conservative 0.161 ns worst-case slack. The FPGA and rebuilt ARM artifacts were first bound to the historical C18 manifest `.mister/evidence/candidates/fpga-candidate-20260907-6-arm.json` (manifest SHA-256 `8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762`, candidate ID `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`); final C27/C18 closure still requires reproduction from a clean checkout and current-boot target qualification. Candidate26 carries the clean Quartus artifacts and adds the generated-input restoration fix; its ARM bytes remain reused because the source delta does not change the ARM engine. This snapshot is complete for the allowlisted FPGA input set; it does not substitute for a clean-checkout native rebuild or target qualification.
+**Recorded implementation (2026-09-08, R08):** clean-checkout foundation verification no longer depends on a stale ignored `.work/build` directory or a developer-generated `build_id.v`; the focused snapshot and launcher tests create deterministic temporary fixtures and remove them after use. The clean-checkout receipt under C26 proves the Python/launcher layer from the detached source overlay.
+**Recorded implementation (2026-09-08, R09):** a clean direct Quartus compile reproduced a snapshot failure: `sys/build_id.tcl` rewrote `build_id.v` during the pre-flow hook, causing the following compression and timing actions to reject the snapshot. `compile_fpga_snapshot.ps1` now backs up and restores `build_id.v` around every native Quartus action. Candidate26's clean receipt `.mister/evidence/receipts/20260908T-clean-fpga-build-candidate26.json` (SHA-256 `a93a9c9573ef838ccd703a1fa54a56989b4ae72fdcdf26ad741a5ce709f00842`) proves direct compile, compression and timing all exit 0; the four reported setup corners have zero violations and minimum positive slack 0.014 ns. The helper regression is included in the candidate-bound 129-test foundation run. The generated date remains in the FPGA output, while the snapshot source bytes remain stable for subsequent actions.
+
+**Recorded implementation (2026-09-08, candidate27):** candidate27 rebinds the clean ARM transport artifact to the clean FPGA/ABI artifacts. Candidate manifest `.mister/evidence/candidates/fpga-candidate-20260908-27-arm-clean.json` (SHA-256 `e83b4d6a3142ab930419bf04caf9f273df4d628619010906e51e7f0fd16a0f13`) verifies; the clean ARM receipt, candidate-bound local receipt `20260907T163914Z-2ac2bd6a-bae2-4739-938c-ed10ed28b557.json` (SHA-256 `2b6238cdc2037f136d09ef6480575c445d1219457ca34dec4be0deb0e368e0d4`) and ARM/QEMU receipt `20260907T163836Z-341002e5-50d2-4999-bae0-a83a5fe8351c.json` (SHA-256 `7733003b414f9530481a630c9587714bb7e8f250c26b69aef6da7e8e8d6cc0e8`) pass. The exact clean FPGA receipt remains the candidate26 clean snapshot receipt because the FPGA/ABI bytes are unchanged; package27 create/verify and read-only target preflight also pass. C27 is still VERIFYING until the candidate source is reviewed/committed and build dependencies are pinned/documented for another operator.
+
+
+**Historical candidate-bound refresh (2026-09-08, candidate33):** manifest
+`.mister/evidence/candidates/fpga-candidate-20260908-33-plan-refresh.json`
+(SHA-256 `f0ab6bee4630014486c48c7f4b252dc40f118489af6d3337926b26f646cfd15c`)
+verifies. The candidate33 local receipt
+`20260907T183544Z-8711dc3b-a375-4873-b2eb-cd28bdbb0352.json` (SHA-256
+`dfa73666ce5f221cf576461838ebd21dbe3d34109a76b959882c2162fd3c5100`) passes
+all 20 registered checks; the ARM/QEMU ABI receipt
+`20260907T184334Z-743163a2-7604-477a-aa22-97489698e87e.json` (SHA-256
+`6152548dc0dbaac46cff5443f43e71c5fd236567c3dc83d62d98e7377d99c722`) passes;
+and the role-aware Diablo/Hellfire scene-oracle receipts
+`20260908T-scene-oracle-diablo-candidate33b.json` and
+`20260908T-scene-oracle-hellfire-candidate33.json` pass. These receipts cover
+software/reference equality and ABI only; they do not close target video,
+audio, controls, gameplay, performance or release lifecycle.
 
 **Implementation procedure**
 
@@ -653,12 +1031,37 @@ The next immediate action is Stage A candidate identification followed by the St
 
 **Close only when** documented build commands work from the complete snapshot, fail deterministically on missing inputs and yield hashed artifacts/reports tied to C18.
 
+**Candidate43 continuation (2026-09-08):** the snapshot helper was exercised
+again after the video-source-policy and exact output-matrix changes. Candidate43
+records fresh compile/compression/timing logs and artifact hashes from the
+allowlisted snapshot; all four reported setup corners pass. C27 remains open
+only for source review/commit, another-operator dependency reproduction and
+physical target qualification.
+
 ### C28 — Provide one bounded verification entry point
 
-**Status: IN PROGRESS · `python support/scripts/diablo.py verify --suite {foundation,host,rtl,local,arm,board}` is the bounded entry point. Candidate-bound local and ARM/QEMU receipts now pass for development candidate `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`; board qualification remains a separate explicit non-passing tier · P2.** Dependencies: C29 result format; can be implemented early. Code: `support/scripts/diablo.py`, `support/scripts/verification.py`, existing standalone test runners.
 
-**Recorded implementation (2026-09-07):** each executed subprocess has a per-step timeout, process-tree termination, isolated build output and retained log. The runner records missing prerequisites and unregistered tests as `not_run`, yielding exit code 2 rather than a false pass. The fully configured local receipt `20260907T024242Z-79006fab-e9b2-4818-9373-1c44d754a0ee.json` and configured ARM/QEMU receipt `20260907T024212Z-5f9b3524-a88f-4fab-bd32-12f5ab2e82d7.json` cover the earlier source snapshot `f5be9f8743c58fbba1ce1343890378dda02bdf2b946b827b8beb619b048f3236`; they are preserved history, not current evidence after later transport work. The runner now registers the C09 integrated-DDR regression; current RTL receipt `20260907T033407Z-61c6ea85-88dc-4411-94c5-dd3922eefeb3.json` passed it and all other RTL cases. Local coverage includes foundation, command renderer/transport, transport ABI, indexed-frame probe, host PNG/GTest, SDL-input, I2S and every other registered RTL case. The I2S testbench compiles against its existing project source `sys/i2s.v`; the prior omission was a runner registration defect, now fixed. ARM paths require the explicitly configured WSL distribution, cross compiler, sysroot and QEMU binary; board still requires a named configuration and project-owned adapter. The configured candidate-6 local suite passes in receipt `20260907T074147Z-ba696aab-f304-4da2-a56d-2be0789aadf7.json` (SHA-256 `7cc30a86a0e88e015a0506021f4cdbe4923779e0bf07331983ec8558a88a21a3`) and the explicitly configured ARM/QEMU suite passes in receipt `20260907T074417Z-b62331e3-9ad0-42b7-b56f-b472c5e22bed.json` (SHA-256 `14d687bb116f5be66bfa30fec23791b2ce1fb0437852f0109d9f590c4469530f`) for candidate `08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4`. Both remain local/ABI-emulation evidence and do not claim target execution; an earlier unconfigured local run is retained as an incomplete prerequisite receipt rather than a pass.
+**Status: IN PROGRESS · `python support/scripts/diablo.py verify --suite {foundation,host,rtl,local,arm,board}` is the bounded entry point. Candidate-bound local, ARM/QEMU, role-aware scene-oracle and target deployment-preflight evidence now pass for development candidate `d95d4cfd03154bd659343c5a77a1230bcd4efc7c45d81d4f2299a0d754128611`; candidate49 package lifecycle evidence also passes and board qualification remains an explicit incomplete tier · P2.** Dependencies: C29 result format; can be implemented early. Code: `support/scripts/diablo.py`, `support/scripts/verification.py`, `support/scripts/mister_preflight.py`, `support/scripts/scene_oracle.py`, `support/scripts/board_runner.py`, existing standalone test runners.
 
+
+**Historical implementation (2026-09-08, candidate24):** each executed subprocess has a per-step timeout, process-tree termination, isolated build output and retained log. The runner records missing prerequisites and unregistered tests as `not_run`, yielding exit code 2 rather than a false pass. Candidate-24 local receipt `20260907T140421Z-4617cc3e-557c-4747-80d0-fc313b52982d.json` (SHA-256 `98d36f13b240f8f2312150ae5d2a51521883eeb4aebece831724eb40f859d7b9`, 20 registered results, 125 foundation tests with one Windows privilege skip) and ARM/QEMU receipt `20260907T140805Z-52fffaf7-e6b5-4c6b-84bb-fdd92b507e8f.json` (SHA-256 `b0d4c40b13d9d489061752d97113a218df3f8a997e0952d306e443379341c273`) pass. Both bind candidate `01eda1749ecb4d747b9dba7e914a36939c66e05a3f61a617dda85569702c019c`, manifest source identity `d50f7c4f19ae8cb5156b09a22b2e95ebe39f7bbc8518a791486a7af293d3202f` and verification source snapshot `765764590737f77ad860753cadfb3973554ab782799c3aed8827aa3825e15110`. `mister_preflight.py` separately passed the remote package/target probes for that candidate; the board-suite receipt `20260907T140958Z-0abba2b0-e961-4e94-9400-03654860b94e.json` (SHA-256 `38cbb9648b86f413f4a6220b80a3061ebdb12cdbf3f09ca4d32568e70fb69a7d`) remains historical and intentionally incomplete because no physical board configuration was supplied.
+**Recorded implementation (2026-09-08, candidate25):** local receipt `20260907T145145Z-9fdcba94-f5fe-48d6-80f1-722ae3c33d27.json` (SHA-256 `235db6e6c2765ff7f4d9d4e82c3350c149b14ed61c09b760255f03a34372d8f4`, 20 registered results and 128 foundation tests with one Windows privilege skip) and ARM/QEMU receipt `20260907T145928Z-8a3731f0-66b4-445f-8fc9-869a5f8b190f.json` (SHA-256 `ef781dec13313daa1cc2ef90aba7703d08a2a6fee1707c567eb8191c2f58654a`) pass for candidate `14eaf763fab2f4ced58d72dc095a03d65293f4609631a098a0f0eb5b5d162bdf`, manifest source identity `4ae4640bfc0888e7899eeac37e337f8a703e517ffff6a326b8e40a304c305797` and manifest SHA-256 `27c4d2b04c0d00bab6aa3f3df04a33327f6107cc8b73dfd5baed37c631237416`. The clean-checkout receipt is recorded separately under C26. Both scene-oracle receipts and the read-only target preflight now bind candidate25; the board-suite receipt remains intentionally incomplete because no physical board configuration was supplied.
+**Historical implementation (2026-09-08, candidate26):** local receipt `20260907T154930Z-b18c688f-47a0-4057-b23c-e206ff16ab69.json` (SHA-256 `942c0b064b51a270abe48c4e79f57f2bf6620ff9570264533930726e57082ff8`, 20 registered results and 129 foundation tests with one Windows privilege skip) and ARM/QEMU receipt `20260907T155216Z-a01d3027-eef8-43f1-8461-3d6704cd7b6c.json` (SHA-256 `829ff4b02004f5af52158dcfb435f29a5d7273314935840549a97f8675062865`) pass for candidate `b4f6f38b2bb5ec0b4ef9ff3e6624340030e0b15c234e007be2ee0fd2ce5c9dbb`, manifest source identity `13d7c55ed51ffd4b869a14271a5a780815e6c7eb0ad02166d62ee994c5ba30fd` and manifest SHA-256 `c4cfd9bc39c2361134ee107def0ea740590fb0d5e6e95d95bbcabc04f3575776`. The clean FPGA build receipt, both scene-oracle receipts, read-only target preflight and intentionally incomplete board receipt all bind candidate26.
+**Recorded implementation (2026-09-08, candidate27):** local receipt `20260907T163914Z-2ac2bd6a-bae2-4739-938c-ed10ed28b557.json` (SHA-256 `2b6238cdc2037f136d09ef6480575c445d1219457ca34dec4be0deb0e368e0d4`, 20 registered results and 129 foundation tests with one Windows privilege skip) and ARM/QEMU receipt `20260907T163836Z-341002e5-50d2-4999-bae0-a83a5fe8351c.json` (SHA-256 `7733003b414f9530481a630c9587714bb7e8f250c26b69aef6da7e8e8d6cc0e8`) pass for candidate `95eaf3535aaf52d55b63f85b9bc566178c8e24b0d6f00d1e29d28a54021bcaf8`, manifest source identity `29e74b2685e333470ee383d40a977aa8b5a6da87a1a3d5106025890f1e9a42f4` and manifest SHA-256 `e83b4d6a3142ab930419bf04caf9f273df4d628619010906e51e7f0fd16a0f13`. Candidate27 scene-oracle receipts use the separately identified reference ARM role under R11; package27 and target preflight pass, and the board receipt remains intentionally incomplete. R12 is implemented: the fallback diagnostic and regression now explain the configured board runner; candidate32-bound receipts still need regeneration.
+**Historical verification record (2026-09-08, candidate33):** local receipt `20260907T183544Z-8711dc3b-a375-4873-b2eb-cd28bdbb0352.json` (SHA-256 `dfa73666ce5f221cf576461838ebd21dbe3d34109a76b959882c2162fd3c5100`) passes all 20 registered checks; ARM/QEMU receipt `20260907T184334Z-743163a2-7604-477a-aa22-97489698e87e.json` (SHA-256 `6152548dc0dbaac46cff5443f43e71c5fd236567c3dc83d62d98e7377d99c722`) passes; and the role-aware Diablo/Hellfire scene-oracle receipts `20260908T-scene-oracle-diablo-candidate33b.json` and `20260908T-scene-oracle-hellfire-candidate33.json` pass. These are software/reference and ABI checks; board video, audio, input, gameplay, performance and release lifecycle remain open.
+**Historical verification record (2026-09-08, candidate38):** the full Python suite passes 132 tests with one declared Windows privilege skip; `test_transport_control.py`, ABI generation check, candidate manifest verification and package verification pass. Host timedemo replay passes. ARM/QEMU timedemo replay passes with a 600-second bound and `replay_outcome_matches=true` at `.work/runtime/arm-replays/742d6ace2dd84dea88b391094bf84e9b/run.json` (SHA-256 `14aca7fd2d1af4faaba56815314d1206abb3eeecba0652e7a3f14505b155d385`). These checks still do not close board video, audio, input, gameplay, performance or release lifecycle.
+**Historical verification record (2026-09-08, candidate43):** the full Python suite
+passes 136 tests with one declared Windows privilege skip. Candidate-bound local
+verification passes all 21 registered checks, the configured ARM/QEMU suite
+passes, both role-aware scene-oracle receipts pass, package verification passes,
+and the candidate43 target preflight passes. The board tier remains explicitly
+incomplete because no candidate43 activation or physical observation was run.
+**Current verification record (2026-09-08, candidate49):** the full Python suite
+passes 141 tests with one declared Windows privilege skip. Candidate-bound local
+verification, ARM/QEMU, both role-aware scene-oracle receipts, package verify,
+target preflight and the deployment lifecycle receipt pass. `board_runner.py`
+now publishes immutable CLI results, but candidate49 has no physical activation
+or physical observation, so the board tier remains explicitly incomplete.
 **Implementation procedure**
 
 1. Add explicit suites for foundation/Python, host C++, RTL, ARM/QEMU and board qualification. Keep cheap local verification usable independently of hardware or ARM toolchain availability.
@@ -676,6 +1079,14 @@ The next immediate action is Stage A candidate identification followed by the St
 **Status: IN PROGRESS · verification receipts are versioned, unique, atomic and no-replace; they bind each result/log to a full source-and-test dependency snapshot. Promotion and legacy receipt migration remain open · P2.** Dependencies: C18 IDs and C28 execution results developed together. Code: `support/scripts/verification.py`, receipt writer and acceptance validation.
 
 **Recorded implementation (2026-09-07):** `diablo-verification-receipt-v1` stores UUID, UTC interval, requested argv/cwd, sanitized `DIABLO_*` environment, discovered tool identities, suite status, source/candidate identity, each exact command, exit/timeout result and SHA-256/size of its preserved log. Receipts are written under `.mister/evidence/receipts/` with a timestamp and UUID, using a no-replace atomic publish. Unit tests prove failed commands retain logs and an earlier receipt cannot be replaced. A supplied candidate manifest is verified before checks run; without one the record explicitly says it is a source snapshot and cannot promote a board candidate.
+
+**Candidate49 evidence continuation (2026-09-08):** candidate-bound local and
+ARM/QEMU receipts retain the candidate ID plus the verification source snapshot;
+the scene-oracle, package-preflight and deployment-lifecycle receipts bind the
+same candidate and use no-replace publication. The new board-runner CLI also
+refuses to overwrite a result or log. Promotion remains open until physical
+receipts enumerate the exact output matrix, audio, input, campaign, performance
+and lifecycle observations.
 
 **Implementation procedure**
 
@@ -695,6 +1106,13 @@ The next immediate action is Stage A candidate identification followed by the St
 
 **Recorded implementation (2026-09-07):** README no longer says there is no adapter, ABI or accelerator; it describes the prototype and its acceptance limits and lists the immutable local verification entry point. The root completion guide defers current-candidate decisions to this detailed audit plan and machine state. The ARM guide documents the current physical mapping contract: candidate ID, live-boot admission record and non-conflicting lease are all mandatory before `/dev/mem` mapping. Historical observations remain preserved but explicitly cannot validate later source changes. `support/scripts/guide_status.py` now requires the three guides to link the detailed plan, checks every local Markdown link, verifies that `.mister/state.json` hashes this plan, rejects prose labeled as an exact command, and requires an explicit no-current-candidate state until C18/C29 promotion exists. Its unit fixture covers a valid guide set, stale digest, broken link and misleading command label.
 
+**Candidate49 documentation continuation (historical, 2026-09-08):** its source/manifest
+identities, package staging path and local/ARM/scene/preflight/lifecycle receipts
+remain preserved as historical evidence. `.mister/state.json` declares
+`no-current-accepted-candidate`; C25 is source-accepted, a fresh current-SDC FPGA
+build is underway, and physical qualification blockers remain explicit. The guide
+digest must be recomputed after this plan edit before state validation can pass.
+
 **Implementation procedure**
 
 1. Replace stale “no adapter/ABI/accelerator” descriptions with implemented capability and its precise evidence limit. Reopen correctness claims affected by F01–F18 while preserving historical successful test facts.
@@ -709,9 +1127,18 @@ The next immediate action is Stage A candidate identification followed by the St
 
 ### C31 — Encode explicit scope, dependencies and measurable acceptance
 
-**Status: CLOSED · P2.** Dependencies: this document defines the initial policy; C13/C21/C23 consume the checked matrix. Later matrix, scope or measurement changes reopen this item through the recorded invalidation policy.
+**Status: IN PROGRESS — the machine-enforced matrix remains valid, but the output scope was refined on 2026-09-08 into separate HDMI framebuffer/scaler, direct RGB and analog/scandoubler rows; new matrix-bound evidence and a closure record are required · P2.** Dependencies: this document defines the policy; C13/C21/C23 consume the checked matrix. Later matrix, scope or measurement changes reopen this item through the recorded invalidation policy.
 
 **Recorded closure (2026-09-07):** `support/qualification/closure-gates.json` is a versioned matrix covering C01–C34 exactly once. It fixes the required Diablo/Hellfire, output, control, multiplayer and lifecycle scope; records the 60 Hz/60 FPS, p99, input-latency and duration thresholds; declares every C-item's prerequisites, required immutable evidence and invalidating change classes. `support/scripts/closure_gates.py` validates the linked C-item headings and matrix shape, hashes the full matrix into each closure record, rejects missing/open/blocked dependencies, verifies cited artifacts and passing receipt hashes/source identities, and requires a named approver/rationale for a waiver. Its synthetic fixture proves complete evidence can pass while open work, changed source identity and tampered receipts fail. Foundation receipt `20260907T031308Z-1941aea9-335b-45e1-930a-80bed7a12797.json` passed these checks for source snapshot `41a151bc771d6ab81fe1fe71573fa50c202c5e13a0a576a37eea0bed6b2e9243`.
+**Recorded closure (2026-09-07):** `support/qualification/closure-gates.json` is a versioned matrix covering C01–C34 exactly once. It fixes the required Diablo/Hellfire, output, control, multiplayer and lifecycle scope; records the 60 Hz/60 FPS, p99, input-latency and duration thresholds; declares every C-item's prerequisites, required immutable evidence and invalidating change classes. `support/scripts/closure_gates.py` validates the linked C-item headings and matrix shape, hashes the full matrix into each closure record, rejects missing/open/blocked dependencies, verifies cited artifacts and passing receipt hashes/source identities, and requires a named approver/rationale for a waiver. Its synthetic fixture proves complete evidence can pass while open work, changed source identity and tampered receipts fail. Foundation receipt `20260907T031308Z-1941aea9-335b-45e1-930a-80bed7a12797.json` passed these checks for source snapshot `41a151bc771d6ab81fe1fe71573fa50c202c5e13a0a576a37eea0bed6b2e9243`.
+
+**Scope refinement (2026-09-08):** `scope.output_modes` now names the three
+release rows verbatim and the validator rejects a return to generic two-line
+video descriptions. Candidate43 and its receipts bind matrix digest
+`09bb6127f33e110b5a676358d892fe588f216d41027726948dac749311dccbe7`. C31
+remains open until the mode-specific physical evidence and final approval are
+recorded; candidate49 carries the same matrix digest for release-lifecycle
+evidence but does not waive the three physical rows.
 
 **Implementation procedure**
 
@@ -727,7 +1154,58 @@ The next immediate action is Stage A candidate identification followed by the St
 
 ### C32 — Produce and verify the clean-install release package
 
-**Status: OPEN · P2.** Dependencies: all required correctness/runtime/physical/performance gates, C18/C25–C31. Code: package manifest/builder, installer/update scripts, release documentation.
+**Status: IN PROGRESS — package/deployment v2 and target launcher verification are implemented; clean install/update/rollback, notices/setup, menu integration, second launch and physical acceptance remain open · P2.** Dependencies: all required correctness/runtime/physical/performance gates, C18/C25–C31. Code: `support/scripts/package_release.py`, `support/scripts/deployment_manifest.py`, launcher and release documentation.
+
+**Recorded implementation (2026-09-08):** package_release.py now emits
+deployment/package manifest v2 with four fixed runtime roles and the complete
+asset tree. Candidate33's package contains devilutionx, Diablo.rbf,
+transport_abi.hex, diablo_launcher.py, deployment.json, package-manifest.json
+and 184 asset files (190 files total); local verification and target preflight
+pass. The target launcher independently verifies that contract and runs without
+a Git checkout. Candidate31 normal launcher smoke proved current-boot admission,
+exact RBF process matching and live frame publication; it did not prove video,
+audio, input, gameplay or performance. Clean-image install/update/interrupted-
+update/rollback, a menu-visible entry, required notices/setup instructions and
+second launch remain release gates.
+**Candidate38 package continuation (2026-09-08):** the corrected v2 package is `.work/package-board-candidate-38`, staged at `\\192.168.0.69\sdcard\_CodexDiabloCandidate38`, and contains 190 files: the four runtime roles plus 184 assets. Package manifest SHA-256 is `115998423d0409a2f10c192cf5c8487d340bc4bfd3cae2e2d88d37c1d3182896`. The package intentionally excludes licensed MPQs, saves and private captures; C32 remains open until a clean supported image proves install/update/rollback, notices, menu entry, both campaigns and a second launch.
+
+**Candidate41 package continuation (historical, 2026-09-08):** package41 was a historical
+190-file runtime package with 184 assets, staged at
+`\\192.168.0.69\sdcard\_CodexDiabloCandidate41`; its package manifest SHA is
+`3c2b274f139b8b50a4a7107b395c1685f321985c9daacd8ddfb4290556d711c9`. Candidate
+manifest verification, package verification and target preflight pass. The
+package intentionally excludes licensed MPQs, saves and private captures. C32
+remains open for clean-image install, interrupted update, rollback, menu entry,
+notices, both campaigns, save preservation and a second launch.
+
+**Candidate43 package continuation (historical, 2026-09-08):** package43 was a historical
+190-file runtime package with 184 assets, built from the candidate43 manifest,
+verified locally and staged at
+`\\192.168.0.69\sdcard\_CodexDiabloCandidate43`. Its package manifest SHA is
+`595049590830e384a359aec6a70a080483563e151c93de2df205bafc95f10154`; the
+read-only target preflight passes at
+`.mister/evidence/receipts/20260908T-candidate43-preflight-rerun.json` (SHA
+`993ccfd3d45d22cdf911016fabd2572c1912897b639e945b4f1baa6adc8ca60b`). A
+transient first probe missed root `MiSTer.ini` and is retained as a failed
+diagnostic; the immediate rerun passed. C32 remains open for clean-image
+install, interrupted update, rollback, menu entry, notices, both campaigns,
+save preservation and a second launch.
+
+**Candidate49 lifecycle continuation (historical, 2026-09-08):** package49 was a historical
+192-file runtime package with 184 assets, `NOTICE.txt` and `SETUP.md`, built from
+the candidate49 manifest, verified locally and staged at
+`\\192.168.0.69\sdcard\_CodexDiabloCandidate49FinalLocal`. Its package
+manifest SHA is `f09bd76e1b4c80d7eb6391409dc1724f573a5931d4cf644ed7092573e49e63f3`;
+the target preflight passes at
+`.mister/evidence/receipts/20260908T-candidate49-preflight.json` (SHA
+`64d827d9d29953396c55be9314ae19fde04aa63820370573fab9de3d594a1b78`). The new
+`deploy_package.py` transaction and
+`.mister/evidence/receipts/20260908T-candidate49-deployment-lifecycle.json`
+(SHA `324d8ad330f940de78d52d77f372b8c04cbf7dce10eeb3278e899410dee14c01`)
+prove local install, interrupted-update preservation, update, rollback, save
+preservation and final manifest verification. Clean supported-image install,
+menu entry, both campaigns, save/load/reset/core-switch/relaunch and second
+launch remain physical gates.
 
 **Implementation procedure**
 
@@ -743,7 +1221,25 @@ The next immediate action is Stage A candidate identification followed by the St
 
 ### C33 — Clean generated root artifacts without losing evidence
 
-**Status: OPEN · P3.** Dependencies: C26 classification; C18 preserves meaningful artifacts. Code: ignore rules, build/log output paths and root generated files.
+**Status: IN PROGRESS · P3.** Dependencies: C26 classification; C18 preserves meaningful artifacts. Code: ignore rules, build/log output paths and root generated files.
+
+**Recorded implementation (2026-09-07):** the refresh inventory identified only
+the untracked Icarus/VVP default `a.out` and Quartus `c5_pin_model_dump.txt` at
+the project root. Their hashes and non-private generated disposition are recorded
+in `refresh-evidence/generated-root-disposition.json`; both files were moved to
+`.work/build/root-generated-disposition`, `/a.out` and
+`/c5_pin_model_dump.txt` are now narrow ignores, and `clean.bat` removes them.
+The root listing is clean for these artifacts; a detached clean-checkout check
+only shows those artifacts were absent at inspection time.
+
+**Superseded observation (2026-09-08; not closure evidence):** the current root and detached clean-checkout
+contain neither `a.out` nor `c5_pin_model_dump.txt`; both files have explicit
+ignore and cleanup rules, and the disposition artifact remains passing. The
+candidate49-bound receipt is
+`.mister/evidence/receipts/20260908T-candidate49-root-cleanliness.json`
+(SHA-256 `98627a4bb17ea6e62e571cf37e9730ca0f672520048cdf6d9dced4dcd9b36da7`).
+This observation does not close C33: producer execution and destination evidence
+are still required.
 
 **Implementation procedure**
 
@@ -796,11 +1292,11 @@ The next immediate action is Stage A candidate identification followed by the St
 | F17 unsafe clipping arithmetic | C08; independent oracle C19 |
 | F18 silent dummy startup failure | C14; launcher error handling C16 |
 
-Additional original blockers are explicitly owned: active audio C15; launcher C16; memory admission C17; full scenes C19; physical endurance C23; multiplayer/controller-only C24; external timing C25; test/evidence infrastructure C28/C29; release/provenance/private-data exclusion C32. Maintenance improvements are C33/C34. No original recommendation is implicitly waived.
+Additional original blockers are explicitly owned: active audio C15; launcher C16; memory admission C17; full scenes C19; physical endurance C23; multiplayer/controller-only C24; external timing C25; test/evidence infrastructure C28/C29; release/provenance/private-data exclusion C32. Maintenance improvements are C33/C34, R06 tracks the candidate-identity parser regression, R11 tracks the ARM evidence-role split, and R12 tracks the stale board-fallback diagnostic. No original recommendation is implicitly waived.
 
 ## Final completion checklist
 
-- [ ] Every C01–C34 has a CLOSED record and its compact checklist box checked, or an explicitly approved scope disposition linked to the original requirement. A blocked item prevents an unqualified “everything complete” statement.
+- [ ] Every C01–C34 and R01–R12 has a CLOSED record and its compact checklist box checked, or an explicitly approved scope disposition linked to the original requirement. A blocked item prevents an unqualified “everything complete” statement.
 - [ ] Every F01–F18 has its primary fix and listed integration/qualification evidence; all new failures discovered during implementation have their own tracked closure.
 - [ ] All passing evidence matches the final source/ARM/RBF/ABI/configuration; changed components have reopened and re-passed affected gates.
 - [ ] Complete equality, real-vblank cadence, active audio, physical controls, campaigns, save integrity, multiplayer, timing and performance targets pass.

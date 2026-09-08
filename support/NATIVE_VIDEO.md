@@ -27,6 +27,20 @@ The source policy is implemented in `Diablo.sv` and covered by the native
 pattern RTL fixture; it still requires mode-matrix, target and physical
 gameplay evidence before output acceptance is closed.
 
+The release mode matrix is deliberately explicit:
+
+| Row | Connector/path | Geometry and timing | Source contract | Qualification state |
+| --- | --- | --- | --- | --- |
+| HDMI framebuffer/scaler | MiSTer HDMI framebuffer/scaler | 640x480 indexed 8bpp, progressive, 60 Hz; core palette upload | `VGA_SCALER=1`, `FB_EN=1` only after an atomic frame and palette commit | Supported by design; target capture and timing receipt required |
+| Direct RGB | Native direct-video RGB path | 640x480 8-bit RGB, progressive, 60 Hz | Gameplay requires framework direct-video mode with scaler disabled; diagnostics use the native pattern only when selected | Supported by design; target capture and source-mux receipt required |
+| Analog/scandoubler | VGA RGB/YPbPr path with forced scandoubler | 640x480 active geometry, doubled to a progressive 31 kHz mode | Framework scaler consumes the indexed framebuffer when enabled; direct RGB is diagnostic-only otherwise | Supported by design; scandoubler sync/geometry and physical connector capture remain open |
+
+The matrix does not inherit HDMI evidence for the other rows. Each row must
+record the MiSTer configuration bits (`direct_video`, `cfg[12]`, `cfg[2]`,
+`forced_scandoubler`), the connector, sync polarity and the exact candidate
+before it can be promoted. An unavailable connector or missing capture device
+is a blocking row disposition, not an implicit pass.
+
 The framework mux in `sys/sys_top.v` remains an external acceptance boundary.
 `vga_fb` is `cfg[12] | VGA_SCALER`, `vga_scaler` is `cfg[2] | VGA_SCALER`, and
 `vgas_en` selects framework framebuffer/scaler RGB (`vgas_o`) over direct core

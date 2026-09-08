@@ -1,0 +1,205 @@
+{
+  "schema": "diablo-c26-source-packet-classification-v1",
+  "created_utc": "2026-09-08T03:17:16Z",
+  "repository": "D:/Arcade/AI/aCORES/Diablo",
+  "base_commit": "643f806247527dd8fa070c135b97d1813b1b9d66",
+  "mode": "read-only",
+  "scope": {
+    "status_entries_total": 1410,
+    "source_doc_candidates": 56,
+    "candidate_filter": [
+      "git status --porcelain=v1 --untracked-files=all",
+      "exclude .git/**, .work/**, .mister/evidence/**, game/**, ignored/build outputs",
+      "exclude explicit C25 owner paths Diablo.sdc and support/scripts/validate_c25_sdc.py"
+    ],
+    "implementation_rule": "Only packet paths below are proposed for review; generated evidence, private fixtures, audit material, and owner-held paths are excluded."
+  },
+  "packets": [
+    {
+      "id": "P01",
+      "name": "source-inventory-and-clean-fixtures",
+      "status": "propose",
+      "paths": [
+        {"path": "support/scripts/candidate_manifest.py", "status": "M"},
+        {"path": "support/tests/test_candidate_manifest.py", "status": "M"},
+        {"path": "support/scripts/compile_fpga_snapshot.ps1", "status": "M"},
+        {"path": "support/tests/test_compile_fpga_snapshot.py", "status": "M"},
+        {"path": "support/tests/test_diablo_launch.py", "status": "M"}
+      ],
+      "plan_items": ["C18", "C26", "C27", "R06", "R08", "R09"],
+      "dependencies": ["C34 committed transport headers remain available at base_commit."],
+      "evidence": [
+        {"path": ".mister/evidence/receipts/20260908T-clean-checkout-candidate26.json", "sha256": "382496e1f7ac129b208bc8ae4926506c6d622c580093feaff11eb62925ae54b7"},
+        {"path": ".mister/evidence/receipts/20260908T-clean-fpga-build-candidate26.json", "sha256": "a93a9c9573ef838ccd703a1fa54a56989b4ae72fdcdf26ad741a5ce709f00842"}
+      ],
+      "acceptance": [
+        "Clean detached checkout inventory preserves leading porcelain status and excludes cache/private paths.",
+        "Snapshot compile wrapper restores generated build_id.v and fixture tests clean up deterministic inputs.",
+        "Re-run only the focused manifest/compile/launch tests after staging."
+      ]
+    },
+    {
+      "id": "P02",
+      "name": "transport-abi-generator-sync",
+      "status": "propose",
+      "paths": [
+        {"path": "support/scripts/generate_transport_abi.py", "status": "M"}
+      ],
+      "plan_items": ["C26", "C34"],
+      "dependencies": ["C34 commit 643f806247527dd8fa070c135b97d1813b1b9d66: committed transport_abi.hpp and ABI regression test."],
+      "evidence": [
+        {"path": ".mister/evidence/receipts/20260908T025424Z-9aba44bd-ac7c-4391-9675-2f1f15f75e05.json", "sha256": "6578d3846a06bbfb4761add8f7b5a4f8b6f390257d6491a7956f01e250f015f3", "note": "22/22 local baseline; does not by itself prove generator byte identity."}
+      ],
+      "acceptance": [
+        "Generate into a temporary directory and byte-compare the checked-in ABI header; preserve packed ABI layout.",
+        "Run the existing ABI regression only after this generator/header dependency is staged."
+      ]
+    },
+    {
+      "id": "P03",
+      "name": "video-pcm-integrated-rtl-and-matrix",
+      "status": "propose",
+      "paths": [
+        {"path": "Diablo.sv", "status": "M"},
+        {"path": "rtl/diablo_pcm_player.sv", "status": "M"},
+        {"path": "rtl/diablo_video_source_policy.sv", "status": "??"},
+        {"path": "sys/scandoubler.v", "status": "M"},
+        {"path": "support/tests/diablo_pcm_player_tb.sv", "status": "M"},
+        {"path": "support/tests/diablo_pcm_player_long_tb.sv", "status": "M"},
+        {"path": "support/tests/diablo_transport_integrated_tb.sv", "status": "M"},
+        {"path": "support/tests/diablo_video_source_policy_tb.sv", "status": "??"},
+        {"path": "support/tests/test_video_source_policy.py", "status": "??"},
+        {"path": "support/scripts/test_transport_control.py", "status": "M"},
+        {"path": "support/qualification/closure-gates.json", "status": "M"}
+      ],
+      "plan_items": ["C13", "C15", "C25", "C28", "C31"],
+      "dependencies": ["C34 committed transport ABI/runtime owners; P04 verification runner consumes this policy and matrix."],
+      "evidence": [
+        {"path": ".mister/evidence/receipts/20260908T025424Z-9aba44bd-ac7c-4391-9675-2f1f15f75e05.json", "sha256": "6578d3846a06bbfb4761add8f7b5a4f8b6f390257d6491a7956f01e250f015f3", "note": "22/22 local baseline after C34."},
+        {"path": ".mister/evidence/receipts/20260908T023811Z-c34-unconstrained-io-scope.json", "sha256": "9d76b9cf1d1aa797bd081b9162f340c2a56d818393e20d7bb328606163a80219", "note": "C25 I/O scope remains open; no external-delay claim."}
+      ],
+      "acceptance": [
+        "Run focused PCM, video-policy, transport-control, and RTL simulations; confirm widened queue/epoch and diagnostic source policy.",
+        "Validate all matrix rows represented by the changed closure-gates configuration.",
+        "Diablo.sdc and validate_c25_sdc.py remain outside this packet under C25 ownership."
+      ]
+    },
+    {
+      "id": "P04",
+      "name": "verification-closure-and-board-contract",
+      "status": "propose",
+      "paths": [
+        {"path": "support/scripts/verification.py", "status": "M"},
+        {"path": "support/tests/test_verification.py", "status": "M"},
+        {"path": "support/scripts/closure_gates.py", "status": "M"},
+        {"path": "support/tests/test_closure_gates.py", "status": "M"},
+        {"path": "support/scripts/board_runner.py", "status": "??"},
+        {"path": "support/tests/test_board_runner.py", "status": "??"}
+      ],
+      "plan_items": ["C28", "C29", "C31", "R02", "R03", "R04", "R05", "R06"],
+      "dependencies": ["P01 candidate_manifest.py; P03 video-policy files and closure-gates.json; board_runner.py is imported by verification.py."],
+      "evidence": [
+        {"path": ".mister/evidence/receipts/20260908T-clean-checkout-candidate26.json", "sha256": "382496e1f7ac129b208bc8ae4926506c6d622c580093feaff11eb62925ae54b7"},
+        {"path": ".mister/evidence/receipts/20260908T025424Z-9aba44bd-ac7c-4391-9675-2f1f15f75e05.json", "sha256": "6578d3846a06bbfb4761add8f7b5a4f8b6f390257d6491a7956f01e250f015f3", "note": "baseline only; no new broad run here."}
+      ],
+      "acceptance": [
+        "Verify isolated source snapshot/mutation detection, typed receipt/log hashes, board fallback classification, and exact matrix rows.",
+        "Run focused verification/closure/board tests after P03 lands; do not claim physical board acceptance."
+      ]
+    },
+    {
+      "id": "P05",
+      "name": "arm-role-and-scene-oracle",
+      "status": "propose",
+      "paths": [
+        {"path": "support/cmake/arm-transport.cmake", "status": "M"},
+        {"path": "support/scripts/scenario_arm.py", "status": "M"},
+        {"path": "support/scripts/scenario_host.py", "status": "M"},
+        {"path": "support/scripts/scene_oracle.py", "status": "??"},
+        {"path": "support/tests/test_scene_oracle.py", "status": "??"}
+      ],
+      "plan_items": ["C16", "C19", "C26", "C28", "C29", "R11"],
+      "dependencies": ["C34 exported frame-pacing API; P01 candidate identity for role-aware source snapshots."],
+      "evidence": [
+        {"path": ".mister/evidence/receipts/20260908T-clean-arm-build-candidate27.json", "sha256": "2355fd68ed569464d7ee604ab0405ed83fda3f3638db09dec670414658fa644b"},
+        {"path": ".mister/evidence/receipts/20260908T-scene-oracle-diablo-candidate33b.json", "note": "historical role-aware scene pointer; hash not recorded in current bounded inventory."},
+        {"path": ".mister/evidence/receipts/20260908T-scene-oracle-hellfire-candidate33.json", "note": "historical role-aware scene pointer; hash not recorded in current bounded inventory."}
+      ],
+      "acceptance": [
+        "Configure/build the clean ARM reference overlay and preserve explicit host/ARM scenario roles.",
+        "Run scene-oracle unit fixtures; report role mismatch or missing dependency without making a target claim."
+      ]
+    },
+    {
+      "id": "P06",
+      "name": "runtime-package-deployment",
+      "status": "propose",
+      "paths": [
+        {"path": "support/scripts/deployment_manifest.py", "status": "??"},
+        {"path": "support/scripts/package_release.py", "status": "??"},
+        {"path": "support/scripts/deploy_package.py", "status": "??"},
+        {"path": "support/scripts/deployment_lifecycle.py", "status": "??"},
+        {"path": "support/scripts/mister_launcher.py", "status": "??"},
+        {"path": "support/scripts/diablo_launch.py", "status": "M"},
+        {"path": "support/scripts/mister_preflight.py", "status": "??"},
+        {"path": "support/tests/test_deployment_manifest.py", "status": "??"},
+        {"path": "support/tests/test_package_release.py", "status": "??"},
+        {"path": "support/tests/test_deploy_package.py", "status": "??"},
+        {"path": "support/tests/test_mister_preflight.py", "status": "??"}
+      ],
+      "plan_items": ["C16", "C18", "C29", "C32", "R04", "R13"],
+      "dependencies": ["P01 candidate manifest; C34 committed transport runtime; no target deployment dependency."],
+      "evidence": [
+        {"path": ".mister/evidence/receipts/20260908T-candidate49-preflight.json", "sha256": "64d827d9d29953396c55be9314ae19fde04aa63820370573fab9de3d594a1b78"},
+        {"path": ".mister/evidence/receipts/20260908T-candidate49-deployment-lifecycle.json", "sha256": "324d8ad330f940de78d52d77f372b8c04cbf7dce10eeb3278e899410dee14c01"}
+      ],
+      "acceptance": [
+        "Verify v2 runtime-only package manifest, role/path/hash/size checks, staged atomic install/update/rollback, and save preservation.",
+        "Verify launcher/preflight deployment-manifest path and reject private/path traversal inputs; do not deploy to target."
+      ]
+    }
+  ],
+  "holdouts": {
+    "c25_owner": [
+      {"path": "Diablo.sdc", "status": "owner-held; status intentionally not inspected", "reason": "C25/C33 owns active safe-exception/MCLK timing patch."},
+      {"path": "support/scripts/validate_c25_sdc.py", "status": "??", "reason": "C25/C33 transient timing validation helper; explicitly excluded."}
+    ],
+    "docs_audit_state_unknown_owner": [
+      {"path": "support/ARM_RUNTIME.md", "status": "M"},
+      {"path": "support/NATIVE_VIDEO.md", "status": "M"},
+      {"path": "support/qualification/README.md", "status": "M"},
+      {"path": "README.md", "status": "M"},
+      {"path": "CORE_COMPLETION_AUDIT.md", "status": "M"},
+      {"path": ".mister/state.json", "status": "M"},
+      {"path": "reports/audit-2026-09-07/CANDIDATE_CHECKPOINT_HISTORY.md", "status": "??"},
+      {"path": "reports/audit-2026-09-07/PROPOSED_PLAN.md", "status": "M"},
+      {"path": "reports/audit-2026-09-07/REFRESH_AUDIT.md", "status": "M"},
+      {"path": "reports/audit-2026-09-07/refresh-evidence/closure-semantics.json", "status": "M"},
+      {"path": "reports/audit-2026-09-07/refresh-evidence/generated-root-disposition.json", "status": "??"},
+      {"path": "reports/audit-2026-09-07/refresh-evidence/inventory.json", "status": "M"},
+      {"path": "reports/audit-2026-09-07/refresh-evidence/verification-mutation.json", "status": "M"},
+      {"path": "reports/audit-2026-09-07/repro_closure_semantics.py", "status": "M"},
+      {"path": "reports/audit-2026-09-07/repro_verification_mutation.py", "status": "M"},
+      {"path": "reports/audit-2026-09-07/SUGGESTED_CHANGES.md", "status": "M"}
+    ],
+    "generated_private": [
+      ".work/**",
+      ".mister/evidence/**",
+      "game/**",
+      "ignored/build outputs and caches"
+    ]
+  },
+  "verification": {
+    "tests_rerun": false,
+    "source_git_docs_state_mutated": false,
+    "only_owned_output": ".work/c26/source-packet-classification.json and its SHA-256 sidecar",
+    "baseline_note": "Classification uses existing receipt pointers; it does not convert historical or broad-suite evidence into acceptance of these unstaged packets."
+  },
+  "open": [
+    "P03 includes closure-gates.json so P04 can depend on a complete video/matrix packet without a circular staging dependency.",
+    "P02 still needs a narrow temporary-generator byte comparison; no direct generator receipt was found in this bounded pass.",
+    "P05 ARM and P06 package evidence remain role/package evidence, not physical target acceptance.",
+    "C25 timing owner must finish Diablo.sdc/validate_c25_sdc.py separately before any clean-checkout packet claims complete timing scope.",
+    "All docs, audit, state, and private/evidence paths are holdouts pending explicit owner review."
+  ]
+}

@@ -24,6 +24,8 @@ with tempfile.TemporaryDirectory(prefix='diablo-mutation-audit-') as temporary:
               'recorded_source_id': receipt['candidate']['source_id'],
               'after_source_id': observed['source_id'],
               'source_changed': receipt['candidate']['source_id'] != observed['source_id'],
+              'isolated_snapshot_changed': any(item.get('id') == 'source-integrity' and item.get('status') == 'fail'
+                                               for item in receipt['results']),
               'expected': 'Receipt must fail or invalidate its source binding when an input changes during execution.'}
     output = ROOT / 'reports/audit-2026-09-07/refresh-evidence/verification-mutation.json'
     output.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')

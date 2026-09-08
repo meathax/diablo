@@ -1,0 +1,146 @@
+{
+  "schema": "diablo-c26-commit-ledger-v1",
+  "created_utc": "2026-09-08T03:29:14Z",
+  "repository": "D:/Arcade/AI/aCORES/Diablo",
+  "base_commit": "643f806247527dd8fa070c135b97d1813b1b9d66",
+  "head_commit": "a65a8ec0708fcbc0d4c3e390fc2c0056d935c437",
+  "push": false,
+  "commits": [
+    {
+      "packet": "P01",
+      "commit": "9333bdda4815943c3cc2a47d5ba5274bc8a3835b",
+      "subject": "C26: version source manifest and clean build fixtures",
+      "paths": [
+        "support/scripts/candidate_manifest.py",
+        "support/scripts/compile_fpga_snapshot.ps1",
+        "support/tests/test_candidate_manifest.py",
+        "support/tests/test_compile_fpga_snapshot.py",
+        "support/tests/test_diablo_launch.py"
+      ]
+    },
+    {
+      "packet": "P02",
+      "commit": "c531de477b732587b67fc673998d58f06cb70b42",
+      "subject": "C26: sync transport ABI generator with PCM health",
+      "paths": ["support/scripts/generate_transport_abi.py"]
+    },
+    {
+      "packet": "P03",
+      "commit": "d65d384264d3d160ba9e471c54bb2cb0e9137d40",
+      "subject": "C26: bind video policy and PCM qualification matrix",
+      "paths": [
+        "Diablo.sv",
+        "rtl/diablo_pcm_player.sv",
+        "rtl/diablo_video_source_policy.sv",
+        "support/qualification/closure-gates.json",
+        "support/scripts/test_transport_control.py",
+        "support/tests/diablo_pcm_player_long_tb.sv",
+        "support/tests/diablo_pcm_player_tb.sv",
+        "support/tests/diablo_transport_integrated_tb.sv",
+        "support/tests/diablo_video_source_policy_tb.sv",
+        "support/tests/test_video_source_policy.py",
+        "sys/scandoubler.v"
+      ]
+    },
+    {
+      "packet": "P04",
+      "commit": "edec1a722abbfe9c1833e2a957d5dd0aa3f6916f",
+      "subject": "C26: harden verification closure and board contracts",
+      "paths": [
+        "support/scripts/board_runner.py",
+        "support/scripts/closure_gates.py",
+        "support/scripts/verification.py",
+        "support/tests/test_board_runner.py",
+        "support/tests/test_closure_gates.py",
+        "support/tests/test_verification.py"
+      ]
+    },
+    {
+      "packet": "P05",
+      "commit": "c42f57b139a85b45f5cb097ee6e519ab4ab64bbd",
+      "subject": "C26: record ARM roles and scene oracle",
+      "paths": [
+        "support/cmake/arm-transport.cmake",
+        "support/scripts/scenario_arm.py",
+        "support/scripts/scenario_host.py",
+        "support/scripts/scene_oracle.py",
+        "support/tests/test_scene_oracle.py"
+      ]
+    },
+    {
+      "packet": "P06",
+      "commit": "a65a8ec0708fcbc0d4c3e390fc2c0056d935c437",
+      "subject": "C26: version runtime packaging and deployment lifecycle",
+      "paths": [
+        "support/scripts/deploy_package.py",
+        "support/scripts/deployment_lifecycle.py",
+        "support/scripts/deployment_manifest.py",
+        "support/scripts/diablo_launch.py",
+        "support/scripts/mister_launcher.py",
+        "support/scripts/mister_preflight.py",
+        "support/scripts/package_release.py",
+        "support/tests/test_deploy_package.py",
+        "support/tests/test_deployment_manifest.py",
+        "support/tests/test_mister_preflight.py",
+        "support/tests/test_package_release.py"
+      ]
+    }
+  ],
+  "verification": {
+    "accepted_receipt": {
+      "path": ".mister/evidence/receipts/20260908T025424Z-9aba44bd-ac7c-4391-9675-2f1f15f75e05.json",
+      "sha256": "6578d3846a06bbfb4761add8f7b5a4f8b6f390257d6491a7956f01e250f015f3"
+    },
+    "source_fingerprint_comparison": {
+      "packet_paths": 39,
+      "same": 39,
+      "changed_or_unlisted": 0,
+      "missing": 0
+    },
+    "p02_temp_generator": {
+      "temporary_tree_check_exit": 0,
+      "generate_exit": 0,
+      "cpp_byte_match": true,
+      "sv_byte_match": true
+    },
+    "syntax_check": {"python_files_parsed": 15, "status": "pass"},
+    "staged_scope_checks": "git diff --cached --check and exact path listing passed before each commit; index was empty between packets.",
+    "broad_tests_rerun": false,
+    "source_git_mutations_outside_commits": false
+  },
+  "excluded_after_commit": {
+    "c25_owner": [
+      {"path": "Diablo.sdc", "status": "M", "reason": "C25/C33 active timing patch; deliberately not staged."},
+      {"path": "support/scripts/validate_c25_sdc.py", "status": "??", "reason": "C25/C33 validation helper; deliberately not staged."}
+    ],
+    "docs_audit_state": [
+      ".mister/state.json",
+      "CORE_COMPLETION_AUDIT.md",
+      "README.md",
+      "support/ARM_RUNTIME.md",
+      "support/NATIVE_VIDEO.md",
+      "support/qualification/README.md",
+      "reports/audit-2026-09-07/PROPOSED_PLAN.md",
+      "reports/audit-2026-09-07/REFRESH_AUDIT.md",
+      "reports/audit-2026-09-07/SUGGESTED_CHANGES.md",
+      "reports/audit-2026-09-07/refresh_audit.cjs",
+      "reports/audit-2026-09-07/refresh-evidence/closure-semantics.json",
+      "reports/audit-2026-09-07/refresh-evidence/generated-root-disposition.json",
+      "reports/audit-2026-09-07/refresh-evidence/inventory.json",
+      "reports/audit-2026-09-07/refresh-evidence/verification-mutation.json",
+      "reports/audit-2026-09-07/repro_closure_semantics.py",
+      "reports/audit-2026-09-07/repro_verification_mutation.py",
+      "reports/audit-2026-09-07/CANDIDATE_CHECKPOINT_HISTORY.md"
+    ],
+    "private_or_generated": [".work/**", ".mister/evidence/**", "game/**", "ignored/build outputs and caches"]
+  },
+  "clean_checkout_open": [
+    "Diablo.sdc is still required for FPGA source/constraint completeness and remains with C25/C33.",
+    "support/scripts/validate_c25_sdc.py remains an active C25 helper and is intentionally absent from these commits.",
+    "Audit/docs/state paths remain owner-review holdouts; reports/audit-2026-09-07/refresh_audit.cjs was observed as an additional audit holdout and was not classified as implementation."
+  ],
+  "classification_receipt": {
+    "path": ".work/c26/source-packet-classification.json",
+    "sha256": "ef21ea107eea6f3f3c6a381e6024e54ff97220c1bf35b2ad39f01b803c1242e2"
+  }
+}

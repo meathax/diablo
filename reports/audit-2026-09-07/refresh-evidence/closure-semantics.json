@@ -2,10 +2,176 @@
   "experiment": "All gates supplied hash-valid but semantically failing synthetic evidence; no real acceptance changed.",
   "observed": {
     "schema": "diablo-closure-gate-result-v1",
-    "eligible": true,
+    "eligible": false,
     "matrix_sha256": "a7c94bd625ce72cb2c771ad8d6bdc48b62bc6c3baaaed7fc87b8751b570b4328",
-    "problems": [],
-    "items": {}
+    "problems": [
+      "C01: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C01-renderer-regression.json",
+      "C02: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C02-mixed-writer-regression.json",
+      "C03: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C03-cadence-regression.json",
+      "C04: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C04-slot-ownership-regression.json",
+      "C05: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C05-palette-regression.json",
+      "C06: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C06-timeout-regression.json",
+      "C07: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C07-lifecycle-regression.json",
+      "C08: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C08-clipping-regression.json",
+      "C09: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C09-integrated-ddr.json",
+      "C09: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C09-combined-load-board.json",
+      "C10: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C10-focus-regression.json",
+      "C10: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C10-focus-board.json",
+      "C11: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C11-text-regression.json",
+      "C11: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C11-text-board.json",
+      "C12: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C12-mouse-regression.json",
+      "C12: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C12-mouse-board.json",
+      "C13: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C13-native-output-rtl.json",
+      "C13: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C13-native-output-board.json",
+      "C14: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C14-startup-regression.json",
+      "C15: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C15-pcm-regression.json",
+      "C15: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C15-active-audio-board.json",
+      "C16: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C16-launcher-sequencing.json",
+      "C16: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C16-launcher-board.json",
+      "C17: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C17-admission-regression.json",
+      "C17: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C17-admission-board.json",
+      "C18: artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C18-candidate-manifest.json",
+      "C19: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C19-scene-oracle.json",
+      "C19: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C19-scene-board.json",
+      "C20: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C20-telemetry-regression.json",
+      "C21: artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C21-benchmark-analysis.json",
+      "C21: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C21-performance-board.json",
+      "C22: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C22-checksum-regression.json",
+      "C23: artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C23-physical-matrix.json",
+      "C23: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C23-physical-qualification.json",
+      "C24: artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C24-controller-multiplayer-matrix.json",
+      "C24: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C24-controller-multiplayer-board.json",
+      "C25: artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C25-timing-report.json",
+      "C26: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C26-clean-checkout.json",
+      "C26: artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C26-inventory.json",
+      "C27: artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C27-snapshot-build.json",
+      "C28: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C28-runner-regression.json",
+      "C29: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C29-receipt-regression.json",
+      "C30: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C30-guide-validation.json",
+      "C31: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C31-gate-evaluator.json",
+      "C32: artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C32-package-manifest.json",
+      "C32: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C32-clean-install-board.json",
+      "C33: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C33-root-cleanliness.json",
+      "C34: receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C34-refactor-regression.json"
+    ],
+    "items": {
+      "C01": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C01-renderer-regression.json"
+      ],
+      "C02": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C02-mixed-writer-regression.json"
+      ],
+      "C03": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C03-cadence-regression.json"
+      ],
+      "C04": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C04-slot-ownership-regression.json"
+      ],
+      "C05": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C05-palette-regression.json"
+      ],
+      "C06": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C06-timeout-regression.json"
+      ],
+      "C07": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C07-lifecycle-regression.json"
+      ],
+      "C08": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C08-clipping-regression.json"
+      ],
+      "C09": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C09-integrated-ddr.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C09-combined-load-board.json"
+      ],
+      "C10": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C10-focus-regression.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C10-focus-board.json"
+      ],
+      "C11": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C11-text-regression.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C11-text-board.json"
+      ],
+      "C12": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C12-mouse-regression.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C12-mouse-board.json"
+      ],
+      "C13": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C13-native-output-rtl.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C13-native-output-board.json"
+      ],
+      "C14": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C14-startup-regression.json"
+      ],
+      "C15": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C15-pcm-regression.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C15-active-audio-board.json"
+      ],
+      "C16": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C16-launcher-sequencing.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C16-launcher-board.json"
+      ],
+      "C17": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C17-admission-regression.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C17-admission-board.json"
+      ],
+      "C18": [
+        "artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C18-candidate-manifest.json"
+      ],
+      "C19": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C19-scene-oracle.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C19-scene-board.json"
+      ],
+      "C20": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C20-telemetry-regression.json"
+      ],
+      "C21": [
+        "artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C21-benchmark-analysis.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C21-performance-board.json"
+      ],
+      "C22": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C22-checksum-regression.json"
+      ],
+      "C23": [
+        "artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C23-physical-matrix.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C23-physical-qualification.json"
+      ],
+      "C24": [
+        "artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C24-controller-multiplayer-matrix.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C24-controller-multiplayer-board.json"
+      ],
+      "C25": [
+        "artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C25-timing-report.json"
+      ],
+      "C26": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C26-clean-checkout.json",
+        "artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C26-inventory.json"
+      ],
+      "C27": [
+        "artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C27-snapshot-build.json"
+      ],
+      "C28": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C28-runner-regression.json"
+      ],
+      "C29": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C29-receipt-regression.json"
+      ],
+      "C30": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C30-guide-validation.json"
+      ],
+      "C31": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C31-gate-evaluator.json"
+      ],
+      "C32": [
+        "artifact status is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C32-package-manifest.json",
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C32-clean-install-board.json"
+      ],
+      "C33": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C33-root-cleanliness.json"
+      ],
+      "C34": [
+        "receipt result required-check is not pass: D:\\vibes\\fpga\\temp\\diablo-gate-audit-3i3hdpqd\\C34-refactor-regression.json"
+      ]
+    }
   },
   "expected_eligible": false
 }

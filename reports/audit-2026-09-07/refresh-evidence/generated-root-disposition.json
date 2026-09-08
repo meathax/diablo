@@ -1,0 +1,26 @@
+{
+  "schema": "diablo-generated-root-disposition-v1",
+  "status": "pass",
+  "recorded_utc": "2026-09-07T11:04:03Z",
+  "files": [
+    {
+      "path": "a.out",
+      "bytes": 44423,
+      "sha256": "db0074785b35d7ce20bbeab26bc1c3548dc9fca8c8a64b88effbfb2ca8b3edf6",
+      "kind": "Icarus/VVP default simulation output",
+      "action": "ignore-and-clean",
+      "producer": "external simulator invocation without an explicit -o path",
+      "private_data": false
+    },
+    {
+      "path": "c5_pin_model_dump.txt",
+      "bytes": 4875,
+      "sha256": "350037c448e63aef5ce6ec6612ed803a63e102f3415a04d22656338f01fa9364",
+      "kind": "Quartus pin-model diagnostic",
+      "action": "ignore-and-clean",
+      "producer": "Quartus pin-model generation",
+      "private_data": false
+    }
+  ],
+  "reason": "Neither file is a source input, candidate artifact, receipt log, or required runtime file. The existing cleanup workflow already removes the pin-model dump; the root ignore and cleanup rules now cover both generated outputs."
+}

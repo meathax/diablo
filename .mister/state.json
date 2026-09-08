@@ -1,36 +1,36 @@
 {
   "schema": "diablo-project-state-v2",
   "completion_document": "reports/audit-2026-09-07/PROPOSED_PLAN.md",
-  "completion_document_sha256": "e3d8ed345e1216df720f9e679befcb757872b42f8238a3b84707105cf66ec53a",
-  "status": "audit-2026-09-07-fpga-snapshot-built-no-current-candidate",
+  "completion_document_sha256": "8ab4c8cc0e4d411751b1536f4c5a404f8e4fb91dd66adba3bbb502854df527bd",
+  "status": "c34-in-progress-source-changed-requalification-required",
   "candidate": {
     "state": "no-current-accepted-candidate",
     "id": null,
-    "development_id": "08b43647e181c2c099ddc77049e44d7e40f3ab26fd94d07334bb9157d07284e4",
-    "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-6-arm.json",
-    "development_manifest_sha256": "8984b1c944641ba55ed7fe78ad7b6068004a7852b88e93b53f774bacdbcf6762",
-    "next_gate": "C16/C18: validate current-boot loader admission and target mapping for development candidate, then promote only after board qualification",
-    "development_validity": "current development-only candidate; local host/RTL and ARM/QEMU receipts pass; target qualification and acceptance promotion remain open"
+    "development_id": "d95d4cfd03154bd659343c5a77a1230bcd4efc7c45d81d4f2299a0d754128611",
+    "development_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-49-final-local.json",
+    "development_manifest_sha256": "f420873962a21317c8a9bdc9ff1ad07db02d9ad4299c2b9b5ff2e1abae802c4b",
+    "next_gate": "Complete the fresh current-SDC FPGA build, durable docs/evidence and clean-checkout qualification; then bind a new candidate and acquire a quiescent target window for exact output-mode, physical audio/input/campaign/performance and clean install/menu/second-launch evidence.",
+    "development_validity": "Candidate49 source inputs superseded by C34 edits; historical artifacts only until rebuilt and requalified."
   },
-  "active_work": "Audit closure implementation is recorded through candidate-6: checked renderer pitch arithmetic, zero-valued RTL timing guards, signed-safe mouse deltas, ARM header-probe portability, immutable candidate-6 manifest, FPGA snapshot and candidate-bound local/ARM-QEMU receipts. R01/R02/R03 evidence and local gates pass; target loader admission, board mapping, physical I/O, gameplay equality, performance and release promotion remain open.",
+  "active_work": "C25 source/validator acceptance commit 8e74223 is complete; a fresh current-SDC FPGA build is underway. C34/P01-P06 source packets and C33 producer proof are complete; durable docs/evidence and clean-checkout qualification remain, with physical capture pending.",
   "completed_implementation_stages": [
     "1 - Build and run the host reference"
   ],
   "remaining_stages": {
-    "2": "FPGA/RBF build passes; physical HDMI and analog inspection open",
-    "3": "ARMv7 target build and live DevilutionX launch pass; long target qualification open",
+    "2": "Candidate43 FPGA/RBF build and four-corner timing pass; HDMI/direct-RGB/analog physical inspection open",
+    "3": "Candidate43 ARM transport and software/QEMU launch pass; long target qualification open",
     "4": "ABI and shared DDR transport pass host/RTL/board checks; combined stress open",
-    "5": "Frame/audio/input transport is integrated; physical I/O, speakers and zero-underrun open",
+    "5": "Frame/audio/input transport is locally integrated; physical I/O, speakers and zero-underrun open",
     "6": "Diablo/Hellfire timedemo bring-up passes; physical gameplay workflows open",
     "7": "Physical controls, OSD focus, disconnect/reconnect and multiplayer open",
     "8": "Profiles identify publish/copy and command overflow costs; tail-latency qualification open",
     "9": "Bounded software renderer and ARM rings pass host tests; full-scene equality open",
     "10": "FPGA command consumer and live DevilutionX command path pass; batching and full-scene qualification open",
-    "11": "Qualify complete core on MiSTer",
-    "12": "Package/install/verify release"
+    "11": "Qualify candidate43 completely on MiSTer",
+    "12": "Package43 verifies and preflights; clean install/update/rollback and promotion open"
   },
-  "next_action": "Use candidate-6 for C16/C17 current-boot admission and target mapping; record the board configuration and readiness evidence, then run the C19/C21/C23–C25 physical qualification matrix before any C18 promotion.",
-  "next_implementation": "Candidate-6 is the current development snapshot. Continue with target/deployment contract and integrated transport gaps, board admission and physical qualification; any RTL, ABI, constraint or artifact change requires a new source snapshot, manifest, build and candidate-bound receipts.",
+  "next_action": "Finish bounded IO-rate decision; fix only a proven defect and stabilize FPGA inputs. Qualify the exact new FPGA/unchanged ARM artifacts and one development package, then run MiSTer smoke tests before the remaining physical matrix. Keep external timing and observation requirements open.",
+  "next_implementation": "C34/P01-P06 source packets are committed through a65a8ec and C25 source/validator acceptance is committed in 8e74223. Keep Candidate49 historical; do not promote until the current-SDC build, clean-checkout qualification and C13/C15/C16/C17/C21/C23/C24/C31/C32 plus the C01-C34/R01-R13 matrix have candidate-bound physical/acceptance receipts.",
   "quartus_installation_root": "D:/Q17",
   "legacy_runner_required": false,
   "source_lock_digest": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5",
@@ -314,7 +314,331 @@
       "path": ".mister/evidence/arm-command-scene-optimization-20260907.json",
       "sha256": "27d36ccbd1a3050c860e64eb1f69ec2e53977995041507db2dd4c732421ecef1",
       "status": "pass; paired board measurement covers packed FPGA fills, vertical run coalescing, build/fence timing and fresh/no-reload timedemos"
-    }
+    },
+    "candidate_history": [
+      {
+        "kind": "C18/C26/C32 candidate manifest refresh after scene-oracle implementation",
+        "status": "passed; superseded historical development-only record",
+        "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-22-arm.json",
+        "manifest_sha256": "7257dd1d3cbdb70c37fc5785af751607eb62ab4fce6c747fcdfc5965c889f087",
+        "source_id": "ad1fcd7c5299f17215ac404c1dd86153dd6f1bdf5106e338a7c34e98d7d934af",
+        "candidate_id": "b9f4ce87f6c86c73a53e1dd7752e0eb589bd325c7d8cf23474d4b5c77a2f4bc4",
+        "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+        "local_receipt": ".mister/evidence/receipts/20260907T131114Z-44aa92a8-9216-4a83-8d6e-aa13b8afa277.json",
+        "local_receipt_sha256": "2dd65c188eb851eafae40cd8521c0cde81a776f2a446b5a1f647e1e297499be3",
+        "arm_qemu_receipt": ".mister/evidence/receipts/20260907T131636Z-f4362302-874a-40a8-ae3b-506d17a99fea.json",
+        "arm_qemu_receipt_sha256": "231662556e8b574bdca914c3d32155d20f7f750f3760a7ed80c653d19d4965a6",
+        "board_receipt": ".mister/evidence/receipts/20260907T131727Z-b9df6e19-fb89-4a00-8f37-7d2a0dbe98ba.json",
+        "board_receipt_sha256": "21a6e12a30b097388880a1c444e0a28def4a5050ca5005ef921d5eedcb95eecb",
+        "preflight_receipt": ".mister/evidence/receipts/20260907T-preflight-candidate22b.json",
+        "preflight_receipt_sha256": "5bf24c349483b6d01c2f41e2adb94df81d0b5e70a2647d22a7b8c88e587e8af3",
+        "scene_oracle_receipts": [
+          {
+            "campaign": "diablo",
+            "path": ".mister/evidence/receipts/20260907T-scene-oracle-diablo-candidate22.json",
+            "sha256": "d5791ef7f66a046423e82b38855b00f356df9ce5c2ec14777c94f8b8c6ae4556"
+          },
+          {
+            "campaign": "hellfire",
+            "path": ".mister/evidence/receipts/20260907T-scene-oracle-hellfire-candidate22.json",
+            "sha256": "44b66f3f3014d1d1e5117dc4251aefce75e474ca864ad31038f45b936d49f8cb"
+          }
+        ],
+        "candidate_status": "candidate-22 development-only; local and ARM/QEMU receipts and both software scene-oracle receipts pass, read-only target preflight passes, board suite incomplete"
+      },
+      {
+        "kind": "C18/C26/C32 candidate manifest refresh after scene-oracle implementation",
+        "status": "passed; superseded historical development-only record",
+        "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-22-arm.json",
+        "manifest_sha256": "7257dd1d3cbdb70c37fc5785af751607eb62ab4fce6c747fcdfc5965c889f087",
+        "source_id": "ad1fcd7c5299f17215ac404c1dd86153dd6f1bdf5106e338a7c34e98d7d934af",
+        "candidate_id": "b9f4ce87f6c86c73a53e1dd7752e0eb589bd325c7d8cf23474d4b5c77a2f4bc4",
+        "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+        "local_receipt": ".mister/evidence/receipts/20260907T131114Z-44aa92a8-9216-4a83-8d6e-aa13b8afa277.json",
+        "local_receipt_sha256": "2dd65c188eb851eafae40cd8521c0cde81a776f2a446b5a1f647e1e297499be3",
+        "arm_qemu_receipt": ".mister/evidence/receipts/20260907T131636Z-f4362302-874a-40a8-ae3b-506d17a99fea.json",
+        "arm_qemu_receipt_sha256": "231662556e8b574bdca914c3d32155d20f7f750f3760a7ed80c653d19d4965a6",
+        "board_receipt": ".mister/evidence/receipts/20260907T131727Z-b9df6e19-fb89-4a00-8f37-7d2a0dbe98ba.json",
+        "board_receipt_sha256": "21a6e12a30b097388880a1c444e0a28def4a5050ca5005ef921d5eedcb95eecb",
+        "preflight_receipt": ".mister/evidence/receipts/20260907T-preflight-candidate22b.json",
+        "preflight_receipt_sha256": "5bf24c349483b6d01c2f41e2adb94df81d0b5e70a2647d22a7b8c88e587e8af3",
+        "scene_oracle_receipts": [
+          {
+            "campaign": "diablo",
+            "path": ".mister/evidence/receipts/20260907T-scene-oracle-diablo-candidate22.json",
+            "sha256": "d5791ef7f66a046423e82b38855b00f356df9ce5c2ec14777c94f8b8c6ae4556"
+          },
+          {
+            "campaign": "hellfire",
+            "path": ".mister/evidence/receipts/20260907T-scene-oracle-hellfire-candidate22.json",
+            "sha256": "44b66f3f3014d1d1e5117dc4251aefce75e474ca864ad31038f45b936d49f8cb"
+          }
+        ],
+        "candidate_status": "candidate-22 development-only; local and ARM/QEMU receipts and both software scene-oracle receipts pass, read-only target preflight passes, board suite incomplete"
+      },
+      {
+        "kind": "C18/C26/C32 candidate manifest refresh after scene-oracle manifest-verification hardening",
+        "status": "passed; superseded historical development-only record",
+        "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-23-arm.json",
+        "manifest_sha256": "91d0cbd8fd0d840b978437024195dffe5ccd79ed9eed6e5c51dfbbcf2b8e2445",
+        "source_id": "74266eb27f6e56377d8aaf264f782976eab09d9544f66aa1c1c413e209c825b2",
+        "candidate_id": "478e26548d01a6ff6d0e5c22fb4f956d63d36c366a387b4927889cf1c536befe",
+        "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+        "local_receipt": ".mister/evidence/receipts/20260907T132847Z-9975696a-ef9a-4625-acea-d2ea804fc992.json",
+        "local_receipt_sha256": "3391b75625852ebbd84fa168b8b87b2635ea68f3c9c7378f302fb180a6f2a3fa",
+        "arm_qemu_receipt": ".mister/evidence/receipts/20260907T133214Z-ae3da178-e88e-487b-9949-4822284ceab9.json",
+        "arm_qemu_receipt_sha256": "c89cfd402bc48f75265154cc2254e2e8370cf51510f10ce5a69fa2e5b01a466b",
+        "board_receipt": ".mister/evidence/receipts/20260907T133245Z-39c965ea-42c2-49db-bf1f-f10a81af007f.json",
+        "board_receipt_sha256": "b555ba34e659afd06f39ce40566a50e6c545ffb91740737791ee19aa83701e0a",
+        "preflight_receipt": ".mister/evidence/receipts/20260907T-preflight-candidate23.json",
+        "preflight_receipt_sha256": "fb065df6468855238648c69c3b028497dc55fb74ea9f1479cbb3582b73438560",
+        "scene_oracle_receipts": [
+          {
+            "campaign": "diablo",
+            "path": ".mister/evidence/receipts/20260907T-scene-oracle-diablo-candidate23.json",
+            "sha256": "1bb5a860319e4d8349cfdea3af45836c5134b6fcc5f8d8ae9e45ac8c93f64a59"
+          },
+          {
+            "campaign": "hellfire",
+            "path": ".mister/evidence/receipts/20260907T-scene-oracle-hellfire-candidate23.json",
+            "sha256": "53a44861ec670d6addf86a29cf3cfa0102a1a352c3e642651a31d5c8f83f8483"
+          }
+        ],
+        "candidate_status": "candidate-23 development-only; local and ARM/QEMU receipts and both software scene-oracle receipts pass, read-only target preflight passes, board suite incomplete"
+      },
+      {
+        "kind": "C18/C26/C32 candidate manifest refresh after package-manifest preflight hardening",
+        "status": "passed; superseded historical development-only record",
+        "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-24-arm.json",
+        "manifest_sha256": "1fe6224d46fe04a60a970203133990f7b100c7d8ca2f7d070734f1e24b451a47",
+        "source_id": "d50f7c4f19ae8cb5156b09a22b2e95ebe39f7bbc8518a791486a7af293d3202f",
+        "candidate_id": "01eda1749ecb4d747b9dba7e914a36939c66e05a3f61a617dda85569702c019c",
+        "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+        "local_receipt": ".mister/evidence/receipts/20260907T140421Z-4617cc3e-557c-4747-80d0-fc313b52982d.json",
+        "local_receipt_sha256": "98d36f13b240f8f2312150ae5d2a51521883eeb4aebece831724eb40f859d7b9",
+        "arm_qemu_receipt": ".mister/evidence/receipts/20260907T140805Z-52fffaf7-e6b5-4c6b-84bb-fdd92b507e8f.json",
+        "arm_qemu_receipt_sha256": "b0d4c40b13d9d489061752d97113a218df3f8a997e0952d306e443379341c273",
+        "board_receipt": ".mister/evidence/receipts/20260907T140958Z-0abba2b0-e961-4e94-9400-03654860b94e.json",
+        "board_receipt_sha256": "38cbb9648b86f413f4a6220b80a3061ebdb12cdbf3f09ca4d32568e70fb69a7d",
+        "preflight_receipt": ".mister/evidence/receipts/20260907T-preflight-candidate24.json",
+        "preflight_receipt_sha256": "eeff62649f8a0c83f656bdbab56de546d68d7a1a41bacf0c3c8f291a0c9a38d6",
+        "scene_oracle_receipts": [
+          {
+            "campaign": "diablo",
+            "path": ".mister/evidence/receipts/20260907T-scene-oracle-diablo-candidate24.json",
+            "sha256": "01a8c4682c8ebfe0e75e7c42e970bded823c64960f133f3cc1ee411ea14029f1"
+          },
+          {
+            "campaign": "hellfire",
+            "path": ".mister/evidence/receipts/20260907T-scene-oracle-hellfire-candidate24.json",
+            "sha256": "dca0dd919dcd5d87bc853db20f5cd2f962c2b47123b55e2a48f7ac1aff7f94ed"
+          }
+        ],
+        "candidate_status": "candidate-24 development-only; local and ARM/QEMU receipts and both software scene-oracle receipts pass, five-file read-only target preflight passes, board suite incomplete"
+      },
+      {
+        "kind": "C18/C26/C32 candidate25 refresh after clean-checkout fixture hardening",
+        "status": "passed; superseded historical development-only record",
+        "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-25-arm.json",
+        "manifest_sha256": "27c4d2b04c0d00bab6aa3f3df04a33327f6107cc8b73dfd5baed37c631237416",
+        "source_id": "4ae4640bfc0888e7899eeac37e337f8a703e517ffff6a326b8e40a304c305797",
+        "candidate_id": "14eaf763fab2f4ced58d72dc095a03d65293f4609631a098a0f0eb5b5d162bdf",
+        "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above; deterministic clean-checkout fixture bootstrap included",
+        "local_receipt": ".mister/evidence/receipts/20260907T145145Z-9fdcba94-f5fe-48d6-80f1-722ae3c33d27.json",
+        "local_receipt_sha256": "235db6e6c2765ff7f4d9d4e82c3350c149b14ed61c09b760255f03a34372d8f4",
+        "arm_qemu_receipt": ".mister/evidence/receipts/20260907T145928Z-8a3731f0-66b4-445f-8fc9-869a5f8b190f.json",
+        "arm_qemu_receipt_sha256": "ef781dec13313daa1cc2ef90aba7703d08a2a6fee1707c567eb8191c2f58654a",
+        "board_receipt": ".mister/evidence/receipts/20260907T151312Z-8db81463-bd11-4280-a1b1-16ff5a6d3b1a.json",
+        "board_receipt_sha256": "a3e24d93d9a98645393140013d7594f86d55f75e276bed195989848c959da383",
+        "preflight_receipt": ".mister/evidence/receipts/20260908T-preflight-candidate25.json",
+        "preflight_receipt_sha256": "e2d8078a334fad539e08d37d06d148881289a6e2b635ceab64697b9c7aacd7dd",
+        "clean_checkout_receipt": ".mister/evidence/receipts/20260908T-clean-checkout-candidate25.json",
+        "clean_checkout_receipt_sha256": "4cb22e3a6f81c2f31d611d5a4d79285ae2d6333ca126356969fe87980c9c4262",
+        "scene_oracle_receipts": [
+          {
+            "campaign": "diablo",
+            "path": ".mister/evidence/receipts/20260908T-scene-oracle-diablo-candidate25.json",
+            "sha256": "e2af407063e98aad9346dbde7b461f00b1f44115b9c4c36fac8fcde416014abc"
+          },
+          {
+            "campaign": "hellfire",
+            "path": ".mister/evidence/receipts/20260908T-scene-oracle-hellfire-candidate25.json",
+            "sha256": "88d3c4f6300bdb8d516e3ded545219e37c9eb8224706f621e0b36f6c267597e3"
+          }
+        ],
+        "candidate_status": "candidate25 development-only; local and ARM/QEMU receipts, both software scene-oracle receipts, clean-checkout receipt and five-file read-only target preflight pass, board suite incomplete"
+      },
+      {
+        "kind": "C18/C26/C27/C32 candidate26 refresh after generated-Quartus-input restoration",
+        "status": "passed; current development-only record",
+        "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-26-arm.json",
+        "manifest_sha256": "c4cfd9bc39c2361134ee107def0ea740590fb0d5e6e95d95bbcabc04f3575776",
+        "source_id": "13d7c55ed51ffd4b869a14271a5a780815e6c7eb0ad02166d62ee994c5ba30fd",
+        "candidate_id": "b4f6f38b2bb5ec0b4ef9ff3e6624340030e0b15c234e007be2ee0fd2ce5c9dbb",
+        "artifacts": "clean Quartus SOF/raw/compressed RBF plus reused verified ARM/ABI artifacts",
+        "local_receipt": ".mister/evidence/receipts/20260907T154930Z-b18c688f-47a0-4057-b23c-e206ff16ab69.json",
+        "local_receipt_sha256": "942c0b064b51a270abe48c4e79f57f2bf6620ff9570264533930726e57082ff8",
+        "arm_qemu_receipt": ".mister/evidence/receipts/20260907T155216Z-a01d3027-eef8-43f1-8461-3d6704cd7b6c.json",
+        "arm_qemu_receipt_sha256": "829ff4b02004f5af52158dcfb435f29a5d7273314935840549a97f8675062865",
+        "board_receipt": ".mister/evidence/receipts/20260907T155347Z-4a83f2d9-41aa-47f1-a7f7-b80a5c9fb905.json",
+        "board_receipt_sha256": "91530c3ad44060e0eb6f84c32abd1469d1d7a4a5184c3f989c77c782206bc618",
+        "preflight_receipt": ".mister/evidence/receipts/20260908T-preflight-candidate26.json",
+        "preflight_receipt_sha256": "9af994281c289b49f7b17055959455572b0572a44565c5b36cd342e4988125a7",
+        "clean_checkout_receipt": ".mister/evidence/receipts/20260908T-clean-checkout-candidate26.json",
+        "clean_checkout_receipt_sha256": "382496e1f7ac129b208bc8ae4926506c6d622c580093feaff11eb62925ae54b7",
+        "clean_fpga_build_receipt": ".mister/evidence/receipts/20260908T-clean-fpga-build-candidate26.json",
+        "clean_fpga_build_receipt_sha256": "a93a9c9573ef838ccd703a1fa54a56989b4ae72fdcdf26ad741a5ce709f00842",
+        "scene_oracle_receipts": [
+          {
+            "campaign": "diablo",
+            "path": ".mister/evidence/receipts/20260908T-scene-oracle-diablo-candidate26.json",
+            "sha256": "21f9eea02a61dd5ee80240ca7f0b5a92a88ba8e421cae82ed2f97e5c22490bdd"
+          },
+          {
+            "campaign": "hellfire",
+            "path": ".mister/evidence/receipts/20260908T-scene-oracle-hellfire-candidate26.json",
+            "sha256": "c7cf49547388de40d9f92462c679f64eea95ca65ae5c89cc01cfe68c922f1be7"
+          }
+        ],
+        "candidate_status": "candidate26 development-only; local and ARM/QEMU receipts, both software scene-oracle receipts, clean-checkout and clean FPGA build receipts and five-file read-only target preflight pass, board suite incomplete"
+      },
+      {
+        "kind": "C18/C26/C27/C32 candidate27 refresh after clean ARM transport rebuild and role split",
+        "status": "passed; current development-only record",
+        "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-27-arm-clean.json",
+        "manifest_sha256": "e83b4d6a3142ab930419bf04caf9f273df4d628619010906e51e7f0fd16a0f13",
+        "source_id": "29e74b2685e333470ee383d40a977aa8b5a6da87a1a3d5106025890f1e9a42f4",
+        "candidate_id": "95eaf3535aaf52d55b63f85b9bc566178c8e24b0d6f00d1e29d28a54021bcaf8",
+        "artifacts": "clean ARM transport ELF plus clean Quartus SOF/raw/compressed RBF and ABI artifacts",
+        "local_receipt": ".mister/evidence/receipts/20260907T163914Z-2ac2bd6a-bae2-4739-938c-ed10ed28b557.json",
+        "local_receipt_sha256": "2b6238cdc2037f136d09ef6480575c445d1219457ca34dec4be0deb0e368e0d4",
+        "arm_qemu_receipt": ".mister/evidence/receipts/20260907T163836Z-341002e5-50d2-4999-bae0-a83a5fe8351c.json",
+        "arm_qemu_receipt_sha256": "7733003b414f9530481a630c9587714bb7e8f250c26b69aef6da7e8e8d6cc0e8",
+        "clean_arm_build_receipt": ".mister/evidence/receipts/20260908T-clean-arm-build-candidate27.json",
+        "clean_arm_build_receipt_sha256": "2355fd68ed569464d7ee604ab0405ed83fda3f3638db09dec670414658fa644b",
+        "board_receipt": ".mister/evidence/receipts/20260907T155347Z-4a83f2d9-41aa-47f1-a7f7-b80a5c9fb905.json",
+        "board_receipt_sha256": "91530c3ad44060e0eb6f84c32abd1469d1d7a4a5184c3f989c77c782206bc618",
+        "preflight_receipt": ".mister/evidence/receipts/20260908T-preflight-candidate27.json",
+        "preflight_receipt_sha256": "35372a252ce650e025f8fc10e4c1ae25a4ddf999743bdbd90543bc6d21143117",
+        "clean_checkout_receipt": ".mister/evidence/receipts/20260908T-clean-checkout-candidate26.json",
+        "clean_checkout_receipt_sha256": "382496e1f7ac129b208bc8ae4926506c6d622c580093feaff11eb62925ae54b7",
+        "clean_fpga_build_receipt": ".mister/evidence/receipts/20260908T-clean-fpga-build-candidate26.json",
+        "clean_fpga_build_receipt_sha256": "a93a9c9573ef838ccd703a1fa54a56989b4ae72fdcdf26ad741a5ce709f00842",
+        "scene_oracle_receipts": [
+          {
+            "campaign": "diablo",
+            "path": ".mister/evidence/receipts/20260908T-scene-oracle-diablo-candidate27.json",
+            "sha256": "86af2b4e5d74bee51786d485a58c6b7350c17e46cb35a860107b0cfd49be3c30"
+          },
+          {
+            "campaign": "hellfire",
+            "path": ".mister/evidence/receipts/20260908T-scene-oracle-hellfire-candidate27.json",
+            "sha256": "945c4b226a9cd62093fd2fc035a953d107309ff3f8cbc887602f3478e4a1b764"
+          }
+        ],
+        "candidate_status": "candidate27 development-only; local and ARM/QEMU receipts, clean ARM/FPGA build receipts, both role-aware software scene-oracle receipts, package verification and five-file read-only target preflight pass, board suite incomplete"
+      }
+    ],
+    "scene_oracle": {
+      "status": "pass",
+      "diablo": {
+        "campaign": "diablo",
+        "path": ".mister/evidence/receipts/20260908T-scene-oracle-diablo-candidate27.json",
+        "sha256": "86af2b4e5d74bee51786d485a58c6b7350c17e46cb35a860107b0cfd49be3c30"
+      },
+      "hellfire": {
+        "campaign": "hellfire",
+        "path": ".mister/evidence/receipts/20260908T-scene-oracle-hellfire-candidate27.json",
+        "sha256": "945c4b226a9cd62093fd2fc035a953d107309ff3f8cbc887602f3478e4a1b764"
+      },
+      "scope": "exact native640 host-reference versus separately identified ARM-reference indexed-frame and RGB888-palette equality for town-v1; no FPGA or physical acceptance"
+    },
+    "candidate41_manifest": {
+      "path": ".mister/evidence/candidates/fpga-candidate-20260908-41-doc-sync.json",
+      "sha256": "c87c3b7dc214f23c4dc299c9010cbf2e8e031c2962a1a05604d59fa7452b0579",
+      "status": "pass"
+    },
+    "candidate41_package_manifest": {
+      "path": ".work/package-board-candidate-41/package-manifest.json",
+      "sha256": "3c2b274f139b8b50a4a7107b395c1685f321985c9daacd8ddfb4290556d711c9",
+      "status": "pass"
+    },
+    "candidate41_preflight": {
+      "path": ".mister/evidence/receipts/20260908T-candidate41-preflight.json",
+      "sha256": "d917dafcefb058d51f4de183543ca6e36d7cbc3c98645eb5a5b15e835befcacf",
+      "status": "pass"
+    },
+    "candidate41_local_verification": {
+      "path": ".mister/evidence/receipts/20260907T221825Z-1b8d996d-61dc-41d2-b5bd-e72fc2e178a4.json",
+      "sha256": "e28aaedf6096ed519ecf792a8736284cb3b288300a73f9bd3c669b95e5eec74e",
+      "status": "pass; 20 registered checks"
+    },
+    "candidate41_arm_qemu_replay": {
+      "path": ".work/runtime/arm-replays/742d6ace2dd84dea88b391094bf84e9b/run.json",
+      "sha256": "14aca7fd2d1af4faaba56815314d1206abb3eeecba0652e7a3f14505b155d385",
+      "status": "pass; replay outcome matches"
+    },
+    "candidate41_host_replay": {
+      "path": ".work/runtime/replays/1eca0c34580144f0990f0150fe655af3/run.json",
+      "sha256": "50a453c9691298bed47b1a21c7e9fb56d88112654408506fc514b5ea9dcfccf2",
+      "status": "exited; replay outcome matches"
+    },
+    "candidate41_board_blocker": {
+      "path": ".mister/evidence/receipts/20260908T-physical-launch-candidate41-normal60.json",
+      "sha256": "3a1f7e97d3be5429000b27e9d3c1319dd42cf1291f02cba52e505651b5f845fb",
+      "status": "blocked; not acceptance evidence"
+    },
+    "candidate41_timedemo_blocker": {
+      "path": ".mister/evidence/receipts/20260908T-physical-timedemo-candidate41-blocked.json",
+      "sha256": "028404ad383e53cfc8ff545f0ca5682afc11046d4799fba67debabae40731758",
+      "status": "blocked; concurrent MAME core owned target"
+    },
+    "historical_candidate33": {
+      "kind": "historical C18/C26/C27/C32 candidate33 package and target-launch refresh",
+      "status": "development-only; package/preflight pass; physical and candidate-bound verification incomplete",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-33-plan-refresh.json",
+      "manifest_sha256": "f0ab6bee4630014486c48c7f4b252dc40f118489af6d3337926b26f646cfd15c",
+      "source_id": "d46e14ca37d9aa2d9a244dd742d6ef3ecb29111617f4a75ccf0111f867da1929",
+      "candidate_id": "125520ca20750c1b8c67cc4e8448c433f2b837ebcacd8492a1150adb333d50a7",
+      "artifacts": "ARM transport ELF, matching existing FPGA/ABI artifacts, package v2 launcher and complete asset tree",
+      "local_receipt": ".mister/evidence/receipts/20260907T183544Z-8711dc3b-a375-4873-b2eb-cd28bdbb0352.json",
+      "local_receipt_sha256": "dfa73666ce5f221cf576461838ebd21dbe3d34109a76b959882c2162fd3c5100",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T184334Z-743163a2-7604-477a-aa22-97489698e87e.json",
+      "arm_qemu_receipt_sha256": "6152548dc0dbaac46cff5443f43e71c5fd236567c3dc83d62d98e7377d99c722",
+      "clean_arm_build_receipt": null,
+      "clean_arm_build_receipt_sha256": null,
+      "board_receipt": null,
+      "board_receipt_sha256": null,
+      "preflight_receipt": ".mister/evidence/receipts/20260908T-preflight-candidate33b.json",
+      "preflight_receipt_sha256": "51723c30cba19d5a1098f89d7b9bebb8271d10b0dec661f5e1e5f2176d7d4152",
+      "clean_checkout_receipt": null,
+      "clean_checkout_receipt_sha256": null,
+      "clean_fpga_build_receipt": null,
+      "clean_fpga_build_receipt_sha256": null,
+      "scene_oracle_receipts": [
+        {
+          "campaign": "diablo",
+          "path": ".mister/evidence/receipts/20260908T-scene-oracle-diablo-candidate33b.json",
+          "sha256": "375f9704e0c891003496dc1fdbe52a2a593e76702dcfa14310d299c952763b1f"
+        },
+        {
+          "campaign": "hellfire",
+          "path": ".mister/evidence/receipts/20260908T-scene-oracle-hellfire-candidate33.json",
+          "sha256": "be5a63bf17a1f51774e49c96d42201b2f439c28880c2f4573e0c88d8b9cf35d2"
+        }
+      ],
+      "candidate_status": "candidate33 development-only; package v2, local 20-check verification, ARM/QEMU ABI, role-aware Diablo/Hellfire scene oracles and five-file target preflight pass; target video/audio/input/gameplay/performance and release lifecycle remain open",
+      "package_manifest": ".work/package-board-candidate-33/package-manifest.json",
+      "package_manifest_sha256": "a099d0741c6eab475401ef9bf2fb1dbad73a6d613d7fb99f30e9e1ab616238a9",
+      "deployment_manifest_sha256": "d25ba06cb74e4fd9a7b0798a201aed16ed4850f6b0a61e48bae197fdd24ee216",
+      "physical_launcher_smoke_receipt": ".mister/evidence/receipts/20260908T-physical-launch-candidate31b.json",
+      "physical_launcher_smoke_receipt_sha256": "dd81092b0a971d5a3358061e2e34e7d0a5d5395671f9cde80213da13805ffe76",
+      "timedemo_failure_receipt": ".mister/evidence/receipts/20260908T-physical-demo-reboot-candidate29.json",
+      "timedemo_failure_receipt_sha256": "7ff0551a51df774af9933167274182145f870413db17c0a45a99b728e17e710a",
+      "historical": true
+    },
+    "latest_root_cleanliness_receipt": ".mister/evidence/receipts/20260908T-candidate49-root-cleanliness.json",
+    "latest_root_cleanliness_receipt_sha256": "98627a4bb17ea6e62e571cf37e9730ca0f672520048cdf6d9dced4dcd9b36da7"
   },
   "prerequisites_to_establish": [
     "Target hardware access and kernel/runtime baseline",
@@ -523,22 +847,117 @@
       "arm_qemu_receipt": ".mister/evidence/receipts/20260907T074417Z-b62331e3-9ad0-42b7-b56f-b472c5e22bed.json",
       "arm_qemu_receipt_sha256": "14d687bb116f5be66bfa30fec23791b2ce1fb0437852f0109d9f590c4469530f",
       "candidate_status": "development-only; candidate-bound local and ARM/QEMU receipts pass; target qualification open"
+    },
+    {
+      "kind": "C18/C32 candidate manifest refresh after packaging and verification hardening",
+      "status": "passed; current development-only record",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-13-arm.json",
+      "manifest_sha256": "8bd627f88ba0cb1f4cf52f93392341f4bfa20e90bb49272ef3ff8402c6b8e34b",
+      "source_id": "b1671fe03fb04f8fc3e072dd2c36fa3e3ae1963a381af31e8952d731d1518884",
+      "candidate_id": "aa6a4b63fd4b370b884943b315da0931553ebefbfa2e36cf0995dd7c0959248a",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "local_receipt": ".mister/evidence/receipts/20260907T093129Z-2178d24d-f409-4540-b812-47c49de78b34.json",
+      "local_receipt_sha256": "23a78af0c524b1863958edf5b15e8a76f19c1de702af6b65da0c947082aff0cd",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T093446Z-78fe5413-535c-46c2-9b87-53d78550dec9.json",
+      "arm_qemu_receipt_sha256": "bc5a70afb7c9dd6e076f8fab384dc77a4198f5789452414b14ac959f6c41f06a",
+      "board_receipt": ".mister/evidence/receipts/20260907T093457Z-23f70099-3626-4b5d-b32e-8194ee6995e7.json",
+      "candidate_status": "development-only; local receipts pass, ARM/QEMU and board tiers incomplete"
+    },
+    {
+      "kind": "C18/C32 candidate manifest refresh after candidate-artifact and private-data hardening",
+      "status": "passed; current development-only record",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-14-arm.json",
+      "manifest_sha256": "5623c0ccaad835f304a437dd193964d4c540c06e358eac312af32121750ce594",
+      "source_id": "4597a1b35e1fd4c2f57ea07c395fe9aa344a861153f4fb026cb182ec918ba251",
+      "candidate_id": "9e62531c087c1a65804618dd0f7ea5079a502402cb38053cb280c50f08aa9311",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "local_receipt": ".mister/evidence/receipts/20260907T094638Z-34d6f3d8-51b9-46da-8d98-8bc46c2739c8.json",
+      "local_receipt_sha256": "eb6854d749b703162bb1fb9d4003aaa4af1764aa170f1c558d150ee78ddb932b",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T094953Z-cdf686c4-b0d9-4eae-b65d-8658519816c7.json",
+      "arm_qemu_receipt_sha256": "9e3e612fcf01822c00a8fef6e312042de46bb4b62f59dbc6d1ed202ecc1a68d1",
+      "board_receipt": ".mister/evidence/receipts/20260907T095004Z-20eaa636-05b4-4163-8ca3-0c85f99cae11.json",
+      "candidate_status": "development-only; local receipts pass, ARM/QEMU and board tiers incomplete"
+    },
+    {
+      "kind": "C18/C26 candidate manifest refresh after verification-input closure",
+      "status": "passed; current development-only record",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-18-arm.json",
+      "manifest_sha256": "dbf81079c9a6d611e47e9b4696460c4861cbc5623e1f8ac945d82586f2dd09bc",
+      "source_id": "c964833beed3e7d47f2a0a09d46699addfb1ecda4351c319bc2df3b2df374910",
+      "candidate_id": "f663ee13f7be9c6789e03983f1b1877b8085b1d8f18e8eb1039a002bd9b4b1d5",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "local_receipt": ".mister/evidence/receipts/20260907T113647Z-d5bf6e72-e549-4cbd-95ab-1972940fe206.json",
+      "local_receipt_sha256": "518db32009cbc102dab296c4c1317f7b5fc6b745ca2210add606c9bf2c2126ea",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T114118Z-655b63e0-f7bc-4512-8673-488b892a1b13.json",
+      "arm_qemu_receipt_sha256": "15077e4715e7441d1d90f2faafdcb8217e40122a1656c1ac5765513a0ed4f88e",
+      "board_receipt": ".mister/evidence/receipts/20260907T114240Z-ab8600a2-474a-41a9-aaf2-728f6b8091dc.json",
+      "candidate_status": "candidate-18 development-only; local and ARM/QEMU receipts pass, board tier incomplete"
+    },
+    {
+      "kind": "C18/C26/C32 candidate manifest refresh after MiSTer preflight and root-config probe fix",
+      "status": "passed; current development-only record",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-20-arm.json",
+      "manifest_sha256": "0cf408fd77d2646e583a37fca7db10773b06448e4073063426588c21ff4c33a9",
+      "source_id": "ea9c1e1ace80797d3a0e6c3cba4555273d0ef6f4be73517082cb7257d19e559b",
+      "candidate_id": "de47ad689aa28504c18e7e49864f26e36fb35cb5266cb9fbd5dc1d12aab3abf5",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "local_receipt": ".mister/evidence/receipts/20260907T122525Z-41792bb5-33df-4516-b825-3d2775797859.json",
+      "local_receipt_sha256": "e88b0ad88104b692b181f0e4f03961f60991d48dfa44d175b7f46d6bcfd0e98d",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T122955Z-7af8b14d-1532-4ced-b2e4-82b2ad0809fe.json",
+      "arm_qemu_receipt_sha256": "7de9cf62aad8fa9367018b7e582928b97d4c3c0be617a08169de44b4536fc49b",
+      "board_receipt": ".mister/evidence/receipts/20260907T123156Z-5da7cf1b-f0b4-45df-bcdb-ebc123e6f34f.json",
+      "board_receipt_sha256": "5668e228e26fc9309de496092a2de8e150f1f3120f47e6018d53d583ffb7a63d",
+      "preflight_receipt": ".mister/evidence/receipts/20260907T122404Z-fecab56c-a1f3-4184-a7fb-0b539aeb0171.json",
+      "preflight_receipt_sha256": "b396ae6c59c923182663d76c16cb4ece211322e7b4a276faedd778359f5d25b",
+      "candidate_status": "candidate-20 development-only; local and ARM/QEMU receipts pass, read-only target preflight passes, board suite incomplete"
+    },
+    {
+      "kind": "C18/C26/C32 candidate manifest refresh after preflight path-guard fix",
+      "status": "passed; current development-only record",
+      "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-21-arm.json",
+      "manifest_sha256": "4b2c6cf0b748cb500fb1ec8d98351bfa2c51a25cca06d572a9e341165c3ca018",
+      "source_id": "43b2e33ebe61806c727d4ebf5cc6f3a8049927f1ac908bb8d36748057173049b",
+      "candidate_id": "0479b94f147cb26d643011bf08c429a9d6fecdfc1933d03ca4fcd992ae294257",
+      "artifacts": "same verified ARM/RBF/SOF artifact hashes as the FPGA snapshot build above",
+      "local_receipt": ".mister/evidence/receipts/20260907T124844Z-51f0a3a2-d63c-420f-94c7-d365981a4568.json",
+      "local_receipt_sha256": "1e5927e1581b4bfd90ed817ebbf5a4b06fd954c818a0c2f10cb1edce96f3b457",
+      "arm_qemu_receipt": ".mister/evidence/receipts/20260907T125248Z-453b9655-30b2-4d2d-8a36-d1f85b89964a.json",
+      "arm_qemu_receipt_sha256": "04475fddcba48d6c29cd9d78f602926e7d874552979ec6a60146c386f8671047",
+      "board_receipt": ".mister/evidence/receipts/20260907T125336Z-444c3c9b-e949-4938-a763-7ac093a980cd.json",
+      "board_receipt_sha256": "d47a43e19dc2929c627f6e57bd54ca9404304361076fe3410c135ce6263ae9c5",
+      "preflight_receipt": ".mister/evidence/receipts/20260907T124826Z-1d5a65b3-9a88-45a4-8e2c-88cd1986c0a5.json",
+      "preflight_receipt_sha256": "bd0a1ad16a6dc5cec6c4f0249b0cbfa76b67a4f6dd18138ddf9e248ee8267b6c",
+      "candidate_status": "candidate-21 development-only; local and ARM/QEMU receipts pass, read-only target preflight passes, board suite incomplete"
     }
   ],
   "latest_reference_receipt": ".mister/evidence/step-1-host-reference-acceptance.json",
-  "latest_local_verification_receipt": ".mister/evidence/receipts/20260907T074147Z-ba696aab-f304-4da2-a56d-2be0789aadf7.json",
-  "latest_arm_qemu_verification_receipt": ".mister/evidence/receipts/20260907T074417Z-b62331e3-9ad0-42b7-b56f-b472c5e22bed.json",
-  "latest_fpga_snapshot_build": ".work/build/fpga-candidate-20260907-2",
+  "latest_local_verification_receipt": ".mister/evidence/receipts/20260908T025424Z-9aba44bd-ac7c-4391-9675-2f1f15f75e05.json",
+  "latest_local_verification_receipt_sha256": "6578d3846a06bbfb4761add8f7b5a4f8b6f390257d6491a7956f01e250f015f3",
+  "latest_candidate_bound_foundation_receipt": ".mister/evidence/receipts/20260907T232642Z-5aaae170-204c-4b42-be7f-48e1cc9e4853.json",
+  "latest_candidate_bound_foundation_receipt_sha256": "3b1d7bd8c89f7ee5b6e7bb187673633178a4f52650a7a7c3a1e168d1843a96ef",
+  "latest_candidate_bound_host_receipt": ".mister/evidence/receipts/20260907T154930Z-b18c688f-47a0-4057-b23c-e206ff16ab69.json",
+  "latest_candidate_bound_host_receipt_sha256": "942c0b064b51a270abe48c4e79f57f2bf6620ff9570264533930726e57082ff8",
+  "latest_candidate_bound_rtl_receipt": ".mister/evidence/receipts/20260907T154930Z-b18c688f-47a0-4057-b23c-e206ff16ab69.json",
+  "latest_candidate_bound_rtl_receipt_sha256": "942c0b064b51a270abe48c4e79f57f2bf6620ff9570264533930726e57082ff8",
+  "latest_arm_qemu_verification_receipt": ".mister/evidence/receipts/20260908T015737Z-1654e8e0-ebc5-4e8a-889d-ef85c8b95009.json",
+  "latest_arm_qemu_verification_receipt_sha256": "955b2b07a6db703ed3b58f250d92e5f1d76bc73d2a74c4a7b8210b21d63e3594",
+  "latest_arm_qemu_verification_status": "pass",
+  "latest_board_verification_receipt": null,
+  "latest_board_verification_status": "Current SSH access succeeds; MAME not observed in latest process snapshot. Changed source requires rebuild and qualification before physical acceptance.",
+  "latest_target_preflight_receipt": ".mister/evidence/receipts/20260908T-candidate49-preflight.json",
+  "latest_target_preflight_receipt_sha256": "64d827d9d29953396c55be9314ae19fde04aa63820370573fab9de3d594a1b78",
+  "latest_fpga_snapshot_build": ".work/build/fpga-candidate-20260908-43-video-policy/source",
   "latest_rtl_receipt": ".mister/evidence/transport-abi-layout-test.json",
-  "latest_hardware_receipt": ".mister/evidence/arm-command-scene-live-hardware-20260907.json",
-  "latest_performance_receipt": ".mister/evidence/arm-cpu-pacing-ab-20260907.json",
+  "latest_hardware_receipt": null,
+  "latest_hardware_status": "Current SSH access succeeds; MAME not observed in latest process snapshot. Changed source requires rebuild and qualification before physical acceptance.",
+  "latest_performance_receipt": null,
   "latest_local_transport_build": ".mister/evidence/input-transport-local-build-20260906.json",
-  "latest_arm_engine_transport_build": ".mister/evidence/arm-engine-command-scene-trace-build-20260907.json",
+  "latest_arm_engine_transport_build": ".work/build/arm-engine-candidate38-pcm-telemetry/devilutionx",
   "latest_input_bridge_receipt": ".mister/evidence/arm-input-sdl-bridge-20260907.json",
   "latest_audio_bridge_receipt": ".mister/evidence/arm-audio-pcm-transport-20260907.json",
   "latest_fpga_transport_receipt": ".mister/evidence/fpga-command-consumer-faultclear-build-20260907.json",
   "latest_fpga_command_consumer_build": ".mister/evidence/fpga-command-consumer-faultclear-build-20260907.json",
-  "latest_transport_relaunch_receipt": ".mister/evidence/arm-command-scene-live-hardware-20260907.json",
+  "latest_transport_relaunch_receipt": null,
   "read_only_paths": [
     "game/",
     "D:/Arcade/AI/aCORES/blood"
@@ -554,7 +973,10 @@
     "MiSTer control-page attachment passed with the final timing-clean RBF: reset-time ARM publication reaches FPGA ready, malformed magic faults with code 1, stale slot faults with code 16, and the final clean reload is ready.",
     "Audio transport now passes on the current RBF: the ARM published 480 stereo S16 records, the FPGA consumed them, and the same image passed the two-frame scanout ownership/reclamation probe.",
     "Input transport now publishes a monotonic FPGA dropped counter and has a tested ARM InputConsumer snapshot-recovery path. Current-image hardware smoke passed control attachment, idle input, malformed magic and stale-slot rejection; physical input edge injection, physical audio inspection and ARM snapshot recovery on hardware remain open.",
-    "The transport-aware ARM engine overlay builds and runs on MiSTer, discovers DIABDAT and recycles FPGA-owned frames without a transport fault. The bounded input adapter now converts deterministic keyboard, mouse and joystick records to SDL in the real engine, and the audio callback resamples the 22.05 kHz ARM mix into the FPGA 48 kHz PCM ring; physical peripheral edges, HDMI/speaker output, overflow recovery, deterministic timedemo equality and real-vblank frame pacing remain open."
+    "The transport-aware ARM engine overlay builds and runs on MiSTer, discovers DIABDAT and recycles FPGA-owned frames without a transport fault. The bounded input adapter now converts deterministic keyboard, mouse and joystick records to SDL in the real engine, and the audio callback resamples the 22.05 kHz ARM mix into the FPGA 48 kHz PCM ring; physical peripheral edges, HDMI/speaker output, overflow recovery, deterministic timedemo equality and real-vblank frame pacing remain open.",
+    "Candidate41 package/preflight/local evidence is current; physical board acceptance is blocked by shared NFS_SE ownership and active PCM underrun/drop growth. No accepted candidate exists.",
+    "Candidate41 package/preflight/local evidence and a quiescent normal-session launcher pass are current; physical acceptance is blocked by the black observer, startup PCM underruns and unrun input/campaign/performance/lifecycle gates. Candidate40 shared NFS_SE ownership is historical. No accepted candidate exists.",
+    "Candidate41 target timedemo was blocked by a concurrent MAME core; the launcher was aborted without accepting timedemo evidence."
   ],
   "live_build": {
     "session_id": 28692,
@@ -757,10 +1179,112 @@
       "R02",
       "R03",
       "R04",
-      "R05"
+      "R05",
+      "R06",
+      "R07",
+      "R08",
+      "R09",
+      "R10",
+      "R11",
+      "R12"
     ],
     "candidate_rejection_receipt": ".mister/evidence/receipts/20260907T073141Z-92034273-fd47-4c57-b1f8-ef57d73279bb.json",
-    "local_scope": "104 Python tests run, one skipped; four host and thirteen RTL checks pass. Initial receipt incomplete; both optional host PNG and SDL checks subsequently passed separately. No candidate/board acceptance.",
-    "supplemental_checks": "reports/audit-2026-09-07/refresh-evidence/optional-checks.json"
+    "local_scope": "No current accepted candidate. C34/P01-P06 source packets are committed; C25 source/validator acceptance is committed in 8e74223 and a fresh current-SDC FPGA build is underway. Durable docs/evidence and clean-checkout qualification remain before a new candidate; physical video/audio/input/campaign/performance and board acceptance remain open.",
+    "historical_candidate": "a5f2b83c0191d56e44a7b1babd5988e3fc0530a9f973f6e6bb739b13479ab989",
+    "historical_candidate_id": "a5f2b83c0191d56e44a7b1babd5988e3fc0530a9f973f6e6bb739b13479ab989",
+    "historical_candidate_source_id": "7901cdc0d54c3d8d3a527a85445c78d4d1ad5330e1b223f426a3ed15dc914d0d",
+    "historical_candidate_manifest_sha256": "c87c3b7dc214f23c4dc299c9010cbf2e8e031c2962a1a05604d59fa7452b0579",
+    "historical_local_receipt": ".mister/evidence/receipts/20260907T221825Z-1b8d996d-61dc-41d2-b5bd-e72fc2e178a4.json",
+    "historical_arm_receipt": ".work/runtime/arm-replays/742d6ace2dd84dea88b391094bf84e9b/run.json",
+    "historical_board_receipt": null,
+    "historical_preflight_receipt": ".mister/evidence/receipts/20260908T-candidate41-preflight.json",
+    "supplemental_checks": "reports/audit-2026-09-07/refresh-evidence/optional-checks.json",
+    "historical_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-41-doc-sync.json",
+    "historical_manifest_sha256": "c87c3b7dc214f23c4dc299c9010cbf2e8e031c2962a1a05604d59fa7452b0579",
+    "historical_source_id": "7901cdc0d54c3d8d3a527a85445c78d4d1ad5330e1b223f426a3ed15dc914d0d",
+    "historical_local_receipt_sha256": "e28aaedf6096ed519ecf792a8736284cb3b288300a73f9bd3c669b95e5eec74e",
+    "historical_arm_receipt_sha256": "14aca7fd2d1af4faaba56815314d1206abb3eeecba0652e7a3f14505b155d385",
+    "historical_board_receipt_sha256": null,
+    "historical_preflight_receipt_sha256": "d917dafcefb058d51f4de183543ca6e36d7cbc3c98645eb5a5b15e835befcacf",
+    "historical_scene_oracle_receipts": [
+      {
+        "campaign": "diablo",
+        "path": ".mister/evidence/receipts/20260908T-scene-oracle-diablo-candidate33b.json",
+        "sha256": "375f9704e0c891003496dc1fdbe52a2a593e76702dcfa14310d299c952763b1f"
+      },
+      {
+        "campaign": "hellfire",
+        "path": ".mister/evidence/receipts/20260908T-scene-oracle-hellfire-candidate33.json",
+        "sha256": "be5a63bf17a1f51774e49c96d42201b2f439c28880c2f4573e0c88d8b9cf35d2"
+      }
+    ],
+    "historical_clean_checkout_receipt": null,
+    "historical_clean_checkout_receipt_sha256": null,
+    "historical_clean_fpga_build_receipt": null,
+    "historical_clean_fpga_build_receipt_sha256": null
+  },
+  "latest_clean_checkout_receipt": ".mister/evidence/receipts/20260908T-clean-checkout-candidate26.json",
+  "latest_clean_checkout_receipt_sha256": "382496e1f7ac129b208bc8ae4926506c6d622c580093feaff11eb62925ae54b7",
+  "latest_clean_fpga_build_receipt": ".mister/evidence/fpga-build-candidate43.json",
+  "latest_clean_fpga_build_receipt_sha256": "f825d7ab8eaaccfd2f03699bb775c329b759d1bee5eebba648354334317fe2e2",
+  "latest_loader_interface_receipt": ".mister/evidence/receipts/20260908T-physical-launch-candidate31b.json",
+  "latest_loader_interface_receipt_sha256": "8a1ffe1a1b56e9f1da5e224c50d11afe8e0065bd9a40f3e37e044a522f94665a",
+  "latest_clean_arm_build_receipt": null,
+  "latest_clean_arm_build_receipt_sha256": null,
+  "current_candidate": {
+    "state": "historical-source-superseded",
+    "candidate_id": "d95d4cfd03154bd659343c5a77a1230bcd4efc7c45d81d4f2299a0d754128611",
+    "source_id": "59d9a616708db186946cab362d6c66627a99d9a21a18b4bf6f97cb70a3e9eda0",
+    "manifest": ".mister/evidence/candidates/fpga-candidate-20260908-49-final-local.json",
+    "manifest_sha256": "f420873962a21317c8a9bdc9ff1ad07db02d9ad4299c2b9b5ff2e1abae802c4b",
+    "package": ".work/package-board-candidate-49-final-local",
+    "package_manifest_sha256": "f09bd76e1b4c80d7eb6391409dc1724f573a5931d4cf644ed7092573e49e63f3",
+    "package_staging": "\\\\192.168.0.69\\sdcard\\_CodexDiabloCandidate49FinalLocal",
+    "local_receipt": ".mister/evidence/receipts/20260908T005425Z-a0fbb81c-2ec1-4c90-813d-68bcf2de6e30.json",
+    "local_receipt_sha256": "8e63f45062e56abcba6c5806e4910198eda2f2a32cc8e0b4c479e8bccd0d68b3",
+    "arm_qemu_receipt": ".mister/evidence/receipts/20260908T005732Z-35359e71-54c4-434f-9d29-91c9ec427c70.json",
+    "arm_qemu_receipt_sha256": "286b11f449a9fb52eb3f22858782aa5ae8c683fa4b9d5913bdaf4f0118c6f585",
+    "scene_oracle_diablo": ".mister/evidence/receipts/20260908T-candidate49-scene-oracle-diablo.json",
+    "scene_oracle_diablo_sha256": "734578c7b6c8f5d2b9f8753087a6c5b6783fc528c1f94a4d5d2d74d5fe7ea278",
+    "scene_oracle_hellfire": ".mister/evidence/receipts/20260908T-candidate49-scene-oracle-hellfire.json",
+    "scene_oracle_hellfire_sha256": "3e1075671cc486b5cf8cf5c253e52c080513acba8037aae3b722fe3844ec4331",
+    "fpga_build_receipt": ".mister/evidence/fpga-build-candidate43.json",
+    "fpga_build_receipt_sha256": "f825d7ab8eaaccfd2f03699bb775c329b759d1bee5eebba648354334317fe2e2",
+    "preflight_receipt": ".mister/evidence/receipts/20260908T-candidate49-preflight.json",
+    "preflight_receipt_sha256": "64d827d9d29953396c55be9314ae19fde04aa63820370573fab9de3d594a1b78",
+    "board_status": "blocked; candidate49 not activated because external MAME core owns target; physical video/audio/input/campaign/performance/menu/lifecycle evidence remains open",
+    "status": "not accepted; physical and release gates remain open",
+    "deployment_lifecycle_receipt": ".mister/evidence/receipts/20260908T-candidate49-deployment-lifecycle.json",
+    "deployment_lifecycle_receipt_sha256": "324d8ad330f940de78d52d77f372b8c04cbf7dce10eeb3278e899410dee14c01",
+    "historical_board_blocked_receipt": ".mister/evidence/receipts/20260908T-physical-timedemo-candidate41-blocked.json",
+    "historical_board_blocked_receipt_sha256": "028404ad383e53cfc8ff545f0ca5682afc11046d4799fba67debabae40731758",
+    "board_receipt": null
+  },
+  "latest_deployment_lifecycle_receipt": ".mister/evidence/receipts/20260908T-candidate49-deployment-lifecycle.json",
+  "latest_deployment_lifecycle_receipt_sha256": "324d8ad330f940de78d52d77f372b8c04cbf7dce10eeb3278e899410dee14c01",
+  "latest_historical_board_blocked_receipt": ".mister/evidence/receipts/20260908T-physical-timedemo-candidate41-blocked.json",
+  "latest_historical_board_blocked_receipt_sha256": "028404ad383e53cfc8ff545f0ca5682afc11046d4799fba67debabae40731758",
+  "c33_evidence_disposition": "20260908T-candidate49-root-cleanliness.json is an absence/rules observation, insufficient for closure; C33 reopened.",
+  "latest_host_source_verification_receipt": ".mister/evidence/receipts/20260908T015041Z-648a4f9b-06a7-4654-94cb-9d880ba8a3cd.json",
+  "latest_host_source_verification_receipt_sha256": "13725120d2e2538dc7b61b68f813e062524f1b603a58d9e56f1c4aed46f0d3a3",
+  "latest_target_access_observation": {
+    "target": "192.168.0.69",
+    "receipt": ".mister/evidence/receipts/20260908T-c34-target-core-misterclaw-observation.json",
+    "status": "foreign-core-active-dynamic",
+    "core": "sparkman",
+    "rbfname": "Suna8bit",
+    "scope": "Read-only; target reboot/core changes require fresh admission; no Diablo activation or physical acceptance."
+  },
+  "quartus_root": "D:/q17/quartus",
+  "latest_arm_engine_rebuild_receipt": ".mister/evidence/receipts/20260908T-c34-arm-engine-rebuild.json",
+  "latest_arm_engine_rebuild_receipt_sha256": "3542278153f30480d9108a8c38b342c4fe466da1a4d6ba125a81320b8a5cfc61",
+  "latest_arm_version_smoke_receipt": ".mister/evidence/receipts/20260908T-c34-arm-version-smoke.json",
+  "latest_arm_version_smoke_receipt_sha256": "14d796998cb9bae630d743f263e9e9131e7c2618adae684791c8d0523025f420",
+  "latest_c33_producer_receipt": ".mister/evidence/receipts/20260908T021850Z-c33-producer-proof-4fea2af2-836b-49d1-9936-919113740560.json",
+  "latest_engine_input_clean_build_receipt": ".mister/evidence/receipts/20260908T-c34-clean-arm-engine-build.json",
+  "next_engine_artifact": {
+    "path": ".work/build/arm-engine-c34-clean/devilutionx",
+    "sha256": "6cfc2c80ff0c2fedf4dd5ea4a91cfad7339fac7f67828421465c4f1d7b324989",
+    "scope": "Engine-input clean build; no current candidate/physical acceptance"
   }
 }

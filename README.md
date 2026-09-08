@@ -57,6 +57,17 @@ tiers; a passing local or QEMU receipt does not load an RBF or establish board
 acceptance. FPGA build, target launcher, benchmark and package qualification remain
 open in the detailed plan.
 
+Development manifests are for the checkout. A clean MiSTer package uses a
+runtime-only deployment manifest created and checked with
+`support/scripts/deployment_manifest.py`; launch it with
+`support/scripts/diablo_launch.py --deployment-manifest ...`. The board tier uses
+`support/scripts/board_runner.py` through `verify --suite board` and requires a
+candidate-bound configuration plus physical observations for video, audio,
+input, campaign and performance.
+The C32 package builder is `support/scripts/package_release.py`; it copies only
+the verified ARM/RBF/ABI roles, writes immutable deployment and package
+manifests, and verifies the staged directory before it can be installed.
+
 ## Data, sources and distribution
 
 `game/` contains user-supplied commercial archives. Keep it read-only to build
