@@ -41,6 +41,10 @@ ARTIFACT_SCHEMAS = {
     "package-manifest": "diablo-package-manifest-v2",
 }
 
+REQUIRED_PHYSICAL_MODE = "HDMI framebuffer/scaler"
+UNTESTED_PHYSICAL_MODES = ("Direct RGB", "Analog/scandoubler")
+UNTESTED_PHYSICAL_DISPOSITION = "best_effort_untested"
+
 
 class GateError(RuntimeError):
     """An invalid matrix or unusable closure record."""
@@ -103,6 +107,57 @@ def require_strings(value: object, label: str, minimum: int = 1) -> list[str]:
     return list(value)
 
 
+def validate_physical_output_scope(scope: dict[str, Any]) -> None:
+    policy = scope.get("physical_output")
+    if not isinstance(policy, dict):
+        raise GateError("scope.physical_output is missing")
+    required = policy.get("required_modes")
+    if required != [REQUIRED_PHYSICAL_MODE]:
+        raise GateError("scope.physical_output.required_modes must require HDMI framebuffer/scaler only")
+    untested = policy.get("untested_modes")
+    if not isinstance(untested, list):
+        raise GateError("scope.physical_output.untested_modes must be a list")
+    if {entry.get("id") for entry in untested if isinstance(entry, dict)} != set(UNTESTED_PHYSICAL_MODES) or len(untested) != len(UNTESTED_PHYSICAL_MODES):
+        raise GateError("scope.physical_output.untested_modes must enumerate Direct RGB and Analog/scandoubler")
+    output_modes = scope.get("output_modes")
+    if not isinstance(output_modes, list):
+        raise GateError("scope.output_modes is required for physical output scope")
+    for mode_id in (REQUIRED_PHYSICAL_MODE, *UNTESTED_PHYSICAL_MODES):
+        matches = [mode for mode in output_modes if mode_id.casefold() in mode.casefold()]
+        if len(matches) != 1:
+            raise GateError(f"scope.output_modes must contain exactly one row for {mode_id}")
+    for entry in untested:
+        if not isinstance(entry, dict) or entry.get("status") != "untested" or entry.get("disposition") != UNTESTED_PHYSICAL_DISPOSITION:
+            raise GateError("scope.physical_output untested rows require status=untested and best_effort_untested")
+        if not isinstance(entry.get("rationale"), str) or not entry["rationale"]:
+            raise GateError("scope.physical_output untested rows require a rationale")
+
+
+def validate_output_mode_qualification(value: object, scope: dict[str, Any], label: str) -> None:
+    validate_physical_output_scope(scope)
+    if not isinstance(value, dict):
+        raise GateError(f"{label} requires output_mode_qualification")
+    expected = (REQUIRED_PHYSICAL_MODE, *UNTESTED_PHYSICAL_MODES)
+    if set(value) != set(expected):
+        missing = sorted(set(expected) - set(value))
+        extra = sorted(set(value) - set(expected))
+        raise GateError(f"{label} output_mode_qualification must enumerate all modes; missing={missing}, extra={extra}")
+    hdmi = value[REQUIRED_PHYSICAL_MODE]
+    if not isinstance(hdmi, dict) or hdmi.get("status") != "pass":
+        raise GateError(f"{label} HDMI framebuffer/scaler qualification must be pass")
+    if not isinstance(hdmi.get("evidence"), list) or not hdmi["evidence"]:
+        raise GateError(f"{label} HDMI framebuffer/scaler qualification requires evidence")
+    policy_rows = {entry["id"]: entry for entry in scope["physical_output"]["untested_modes"]}
+    for mode_id in UNTESTED_PHYSICAL_MODES:
+        entry = value[mode_id]
+        if not isinstance(entry, dict) or entry.get("status") != "untested":
+            raise GateError(f"{label} {mode_id} must remain explicitly untested")
+        if entry.get("disposition") != policy_rows[mode_id]["disposition"]:
+            raise GateError(f"{label} {mode_id} has an unauthorized disposition")
+        if not isinstance(entry.get("rationale"), str) or not entry["rationale"]:
+            raise GateError(f"{label} {mode_id} requires an untested rationale")
+
+
 def validate_matrix(root: Path, matrix: dict[str, Any]) -> list[str]:
     problems: list[str] = []
     try:
@@ -131,6 +186,7 @@ def validate_matrix(root: Path, matrix: dict[str, Any]) -> list[str]:
             for token in required_mode_tokens
         ):
             raise GateError("scope.output_modes must enumerate HDMI, Direct RGB and Analog/scandoubler rows")
+        validate_physical_output_scope(scope)
         targets = matrix.get("targets")
         if not isinstance(targets, dict):
             raise GateError("numeric target section is missing")
@@ -308,9 +364,13 @@ def validate_artifact(root: Path, evidence: dict[str, Any], requirement: dict[st
             if not isinstance(coverage, dict):
                 raise GateError(f"physical artifact has no coverage object: {path}")
             for field, required in matrix["scope"].items():
+                if field == "physical_output":
+                    continue
                 observed = coverage.get(field)
                 if not isinstance(observed, list) or any(value not in observed for value in required):
                     raise GateError(f"physical artifact does not cover scope.{field}: {path}")
+            validate_output_mode_qualification(artifact.get("output_mode_qualification"), matrix["scope"],
+                                               "physical artifact")
         elif evidence_id == "timing-report":
             if artifact.get("all_corners") is not True or artifact.get("unconstrained_endpoints") != 0:
                 raise GateError(f"timing artifact does not prove all-corner constrained timing: {path}")

@@ -70,6 +70,20 @@ class ClosureGateTest(unittest.TestCase):
                                          "runs": [{"id": "run-1"}, {"id": "run-2"}, {"id": "run-3"}]})
                     elif evidence_id in {"physical-matrix", "controller-multiplayer-matrix"}:
                         artifact["coverage"] = self.matrix["scope"]
+                        artifact["output_mode_qualification"] = {
+                            closure_gates.REQUIRED_PHYSICAL_MODE: {
+                                "status": "pass",
+                                "evidence": ["hdmi-capture.json"],
+                            },
+                            **{
+                                entry["id"]: {
+                                    "status": entry["status"],
+                                    "disposition": entry["disposition"],
+                                    "rationale": entry["rationale"],
+                                }
+                                for entry in self.matrix["scope"]["physical_output"]["untested_modes"]
+                            },
+                        }
                     elif evidence_id == "timing-report":
                         artifact.update({"all_corners": True, "unconstrained_endpoints": 0})
                     elif evidence_id == "inventory":
@@ -92,6 +106,39 @@ class ClosureGateTest(unittest.TestCase):
         self.matrix["scope"]["output_modes"] = ["native video", "framebuffer"]
         problems = closure_gates.validate_matrix(self.root, self.matrix)
         self.assertTrue(any("scope.output_modes must enumerate" in problem for problem in problems))
+
+    def test_missing_hdmi_physical_qualification_blocks(self) -> None:
+        record = self.passing_record()
+        evidence = record["items"]["C23"]["evidence"][0]
+        artifact = self.root / evidence["path"]
+        value = json.loads(artifact.read_text(encoding="utf-8"))
+        del value["output_mode_qualification"][closure_gates.REQUIRED_PHYSICAL_MODE]
+        write_json(artifact, value)
+        evidence["sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        result = closure_gates.evaluate(self.root, self.matrix, record, "a" * 64, "b" * 64)
+        self.assertFalse(result["eligible"])
+        self.assertTrue(any("must enumerate all modes" in problem for problem in result["problems"]))
+
+    def test_unauthorized_non_hdmi_pass_blocks(self) -> None:
+        record = self.passing_record()
+        evidence = record["items"]["C23"]["evidence"][0]
+        artifact = self.root / evidence["path"]
+        value = json.loads(artifact.read_text(encoding="utf-8"))
+        value["output_mode_qualification"]["Direct RGB"]["status"] = "pass"
+        write_json(artifact, value)
+        evidence["sha256"] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        result = closure_gates.evaluate(self.root, self.matrix, record, "a" * 64, "b" * 64)
+        self.assertFalse(result["eligible"])
+        self.assertTrue(any("Direct RGB must remain explicitly untested" in problem for problem in result["problems"]))
+
+    def test_changed_physical_scope_invalidates_matrix_bound_record(self) -> None:
+        record = self.passing_record()
+        self.matrix["scope"]["physical_output"]["untested_modes"] = [
+            self.matrix["scope"]["physical_output"]["untested_modes"][0]
+        ]
+        result = closure_gates.evaluate(self.root, self.matrix, record, "a" * 64, "b" * 64)
+        self.assertFalse(result["eligible"])
+        self.assertIn("closure record was made for a different gate matrix", result["problems"])
 
     def test_complete_synthetic_fixture_is_eligible(self) -> None:
         result = closure_gates.evaluate(self.root, self.matrix, self.passing_record(), "a" * 64, "b" * 64)

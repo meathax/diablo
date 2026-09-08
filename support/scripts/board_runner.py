@@ -22,6 +22,9 @@ from typing import Any
 SCHEMA = "diablo-board-configuration-v1"
 RESULT_ID = "board-qualification"
 REQUIRED_OBSERVATIONS = ("video", "audio", "input", "campaign", "performance")
+REQUIRED_PHYSICAL_MODE = "HDMI framebuffer/scaler"
+UNTESTED_PHYSICAL_MODES = ("Direct RGB", "Analog/scandoubler")
+UNTESTED_PHYSICAL_DISPOSITION = "best_effort_untested"
 MAX_OUTPUT_BYTES = 1024 * 1024
 
 
@@ -45,6 +48,29 @@ def read_configuration(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError("board configuration must be a JSON object")
     return value
+
+
+def validate_output_mode_qualification(value: object) -> None:
+    if not isinstance(value, dict):
+        raise ValueError("board configuration requires output_mode_qualification")
+    expected = (REQUIRED_PHYSICAL_MODE, *UNTESTED_PHYSICAL_MODES)
+    if set(value) != set(expected):
+        missing = sorted(set(expected) - set(value))
+        extra = sorted(set(value) - set(expected))
+        raise ValueError(f"output_mode_qualification must enumerate all modes; missing={missing}, extra={extra}")
+    hdmi = value[REQUIRED_PHYSICAL_MODE]
+    if not isinstance(hdmi, dict) or hdmi.get("status") != "pass":
+        raise ValueError("HDMI framebuffer/scaler physical qualification must be pass")
+    if not isinstance(hdmi.get("evidence"), list) or not hdmi["evidence"]:
+        raise ValueError("HDMI framebuffer/scaler physical qualification requires evidence")
+    for mode_id in UNTESTED_PHYSICAL_MODES:
+        entry = value[mode_id]
+        if not isinstance(entry, dict) or entry.get("status") != "untested":
+            raise ValueError(f"{mode_id} must be explicitly untested")
+        if entry.get("disposition") != UNTESTED_PHYSICAL_DISPOSITION:
+            raise ValueError(f"{mode_id} has an unauthorized physical disposition")
+        if not isinstance(entry.get("rationale"), str) or not entry["rationale"]:
+            raise ValueError(f"{mode_id} requires an untested rationale")
 
 
 def validate_configuration(configuration: dict[str, Any], expected_candidate: str,
@@ -87,6 +113,7 @@ def validate_configuration(configuration: dict[str, Any], expected_candidate: st
                         raise ValueError(f"board command {entry['id']} has unsupported placeholder") from error
                     if not rendered:
                         raise ValueError(f"board command {entry['id']} renders an empty argument")
+    validate_output_mode_qualification(configuration.get("output_mode_qualification"))
     observations = configuration.get("observations")
     if not isinstance(observations, dict):
         raise ValueError("board configuration requires physical observations")
@@ -100,6 +127,8 @@ def validate_configuration(configuration: dict[str, Any], expected_candidate: st
             raise ValueError(f"physical observation {name} requires a method")
         if not isinstance(observation.get("evidence"), list) or not observation["evidence"]:
             raise ValueError(f"physical observation {name} requires evidence references")
+    if observations["video"].get("mode") != REQUIRED_PHYSICAL_MODE:
+        raise ValueError("physical video observation must identify HDMI framebuffer/scaler")
 
 
 def _render(argv: list[str], candidate_id: str, source_id: str, target: str) -> tuple[str, ...]:
@@ -158,6 +187,7 @@ def run_configuration(root: Path, configuration_path: Path, expected_candidate: 
             overall = "fail"
     return {"id": RESULT_ID, "status": overall, "commands": command_results,
             "target": target, "candidate_id": expected_candidate, "source_id": source_id,
+            "output_mode_qualification": configuration["output_mode_qualification"],
             "observations": configuration["observations"], "log": str(log.relative_to(root)).replace("\\", "/"),
             "log_sha256": sha256_file(log), "log_bytes": log.stat().st_size}
 

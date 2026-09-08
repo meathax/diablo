@@ -31,15 +31,18 @@ The release mode matrix is deliberately explicit:
 
 | Row | Connector/path | Geometry and timing | Source contract | Qualification state |
 | --- | --- | --- | --- | --- |
-| HDMI framebuffer/scaler | MiSTer HDMI framebuffer/scaler | 640x480 indexed 8bpp, progressive, 60 Hz; core palette upload | `VGA_SCALER=1`, `FB_EN=1` only after an atomic frame and palette commit | Supported by design; target capture and timing receipt required |
-| Direct RGB | Native direct-video RGB path | 640x480 8-bit RGB, progressive, 60 Hz | Gameplay requires framework direct-video mode with scaler disabled; diagnostics use the native pattern only when selected | Supported by design; target capture and source-mux receipt required |
-| Analog/scandoubler | VGA RGB/YPbPr path with forced scandoubler | 640x480 active geometry, doubled to a progressive 31 kHz mode | Framework scaler consumes the indexed framebuffer when enabled; direct RGB is diagnostic-only otherwise | Supported by design; scandoubler sync/geometry and physical connector capture remain open |
+| HDMI framebuffer/scaler | MiSTer HDMI framebuffer/scaler | 640x480 indexed 8bpp, progressive, 60 Hz; core palette upload | `VGA_SCALER=1`, `FB_EN=1` only after an atomic frame and palette commit | Physical acceptance required; target capture and timing receipt required |
+| Direct RGB | Native direct-video RGB path | 640x480 8-bit RGB, progressive, 60 Hz | Gameplay requires framework direct-video mode with scaler disabled; diagnostics use the native pattern only when selected | Implemented by design; best-effort and explicitly untested in this acceptance scope |
+| Analog/scandoubler | VGA RGB/YPbPr path with forced scandoubler | 640x480 active geometry, doubled to a progressive 31 kHz mode | Framework scaler consumes the indexed framebuffer when enabled; direct RGB is diagnostic-only otherwise | Implemented by design; best-effort and explicitly untested in this acceptance scope |
 
-The matrix does not inherit HDMI evidence for the other rows. Each row must
-record the MiSTer configuration bits (`direct_video`, `cfg[12]`, `cfg[2]`,
-`forced_scandoubler`), the connector, sync polarity and the exact candidate
-before it can be promoted. An unavailable connector or missing capture device
-is a blocking row disposition, not an implicit pass.
+The physical acceptance scope requires the HDMI framebuffer/scaler row. Direct
+RGB and analog/scandoubler remain implementation rows with an explicit
+`best_effort_untested` disposition; their absence from the physical capture is
+authorized only when the closure artifact records that status and rationale.
+The matrix does not inherit HDMI evidence for either row, and no untested row
+may be recorded as pass. If a later run promotes one of them, it must record
+the MiSTer configuration bits (`direct_video`, `cfg[12]`, `cfg[2]`,
+`forced_scandoubler`), connector, sync polarity and exact candidate.
 
 The framework mux in `sys/sys_top.v` remains an external acceptance boundary.
 `vga_fb` is `cfg[12] | VGA_SCALER`, `vga_scaler` is `cfg[2] | VGA_SCALER`, and
@@ -93,8 +96,11 @@ framework I2C, audio and multiplexed IO. Those require interface-specific review
 this result does not establish complete external-interface timing qualification.
 The receiver requirements come from the [ADV7513 Rev. B datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/adv7513.pdf).
 
-Hardware acceptance remains open: load the verified RBF on the actual MiSTer,
-check all four borders and pixel geometry on HDMI and applicable 31 kHz analog
-output, check RGB order/ramp precision, and confirm stable sync through OSD mode
-changes and reset. Record the RBF hash, MiSTer configuration, display path and
-observed timing. This pattern is not Diablo gameplay or ARM/FPGA performance proof.
+HDMI hardware acceptance remains open: load the verified RBF on the actual
+standard MiSTer, check all four borders and pixel geometry, check RGB order/ramp
+precision, and confirm stable sync through OSD mode changes and reset. Record
+the RBF hash, MiSTer configuration, HDMI display path and observed timing. The
+Direct RGB and analog/scandoubler rows remain explicitly untested best-effort
+support under this scope; their implementation and framework source/mux checks
+remain documented above. This pattern is not Diablo gameplay or ARM/FPGA
+performance proof.

@@ -49,6 +49,25 @@
       "Direct RGB: 640x480 native 8-bit RGB, progressive, 60 Hz, gameplay source only when framework scaler is disabled",
       "Analog/scandoubler: 640x480 active geometry, forced-scandoubler 31 kHz progressive, RGB/YPbPr connector path"
     ],
+    "physical_output": {
+      "required_modes": [
+        "HDMI framebuffer/scaler"
+      ],
+      "untested_modes": [
+        {
+          "id": "Direct RGB",
+          "status": "untested",
+          "disposition": "best_effort_untested",
+          "rationale": "Implementation is retained, but this standard-MiSTer acceptance scope supplies no direct-video capture."
+        },
+        {
+          "id": "Analog/scandoubler",
+          "status": "untested",
+          "disposition": "best_effort_untested",
+          "rationale": "Implementation is retained, but this standard-MiSTer acceptance scope supplies no CRT/analog capture."
+        }
+      ]
+    },
     "control_devices": [
       "keyboard",
       "mouse",
