@@ -29,6 +29,7 @@ SCRIPT_DIRECTORY = Path(__file__).resolve().parent
 if str(SCRIPT_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIRECTORY))
 import candidate_manifest
+import deployment_manifest
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -240,18 +241,28 @@ def require_candidate_artifact(root: Path, manifest: dict[str, Any], path: Path,
     raise LaunchError(f"{label} is not a hash-verified artifact in the candidate manifest: {resolved}")
 
 
-def preflight(root: Path, candidate_path: Path, rbf: Path, engine: Path, campaign: str, data_root: Path,
-              save_root: Path, runtime_root: Path, boot_id_file: Path, physical_base: str, lock_file: Path) -> LaunchContext:
+def preflight(root: Path, candidate_path: Path | None, rbf: Path, engine: Path, campaign: str, data_root: Path,
+              save_root: Path, runtime_root: Path, boot_id_file: Path, physical_base: str, lock_file: Path,
+              deployment_path: Path | None = None, board_profile: str | None = None) -> LaunchContext:
     root = root.resolve()
-    manifest_path = candidate_path if candidate_path.is_absolute() else root / candidate_path
+    selected_path = deployment_path if deployment_path is not None else candidate_path
+    if selected_path is None:
+        raise LaunchError("a candidate or deployment manifest is required")
+    manifest_path = selected_path if selected_path.is_absolute() else root / selected_path
     if manifest_path.is_symlink():
-        raise LaunchError(f"candidate manifest must not be a symlink: {manifest_path}")
-    symlink = candidate_manifest.first_symlink_component(manifest_path.parent, root)
-    if symlink is not None:
-        raise LaunchError(f"candidate manifest path must not contain a symlink: {symlink}")
-    problems = candidate_manifest.verify_manifest(root, manifest_path)
+        label = "deployment manifest" if deployment_path is not None else "candidate manifest"
+        raise LaunchError(f"{label} must not be a symlink: {manifest_path}")
+    if deployment_path is not None:
+        symlink = deployment_manifest.verify_manifest(root, manifest_path, board_profile)
+        problems = symlink
+    else:
+        symlink = candidate_manifest.first_symlink_component(manifest_path.parent, root)
+        if symlink is not None:
+            raise LaunchError(f"candidate manifest path must not contain a symlink: {symlink}")
+        problems = candidate_manifest.verify_manifest(root, manifest_path)
     if problems:
-        raise LaunchError("candidate manifest verification failed: " + "; ".join(problems))
+        label = "deployment manifest" if deployment_path is not None else "candidate manifest"
+        raise LaunchError(f"{label} verification failed: " + "; ".join(problems))
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     candidate_id = manifest.get("candidate_id")
     source_id = manifest.get("source_id")
@@ -496,7 +507,10 @@ def run(context: LaunchContext, loader_command: list[str], runtime_command: list
 def arguments(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT)
-    parser.add_argument("--candidate-manifest", type=Path, required=True)
+    manifests = parser.add_mutually_exclusive_group(required=True)
+    manifests.add_argument("--candidate-manifest", type=Path)
+    manifests.add_argument("--deployment-manifest", type=Path)
+    parser.add_argument("--board-profile")
     parser.add_argument("--rbf", type=Path, required=True)
     parser.add_argument("--engine", type=Path, required=True)
     parser.add_argument("--campaign", choices=tuple(CAMPAIGN_FILES), required=True)
@@ -519,7 +533,8 @@ def main(argv: list[str] | None = None) -> int:
     args = arguments(argv)
     try:
         context = preflight(args.root, args.candidate_manifest, args.rbf, args.engine, args.campaign, args.data_root,
-                            args.save_root, args.runtime_root, args.boot_id_file, args.physical_base, args.lock_file)
+                            args.save_root, args.runtime_root, args.boot_id_file, args.physical_base, args.lock_file,
+                            args.deployment_manifest, args.board_profile)
         if args.loader_command is None and args.runtime_command is None:
             result = {"schema": SCHEMA, "status": "preflight-pass", "candidate_id": context.candidate_id,
                       "source_id": context.source_id, "campaign": context.campaign, "rbf": str(context.rbf),
