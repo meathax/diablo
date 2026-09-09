@@ -147,7 +147,7 @@ public:
 	          && adapter.profile_.command_build_max_ns_ == 25,
 	      "valid command-build timestamp was not recorded");
 
-	// High-resolution cap: no early submissions or catch-up bursts after hitches.
+	// Fixed deadlines absorb oversleep; whole-frame hitches discard backlog.
 	adapter.ResetFramePacing();
 	Check(!adapter.frame_pacing_.Initialized() && adapter.frame_pacing_.Last() == 0,
 	      "frame pacing reset retained state");
@@ -173,7 +173,7 @@ public:
 	    [&](std::uint64_t ticks) { clock += ticks + 2000000; });
 	const auto overslept = clock;
 	pacer.PaceWithClock(1000000000ULL, now, sleep);
-	Check(clock - overslept == 16666667, "oversleep caused a short frame");
+	Check(clock - overslept == 14666667, "oversleep drifted the next deadline");
 	unsigned early_wakes = 0;
 	const auto before_early = clock;
 	pacer.PaceWithClock(1000000000ULL, now, [&](std::uint64_t ticks) {
@@ -181,6 +181,32 @@ public:
 	});
 	Check(early_wakes == 2 && clock - before_early == 16666667,
 	      "early wake bypassed the frame cap");
+
+	// Follow a scanout cadence that differs from 60 Hz, including counter wrap.
+	pacer.Reset();
+	clock = 0;
+	std::uint32_t scanout = 0xFFFFFFFFU;
+	auto feedback = [&] { return scanout; };
+	pacer.PaceWithFeedbackClock(1000000000ULL, now, sleep, feedback);
+	clock = 5000000;
+	pacer.PaceWithFeedbackClock(1000000000ULL, now, [&](std::uint64_t ticks) {
+		clock += ticks;
+		if (clock >= 17000000) scanout = 0;
+	}, feedback);
+	Check(clock == 17000000, "presentation feedback did not track scanout/wrap");
+	clock = 22000000;
+	pacer.PaceWithFeedbackClock(1000000000ULL, now, [&](std::uint64_t ticks) {
+		clock += ticks;
+		if (clock >= 34000000) scanout = 1;
+	}, feedback);
+	Check(clock == 34000000, "software clock competed with scanout feedback");
+	const auto stalled = clock;
+	pacer.PaceWithFeedbackClock(1000000000ULL, now, sleep, feedback);
+	Check(clock - stalled == 25000000, "stalled FPGA blocked recovery beyond timeout");
+	pacer.Reset();
+	const auto reset_time = clock;
+	pacer.PaceWithFeedbackClock(1000000000ULL, now, sleep, feedback);
+	Check(clock == reset_time, "reset retained an old presentation sequence");
 
 	// A core reload resets every ABI frame slot. Adapter-side command shadows
 	// Timeout and late completion belong to one wait sample. Invalid clock

@@ -109,10 +109,18 @@ public:
 		                            || std::strcmp(value, "true") == 0);
 	}
 
-	// All gameplay uses the transport's 60 Hz clock, not dummy-display timing.
+	// Follow FPGA presentation feedback; retain a bounded clock fallback.
 	void PaceFrame()
 	{
-		frame_pacing_.Pace();
+		auto runtime = Runtime();
+		if (runtime == nullptr) {
+			frame_pacing_.Pace();
+			return;
+		}
+		frame_pacing_.PaceWithFeedback([runtime] {
+			return std::atomic_ref<std::uint32_t>(runtime->session().view().header().display_epoch)
+			    .load(std::memory_order_acquire);
+		});
 	}
 
 	// Copies the engine's native indexed surface into one ABI frame slot. The

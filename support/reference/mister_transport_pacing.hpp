@@ -8,8 +8,8 @@
 
 namespace diablo::mister::sdl {
 
-// Sleep on a high-resolution clock. Rebase on actual wake-up so slow frames
-// never cause catch-up bursts into the FPGA queue. Independent of SDL display Hz.
+// Fixed deadlines absorb scheduler oversleep. FPGA retirement feedback takes
+// precedence when available, so delivery follows scanout rather than a second clock.
 class FramePacer {
 public:
 	void Pace()
@@ -29,24 +29,67 @@ public:
 		if (frequency == 0)
 			return;
 		auto current = now();
+		const auto period = (frequency + 59) / 60;
 		if (initialized_) {
-			const auto period = (frequency + 59) / 60;
-			while (current - last_ < period) {
-				sleep(period - (current - last_));
+			while (current < deadline_) {
+				sleep(deadline_ - current);
 				current = now();
 			}
 		}
+		// A whole missed period is a hitch: discard backlog, never burst to catch up.
+		deadline_ = !initialized_ || current - deadline_ >= period
+		    ? current + period : deadline_ + period;
 		initialized_ = true;
 		last_ = current;
 	}
 
-	void Reset() { initialized_ = false; last_ = 0; }
+	template <typename Feedback>
+	void PaceWithFeedback(Feedback feedback)
+	{
+		const auto frequency = SDL_GetPerformanceFrequency();
+		PaceWithFeedbackClock(frequency, [] { return SDL_GetPerformanceCounter(); },
+		    [frequency](std::uint64_t ticks) {
+			    std::this_thread::sleep_for(std::chrono::nanoseconds(
+			        (ticks * 1000000000ULL + frequency - 1) / frequency));
+		    }, feedback);
+	}
+
+	// Feedback is the FPGA's retirement sequence, not an assumed display rate.
+	// A stalled/reloaded core must never block input or lifecycle recovery indefinitely.
+	template <typename Clock, typename Sleep, typename Feedback>
+	void PaceWithFeedbackClock(std::uint64_t frequency, Clock now, Sleep sleep, Feedback feedback)
+	{
+		if (frequency == 0)
+			return;
+		const auto start = now();
+		auto sequence = feedback();
+		if (feedback_initialized_) {
+			while (sequence == feedback_sequence_ && now() - start < frequency / 40) {
+				sleep((frequency + 4999) / 5000); // 200 us; yield CPU to audio.
+				sequence = feedback();
+			}
+		}
+		if (!feedback_initialized_ || sequence == feedback_sequence_)
+			PaceWithClock(frequency, now, sleep);
+		else {
+			last_ = now();
+			deadline_ = last_ + (frequency + 59) / 60;
+			initialized_ = true;
+		}
+		feedback_sequence_ = sequence;
+		feedback_initialized_ = true;
+	}
+
+	void Reset() { initialized_ = false; last_ = 0; deadline_ = 0; feedback_initialized_ = false; feedback_sequence_ = 0; }
 	[[nodiscard]] bool Initialized() const { return initialized_; }
 	[[nodiscard]] std::uint64_t Last() const { return last_; }
 
 private:
 	bool initialized_ = false;
 	std::uint64_t last_ = 0;
+	std::uint64_t deadline_ = 0;
+	bool feedback_initialized_ = false;
+	std::uint32_t feedback_sequence_ = 0;
 };
 
 } // namespace diablo::mister::sdl
