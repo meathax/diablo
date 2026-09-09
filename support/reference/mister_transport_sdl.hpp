@@ -3,7 +3,9 @@
 #include "mister_command_scene.hpp"
 #include "mister_command_transport.hpp"
 #include "mister_transport_config.hpp"
+#include "mister_transport_lifecycle.hpp"
 #include "mister_transport_input.hpp"
+#include "mister_transport_pacing.hpp"
 #include "mister_pcm_resampler.hpp"
 #include "mister_command_frame_state.hpp"
 #include "mister_transport_profiler.hpp"
@@ -55,24 +57,20 @@ public:
 		// The target entry point performs early admission before SDL starts. Keep
 		// dx_init's existing call safe and idempotent rather than reopening the
 		// mapping/resetting state after a successful admission.
-		if (Runtime()) return true;
-		auto opened = transport::TransportRuntime::Open();
+		auto opened = lifecycle_.Initialize();
 		if (!opened.has_value()) {
 			std::fprintf(stderr, "Diablo MiSTer transport open failed: error=%u\n",
 			             static_cast<unsigned>(opened.error()));
 			return false;
 		}
-		RequestAudioReset();
-		runtime_transition_generation_.store(0, std::memory_order_release);
-		runtime_.store(std::make_shared<transport::TransportRuntime>(std::move(*opened)),
-		               std::memory_order_release);
-		startup_waited_ = false;
 		pcm_publish_notices_ = 0;
 		pcm_drop_notices_ = 0;
 		pcm_published_frames_ = 0;
 		pcm_dropped_frames_ = 0;
 		pcm_health_valid_ = false;
 		pcm_health_poll_count_ = 0;
+		pcm_underflow_commit_sequence_ = 0;
+		transport_fault_logged_ = false;
 		profile_.ResetProfile();
 		ResetCommandSceneState();
 		input_.ResetInputState();
@@ -87,10 +85,8 @@ public:
 		// Audio callbacks take their own shared runtime reference. Releasing the
 		// adapter's reference first prevents any new callback from mapping/writing
 		// the old epoch while an in-flight callback keeps its mapping alive.
-		(void)runtime_.exchange(std::shared_ptr<transport::TransportRuntime> {},
-		                        std::memory_order_acq_rel);
-		startup_waited_ = false;
-		RequestAudioReset();
+		lifecycle_.Shutdown();
+		pcm_underflow_commit_sequence_ = 0;
 		ResetCommandSceneState();
 		input_.ResetInputState();
 		ResetFramePacing();
@@ -112,29 +108,10 @@ public:
 		                            || std::strcmp(value, "true") == 0);
 	}
 
-	// Timedemo mode intentionally disables DevilutionX's normal frame limiter.
-	// That is useful on a desktop, but it can flood the finite MiSTer frame ring
-	// and starve the target service path. The target launcher opts into this
-	// bounded 60 Hz deadline whenever --timedemo is requested.
+	// All gameplay uses the transport's 60 Hz clock, not dummy-display timing.
 	void PaceFrame()
 	{
-		const std::uint32_t now = SDL_GetTicks();
-		if (!frame_pacing_initialized_ || FramePacingIsLate(now, frame_pacing_deadline_, 1000U)) {
-			frame_pacing_initialized_ = true;
-			frame_pacing_deadline_ = now;
-			frame_pacing_fraction_ = 0;
-		}
-		const std::uint32_t target = AdvanceFramePacingDeadline(
-			frame_pacing_deadline_, frame_pacing_fraction_);
-		if (static_cast<std::int32_t>(target - now) > 0)
-			SDL_Delay(target - now);
-		const std::uint32_t after = SDL_GetTicks();
-		if (FramePacingIsLate(after, target, 1000U)) {
-			frame_pacing_deadline_ = after;
-			frame_pacing_fraction_ = 0;
-		} else {
-			frame_pacing_deadline_ = target;
-		}
+		frame_pacing_.Pace();
 	}
 
 	// Copies the engine's native indexed surface into one ABI frame slot. The
@@ -151,6 +128,16 @@ public:
 		const auto fpga_state = std::atomic_ref<std::uint32_t>(
 			runtime->session().view().header().fpga_state).load(std::memory_order_acquire);
 		if (fpga_state == static_cast<std::uint32_t>(transport::ComponentState::Fault)) {
+			if (!transport_fault_logged_) {
+				const auto view = runtime->session().view();
+				const auto &header = view.header();
+				std::fprintf(stderr,
+				             "Diablo MiSTer transport FPGA fault: arm=%u fpga=%u "
+				             "code=%u detail=%u epoch=0x%08x\n",
+				             header.arm_state, header.fpga_state, header.fault_code,
+				             header.fault_detail, header.session_epoch);
+				transport_fault_logged_ = true;
+			}
 			if (!BeginRuntimeTransition()) {
 				// Gate recovery until every callback that entered its read-side
 				// critical section has exited. This is non-blocking on Present.
@@ -164,16 +151,15 @@ public:
 				return false;
 			}
 			std::fputs("Diablo MiSTer transport recovered after FPGA reset\n", stderr);
-			startup_waited_ = false;
-			RequestAudioReset();
+			lifecycle_.ResetStartupWait();
+			lifecycle_.RequestAudioReset();
 			input_.RecoverInputAfterDiscontinuity();
 			ResetCommandSceneState();
+		} else {
+			transport_fault_logged_ = false;
 		}
-		if (!startup_waited_) {
-			startup_waited_ = true;
-			if (!runtime->WaitForFpgaReady(1000))
+		if (!lifecycle_.WaitForFpgaReady(1000))
 				std::fputs("Diablo MiSTer transport FPGA startup wait expired\n", stderr);
-		}
 		PumpInput();
 		ObservePcmHealth(*runtime);
 		if (surface == nullptr || surface->pixels == nullptr || surface->format == nullptr
@@ -236,7 +222,7 @@ public:
 		}
 		static std::uint32_t backpressure_drops = 0;
 		if ((++backpressure_drops & 63U) == 1U)
-			std::fputs("Diablo MiSTer transport frame backpressure; using SDL pacing\n", stderr);
+			std::fputs("Diablo MiSTer transport frame backpressure; retaining 60 Hz pacing\n", stderr);
 		FlushProfiled();
 		profile_.RecordProfile(profile_start, false, saw_backpressure, ProfileOutcome::BackpressureDropped);
 		return false;
@@ -251,16 +237,16 @@ public:
 			return false;
 		if (!BeginAudioCallback()) return false;
 		struct CallbackFinished {
-			std::atomic<std::uint32_t> &count;
-			~CallbackFinished() { (void)count.fetch_sub(1U, std::memory_order_release); }
-		} callback_finished {audio_callbacks_inflight_};
+			TransportLifecycle &lifecycle;
+			~CallbackFinished() { lifecycle.EndAudioCallback(); }
+		} callback_finished {lifecycle_};
 		auto runtime = Runtime();
 		if (!runtime) return false;
 		if (std::atomic_ref<std::uint32_t>(runtime->session().view().header().fpga_state)
 		        .load(std::memory_order_acquire)
 		    == static_cast<std::uint32_t>(transport::ComponentState::Fault))
 			return false;
-		const std::uint32_t audio_generation = audio_reset_generation_.load(std::memory_order_acquire);
+		const std::uint32_t audio_generation = lifecycle_.AudioResetGeneration();
 		const auto converted = resampler_.Convert(bytes, byte_count, audio_generation);
 		if (!converted) return false;
 		const auto pcm_bytes = *converted;
@@ -291,47 +277,35 @@ private:
 #endif
 	[[nodiscard]] std::shared_ptr<transport::TransportRuntime> Runtime() const
 	{
-		return runtime_.load(std::memory_order_acquire);
+		return lifecycle_.Runtime();
 	}
 
 	void ResetCommandSceneState() { command_frames_.Reset(); }
 
-	static bool FramePacingIsLate(std::uint32_t now, std::uint32_t deadline,
-	                             std::uint32_t threshold_ms)
-	{
-		return static_cast<std::int32_t>(now - deadline)
-		       > static_cast<std::int32_t>(threshold_ms);
-	}
-
-	static std::uint32_t AdvanceFramePacingDeadline(std::uint32_t deadline,
-	                                                std::uint32_t &fraction)
-	{
-		// 60 Hz is 1000/60 ms. Carry the 40 ms remainder so the integer tick
-		// schedule averages exactly 16 2/3 ms rather than truncating to 16 ms.
-		fraction += 40U;
-		std::uint32_t step = 16U;
-		if (fraction >= 60U) {
-			fraction -= 60U;
-			++step;
-		}
-		return deadline + step;
-	}
-
 	void ResetFramePacing()
 	{
-		frame_pacing_initialized_ = false;
-		frame_pacing_deadline_ = 0;
-		frame_pacing_fraction_ = 0;
-	}
-
-	void RequestAudioReset()
-	{
-		(void)audio_reset_generation_.fetch_add(1U, std::memory_order_release);
+		frame_pacing_.Reset();
 	}
 
 	void ObservePcmHealth(const transport::TransportRuntime &runtime)
 	{
 		if ((++pcm_health_poll_count_ & 63U) != 0U) return;
+		const auto underflow = runtime.session().view().ReadPcmUnderflowSnapshot(
+		    runtime.session().epoch());
+		if (AudioTraceEnabled() && underflow.has_value()
+		    && underflow->commit_sequence != pcm_underflow_commit_sequence_) {
+			std::fprintf(stderr,
+			             "Diablo MiSTer PCM underflow: event=%u epoch=0x%08x "
+			             "producer=%u fetch=%u consumer=%u underrun=%u queue=%u "
+			             "state=0x%08x arbiter=0x%016llx resync=%u commit=%u\n",
+			             underflow->event_cycle, underflow->session_epoch,
+			             underflow->producer_sequence, underflow->fetch_sequence,
+			             underflow->published_consumer, underflow->underrun_count,
+			             underflow->queue_depth, underflow->player_state,
+			             static_cast<unsigned long long>(underflow->arbiter_diagnostic),
+			             underflow->resync_count, underflow->commit_sequence);
+			pcm_underflow_commit_sequence_ = underflow->commit_sequence;
+		}
 		auto health = runtime.session().ReadPcmHealth();
 		if (!health.has_value()) return;
 		if (pcm_health_valid_
@@ -361,33 +335,22 @@ private:
 	// increment of the reader count.
 	[[nodiscard]] bool BeginAudioCallback()
 	{
-		const std::uint32_t generation = runtime_transition_generation_.load(std::memory_order_acquire);
-		if ((generation & 1U) != 0) return false;
-		audio_callbacks_inflight_.fetch_add(1U, std::memory_order_acq_rel);
-		if (runtime_transition_generation_.load(std::memory_order_acquire) == generation)
-			return true;
-		(void)audio_callbacks_inflight_.fetch_sub(1U, std::memory_order_release);
-		return false;
+		return lifecycle_.BeginAudioCallback();
 	}
 
 	[[nodiscard]] bool BeginRuntimeTransition()
 	{
-		std::uint32_t generation = runtime_transition_generation_.load(std::memory_order_acquire);
-		while ((generation & 1U) == 0) {
-			if (runtime_transition_generation_.compare_exchange_weak(
-			        generation, generation + 1U, std::memory_order_acq_rel,
-			        std::memory_order_acquire)) {
-				if (audio_callbacks_inflight_.load(std::memory_order_acquire) == 0) return true;
-				EndRuntimeTransition();
-				return false;
-			}
-		}
-		return false;
+		return lifecycle_.BeginRuntimeTransition();
 	}
 
 	void EndRuntimeTransition()
 	{
-		(void)runtime_transition_generation_.fetch_add(1U, std::memory_order_release);
+		lifecycle_.EndRuntimeTransition();
+	}
+
+	void RequestAudioReset()
+	{
+		lifecycle_.RequestAudioReset();
 	}
 
 	// The command path is deliberately opt-in while the full-game scene mix is
@@ -478,11 +441,7 @@ private:
 	Adapter() = default;
 	// Atomic shared ownership lets an in-flight audio callback finish against the
 	// old mapping while Shutdown detaches it from all future callbacks.
-	std::atomic<std::shared_ptr<transport::TransportRuntime>> runtime_;
-	std::atomic<std::uint32_t> audio_reset_generation_ {1};
-	bool startup_waited_ = false;
-	std::atomic<std::uint32_t> audio_callbacks_inflight_ {0};
-	std::atomic<std::uint32_t> runtime_transition_generation_ {0};
+	TransportLifecycle lifecycle_;
 	std::atomic<std::uint32_t> pcm_publish_notices_ {0};
 	std::atomic<std::uint32_t> pcm_drop_notices_ {0};
 	std::atomic<std::uint64_t> pcm_published_frames_ {0};
@@ -490,9 +449,9 @@ private:
 	transport::PcmHealth pcm_health_ {};
 	bool pcm_health_valid_ = false;
 	std::uint32_t pcm_health_poll_count_ = 0;
-	bool frame_pacing_initialized_ = false;
-	std::uint32_t frame_pacing_deadline_ = 0;
-	std::uint32_t frame_pacing_fraction_ = 0;
+	std::uint32_t pcm_underflow_commit_sequence_ = 0;
+	bool transport_fault_logged_ = false;
+	FramePacer frame_pacing_;
 
 
 

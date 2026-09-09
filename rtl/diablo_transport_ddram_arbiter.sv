@@ -110,6 +110,11 @@ module diablo_transport_ddram_arbiter #(
     wire force_command_service = session_valid && command_pending
                               && command_wait_grants >= MAX_HIGH_PRIORITY_GRANTS;
     wire [2:0] priority_owner = !session_valid ? OWNER_CONTROL
+                               // Sparse session checks must not depend on an idle
+                               // audio/frame/command port. A missed epoch change
+                               // otherwise leaves the old session attached forever.
+                               // Existing read and burst locks still take precedence.
+                               : (control_rd || control_we) ? OWNER_CONTROL
                                : force_command_service ? OWNER_COMMAND
                                // Audio has priority after attachment. It is buffered and
                                // acknowledged in batches, so this protects its deadline

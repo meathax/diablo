@@ -246,7 +246,7 @@ def _core_process_matches(rbf: Path) -> bool:
             argv = [value.decode("utf-8", "replace") for value in values if value]
         except OSError:
             continue
-        if argv and Path(argv[0]).name == "MiSTer" and expected in argv[1:]:
+        if argv and Path(argv[0]).name.casefold() in {"mister", "mister_build"} and expected in argv[1:]:
             return True
     return False
 
@@ -261,7 +261,7 @@ def _frontend_process_present() -> bool:
             argv = [value.decode("utf-8", "replace") for value in values if value]
         except OSError:
             continue
-        if argv and Path(argv[0]).name == "MiSTer":
+        if argv and Path(argv[0]).name.casefold() in {"mister", "mister_build"}:
             return True
     return False
 
@@ -384,7 +384,8 @@ def _engine_args(args: argparse.Namespace, package: Path, save_root: Path, confi
 
 
 def _force_frame_pacing(engine_args: list[str]) -> bool:
-	return any(str(value).casefold() == "--timedemo" for value in engine_args)
+    # The FPGA output is 60 Hz in normal gameplay as well as timedemos.
+    return True
 
 
 def _stop_engine(process: subprocess.Popen) -> int:

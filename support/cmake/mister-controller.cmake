@@ -6,7 +6,22 @@ if(NOT controller_original_sha STREQUAL "4433b8a94c556d251cd653aa69c44b76e1406b7
   message(FATAL_ERROR "Unexpected pinned options.cpp for Xbox controller preset")
 endif()
 file(READ "${controller_source}" controller_content)
-set(controller_content "#include \"mister_controller_bindings.hpp\"\n${controller_content}")
+string(REPLACE "#define DEFAULT_PER_PIXEL_LIGHTING true"
+  "#define DEFAULT_PER_PIXEL_LIGHTING false" controller_content "${controller_content}")
+set(controller_content "#include \"mister_controller_bindings.hpp\"\n#include \"mister_transport_config.hpp\"\n#include <cstdlib>\n${controller_content}")
+# SDL hardware cursors are not part of the framebuffer transported to FPGA.
+# Keep native-window behavior unchanged; force the engine's software cursor
+# for transport even when a saved INI requests a hardware cursor.
+set(controller_cursor_hook "bool HardwareCursorSupported()\n{")
+string(FIND "${controller_content}" "${controller_cursor_hook}" controller_cursor_site)
+if(controller_cursor_site LESS 0)
+  message(FATAL_ERROR "MiSTer software cursor capability hook is missing")
+endif()
+string(REPLACE "${controller_cursor_hook}" [[bool HardwareCursorSupported()
+{
+	if (::diablo::mister::transport::ParseTransportRequest(std::getenv("DIABLO_MISTER_TRANSPORT"))
+	    == ::diablo::mister::transport::TransportRequest::Enabled)
+		return false;]] controller_content "${controller_content}")
 set(controller_registration [[actions.emplace_front(key, name, description, defaultInput, std::move(actionPressed), std::move(actionReleased), std::move(enable), index);]])
 string(FIND "${controller_content}" "${controller_registration}" controller_site)
 if(controller_site LESS 0)

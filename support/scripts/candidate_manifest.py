@@ -34,11 +34,15 @@ SOURCE_INPUTS = (
     "support/scripts",
     "support/qualification",
     "support/tests",
+    "support/licenses",
+    "scripts",
+    "distribution/game_files.json",
+    "distribution/diablo_mister.json",
     "LICENSE.fpga",
 )
 DIRECTORY_INPUTS = frozenset({
     "rtl", "support/cmake", "support/patches", "support/reference", "support/scripts", "support/qualification",
-    "support/tests", "support/transport", "sys",
+    "support/tests", "support/transport", "support/licenses", "sys", "scripts",
 })
 IGNORED_SOURCE_DIRECTORY_PARTS = frozenset({"__pycache__", ".pytest_cache"})
 IGNORED_SOURCE_SUFFIXES = frozenset({".pyc", ".pyo"})
@@ -126,7 +130,14 @@ def git_identity(root: Path, source_paths: Iterable[str]) -> dict[str, object]:
         # Preserve the leading porcelain status column.  ``str.strip()`` would
         # remove the first line's leading worktree-space and make a manifest
         # fail verification whenever that file sorts first in git status.
-        return result.stdout.rstrip("\\r\\n") if result.returncode == 0 else None
+        if result.returncode != 0:
+            return None
+        value = result.stdout
+        if value.endswith("\\r\\n"):
+            value = value[:-4]
+        elif value.endswith("\\n") or value.endswith("\\r"):
+            value = value[:-2]
+        return value.rstrip("\r\n")
 
     tracked_paths = set(source_paths)
     status = run("status", "--porcelain=v1", "--untracked-files=all")

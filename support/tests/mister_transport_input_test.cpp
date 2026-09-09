@@ -67,6 +67,7 @@ InputEvent Joystick(std::uint32_t buttons)
 	return event;
 }
 
+
 int FilterKeyboardDown(void *, SDL_Event *event)
 {
 	return event->type != SDL_KEYDOWN;
@@ -93,16 +94,16 @@ public:
 	SDL_SetMainReady();
 	if (SDL_Init(SDL_INIT_EVENTS) != 0) Fail(SDL_GetError());
 	auto &adapter = Adapter::Instance();
-	adapter.runtime_transition_generation_.store(0, std::memory_order_release);
-	adapter.audio_callbacks_inflight_.store(0, std::memory_order_release);
+	adapter.lifecycle_.runtime_transition_generation_.store(0, std::memory_order_release);
+	adapter.lifecycle_.audio_callbacks_inflight_.store(0, std::memory_order_release);
 	Check(adapter.BeginAudioCallback(), "audio callback did not acquire a stable runtime generation");
 	Check(!adapter.BeginRuntimeTransition(), "recovery entered while an audio callback held the runtime");
-	adapter.audio_callbacks_inflight_.fetch_sub(1, std::memory_order_release);
+	adapter.lifecycle_.audio_callbacks_inflight_.fetch_sub(1, std::memory_order_release);
 	Check(adapter.BeginRuntimeTransition(), "recovery did not acquire the transition gate");
 	Check(!adapter.BeginAudioCallback(), "audio callback entered during a runtime transition");
 	adapter.EndRuntimeTransition();
 	Check(adapter.BeginAudioCallback(), "audio callback did not resume after a runtime transition");
-	adapter.audio_callbacks_inflight_.fetch_sub(1, std::memory_order_release);
+	adapter.lifecycle_.audio_callbacks_inflight_.fetch_sub(1, std::memory_order_release);
 
 	// ResetProfile owns every profiler counter, including command metrics. The
 	// command-build helper must reject unavailable/backward timestamps without
@@ -146,30 +147,40 @@ public:
 	          && adapter.profile_.command_build_max_ns_ == 25,
 	      "valid command-build timestamp was not recorded");
 
-	// Integer SDL ticks must retain the fractional 60 Hz period, with wrap-safe
-	// lateness and a deterministic reset point for excessive lag.
+	// High-resolution cap: no early submissions or catch-up bursts after hitches.
 	adapter.ResetFramePacing();
-	Check(!adapter.frame_pacing_initialized_ && adapter.frame_pacing_deadline_ == 0
-	          && adapter.frame_pacing_fraction_ == 0,
+	Check(!adapter.frame_pacing_.Initialized() && adapter.frame_pacing_.Last() == 0,
 	      "frame pacing reset retained state");
-	std::uint32_t deadline = 1000;
-	std::uint32_t fraction = 0;
+	std::uint64_t clock = 0;
+	auto now = [&] { return clock; };
+	auto sleep = [&](std::uint64_t ticks) { clock += ticks; };
+	auto &pacer = adapter.frame_pacing_;
+	pacer.PaceWithClock(1000000000ULL, now, sleep);
+	Check(clock == 0, "first frame added unnecessary latency");
 	for (unsigned frame = 0; frame < 60; ++frame) {
-		const auto next = Adapter::AdvanceFramePacingDeadline(deadline, fraction);
-		const auto delta = next - deadline;
-		Check(delta == 16U || delta == 17U, "frame pacing used an invalid tick step");
-		deadline = next;
+		const auto previous = clock;
+		clock += 4000000; // Work counts towards the period, not an extra delay.
+		pacer.PaceWithClock(1000000000ULL, now, sleep);
+		Check(clock - previous == 16666667, "frame did not respect 60 Hz cap");
 	}
-	Check(deadline == 2000 && fraction == 0,
-	      "frame pacing did not average exactly 60 Hz");
-	std::uint32_t wrap_fraction = 0;
-	const auto wrapped = Adapter::AdvanceFramePacingDeadline(
-	    std::numeric_limits<std::uint32_t>::max() - 4U, wrap_fraction);
-	Check(wrapped == 11U, "frame pacing deadline did not wrap safely");
-	Check(!Adapter::FramePacingIsLate(5U, std::numeric_limits<std::uint32_t>::max() - 5U, 1000U)
-	          && !Adapter::FramePacingIsLate(1500U, 500U, 1000U)
-	          && Adapter::FramePacingIsLate(1501U, 500U, 1000U),
-	      "frame pacing lateness was not wrap-safe or bounded");
+	clock += 100000000;
+	const auto hitch = clock;
+	pacer.PaceWithClock(1000000000ULL, now, sleep);
+	Check(clock == hitch, "slow frame added another sleep");
+	pacer.PaceWithClock(1000000000ULL, now, sleep);
+	Check(clock == hitch + 16666667, "hitch caused a catch-up burst");
+	pacer.PaceWithClock(1000000000ULL, now,
+	    [&](std::uint64_t ticks) { clock += ticks + 2000000; });
+	const auto overslept = clock;
+	pacer.PaceWithClock(1000000000ULL, now, sleep);
+	Check(clock - overslept == 16666667, "oversleep caused a short frame");
+	unsigned early_wakes = 0;
+	const auto before_early = clock;
+	pacer.PaceWithClock(1000000000ULL, now, [&](std::uint64_t ticks) {
+		clock += early_wakes++ == 0 ? ticks / 2 : ticks;
+	});
+	Check(early_wakes == 2 && clock - before_early == 16666667,
+	      "early wake bypassed the frame cap");
 
 	// A core reload resets every ABI frame slot. Adapter-side command shadows
 	// Timeout and late completion belong to one wait sample. Invalid clock
@@ -290,21 +301,20 @@ public:
 	          && adapter.input_.keyboard_delivered_[SDL_SCANCODE_W],
 	      "filtered key was not recovered by bounded reconciliation");
 
-	// A physical keyboard and controller can hold the same engine key. Releasing
-	// one source must not prematurely release the shared delivered key.
+	// Controller buttons must not impersonate or retain physical keyboard keys.
 	adapter.input_.ResetInputState();
 	ClearEvents();
 	adapter.input_.PushKeyboard(Keyboard(0x11, true)); // left Alt
-	adapter.input_.PushJoystick(Joystick(1U << 4));    // maps to left Alt too
+	adapter.input_.PushJoystick(Joystick(1U << 4));    // controller A, not left Alt
 	ClearEvents();
 	adapter.input_.PushKeyboard(Keyboard(0x11, false));
-	Check(adapter.input_.KeyWanted(SDL_SCANCODE_LALT), "controller state did not retain shared left Alt");
-	events = Events();
-	Check(events.empty(), "shared keyboard/controller key was released too early");
-	adapter.input_.PushJoystick(Joystick(0));
+	Check(!adapter.input_.KeyWanted(SDL_SCANCODE_LALT), "controller retained physical left Alt");
 	events = Events();
 	Check(events.size() == 1 && events[0].type == SDL_KEYUP,
-	      "shared key stayed delivered after every source released it");
+	      "physical Alt release was masked by controller A");
+	adapter.input_.PushJoystick(Joystick(0));
+	events = Events();
+	Check(events.empty(), "controller release emitted a keyboard event");
 
 	// Text is emitted only while SDL has text input active, using the aggregate
 	// physical modifier state. Controller modifiers do not affect typed text.
@@ -312,6 +322,7 @@ public:
 	ClearEvents();
 	SDL_StartTextInput();
 	adapter.input_.PushKeyboard(Keyboard(0x12, true)); // left Shift
+	Check((SDL_GetModState() & KMOD_LSHIFT) != 0, "physical Shift missing from polled SDL modifiers");
 	adapter.input_.PushKeyboard(Keyboard(0x1c, true)); // A
 	events = Events();
 	Check(events.size() == 3 && events[0].type == SDL_KEYDOWN && events[1].type == SDL_KEYDOWN

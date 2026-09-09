@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import json
 import hashlib
+import os
+import subprocess
 from pathlib import Path
 import tempfile
 import unittest
 from unittest import mock
 
-from support.scripts import diablo_launch, mister_launcher, package_release
+from support.scripts import deploy_package, diablo_launch, mister_launcher, package_release
 
 
 class PackageReleaseTest(unittest.TestCase):
@@ -40,8 +42,8 @@ class PackageReleaseTest(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
-    def create(self) -> Path:
-        output = self.root / "package"
+    def create(self, name: str = "package") -> Path:
+        output = self.root / name
         with mock.patch.object(package_release.candidate_manifest, "verify_manifest", return_value=[]):
             result = package_release.create_package(
                 self.root,
@@ -61,11 +63,104 @@ class PackageReleaseTest(unittest.TestCase):
         self.assertEqual("a" * 64, mister_launcher.verify_package(package)["candidate_id"])
         self.assertEqual(
             {"devilutionx", "Diablo.rbf", "transport_abi.hex", "diablo_launcher.py", "deployment.json",
-             "package-manifest.json", "NOTICE.txt", "SETUP.md", "assets"},
+             "package-manifest.json", "NOTICE.txt", "SETUP.md", "Diablo.sh", "Hellfire.sh",
+             "LICENSE.fpga", "LICENSE.engine.md", "licenses", "assets"},
             {path.name for path in package.iterdir()},
         )
         self.assertIn("licensed Diablo and", (package / "NOTICE.txt").read_text(encoding="utf-8"))
         self.assertIn("update is interrupted", (package / "SETUP.md").read_text(encoding="utf-8"))
+        for name, source in package_release.PACKAGE_LICENSE_SOURCES.items():
+            self.assertEqual(source.read_bytes(), (package / name).read_bytes())
+        for source in package_release.THIRD_PARTY_NOTICES.rglob("*"):
+            if source.is_file():
+                self.assertEqual(source.read_bytes(),
+                                 (package / "licenses" / source.relative_to(package_release.THIRD_PARTY_NOTICES)).read_bytes())
+
+    def run_menu(self, package: Path, campaign: str, target: Path, arguments: tuple[str, ...] = ()) -> list[str]:
+        entry = package / ("Diablo.sh" if campaign == "diablo" else "Hellfire.sh")
+        text = entry.read_text(encoding="utf-8")
+        code = text.split("<<'DIABLO_MENU_PY'\n", 1)[1].rsplit("DIABLO_MENU_PY", 1)[0]
+        with mock.patch.dict(os.environ, {"DIABLO_INSTALL_ROOT": str(target)}, clear=True), \
+                mock.patch("sys.argv", ["diablo-menu", *arguments]), mock.patch("os.execv") as execute:
+            exec(compile(code, str(entry), "exec"), {})
+        return execute.call_args.args[1]
+
+    def test_menu_entries_resolve_active_install_and_both_campaigns(self) -> None:
+        package = self.create()
+        target = self.root / "target with spaces"
+        state = deploy_package.install_package(package, target, "de10-nano-test")
+        for campaign in ("diablo", "hellfire"):
+            command = self.run_menu(package, campaign, target)
+            self.assertEqual(str(target / state["active_release"] / "diablo_launcher.py"), command[1])
+            self.assertEqual(campaign, command[command.index("--campaign") + 1])
+            self.assertEqual(str(target / "games/Diablo"), command[command.index("--data-root") + 1])
+            self.assertEqual(str(target / "saves/Diablo"), command[command.index("--save-root") + 1])
+            self.assertEqual(str(target / "config/Diablo"), command[command.index("--config-root") + 1])
+        self.assertEqual(["--duration", "30"], self.run_menu(package, "diablo", target, ("--duration", "30"))[-2:])
+
+    def test_menu_rejects_missing_activation_and_changed_launcher(self) -> None:
+        package = self.create()
+        target = self.root / "target"
+        with self.assertRaises(SystemExit):
+            self.run_menu(package, "diablo", target)
+        state = deploy_package.install_package(package, target, "de10-nano-test")
+        (target / state["active_release"] / "diablo_launcher.py").write_text("changed", encoding="utf-8")
+        with self.assertRaises(SystemExit):
+            self.run_menu(package, "diablo", target)
+
+    @unittest.skipUnless(os.name == "posix", "target menu requires POSIX exec process replacement")
+    def test_menu_bootstrap_executes_verified_launcher(self) -> None:
+        launcher = self.root / "source/launcher.py"
+        launcher.write_bytes(b"import json, sys\nprint(json.dumps(sys.argv))\n")
+        candidate = json.loads(self.candidate.read_text(encoding="utf-8"))
+        for record in candidate["artifacts"]:
+            if record["path"] == "source/launcher.py":
+                record["sha256"] = hashlib.sha256(launcher.read_bytes()).hexdigest()
+        self.candidate.write_text(json.dumps(candidate), encoding="utf-8")
+        package = self.create()
+        target = self.root / "target with spaces"
+        state = deploy_package.install_package(package, target, "de10-nano-test")
+        result = subprocess.run(["sh", str(package / "Hellfire.sh"), "--duration", "1"],
+                                env={**os.environ, "DIABLO_INSTALL_ROOT": str(target)},
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(0, result.returncode, result.stderr)
+        command = json.loads(result.stdout)
+        self.assertEqual(str(target / state["active_release"] / "diablo_launcher.py"), command[0])
+        self.assertEqual("hellfire", command[command.index("--campaign") + 1])
+        self.assertEqual(["--duration", "1"], command[-2:])
+
+    def test_existing_menu_copy_follows_update_and_rollback(self) -> None:
+        package = self.create()
+        target = self.root / "target"
+        first = deploy_package.install_package(package, target, "de10-nano-test")
+        candidate = json.loads(self.candidate.read_text(encoding="utf-8"))
+        candidate["candidate_id"] = "c" * 64
+        self.candidate.write_text(json.dumps(candidate), encoding="utf-8")
+        updated = self.create("updated")
+        second = deploy_package.install_package(updated, target, "de10-nano-test")
+        self.assertNotEqual(first["active_release"], second["active_release"])
+        self.assertEqual(str(target / second["active_release"] / "diablo_launcher.py"),
+                         self.run_menu(package, "diablo", target)[1])
+        deploy_package.rollback_installation(target, "de10-nano-test")
+        self.assertEqual(str(target / first["active_release"] / "diablo_launcher.py"),
+                         self.run_menu(package, "diablo", target)[1])
+
+    def test_changed_dependency_notice_is_rejected(self) -> None:
+        package = self.create()
+        notice = next(path for path in (package / "licenses").rglob("*") if path.is_file())
+        notice.write_bytes(notice.read_bytes() + b"changed")
+        self.assertTrue(package_release.verify_package(package))
+        with self.assertRaises(mister_launcher.LaunchError):
+            mister_launcher.verify_package(package)
+
+    def test_menu_rejects_release_path_escape(self) -> None:
+        package = self.create()
+        target = self.root / "target"
+        state = deploy_package.install_package(package, target, "de10-nano-test")
+        state["active_release"] = "../outside"
+        (target / deploy_package.STATE_FILENAME).write_text(json.dumps(state), encoding="utf-8")
+        with self.assertRaises(SystemExit):
+            self.run_menu(package, "diablo", target)
 
     def test_clean_package_supports_launcher_preflight(self) -> None:
         package = self.create()
@@ -94,7 +189,8 @@ class PackageReleaseTest(unittest.TestCase):
 
     def test_timedemo_requests_bounded_target_frame_pacing(self) -> None:
         self.assertTrue(mister_launcher._force_frame_pacing(["--spawn", "--timedemo"]))
-        self.assertFalse(mister_launcher._force_frame_pacing(["--spawn", "--demo", "0"]))
+        self.assertTrue(mister_launcher._force_frame_pacing(["--spawn", "--demo", "0"]))
+        self.assertTrue(mister_launcher._force_frame_pacing([]))
 
     def test_mutation_and_private_file_are_rejected(self) -> None:
         package = self.create()

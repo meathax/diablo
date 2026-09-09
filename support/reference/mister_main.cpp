@@ -30,6 +30,13 @@ int main(int argc, char **argv)
 		std::fputs("Diablo MiSTer wrapper: requested transport was not admitted\n", stderr);
 		return EXIT_FAILURE;
 	}
+	if (request == ::diablo::mister::transport::TransportRequest::Enabled) {
+		// The dummy SDL window is not the physical display and need not have
+		// desktop keyboard focus. InputReconciler gates input using MiSTer's
+		// OSD focus events, including neutral output while the OSD is open.
+		SDL_SetHintWithPriority(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,
+		    "1", SDL_HINT_OVERRIDE);
+	}
 	const int result = devilution::DiabloMain(argc, argv);
 	// Normal engine cleanup is expected to do this first. Keep early engine
 	// exits from leaking a mapping acquired before DiabloMain initialized dx.

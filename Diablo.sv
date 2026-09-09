@@ -79,8 +79,6 @@ assign VIDEO_ARY = (!ar) ? 12'd3 : 12'd0;
 localparam CONF_STR = {
     "Diablo;;",
     "O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
-    "O[6],Video source,Gameplay,Diagnostics;",
-    "O[4:3],Test pattern,Color Bars,Pixels,Ramps;",
     "P1,Show controls;",
     "P1-,A: Attack/talk/lift/confirm;",
     "P1-,X: Cast/belt equip/hold drop;",
@@ -98,6 +96,7 @@ localparam CONF_STR = {
     "P1-,View map/Menu game/Guide OSD;",
     "T[0],Reset;",
     "R[0],Reset and close OSD;",
+    "J,A,B,X,Y,LB,RB,View,Menu,L3,R3,LT,RT;",
     "v,1;",
     "V,v",`BUILD_DATE
 };

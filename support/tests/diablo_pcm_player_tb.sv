@@ -1,6 +1,7 @@
 `timescale 1ns/1ps
 module diablo_pcm_player_tb;
   localparam [31:0] EPOCH = 32'hd1a61001;
+  localparam [31:0] NEW_EPOCH = 32'hd1a61002;
   localparam [28:0] BASE = 29'h07fc0000;
   localparam [28:0] PCM_BASE = BASE + 29'h001ce00;
 
@@ -44,6 +45,9 @@ module diablo_pcm_player_tb;
   reg [31:0] expected_queue_depth = 0;
   reg [31:0] expected_player_state = 0;
   reg [31:0] expected_resyncs = 0;
+  reg transition_request = 0;
+  reg transition_injected = 0;
+  reg saw_new_epoch_write = 0;
   integer snapshot_index;
 
   diablo_pcm_player #(
@@ -57,7 +61,7 @@ module diablo_pcm_player_tb;
       case (address)
         BASE + 10: read_word = {consumer_sequence, producer_sequence};
         BASE + 11: read_word = {32'd4, 32'd32768};
-        BASE + 13: read_word = {32'd0, EPOCH};
+        BASE + 13: read_word = {32'd0, session_epoch};
         PCM_BASE + 0: read_word = {16'h2001, 16'h1001, 16'h2000, 16'h1000};
         PCM_BASE + 1: read_word = {16'h2003, 16'h1003, 16'h2002, 16'h1002};
         PCM_BASE + 2: read_word = {16'h2005, 16'h1005, 16'h2004, 16'h1004};
@@ -72,7 +76,8 @@ module diablo_pcm_player_tb;
   always @(posedge clk) begin
     ddram_dout_ready <= 0;
     if (session_valid && dut.playback_started && dut.sample_tick
-        && dut.queue_depth == 0 && !dut.starvation_active) begin
+        && dut.queue_depth == 0 && dut.producer_has_samples
+        && !dut.starvation_active) begin
       starvation_edges = starvation_edges + 1;
       expected_event_cycle = dut.event_cycle;
       expected_epoch = dut.active_epoch;
@@ -95,6 +100,8 @@ module diablo_pcm_player_tb;
       read_pending <= 1;
     end
     if (ddram_we && !ddram_busy) begin
+      if (transition_injected && ddram_addr == BASE + 13 && ddram_din[31:0] === EPOCH)
+        $fatal(1, "PCM queue status wrote the stale epoch across a session transition");
       if (ddram_addr == BASE + 10 && ddram_be == 8'hf0) begin
         consumer_sequence <= ddram_din[63:32];
         saw_consumer_byte_enable <= 1;
@@ -103,8 +110,10 @@ module diablo_pcm_player_tb;
           $fatal(1, "PCM status counters were not published");
         saw_status_word <= 1;
       end else if (ddram_addr == BASE + 13 && ddram_be == 8'hff) begin
-        if (ddram_din[31:0] !== EPOCH)
+        if (ddram_din[31:0] !== session_epoch)
           $fatal(1, "PCM local queue status epoch was not preserved");
+        if (transition_injected && ddram_din[31:0] === NEW_EPOCH)
+          saw_new_epoch_write = 1;
       end else if (ddram_addr >= BASE + 53 && ddram_addr <= BASE + 58 && ddram_be == 8'hff) begin
         // Model the actual six-word reserved-tail memory by decoded address;
         // do not infer validity from the writer state or a sideband signal.
@@ -138,6 +147,16 @@ module diablo_pcm_player_tb;
     end
   end
 
+  always @(negedge clk) begin
+    if (transition_request && !transition_injected && ddram_we && !ddram_busy
+        && ddram_addr == BASE + 13) begin
+      // Change the ARM-published epoch while the queue-status write is
+      // pending. The FPGA must not commit the old epoch on the next edge.
+      session_epoch = NEW_EPOCH;
+      transition_injected = 1;
+    end
+  end
+
   initial begin
     for (snapshot_index = 0; snapshot_index < 6; snapshot_index = snapshot_index + 1)
       trace_words[snapshot_index] = 0;
@@ -149,6 +168,14 @@ module diablo_pcm_player_tb;
         || trace_words[5] != 0)
       $fatal(1, "healthy PCM playback did not leave the optional snapshot unavailable clear=%0d payload=%0d commits=%0d marker=%h",
              trace_clear_count, trace_payload_writes, trace_commit_count, trace_words[5]);
+    wait (dut.sample_tick && dut.queue_depth == 0);
+    repeat (2) @(posedge clk);
+    #1;
+    if (audio_l != 0 || audio_r != 0)
+      $fatal(1, "PCM stopped-producer interval did not output silence");
+    // Add frames only after the initial stream drains. This exercises active
+    // starvation while keeping producer silence a valid non-error interval.
+    producer_sequence <= 12;
     wait (underrun_count != 0);
     wait (trace_commit_count == 1);
     repeat (10) @(posedge clk);
@@ -156,14 +183,11 @@ module diablo_pcm_player_tb;
         || trace_commit_count != 1 || underrun_count < 2)
       $fatal(1, "PCM starvation event was not one bounded snapshot edges=%0d clear=%0d payload=%0d commits=%0d underruns=%0d",
              starvation_edges, trace_clear_count, trace_payload_writes, trace_commit_count, underrun_count);
-    @(posedge clk);
-    if (audio_l != 0 || audio_r != 0)
-      $fatal(1, "PCM underrun did not output silence");
-    producer_sequence <= 12;
     wait (observed == 12);
+    producer_sequence <= 16;
     wait (trace_commit_count == 2);
     @(posedge clk);
-    if (!ring_valid || consumer_sequence != 12 || !saw_consumer_byte_enable || !saw_status_word)
+    if (!ring_valid || consumer_sequence != 16 || !saw_consumer_byte_enable || !saw_status_word)
       $fatal(1, "PCM ring was not validated and acknowledged");
     if (underrun_count == 0 || resync_count != 0)
       $fatal(1, "PCM underrun/recovery counters incorrect underruns=%0d resyncs=%0d", underrun_count, resync_count);
@@ -171,6 +195,12 @@ module diablo_pcm_player_tb;
         || trace_commit_count != 2)
       $fatal(1, "PCM second starvation episode did not replace snapshot cleanly edges=%0d clear=%0d payload=%0d commits=%0d",
              starvation_edges, trace_clear_count, trace_payload_writes, trace_commit_count);
+    transition_request = 1;
+    producer_sequence <= 18;
+    wait (transition_injected);
+    repeat (30) @(posedge clk);
+    if (!saw_new_epoch_write)
+      $fatal(1, "PCM epoch rebind did not publish the new session epoch");
     // A hardware reset can see the same ARM epoch again. It must explicitly
     // clear the shared commit marker so an ARM reader reports unavailable until
     // another active starvation edge is captured.

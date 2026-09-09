@@ -83,8 +83,11 @@ class ControllerPresetTests(unittest.TestCase):
     def test_apply_replaces_conflicting_and_duplicate_padmapping_entries(self) -> None:
         self.write(
             b"[Game]\nQuick Cast=0\nAuto Refill Belt=0\nAuto Gold Pickup=0\n"
-            b"\n[Padmapping]\nPrimaryAction=B\nPrimaryAction=X\nMoveUp=Up\n"
-            b"MouseLeft=Select+Left\nLeftMouseClick2=Select+LB\n"
+            b"\n[Padmapping]\nPrimaryAction=B\nPrimaryAction=X\n"
+            b"MoveUp=Up\nMoveDown=Down\nMoveLeft=Left\nMoveRight=Right\n"
+            b"MouseUp=Select+Up\nMouseDown=Select+Down\n"
+            b"MouseLeft=Select+Left\nMouseRight=Select+Right\n"
+            b"LeftMouseClick2=Select+LB\n"
             b"PadHotspellMenu=Select\nPadMenuNavigator=Start\nToggleGameMenu2=Start+Select\n"
         )
 
@@ -93,8 +96,17 @@ class ControllerPresetTests(unittest.TestCase):
 
         self.assertTrue(result.check.complete)
         self.assertEqual(1, lines.count("PrimaryAction=A"))
-        self.assertIn("MoveUp=", lines)
-        self.assertIn("MouseLeft=", lines)
+        for mapping in (
+            "MoveUp",
+            "MoveDown",
+            "MoveLeft",
+            "MoveRight",
+            "MouseUp",
+            "MouseDown",
+            "MouseLeft",
+            "MouseRight",
+        ):
+            self.assertIn(f"{mapping}=", lines)
         self.assertIn("LeftMouseClick2=", lines)
         self.assertIn("PadHotspellMenu=", lines)
         self.assertIn("PadMenuNavigator=", lines)

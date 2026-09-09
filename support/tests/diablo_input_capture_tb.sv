@@ -106,6 +106,18 @@ module diablo_input_capture_tb;
         || ring[2][31:0] != 32'd1 || ring[2][63:32] != 0)
       $fatal(1, "keyboard event packing failed");
 
+    // Check both ninth-bit signs without toggling the packet-ready bit.
+    ps2_mouse = 0;
+    ps2_mouse[15:8] = 8'h80;
+    ps2_mouse[23:16] = 8'h80;
+    #1;
+    if (dut.mouse_dx != 32'd128 || dut.mouse_dy != 32'hffffff80)
+      $fatal(1, "positive PS2 ninth-bit motion decode failed");
+    ps2_mouse[4] = 1;
+    ps2_mouse[5] = 1;
+    #1;
+    if (dut.mouse_dx != 32'hffffff80 || dut.mouse_dy != 32'd128)
+      $fatal(1, "negative PS2 ninth-bit motion decode failed");
     ps2_mouse = 0;
     ps2_mouse[24] = 1'b1;
     ps2_mouse[2:0] = 3'b101;
@@ -114,7 +126,7 @@ module diablo_input_capture_tb;
     ps2_mouse_ext = 16'h0004;
     wait_producer(32'd2);
     if (ring[5][31:0] != 32'd2 || ring[5][63:32] != {21'd0, 3'b101, 8'h04}
-        || ring[6][31:0] != 32'hfffffffe || ring[6][63:32] != 32'd3)
+        || ring[6][31:0] != 32'd254 || ring[6][63:32] != 32'hfffffffd)
       $fatal(1, "mouse event packing failed");
 
     joystick_0 = 32'h00000081;

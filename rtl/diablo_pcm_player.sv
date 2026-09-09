@@ -73,6 +73,9 @@ module diablo_pcm_player #(
     localparam [4:0] TRACE_WORD3_REQUEST = 5'd16;
     localparam [4:0] TRACE_WORD4_REQUEST = 5'd17;
     localparam [4:0] TRACE_COMMIT_REQUEST = 5'd18;
+    // Publish the current ARM epoch before validating a newly attached PCM
+    // ring. This is the only write permitted while active_epoch is changing.
+    localparam [4:0] EPOCH_REBIND_REQUEST = 5'd19;
     localparam integer FIFO_ADDR_BITS = $clog2(FIFO_SAMPLES);
 
     reg [4:0] state = INACTIVE;
@@ -114,6 +117,10 @@ module diablo_pcm_player #(
 
     wire sample_tick = (sample_divider == SAMPLE_DIVISOR_LIMIT - 1);
     wire [31:0] available_samples = producer_sequence - fetch_sequence;
+    // An empty local FIFO with no ARM-produced frames is a normal stopped
+    // producer interval, not active playback starvation. Count only while
+    // the producer has frames waiting for the FPGA consumer.
+    wire producer_has_samples = (available_samples != 0);
     wire [31:0] unacknowledged_samples = fetch_sequence - published_consumer;
     wire sample_fetch_complete = (state == SAMPLE_WAIT) && ddram_dout_ready;
     wire sample_store_second = (state == SAMPLE_STORE_SECOND);
@@ -130,7 +137,15 @@ module diablo_pcm_player #(
 
     assign ddram_burstcnt = 8'd1;
     assign ddram_rd = (state == VERIFY_REQUEST) || (state == SAMPLE_REQUEST);
-    assign ddram_we = (state == ACK_REQUEST) || (state == STATUS_REQUEST)
+    // Do not commit FPGA-owned metadata from the previous epoch after the ARM
+    // publishes a new session. In particular, QUEUE_STATUS_REQUEST writes the
+    // shared PCM epoch/flags word; the epoch can change between fabric clocks.
+    // Normal writes are suppressed during that transition; the dedicated
+    // rebind write publishes the live epoch with zeroed local-queue flags.
+    assign ddram_we = session_valid
+                    && ((state == EPOCH_REBIND_REQUEST && session_epoch != 0)
+                     || ((active_epoch != 0) && (active_epoch == session_epoch)
+                     && ((state == ACK_REQUEST) || (state == STATUS_REQUEST)
                     || (state == QUEUE_STATUS_REQUEST)
                     || (state == TRACE_CLEAR_COMMIT_REQUEST)
                     || (state == TRACE_WORD0_REQUEST)
@@ -138,11 +153,12 @@ module diablo_pcm_player #(
                     || (state == TRACE_WORD2_REQUEST)
                     || (state == TRACE_WORD3_REQUEST)
                     || (state == TRACE_WORD4_REQUEST)
-                    || (state == TRACE_COMMIT_REQUEST);
+                    || (state == TRACE_COMMIT_REQUEST))));
     assign ddram_addr = (state == VERIFY_REQUEST)
                       ? ((verify_index == 0) ? PCM_CONTROL_WORD
                        : (verify_index == 1) ? PCM_LAYOUT_WORD : PCM_EPOCH_WORD)
-                       : (state == SAMPLE_REQUEST) ? pcm_data_address(fetch_sequence)
+                        : (state == EPOCH_REBIND_REQUEST) ? PCM_EPOCH_WORD
+                        : (state == SAMPLE_REQUEST) ? pcm_data_address(fetch_sequence)
                         : (state == STATUS_REQUEST) ? PCM_STATUS_WORD
                         : (state == QUEUE_STATUS_REQUEST) ? PCM_EPOCH_WORD
                         : (state == TRACE_WORD1_REQUEST) ? PCM_UNDERFLOW_SNAPSHOT_WORD + 1'b1
@@ -156,7 +172,9 @@ module diablo_pcm_player #(
     // The ARM owns the producer cursor in the low half of PCM_CONTROL_WORD.
     // PCM_STATUS_WORD is FPGA-owned and publishes underrun/resync counters as
     // {resync_count, underrun_count}; the ARM only reads this diagnostic word.
-    assign ddram_din = (state == STATUS_REQUEST)
+    assign ddram_din = (state == EPOCH_REBIND_REQUEST)
+                      ? {32'd0, session_epoch}
+                      : (state == STATUS_REQUEST)
                       ? {resync_count, underrun_count}
                       : (state == QUEUE_STATUS_REQUEST)
                       ? {{(32-$bits(queue_depth)){1'b0}}, queue_depth, active_epoch}
@@ -170,7 +188,7 @@ module diablo_pcm_player #(
                       : {fetch_sequence, 32'd0};
     // ARM owns producer_sequence in the low half. FPGA publishes only the
     // high consumer_sequence half, in bounded batches after local buffering.
-    assign ddram_be = (state == STATUS_REQUEST || state == QUEUE_STATUS_REQUEST
+    assign ddram_be = (state == EPOCH_REBIND_REQUEST || state == STATUS_REQUEST || state == QUEUE_STATUS_REQUEST
                     || state == TRACE_CLEAR_COMMIT_REQUEST || state == TRACE_WORD0_REQUEST
                     || state == TRACE_WORD1_REQUEST || state == TRACE_WORD2_REQUEST
                     || state == TRACE_WORD3_REQUEST || state == TRACE_WORD4_REQUEST
@@ -223,7 +241,7 @@ module diablo_pcm_player #(
             else sample_divider <= sample_divider + 1'b1;
 
             if (active_epoch != session_epoch) begin
-                state <= VERIFY_REQUEST;
+                state <= EPOCH_REBIND_REQUEST;
                 verify_index <= 0;
                 layout_valid <= 1'b0;
                 active_epoch <= session_epoch;
@@ -272,7 +290,8 @@ module diablo_pcm_player #(
                 end else if (sample_tick) begin
                     audio_l <= 0;
                     audio_r <= 0;
-                    if (playback_started) underrun_count <= underrun_count + 1'b1;
+                    if (playback_started && producer_has_samples)
+                        underrun_count <= underrun_count + 1'b1;
                 end
 
                 case ({fifo_push, playback_pop})
@@ -294,7 +313,8 @@ module diablo_pcm_player #(
                 // underrun_count remains a per-empty-output-tick counter. The
                 // event record is deliberately separate and latches only the
                 // first active starvation edge until playback starts again.
-                if (playback_started && sample_tick && queue_depth == 0 && !starvation_active) begin
+                if (playback_started && sample_tick && queue_depth == 0
+                    && producer_has_samples && !starvation_active) begin
                     starvation_active <= 1'b1;
                     trace_pending <= 1'b1;
                     trace_event_cycle <= event_cycle;
@@ -399,6 +419,12 @@ module diablo_pcm_player #(
                         else state <= FILL_CHECK;
                     end
                     SAMPLE_STORE_SECOND: state <= FILL_CHECK;
+                    EPOCH_REBIND_REQUEST: if (!ddram_busy) begin
+                        // This write uses the live ARM epoch, never the stale
+                        // active_epoch value that triggered the rebind.
+                        state <= VERIFY_REQUEST;
+                        verify_index <= 0;
+                    end
                     ACK_REQUEST: if (!ddram_busy) begin
                         published_consumer <= fetch_sequence;
                         status_to_verify <= 1'b0;

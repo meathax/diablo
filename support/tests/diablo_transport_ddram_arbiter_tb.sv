@@ -162,6 +162,30 @@ module diablo_transport_ddram_arbiter_tb;
     command_we = 0;
     command_burstcnt = 1;
 
+    // Session monitoring must progress even under continuous audio traffic.
+    // Otherwise a new ARM epoch can remain invisible to every FPGA client.
+    @(negedge clk);
+    audio_we = 1;
+    control_rd = 1;
+    #1;
+    if (!ddram_rd || ddram_addr != control_addr || control_busy || !audio_busy)
+      $fatal(1, "session monitor starved by continuous audio traffic");
+    @(posedge clk);
+    #1;
+    control_rd = 0;
+    if (ddram_we || !audio_busy)
+      $fatal(1, "audio interrupted session monitor read");
+    ddram_dout_ready = 1;
+    #1;
+    if (!control_dout_ready || audio_dout_ready)
+      $fatal(1, "session monitor response reached wrong client");
+    @(posedge clk);
+    #1;
+    ddram_dout_ready = 0;
+    if (!ddram_we || ddram_addr != audio_addr || audio_busy)
+      $fatal(1, "audio did not resume after session monitor response");
+    audio_we = 0;
+
     // A missing reply must fail closed.  A very late reply may only reach the
     // client that issued the timed-out read; no later transaction is issued.
     control_rd = 1;

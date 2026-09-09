@@ -72,14 +72,17 @@ def main() -> int:
                "-DDIABLO_MISTER_INPUT_TEST"]
     for include in includes:
         command += ["-I", str(include)]
-    executable = build / "mister_transport_input_test.exe"
-    command += [str(ROOT / "support" / "tests" / "mister_transport_input_test.cpp"), str(library)]
+    link_flags = [str(library)]
     if os.name == "nt":
-        command += ["-lsetupapi", "-lole32", "-loleaut32", "-limm32", "-lgdi32", "-lwinmm",
+        link_flags += ["-lsetupapi", "-lole32", "-loleaut32", "-limm32", "-lgdi32", "-lwinmm",
                     "-lversion", "-luser32"]
-    command += ["-o", str(executable)]
-    subprocess.run(command, cwd=ROOT, check=True)
-    subprocess.run([str(executable)], cwd=ROOT, check=True)
+    for name in ("mister_transport_input_test", "mister_gamepad_state_test",
+                 "mister_virtual_gamepad_test"):
+        executable = build / (name + ".exe")
+        compile_command = command + [str(ROOT / "support" / "tests" / (name + ".cpp"))]
+        compile_command += link_flags + ["-o", str(executable)]
+        subprocess.run(compile_command, cwd=ROOT, check=True)
+        subprocess.run([str(executable)], cwd=ROOT, check=True)
     print("transport SDL input regression passed")
     return 0
 

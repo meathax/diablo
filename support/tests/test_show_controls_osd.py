@@ -9,7 +9,22 @@ class ShowControlsOsdTest(unittest.TestCase):
         self.source = (self.root / "Diablo.sv").read_text(encoding="utf-8")
 
     def test_show_controls_is_a_single_gamepad_only_osd_page(self):
+        self.assertNotIn('"O[6],Video source,Gameplay,Diagnostics;"', self.source)
+        self.assertNotIn('"O[4:3],Test pattern,Color Bars,Pixels,Ramps;"', self.source)
+        self.assertNotIn("Mouse cursor", self.source)
         self.assertIn('"P1,Show controls;"', self.source)
+        self.assertEqual(
+            self.source.count('"J,A,B,X,Y,LB,RB,View,Menu,L3,R3,LT,RT;"'),
+            1,
+        )
+        self.assertLess(
+            self.source.index('"R[0],Reset and close OSD;"'),
+            self.source.index('"J,A,B,X,Y,LB,RB,View,Menu,L3,R3,LT,RT;"'),
+        )
+        self.assertLess(
+            self.source.index('"J,A,B,X,Y,LB,RB,View,Menu,L3,R3,LT,RT;"'),
+            self.source.index('"v,1;"'),
+        )
         lines = re.findall(r'"P1-,([^;]+);"', self.source)
         self.assertEqual(len(lines), 14)
         self.assertLessEqual(max(map(len, lines)), 28)

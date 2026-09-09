@@ -101,8 +101,12 @@ module diablo_input_capture #(
 
     wire [31:0] keyboard_code = {23'd0, ps2_key[8], ps2_key[7:0]};
     wire [31:0] mouse_code = {21'd0, ps2_mouse[2:0], ps2_mouse_ext[7:0]};
-    wire [31:0] mouse_dx = {{24{ps2_mouse[15]}}, ps2_mouse[15:8]};
-    wire [31:0] mouse_dy = {{24{ps2_mouse[23]}}, ps2_mouse[23:16]};
+    // PS/2 carries a ninth sign bit in the status byte. Payload bit 7 is
+    // magnitude data, so +128..255 must not become negative movement.
+    wire [31:0] mouse_dx = {{24{ps2_mouse[4]}}, ps2_mouse[15:8]};
+    // MiSTer's sender negates screen Y when constructing the PS/2 packet.
+    // Publish screen coordinates for the SDL consumer (positive is down).
+    wire [31:0] mouse_dy = -$signed({{24{ps2_mouse[5]}}, ps2_mouse[23:16]});
     wire [31:0] left_analog = {{16{joystick_l_analog_0[15]}}, joystick_l_analog_0};
     wire [31:0] right_analog = {{16{joystick_r_analog_0[15]}}, joystick_r_analog_0};
     wire [63:0] current_buttons = {30'd0, buttons, joystick_0};

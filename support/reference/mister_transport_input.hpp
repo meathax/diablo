@@ -2,6 +2,7 @@
 #pragma once
 
 #include "transport_abi.hpp"
+#include "mister_virtual_gamepad.hpp"
 #include <SDL.h>
 #include <algorithm>
 #include <array>
@@ -20,12 +21,6 @@ class InputReconciler {
  friend class InputAdapterTest;
 #endif
 private:
-	static constexpr std::array<SDL_Scancode, 16> kJoystickScancodes = {
-		SDL_SCANCODE_RIGHT, SDL_SCANCODE_LEFT, SDL_SCANCODE_DOWN, SDL_SCANCODE_UP,
-		SDL_SCANCODE_LALT, SDL_SCANCODE_LCTRL, SDL_SCANCODE_ESCAPE, SDL_SCANCODE_RETURN,
-		SDL_SCANCODE_LSHIFT, SDL_SCANCODE_SPACE, SDL_SCANCODE_TAB, SDL_SCANCODE_BACKSPACE,
-		SDL_SCANCODE_PAGEUP, SDL_SCANCODE_PAGEDOWN, SDL_SCANCODE_HOME, SDL_SCANCODE_END,
-	};
 
 	static SDL_Scancode Ps2Scancode(std::uint32_t code)
 	{
@@ -160,25 +155,13 @@ private:
 		return mask;
 	}
 
-	[[nodiscard]] bool JoystickWantsScancode(SDL_Scancode scancode) const
-	{
-		for (std::size_t index = 0; index < kJoystickScancodes.size(); ++index) {
-			const std::uint32_t bit = 1U << index;
-			if (kJoystickScancodes[index] == scancode
-			    && (joystick_desired_mask_ & bit) != 0
-			    && (joystick_repress_mask_ & bit) == 0)
-				return true;
-		}
-		return false;
-	}
 
 	[[nodiscard]] bool KeyWanted(SDL_Scancode scancode) const
 	{
 		if (!requested_focus_) return false;
 		const auto index = KeyIndex(scancode);
 		if (!index.has_value()) return false;
-		return (keyboard_desired_[*index] && !keyboard_repress_[*index])
-		    || JoystickWantsScancode(scancode);
+		return keyboard_desired_[*index] && !keyboard_repress_[*index];
 	}
 
 	[[nodiscard]] bool PhysicalKeyWanted(SDL_Scancode scancode) const
@@ -282,6 +265,13 @@ public:
 		}
 
 		const bool deliver_gameplay = requested_focus_ && delivered_focus_;
+		// SDL_PushEvent does not update SDL's polled keyboard modifiers.
+		// Mouse actions and text/menu handlers query SDL_GetModState directly.
+		SDL_SetModState(deliver_gameplay ? ModifierMask() : KMOD_NONE);
+		(void)gamepad_.Publish(deliver_gameplay
+		    ? DecodeGamepad(joystick_desired_mask_ & ~joystick_repress_mask_,
+		          joystick_left_, joystick_right_)
+		    : GamepadState {});
 		for (std::size_t index = 0; index < keyboard_delivered_.size() && budget != 0; ++index) {
 			const auto scancode = static_cast<SDL_Scancode>(index);
 			const bool target = deliver_gameplay && KeyWanted(scancode);
@@ -411,19 +401,10 @@ public:
 	void PushJoystick(const transport::InputEvent &input)
 	{
 		const std::uint32_t buttons = static_cast<std::uint32_t>(input.buttons);
-		std::uint32_t desired = buttons & 0xffffU;
-		const auto left = static_cast<std::uint16_t>(input.value0);
-		const auto right = static_cast<std::uint16_t>(input.value1);
-		const auto left_x = static_cast<std::int8_t>(left & 0xffU);
-		const auto left_y = static_cast<std::int8_t>((left >> 8U) & 0xffU);
-		const auto right_x = static_cast<std::int8_t>(right & 0xffU);
-		const auto right_y = static_cast<std::int8_t>((right >> 8U) & 0xffU);
-		if (left_x > 32 || right_x > 32) desired |= 1U << 0;
-		if (left_x < -32 || right_x < -32) desired |= 1U << 1;
-		if (left_y > 32 || right_y > 32) desired |= 1U << 2;
-		if (left_y < -32 || right_y < -32) desired |= 1U << 3;
-		joystick_desired_mask_ = desired;
-		joystick_repress_mask_ &= desired;
+		joystick_left_ = static_cast<std::uint16_t>(input.value0);
+		joystick_right_ = static_cast<std::uint16_t>(input.value1);
+		joystick_desired_mask_ = buttons & 0xffffU;
+		joystick_repress_mask_ &= joystick_desired_mask_;
 		ReconcileInputState();
 	}
 private:
@@ -447,6 +428,7 @@ private:
 public:
 	void RecoverInputAfterDiscontinuity()
 	{
+		joystick_left_ = joystick_right_ = 0;
 		keyboard_desired_.fill(false);
 		keyboard_repress_.fill(false);
 		joystick_desired_mask_ = 0;
@@ -462,6 +444,8 @@ private:
 public:
 	void ResetInputState()
 	{
+		gamepad_.Close();
+		joystick_left_ = joystick_right_ = 0;
 		keyboard_desired_.fill(false);
 		keyboard_repress_.fill(false);
 		text_pending_.fill(false);
@@ -475,6 +459,7 @@ public:
 		delivered_focus_ = true;
 		overflow_refocus_pending_ = false;
 		caps_lock_ = false;
+		SDL_SetModState(KMOD_NONE);
 		input_push_drops_ = 0;
 		input_push_filtered_ = 0;
 	}
@@ -507,6 +492,9 @@ private:
 	std::array<bool, SDL_NUM_SCANCODES> text_pending_ {};
 	std::array<bool, SDL_NUM_SCANCODES> keyboard_delivered_ {};
 	std::uint32_t joystick_desired_mask_ = 0;
+	std::uint16_t joystick_left_ = 0;
+	std::uint16_t joystick_right_ = 0;
+	VirtualGamepad gamepad_;
 	std::uint32_t joystick_repress_mask_ = 0;
 	std::uint32_t mouse_desired_buttons_ = 0;
 	std::uint32_t mouse_repress_mask_ = 0;

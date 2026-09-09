@@ -34,6 +34,12 @@ RUNTIME_ROLES = {"engine", "rbf", "abi", "launcher"}
 RUNTIME_ROLE_PATHS = {"engine": "devilutionx", "rbf": "Diablo.rbf",
                       "abi": "transport_abi.hex", "launcher": "diablo_launcher.py"}
 PACKAGE_DOCUMENTS = ("NOTICE.txt", "SETUP.md")
+MENU_FILES = ("Diablo.sh", "Hellfire.sh")
+PACKAGE_LICENSE_SOURCES = {
+    "LICENSE.fpga": PROJECT_ROOT / "LICENSE.fpga",
+    "LICENSE.engine.md": PROJECT_ROOT / "support/licenses/devilutionx-LICENSE.md",
+}
+THIRD_PARTY_NOTICES = PROJECT_ROOT / "support/licenses/third-party"
 TOP_LEVEL_FILES = set(RUNTIME_FILES) | {DEPLOYMENT_FILENAME, PACKAGE_FILENAME}
 TOP_LEVEL_FILES.update(PACKAGE_DOCUMENTS)
 PRIVATE_MARKERS = (".mpq", ".sav", ".sve", "private", "secret", "password", "token")
@@ -46,6 +52,14 @@ Hellfire data files, save games, private captures, credentials, and build trees.
 
 Supply legally obtained game data on the target according to SETUP.md. The
 package and its manifests are content-addressed; do not edit files in place.
+
+The FPGA license text is included as LICENSE.fpga. The engine's Sustainable Use
+License is included as LICENSE.engine.md, preserved from the locked DevilutionX
+revision 0ff3186238e7c2786c4d52c21ecce1cb83723ed9. These are separate components;
+the engine is not represented as GPL-licensed. Per-dependency notices and the
+distribution-composition review remain release requirements.
+Located dependency and compiler-runtime notices are preserved under licenses/;
+see licenses/INDEX.md for their provenance and remaining coverage limits.
 """
 
 SETUP_TEXT = """# Diablo MiSTer package setup
@@ -55,9 +69,15 @@ SETUP_TEXT = """# Diablo MiSTer package setup
 2. Supply your own legally obtained Diablo or Hellfire data directory. Licensed
    MPQ files and save/configuration data are deliberately outside this package.
 3. Verify `package-manifest.json` and `deployment.json` before activation.
-4. Use the project launcher/menu integration to select a campaign. The launcher
-   creates a campaign-specific writable save directory and refuses mismatched
-   core, ABI, board, or candidate identities.
+4. After transactional installation has created `/media/fat/.diablo-install.json`,
+   copy `Diablo.sh` and `Hellfire.sh` to `/media/fat/Scripts/`. Select either entry
+   from the MiSTer Scripts menu. They follow the active installation, including
+   updates and rollback, and run the package launcher with Python 3.
+   Default game data: `/media/fat/games/Diablo`; saves: `/media/fat/saves/Diablo`;
+   configuration: `/media/fat/config/Diablo`. The launcher separates campaigns.
+   For another layout, export DIABLO_INSTALL_ROOT, DIABLO_DATA_ROOT,
+   DIABLO_SAVE_ROOT or DIABLO_CONFIG_ROOT before invoking the script.
+   Keep MPQs outside managed releases. Python 3 must be available on PATH.
 5. Keep the previous package available until an update has completed a second
    launch and save/load smoke check. If an update is interrupted, leave the
    active release selected and retry from a fresh staging directory.
@@ -66,6 +86,54 @@ The package does not claim physical video, audio, input, gameplay, performance,
 or release acceptance by itself; those claims require the qualification receipts
 listed in the completion plan.
 """
+
+MENU_TEMPLATE = '''#!/bin/sh
+# MiSTer Scripts menu entry. Resolve the transactional activation on every run.
+exec python3 - "$@" <<'DIABLO_MENU_PY'
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import sys
+
+try:
+    root = Path(os.environ.get("DIABLO_INSTALL_ROOT", "/media/fat"))
+    state = json.loads((root / ".diablo-install.json").read_text(encoding="utf-8"))
+    candidate = state.get("active_candidate_id", "")
+    if state.get("schema") != "diablo-install-state-v1" or state.get("status") != "pass":
+        raise ValueError("no passing Diablo installation")
+    if not isinstance(candidate, str) or not re.fullmatch(r"[0-9a-f]{64}", candidate):
+        raise ValueError("invalid active candidate")
+    relative = ".diablo-releases/" + candidate
+    if state.get("active_release") != relative:
+        raise ValueError("invalid active release path")
+    package = root / relative
+    manifest_path = package / "package-manifest.json"
+    launcher = package / "diablo_launcher.py"
+    if any(path.is_symlink() for path in (root / ".diablo-releases", package, manifest_path, launcher)):
+        raise ValueError("active release must not use symlinks")
+    raw = manifest_path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != state.get("active_package_manifest_sha256"):
+        raise ValueError("active package manifest hash mismatch")
+    manifest = json.loads(raw)
+    if manifest.get("candidate_id") != candidate or manifest.get("status") != "pass":
+        raise ValueError("active package identity mismatch")
+    records = [item for item in manifest.get("files", []) if item.get("path") == "diablo_launcher.py"]
+    body = launcher.read_bytes()
+    if len(records) != 1 or records[0].get("sha256") != hashlib.sha256(body).hexdigest() or records[0].get("bytes") != len(body):
+        raise ValueError("active launcher hash mismatch")
+    command = [sys.executable, str(launcher), "--package-root", str(package),
+               "--campaign", "@CAMPAIGN@", "--data-root",
+               os.environ.get("DIABLO_DATA_ROOT", str(root / "games/Diablo")),
+               "--save-root", os.environ.get("DIABLO_SAVE_ROOT", str(root / "saves/Diablo")),
+               "--config-root", os.environ.get("DIABLO_CONFIG_ROOT", str(root / "config/Diablo"))]
+    os.execv(sys.executable, command + sys.argv[1:])
+except (OSError, ValueError, TypeError, AttributeError) as error:
+    print("Diablo menu: " + str(error), file=sys.stderr)
+    sys.exit(1)
+DIABLO_MENU_PY
+'''
 
 
 def sha256_file(path: Path) -> str:
@@ -196,6 +264,10 @@ def _package_file_records(root: Path) -> list[dict[str, object]]:
                                 else "deployment-manifest" if name == DEPLOYMENT_FILENAME
                                 else "release-document")
                for name in (*RUNTIME_FILES, DEPLOYMENT_FILENAME, *PACKAGE_DOCUMENTS)]
+    records.extend(_artifact_record(root, name, "menu-entry") for name in MENU_FILES if (root / name).is_file())
+    records.extend(_artifact_record(root, name, "license") for name in PACKAGE_LICENSE_SOURCES if (root / name).is_file())
+    records.extend(_artifact_record(root, path.relative_to(root).as_posix(), "dependency-notice")
+                   for path in sorted((root / "licenses").rglob("*")) if path.is_file())
     records.extend(_asset_records(root))
     return records
 
@@ -279,6 +351,16 @@ def create_package(root: Path, candidate_path: Path, artifacts: Iterable[tuple[s
         _copy_asset_tree(asset_source, temporary / "assets", candidate_hashes)
         (temporary / "NOTICE.txt").write_text(NOTICE_TEXT, encoding="utf-8")
         (temporary / "SETUP.md").write_text(SETUP_TEXT, encoding="utf-8")
+        for name, source in PACKAGE_LICENSE_SOURCES.items():
+            shutil.copyfile(source, temporary / name)
+        if (not THIRD_PARTY_NOTICES.is_dir() or THIRD_PARTY_NOTICES.is_symlink()
+                or any(path.is_symlink() for path in THIRD_PARTY_NOTICES.rglob("*"))):
+            raise ValueError("dependency notice sources must be a real directory without symlinks")
+        shutil.copytree(THIRD_PARTY_NOTICES, temporary / "licenses")
+        for name, campaign in zip(MENU_FILES, ("diablo", "hellfire")):
+            entry = temporary / name
+            entry.write_text(MENU_TEMPLATE.replace("@CAMPAIGN@", campaign), encoding="utf-8", newline="\n")
+            entry.chmod(0o755)
         abi_digest = sha256_file(temporary / target_names["abi"])
         deployment = deployment_manifest.make_manifest(
             temporary, str(candidate["candidate_id"]), str(candidate["source_id"]), abi_digest,
@@ -292,6 +374,9 @@ def create_package(root: Path, candidate_path: Path, artifacts: Iterable[tuple[s
         problems = verify_package(temporary, board_profile)
         if problems:
             raise RuntimeError("new package failed self-verification: " + "; ".join(problems))
+        drift = candidate_manifest.verify_manifest(root, candidate_path)
+        if drift:
+            raise RuntimeError("candidate changed during packaging: " + "; ".join(drift))
         temporary.rename(output)
     except Exception:
         shutil.rmtree(temporary, ignore_errors=True)
@@ -313,8 +398,16 @@ def verify_package(package: Path, expected_board_profile: str | None = None) -> 
         lowered = name.lower()
         if any(marker in lowered for marker in PRIVATE_MARKERS):
             problems.append(f"package contains private-data-looking file: {name}")
-    if any(path not in TOP_LEVEL_FILES and not path.startswith("assets/") for path in files):
-        unexpected = sorted(path for path in files if path not in TOP_LEVEL_FILES and not path.startswith("assets/"))
+    menu_paths = set(MENU_FILES) & set(files)
+    if menu_paths and menu_paths != set(MENU_FILES):
+        problems.append("package menu entries must include both campaigns")
+    license_paths = set(PACKAGE_LICENSE_SOURCES) & set(files)
+    if license_paths and license_paths != set(PACKAGE_LICENSE_SOURCES):
+        problems.append("package licenses must include FPGA and engine texts")
+    allowed_files = TOP_LEVEL_FILES | set(MENU_FILES) | set(PACKAGE_LICENSE_SOURCES)
+    notice_paths = {path for path in files if path.startswith("licenses/")}
+    if any(path not in allowed_files and not path.startswith(("assets/", "licenses/")) for path in files):
+        unexpected = sorted(path for path in files if path not in allowed_files and not path.startswith(("assets/", "licenses/")))
         problems.append("package contains unexpected files: " + ", ".join(unexpected))
     manifest_path = package / PACKAGE_FILENAME
     deployment_path = package / DEPLOYMENT_FILENAME
@@ -367,7 +460,7 @@ def verify_package(package: Path, expected_board_profile: str | None = None) -> 
                     problems.append(f"package file bytes/hash mismatch: {path}")
             except ValueError as error:
                 problems.append(str(error))
-        expected_paths = (set(TOP_LEVEL_FILES) - {PACKAGE_FILENAME}) | {path.relative_to(package).as_posix()
+        expected_paths = (set(TOP_LEVEL_FILES) - {PACKAGE_FILENAME}) | menu_paths | license_paths | notice_paths | {path.relative_to(package).as_posix()
                                                  for path in (package / "assets").rglob("*") if path.is_file()}
         if seen != expected_paths:
             problems.append("package manifest files do not cover exactly the runtime files and asset tree")
