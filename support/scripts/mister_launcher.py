@@ -424,6 +424,21 @@ def _wait_for_engine(process: subprocess.Popen, rbf: Path, duration: float) -> t
             pass
 
 
+def _pin_engine_to_cpu0() -> None:
+    """Run in the forked engine child, before exec and creation of audio threads.
+
+    The launcher is single-threaded. Do not change the parent or MiSTer's
+    affinity: its CPU-1 mask is otherwise inherited by the engine.
+    """
+    os.sched_setaffinity(0, {0})
+
+
+def _start_engine(command: list[str], **kwargs: Any) -> subprocess.Popen:
+    if not hasattr(os, "sched_setaffinity"):
+        raise LaunchError("the MiSTer engine requires Linux CPU affinity support")
+    return subprocess.Popen(command, preexec_fn=_pin_engine_to_cpu0, **kwargs)
+
+
 def launch(args: argparse.Namespace) -> dict[str, Any]:
     package = args.package_root.resolve()
     identity = verify_package(package)
@@ -474,7 +489,7 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
                     "DIABLO_MISTER_FORCE_FRAME_PACING": "1" if _force_frame_pacing(args.engine_arg) else "0"})
         command = _engine_args(args, package, save_root, config_root, log_path)
         with log_path.open("ab") as output:
-            process = subprocess.Popen(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,
+            process = _start_engine(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,
                                        start_new_session=True, pass_fds=(lock_handle.fileno(),))
             started = dt.datetime.now(dt.timezone.utc).isoformat()
             exit_code, timed_out, core_changed = _wait_for_engine(process, package / "Diablo.rbf", args.duration)
@@ -518,7 +533,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         result = launch(args)
-    except (LaunchError, OSError, ValueError) as error:
+    except (LaunchError, OSError, ValueError, subprocess.SubprocessError) as error:
         print(json.dumps({"status": "fail", "error": str(error)}, sort_keys=True))
         return 1
     print(json.dumps(result, sort_keys=True))

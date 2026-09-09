@@ -153,5 +153,45 @@ class EngineOwnershipTest(unittest.TestCase):
         matches.assert_not_called()
 
 
+
+@unittest.skipUnless(hasattr(os, "sched_getaffinity"), "requires Linux affinity")
+class EngineAffinityTest(unittest.TestCase):
+    def test_engine_and_new_thread_use_cpu0_without_changing_launcher(self):
+        original = os.sched_getaffinity(0)
+        if not {0, 1}.issubset(original):
+            self.skipTest("requires CPUs 0 and 1 for MiSTer inheritance regression")
+        code = (
+            "import os,threading\n"
+            "print(sorted(os.sched_getaffinity(0)), flush=True)\n"
+            "t=threading.Thread(target=lambda: print(sorted(os.sched_getaffinity(0)), flush=True))\n"
+            "t.start(); t.join()\n"
+        )
+        try:
+            os.sched_setaffinity(0, {1})
+            child = mister_launcher._start_engine(
+                [sys.executable, "-c", code], stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE, text=True, start_new_session=True)
+            try:
+                output, errors = child.communicate(timeout=5)
+            finally:
+                if child.poll() is None:
+                    child.kill()
+                    child.wait(timeout=5)
+            self.assertEqual(child.returncode, 0, errors)
+            self.assertEqual(output.splitlines(), ["[0]", "[0]"])
+            self.assertEqual(os.sched_getaffinity(0), {1})
+        finally:
+            os.sched_setaffinity(0, original)
+
+    def test_affinity_failure_does_not_run_engine_on_inherited_cpu(self):
+        with tempfile.TemporaryDirectory() as directory:
+            marker = Path(directory) / "unexpected-engine"
+            with mock.patch.object(mister_launcher.os, "sched_setaffinity",
+                                   side_effect=OSError("affinity unavailable")):
+                with self.assertRaises(subprocess.SubprocessError):
+                    mister_launcher._start_engine(
+                        [sys.executable, "-c", "from pathlib import Path; Path(__import__('sys').argv[1]).touch()", str(marker)])
+            self.assertFalse(marker.exists())
+
 if __name__ == "__main__":
     unittest.main()
