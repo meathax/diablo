@@ -1,0 +1,15 @@
+Candidate: 4a3b9ad2982f6b5834ecfe95a3c10669a2d30a947adf456ab992c731f22a320a
+Source: 5ec6e11b606c592ceaa2b26b65c8a92713e06ba73e8f65105462bd0b10cd4c73
+Target: MiSTer 192.168.0.69, DE10-nano, boot 27c4aa01-6c7f-491d-984d-6a7219ac5039 during the normal launch
+Package: _CodexDiabloCandidate29, read-only preflight pass
+Package manifest SHA256: 78bf049bdaba181aac8202be982babeefade48657dba8690b5732a8be3883a6f (37006 bytes)
+Deployment manifest SHA256: 4bdb0854de6ba8431ef6a5e983b8126a81f394da16347fd91b28e15615b6446b (33111 bytes)
+Launch command: /bin/python3 /media/fat/_CodexDiabloCandidate29/diablo_launcher.py --data-root /media/fat/tmp_esc/diablo-transport-assets --save-root /media/fat/tmp_esc/diablo-candidate29-save --config-root /media/fat/tmp_esc/diablo-candidate29-config --runtime-root /media/fat/tmp_esc/diablo-candidate29-runtime --duration 35
+Launcher result: status=pass, exit_code=0, timed_out=true (controlled duration termination)
+Launcher result SHA256: 9a46830903782c20ed7ab631b690e0073a7173c63442feb7235a6307190307dd (875 bytes)
+Engine log SHA256: 0abd537f14fe403129ecaceefca80b6400cf4239e85999c026893b7c94920706 (11252 bytes)
+Engine log observations: package assets path resolved to /media/fat/_CodexDiabloCandidate29/assets/; renderer created; transport PCM callbacks progressed; transport frame backpressure was reported and CPU pacing engaged; no missing ui_art/diablo.pal error occurred.
+Transport state observation: epoch=0x7aa71ca6 arm=1 fpga=1 fault=0 detail=0x00000000 display_epoch=0x00000615 last_frame=1557; frames 1556-1558 were present; PCM producer/consumer progressed.
+Screenshot SHA256: ba331a9dae85f6054d4e8dced038551fc7e48a6695b6571e1e592075a3286aa3 (5029 bytes); visual content was black at the observer resolution and is not physical video acceptance.
+Core identity observation: mister_status reported Core: Diablo, while mister_osd_info/mister_cfg_read reported AO486 (repo MiSTer-devel/ao486_MiSTer) and therefore core identity remains unaccepted.
+Scope: physical package/launcher/ARM transport smoke only; no video, audio, input, campaign, multiplayer, performance or release acceptance.

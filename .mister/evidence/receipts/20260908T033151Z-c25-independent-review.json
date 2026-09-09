@@ -1,0 +1,88 @@
+{
+  "schema": "diablo-c25-independent-review-v1",
+  "reviewed_utc": "2026-09-08T03:31:51Z",
+  "decision": "reject_validator_as_complete",
+  "patch_assessment": "pass",
+  "validator_assessment": "fail_acceptance_coverage",
+  "candidate_commit_scope": [
+    "Diablo.sdc",
+    "support/scripts/validate_c25_sdc.py"
+  ],
+  "source_hashes": {
+    "Diablo.sdc": {
+      "sha256": "0060d9010b1f72b9092161b3e716acfd47d1db32c4be58b9d2c700eda85838a3",
+      "bytes": 4250
+    },
+    "support/scripts/validate_c25_sdc.py": {
+      "sha256": "268023b564aa031e87344d759024f7af1f2abd06210080b057e9c8c22fd8692d",
+      "bytes": 24316
+    }
+  },
+  "patch_checks": {
+    "mclk_source": "Diablo.sv assigns HDMI_MCLK directly from clk_audio; sys_top instantiates sole pll_audio output as clk_audio; generated PLL output is 24.576000 MHz, 50% duty.",
+    "mclk_sdc": "HDMI_MCLK_FWD is guarded to one source pin, one source clock and one output port, divide_by 1, without -invert.",
+    "mclk_report": {
+      "before_period_ns": "40.682",
+      "after_period_ns": "40.682",
+      "after_waveform_ns": "0.000 20.341"
+    },
+    "exact_exception_membership": {
+      "led_to": ["LED[0]", "LED[2]", "LED[6]"],
+      "sdcd_from_to": ["SDCD_SPDIF"],
+      "analog_to": ["SDIO_CLK", "SDIO_CMD", "SDIO_DAT[0]", "SDIO_DAT[1]", "SDIO_DAT[2]", "SDIO_DAT[3]", "SD_SPI_CS"]
+    },
+    "wildcard_exception_audit": "No broad wildcard appears in the C25 false-path targets; the PLL hierarchy wildcard is collection-count guarded to one source.",
+    "rtl_alias_basis": "Diablo.sv assigns SD_SCK, SD_MOSI and SD_CS to Z; sys_top maps the permitted SDIO/SD_SPI_CS aliases accordingly."
+  },
+  "sta_evidence": {
+    "receipt": {
+      "path": ".mister/evidence/receipts/20260908T032026Z-b330abd83176-c25-sdc-trial.json",
+      "sha256": "a82a3b75562109970d873e9e0c2fe415f38be3509f2877926fb70fad74da6a16",
+      "status": "pass",
+      "snapshot_inputs_unchanged": true
+    },
+    "scope_before": {
+      "inputs": ["HDMI_I2C_SDA", "HDMI_TX_INT", "IO_SDA", "SDCD_SPDIF"],
+      "outputs": ["HDMI_I2C_SCL", "HDMI_I2C_SDA", "HDMI_I2S", "HDMI_LRCLK", "HDMI_MCLK", "HDMI_SCLK", "IO_SCL", "IO_SDA", "LED[0]", "LED[2]", "LED[6]", "SDCD_SPDIF", "SDIO_CLK", "SDIO_CMD", "SDIO_DAT[0]", "SDIO_DAT[1]", "SDIO_DAT[2]", "SDIO_DAT[3]", "SD_SPI_CS", "USER_IO[2]", "USER_IO[4]", "USER_IO[5]"]
+    },
+    "scope_after": {
+      "inputs": ["HDMI_I2C_SDA", "HDMI_TX_INT", "IO_SDA"],
+      "outputs": ["HDMI_I2C_SCL", "HDMI_I2C_SDA", "HDMI_I2S", "HDMI_LRCLK", "HDMI_SCLK", "IO_SCL", "IO_SDA", "USER_IO[2]", "USER_IO[4]", "USER_IO[5]"]
+    },
+    "worst_case_slack_before_after_ns": {
+      "setup": ["0.188", "0.188"],
+      "hold": ["0.094", "0.094"],
+      "recovery": ["3.362", "3.362"],
+      "removal": ["0.361", "0.361"],
+      "minimum_pulse": ["0.396", "0.396"]
+    },
+    "reports": {
+      "baseline_sta_sha256": "19b384cb4251c56b3bfd1391bece94cfc0fe15101a2755110d29b46b628116a0",
+      "after_sta_sha256": "0e7a7f064a5a9af3162af82825536b3d9677a6e1675dfa034936a0ccb8d13fd0",
+      "baseline_timing_corners_sha256": "beaa3278310d33f62a84187e5b729eb708749504d2078981f978ab193043d430",
+      "after_timing_corners_sha256": "d6bddb24bca841a30ab5dc08bad45c1e1e6a78d8ca5117cbf43952f912534f0f"
+    },
+    "source_manifest_current_mismatches": 0,
+    "unintended_c25_forbidden_names": []
+  },
+  "validator_finding": {
+    "severity": "blocking_for_acceptance",
+    "locations": [
+      "support/scripts/validate_c25_sdc.py:445-452",
+      "support/scripts/validate_c25_sdc.py:460-474",
+      "support/scripts/report_fpga_timing.tcl:23"
+    ],
+    "detail": "internal_timing_unchanged compares only baseline/after setup and hold summaries. The pass predicate never compares recovery, removal or minimum-pulse values and never requires any slack to be positive. report_fpga_timing.tcl calls report_timing without -hold, -recovery, -removal or a pulse-specific report, so timing_corners_unchanged is setup-only. The current full Diablo.sta.rpt baseline and trial reports independently show all five positive worst-case values above, but the validator can report pass if those values regress in a future trial."
+  },
+  "disposable_trial_audit": {
+    "result": "pass",
+    "basis": "run_dir is a fresh ROOT/.work/c25/runs/<timestamp-uuid> created with exist_ok=False; snapshot is copied into fitted-trial; Quartus subprocesses run with cwd=run_dir or cwd=trial; project output_directory is relative output_files; no rmtree/remove operation exists. The only unlink removes the temporary immutable-receipt link source."
+  },
+  "review_commands": [
+    "git diff -- Diablo.sdc",
+    "bounded source/RTL inspection of Diablo.sdc, validate_c25_sdc.py, Diablo.sv, sys/sys_top.v, sys/pll_audio/pll_audio_0002.v",
+    "receipt/report hash recomputation and exact before/after scope parsing",
+    "full STA worst-case setup/hold/recovery/removal/minimum-pulse comparison"
+  ],
+  "open": "Patch is suitable for the two-path scope after the validator adds explicit recovery/removal/minimum-pulse equality and positive-slack checks, or records an equivalent machine-checked full-STA summary."
+}

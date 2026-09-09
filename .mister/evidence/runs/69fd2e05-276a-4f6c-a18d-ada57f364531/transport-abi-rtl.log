@@ -1,0 +1,14 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE", "-std=c++23", "-Wall", "-Wextra", "-Werror", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\support\\reference", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\support\\tests\\transport_abi_test.cpp", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\.work\\build\\verification\\transport_abi_fixture.exe"]
+
+
+$ ["D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\.work\\build\\verification\\transport_abi_fixture.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\.work\\build\\transport-abi\\header.hex"]
+
+transport ABI host checks passed
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\rtl", "-s", "transport_abi_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\.work\\build\\verification\\transport-abi-rtl.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\support\\tests\\transport_abi_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\\.work\\build\\verification\\transport-abi-rtl.vvp"]
+
+transport ABI C++/RTL layout checks passed
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-69fd2e05-276a-4f6c-a18d-ada57f364531-c3cqt_x1\support\tests\transport_abi_tb.sv:53: $finish called at 0 (1ps)

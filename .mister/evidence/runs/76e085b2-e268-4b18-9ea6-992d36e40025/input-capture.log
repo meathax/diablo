@@ -1,0 +1,7 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-76e085b2-e268-4b18-9ea6-992d36e40025-sftvtr9u\\rtl", "-s", "diablo_input_capture_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-76e085b2-e268-4b18-9ea6-992d36e40025-sftvtr9u\\.work\\build\\verification\\input-capture.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-76e085b2-e268-4b18-9ea6-992d36e40025-sftvtr9u\\rtl\\diablo_input_capture.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-76e085b2-e268-4b18-9ea6-992d36e40025-sftvtr9u\\support\\tests\\diablo_input_capture_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-76e085b2-e268-4b18-9ea6-992d36e40025-sftvtr9u\\.work\\build\\verification\\input-capture.vvp"]
+
+input capture checks passed events=5 overflow=1 dropped=1
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-76e085b2-e268-4b18-9ea6-992d36e40025-sftvtr9u\support\tests\diablo_input_capture_tb.sv:178: $finish called at 1575000 (1ps)

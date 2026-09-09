@@ -1,0 +1,27 @@
+{
+  "schema": "diablo-target-retry-receipt-v1",
+  "status": "pass",
+  "generated_utc": "2026-09-09T06:48:39.967Z",
+  "candidate_id": "8a1c676a8dfdca3afae0ab22dc947b2596b6bb8d4e3ce235330d02eba6af5267",
+  "reboot_observed_after_initial_launch": true,
+  "active_state": {
+    "active_candidate_id": "8a1c676a8dfdca3afae0ab22dc947b2596b6bb8d4e3ce235330d02eba6af5267",
+    "active_package_manifest_sha256": "c98fd7a954d3ccf1f1ddc98bb9a755c785a1271ad338498b6dfaf1fc122e6fd1",
+    "active_release": ".diablo-releases/8a1c676a8dfdca3afae0ab22dc947b2596b6bb8d4e3ce235330d02eba6af5267",
+    "board_profile": "de10-nano-mister-pending",
+    "previous_candidate_id": "fa9585703ae01f1cd47130da3bb96009d6309d9997cf67da45db0779da4e866a",
+    "previous_release": ".diablo-releases/fa9585703ae01f1cd47130da3bb96009d6309d9997cf67da45db0779da4e866a",
+    "schema": "diablo-install-state-v1",
+    "status": "pass",
+    "user_data_policy": "existing data, saves, and configuration are preserved outside managed releases"
+  },
+  "processes": "914 /usr/bin/python3 /media/fat/.diablo-releases/8a1c676a8dfdca3afae0ab22dc947b2596b6bb8d4e3ce235330d02eba6af5267/diablo_launcher.py --package-root /media/fat/.diablo-releases/8a1c676a8dfdca3afae0ab22dc947b2596b6bb8d4e3ce235330d02eba6af5267 --campaign diablo --data-root /media/fat/games/Diablo --save-root /media/fat/saves/Diablo --config-root /media/fat/config/Diablo\n  918 /media/fat/MiSTer /media/fat/.diablo-releases/8a1c676a8dfdca3afae0ab22dc947b2596b6bb8d4e3ce235330d02eba6af5267/Diablo.rbf\n  920 /media/fat/.diablo-releases/8a1c676a8dfdca3afae0ab22dc947b2596b6bb8d4e3ce235330d02eba6af5267/devilutionx --diablo --data-dir /media/fat/games/Diablo --save-dir /media/fat/saves/Diablo --config-dir /media/fat/config/Diablo --lang en --verbose --log-to-file /tmp/diablo-8a1c676a8dfdca3a/engine.log -n",
+  "health_tail": "INFO: Opened game controller with mapping:\nDiablo MiSTer transport frame backpressure; using SDL pacing\nDiablo MiSTer transport frame backpressure; using SDL pacing\nDiablo MiSTer transport frame backpressure; using SDL pacing\nDiablo MiSTer transport frame backpressure; using SDL pacing\nDiablo MiSTer PCM health changed: queued=0 local_queue=6593 producer=1344155 consumer=1344155 underrun=6762 resync=0 callbacks=603 drops=0 frames=1344155 dropped_frames=0\nDiablo MiSTer PCM health changed: queued=0 local_queue=4458 producer=4569685 consumer=4569685 underrun=10311 resync=0 callbacks=2050 drops=0 frames=4569685 dropped_frames=0\nDiablo MiSTer PCM health changed: queued=0 local_queue=8239 producer=4774764 consumer=4774764 underrun=13472 resync=0 callbacks=2142 drops=0 frames=4774764 dropped_frames=0",
+  "data_root": "/media/fat/games/Diablo",
+  "campaign": "diablo",
+  "controller_mapping": "MiSTer Diablo Xbox-layout controller; leftx=a0,lefty=a1,rightx=a2,righty=a3",
+  "limitations": [
+    "Physical observer still required",
+    "Hellfire, save/relaunch, endurance, audio/performance acceptance remain open"
+  ]
+}\n

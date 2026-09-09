@@ -1,0 +1,108 @@
+{
+  "arm": {
+    "binary_sha256": "4ef9b4b1557174908809da0fee8c424a1a12e83b10caa45b11db0969925189e2",
+    "captures": [
+      {
+        "bytes": 308000,
+        "file": "frame-0.d8f",
+        "frame": 0,
+        "logic_ms": 0,
+        "sha256": "e6962ed4f78ad81303c47784170c5cdb561d0dcab89ca284747fe4c602bb2a78"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-128.d8f",
+        "frame": 128,
+        "logic_ms": 6400,
+        "sha256": "7b565d77bf9d539895e96365e255e1689585cd3374479fa9dd02b96ffd51d8fc"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-256.d8f",
+        "frame": 256,
+        "logic_ms": 12800,
+        "sha256": "3dc0e0700bbb97c1692cf5730f6a974d2dae877a72e3cb165a71652f77066ca3"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-384.d8f",
+        "frame": 384,
+        "logic_ms": 19200,
+        "sha256": "a2e614ffa50e851d58ecb463a344880e38ce293bf64d7206d8a281b5b3802724"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-512.d8f",
+        "frame": 512,
+        "logic_ms": 25600,
+        "sha256": "79968bb8094761d733fc41bb6bfd808e01733ed2039f9fa86e5ec243d347e2d0"
+      }
+    ],
+    "run": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\runtime\\arm-scenarios\\e6dcf2b2160a482987ad32928b0bbb5d\\run.json",
+    "run_sha256": "250cdfd11faedebb6b378093ae9a16534ec866e4b437b8ab9a6e51264495137d"
+  },
+  "candidate": {
+    "candidate_id": "95eaf3535aaf52d55b63f85b9bc566178c8e24b0d6f00d1e29d28a54021bcaf8",
+    "manifest": "D:\\Arcade\\AI\\aCORES\\Diablo\\.mister\\evidence\\candidates\\fpga-candidate-20260908-27-arm-clean.json",
+    "manifest_sha256": "e83b4d6a3142ab930419bf04caf9f273df4d628619010906e51e7f0fd16a0f13",
+    "source_id": "29e74b2685e333470ee383d40a977aa8b5a6da87a1a3d5106025890f1e9a42f4"
+  },
+  "comparison": {
+    "equal": true,
+    "frames_compared": 5,
+    "scope": "All supplied indexed frames and all RGB888 palette entries"
+  },
+  "errors": [],
+  "host": {
+    "captures": [
+      {
+        "bytes": 308000,
+        "file": "frame-0.d8f",
+        "frame": 0,
+        "logic_ms": 0,
+        "sha256": "e6962ed4f78ad81303c47784170c5cdb561d0dcab89ca284747fe4c602bb2a78"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-128.d8f",
+        "frame": 128,
+        "logic_ms": 6400,
+        "sha256": "7b565d77bf9d539895e96365e255e1689585cd3374479fa9dd02b96ffd51d8fc"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-256.d8f",
+        "frame": 256,
+        "logic_ms": 12800,
+        "sha256": "3dc0e0700bbb97c1692cf5730f6a974d2dae877a72e3cb165a71652f77066ca3"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-384.d8f",
+        "frame": 384,
+        "logic_ms": 19200,
+        "sha256": "a2e614ffa50e851d58ecb463a344880e38ce293bf64d7206d8a281b5b3802724"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-512.d8f",
+        "frame": 512,
+        "logic_ms": 25600,
+        "sha256": "79968bb8094761d733fc41bb6bfd808e01733ed2039f9fa86e5ec243d347e2d0"
+      }
+    ],
+    "executable_sha256": "d4429fe6788b3ab3785333ba79f77e99deb9f079dc28dac96095d447b80dfb7b",
+    "run": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\runtime\\scenarios\\75dcbb6036dd466bbc2c8d3c26436728\\run.json",
+    "run_sha256": "b2b52ab852694097c79161c794a67eda898db0a0ac05a288a25ae07cf2216fb3"
+  },
+  "run_id": "3039e91f-f262-4ffe-b0bd-4d3f11deb497",
+  "scenario": {
+    "campaign": "hellfire",
+    "demo_sha256": "e143884fc7d5fcdb03e1e5f9bbd93451870d9aa1dc793b567fb6390ff49430df",
+    "frames_compared": 5,
+    "name": "town-v1"
+  },
+  "schema": "diablo-scene-oracle-v1",
+  "scope": "Exact native640 host-reference versus ARM/QEMU indexed frame and RGB888 palette equality; no FPGA, physical HDMI, audio, input, FPS or full-campaign claim",
+  "status": "pass"
+}

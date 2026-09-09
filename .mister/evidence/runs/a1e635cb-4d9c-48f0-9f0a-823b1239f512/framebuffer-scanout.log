@@ -1,0 +1,7 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a1e635cb-4d9c-48f0-9f0a-823b1239f512-8j3y5zb6\\rtl", "-s", "diablo_framebuffer_scanout_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a1e635cb-4d9c-48f0-9f0a-823b1239f512-8j3y5zb6\\.work\\build\\verification\\framebuffer-scanout.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a1e635cb-4d9c-48f0-9f0a-823b1239f512-8j3y5zb6\\rtl\\diablo_framebuffer_scanout.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a1e635cb-4d9c-48f0-9f0a-823b1239f512-8j3y5zb6\\support\\tests\\diablo_framebuffer_scanout_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a1e635cb-4d9c-48f0-9f0a-823b1239f512-8j3y5zb6\\.work\\build\\verification\\framebuffer-scanout.vvp"]
+
+framebuffer scanout checks passed
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-a1e635cb-4d9c-48f0-9f0a-823b1239f512-8j3y5zb6\support\tests\diablo_framebuffer_scanout_tb.sv:198: $finish called at 32265000 (1ps)

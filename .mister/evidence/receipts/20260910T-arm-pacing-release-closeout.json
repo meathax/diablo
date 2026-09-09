@@ -1,0 +1,40 @@
+{
+  "schema": "diablo-release-closeout-v1",
+  "status": "identity-and-local-closeout-pass-physical-gates-open",
+  "recorded_utc": "2026-09-10",
+  "candidate_id": "566ca7a6221829412201fb6ded0046e0b20befeffdff6dc4efb0dd8ff00a2baa",
+  "source_id": "f68f5227d794cf89df14bfc1ede472354c625e820809e38bfc8f3bda291498a2",
+  "package": {
+    "local": ".work/build/arm-pacing-20260910/package",
+    "package_manifest_sha256": "dfd72f72e1d1887d422e16e792a3b1c2c81e09ef55989707bdbfafee3a574209",
+    "manifest_file_records": 228,
+    "remote_release_file_count_including_manifest": 229,
+    "remote_manifest_matches": true,
+    "active_state_status": "pass",
+    "rollback_release_present": true
+  },
+  "checks": {
+    "focused_python_suites": {
+      "status": "pass",
+      "tests": 28,
+      "skipped": 6,
+      "suites": ["test_package_release", "test_mister_launcher", "test_update_all_database"]
+    },
+    "local_deployment_lifecycle": {
+      "status": "pass",
+      "receipt": ".work/arm-pacing-20260910-deployment-lifecycle.json",
+      "checks": ["clean_install", "interrupted_update_preserves_activation", "successful_update", "rollback", "save_preserved", "final_manifest_verify", "staging_clean"]
+    },
+    "sequential_campaign_relaunch": {
+      "status": "pass",
+      "campaigns": ["diablo", "hellfire"],
+      "clean_duration_stops": true,
+      "post_run_engine_processes": 0
+    }
+  },
+  "limitations": [
+    "Physical HDMI video, stereo speaker output, controller, keyboard, mouse, menu and cinematic observations remain outstanding.",
+    "Interactive gameplay progression and target save/load have not been exercised on this candidate.",
+    "A bounded launch is not a 60-FPS or 30-minute performance qualification; Hellfire emitted one underrun/backpressure diagnostic marker."
+  ]
+}

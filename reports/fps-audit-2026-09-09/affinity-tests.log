@@ -1,0 +1,34 @@
+test_fifo_request_is_written_as_one_ascii_command (support.tests.test_mister_launcher.CoreLoadRequestTest.test_fifo_request_is_written_as_one_ascii_command) ... ok
+test_loader_starts_frontend_when_the_fifo_has_no_owner (support.tests.test_mister_launcher.CoreLoadRequestTest.test_loader_starts_frontend_when_the_fifo_has_no_owner) ... ok
+test_missing_frontend_is_started_with_the_requested_rbf (support.tests.test_mister_launcher.CoreLoadRequestTest.test_missing_frontend_is_started_with_the_requested_rbf) ... ok
+test_unread_fifo_is_reported_without_blocking (support.tests.test_mister_launcher.CoreLoadRequestTest.test_unread_fifo_is_reported_without_blocking) ... ok
+test_affinity_failure_does_not_run_engine_on_inherited_cpu (support.tests.test_mister_launcher.EngineAffinityTest.test_affinity_failure_does_not_run_engine_on_inherited_cpu) ... ok
+test_engine_and_new_thread_use_cpu0_without_changing_launcher (support.tests.test_mister_launcher.EngineAffinityTest.test_engine_and_new_thread_use_cpu0_without_changing_launcher) ... ok
+test_finished_engine_never_signals_another_process_group (support.tests.test_mister_launcher.EngineOwnershipTest.test_finished_engine_never_signals_another_process_group) ... ok
+test_requested_duration_remains_distinct_from_core_loss (support.tests.test_mister_launcher.EngineOwnershipTest.test_requested_duration_remains_distinct_from_core_loss) ... ok
+test_unlimited_session_stops_own_engine_after_core_replacement (support.tests.test_mister_launcher.EngineOwnershipTest.test_unlimited_session_stops_own_engine_after_core_replacement) ... ok
+test_current_reserved_aperture_is_outside_linux_ram (support.tests.test_mister_launcher.LinuxMemoryAdmissionTest.test_current_reserved_aperture_is_outside_linux_ram) ... ok
+test_hidden_missing_or_malformed_ram_cannot_authorize_mapping (support.tests.test_mister_launcher.LinuxMemoryAdmissionTest.test_hidden_missing_or_malformed_ram_cannot_authorize_mapping) ... ok
+test_kernel_allocating_full_ddr_is_rejected (support.tests.test_mister_launcher.LinuxMemoryAdmissionTest.test_kernel_allocating_full_ddr_is_rejected) ... ok
+test_split_ram_and_boundary_overlap_are_rejected (support.tests.test_mister_launcher.LinuxMemoryAdmissionTest.test_split_ram_and_boundary_overlap_are_rejected) ... ok
+test_transport_must_fit_physical_board_memory (support.tests.test_mister_launcher.LinuxMemoryAdmissionTest.test_transport_must_fit_physical_board_memory) ... ok
+test_changed_dependency_notice_is_rejected (support.tests.test_package_release.PackageReleaseTest.test_changed_dependency_notice_is_rejected) ... ok
+test_clean_package_supports_launcher_preflight (support.tests.test_package_release.PackageReleaseTest.test_clean_package_supports_launcher_preflight) ... ok
+test_create_and_verify_runtime_only_package (support.tests.test_package_release.PackageReleaseTest.test_create_and_verify_runtime_only_package) ... ok
+test_existing_menu_copy_follows_update_and_rollback (support.tests.test_package_release.PackageReleaseTest.test_existing_menu_copy_follows_update_and_rollback) ... ok
+test_existing_output_is_never_overwritten (support.tests.test_package_release.PackageReleaseTest.test_existing_output_is_never_overwritten) ... ok
+test_menu_bootstrap_executes_verified_launcher (support.tests.test_package_release.PackageReleaseTest.test_menu_bootstrap_executes_verified_launcher) ... ok
+test_menu_entries_resolve_active_install_and_both_campaigns (support.tests.test_package_release.PackageReleaseTest.test_menu_entries_resolve_active_install_and_both_campaigns) ... ok
+test_menu_rejects_missing_activation_and_changed_launcher (support.tests.test_package_release.PackageReleaseTest.test_menu_rejects_missing_activation_and_changed_launcher) ... Diablo menu: [Errno 2] No such file or directory: '/tmp/tmpna_xyxkf/target/.diablo-install.json'
+Diablo menu: active launcher hash mismatch
+ok
+test_menu_rejects_release_path_escape (support.tests.test_package_release.PackageReleaseTest.test_menu_rejects_release_path_escape) ... Diablo menu: invalid active release path
+ok
+test_mutation_and_private_file_are_rejected (support.tests.test_package_release.PackageReleaseTest.test_mutation_and_private_file_are_rejected) ... ok
+test_non_candidate_or_private_source_cannot_be_packaged (support.tests.test_package_release.PackageReleaseTest.test_non_candidate_or_private_source_cannot_be_packaged) ... ok
+test_timedemo_requests_bounded_target_frame_pacing (support.tests.test_package_release.PackageReleaseTest.test_timedemo_requests_bounded_target_frame_pacing) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 13.924s
+
+OK

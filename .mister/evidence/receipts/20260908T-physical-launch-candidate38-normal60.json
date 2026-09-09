@@ -1,0 +1,43 @@
+{
+  "candidate": {
+    "candidate_id": "8e7a07cb78693ccbb60e813e56c0af018e2b947e0326a0ada5d3dd839cb6e2fb",
+    "manifest": ".mister/evidence/candidates/fpga-candidate-20260908-38-pcm-telemetry.json",
+    "manifest_sha256": "72bb8f0b456f026bdf3594a48f610e029cb0e6927fce7278d2fd64ee730e7d4a",
+    "source_id": "ff4184d9d0f5532cfacfe1990416f5d2dcd5a33da7683d2943e1b519609869f3"
+  },
+  "limitations": [
+    "Target screenshot observer remained black/stale and target OSD identity still reported AO486",
+    "The run was a launcher smoke with existing licensed campaign-data fixture; full gameplay, controller, save/load, multiplayer, timing and endurance gates remain open"
+  ],
+  "results": [
+    {
+      "id": "launcher-board-normal60",
+      "log": ".mister/evidence/runs/candidate38-physical-normal60/launch-observation.log",
+      "log_bytes": 1329,
+      "log_sha256": "4d038ffe0d1e6bd5689c5c666557838cce94fa1447ee800907279d9fd3a2158c",
+      "observations": {
+        "arm_transport_frames": "observed",
+        "campaign": "not_run",
+        "exact_rbf_process": "observed",
+        "fpga_local_queue_frames": "7257",
+        "fpga_operating": "pass",
+        "launcher": "pass",
+        "package_preflight": "pass",
+        "pcm_callbacks": "observed",
+        "pcm_drops": "0",
+        "pcm_startup_underruns": "6766",
+        "pcm_steady_state_resync_delta": "0",
+        "pcm_steady_state_underrun_delta": "0",
+        "performance": "not_run",
+        "physical_audio": "startup-only counter; steady-state delta accepted",
+        "physical_input": "not_run",
+        "physical_video": "not_accepted"
+      },
+      "status": "pass"
+    }
+  ],
+  "schema": "diablo-verification-receipt-v1",
+  "scope": "Physical MiSTer candidate38 launcher and steady PCM service smoke; no full peripheral/gameplay release acceptance",
+  "status": "pass",
+  "suite": "board"
+}\n

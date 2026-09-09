@@ -1,0 +1,40 @@
+{
+  "schema": "diablo-target-live-diagnostic-v1",
+  "recorded_utc": "2026-09-09",
+  "status": "blocked-target-run",
+  "candidate": {
+    "candidate_id": "47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d",
+    "manifest_sha256": "9cc8eeaad3e995a5abbd03539b4d4f9d350313da8bf63f3860a9807c01803339",
+    "rbf_sha256": "1d87ba18a012d15813b8e5f83aa32a4dd531537292082fa3b888cd5059e77fe7"
+  },
+  "target": {
+    "host": "192.168.0.69",
+    "kernel_release": "5.15.1-MiSTer",
+    "physical_base": "0x3fe00000",
+    "mapped_bytes": 2097152,
+    "launch_command": "diablo_launcher.py --campaign diablo --duration 20 --engine-arg=--spawn --engine-arg=--demo --engine-arg=0 --engine-arg=--timedemo",
+    "launcher_exit_code": 1,
+    "engine_error": "Demo file not found",
+    "state_sample_t3": "stale prior epoch; arm=1 fpga=0 last_frame=0",
+    "state_sample_t10": "new epoch; arm=1 fpga=1 last_frame=0 pcm_prod=0 pcm_cons=0",
+    "post_run_owner": "/media/fat/MiSTer /media/fat/_Arcade/cores/Arcade-I-Robot_20260909.rbf /media/fat/_Arcade/I, Robot.mra"
+  },
+  "artifacts": [
+    {
+      "path": ".mister/evidence/target-runs/20260909-pcm-build-v2-live-launcher.stdout",
+      "bytes": 1487,
+      "sha256": "ef3a21451fd6e6cbd43b3a31b11310b2717cf71045e85a7538de345ad6ceac15"
+    },
+    {
+      "path": ".mister/evidence/target-runs/20260909-pcm-build-v2-live-engine.log",
+      "bytes": 20,
+      "sha256": "90411bb44fff45bc1d9c1af6ebf7a7e54be31f7034481f69c377e2da058691de"
+    }
+  ],
+  "limitations": [
+    "This was a bounded diagnostic invocation, not acceptance evidence.",
+    "The engine did not reach a playable timedemo because the requested demo file was absent.",
+    "The post-run target owner was foreign; no reload, kill or cleanup was performed.",
+    "No physical video, audio or controller observation is claimed."
+  ]
+}

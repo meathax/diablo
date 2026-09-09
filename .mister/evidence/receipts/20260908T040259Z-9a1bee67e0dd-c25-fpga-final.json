@@ -1,0 +1,291 @@
+{
+  "artifacts": {
+    ".mister/logs/quartus-compile.log": {
+      "bytes": 178028,
+      "exists": true,
+      "path": ".work/c25-fpga-final/.mister/logs/quartus-compile.log",
+      "sha256": "82cd4644c41b69641d3083d760b741a0ff8f04ea95c0e44ec383aa68d6b2ad1f"
+    },
+    ".mister/logs/quartus-compress.log": {
+      "bytes": 1607,
+      "exists": true,
+      "path": ".work/c25-fpga-final/.mister/logs/quartus-compress.log",
+      "sha256": "4729c7fc41cb98ad279bb6520a9328e1bb9a2a84bea6354cf52d8350141438ba"
+    },
+    ".mister/logs/quartus-timing.log": {
+      "bytes": 21081,
+      "exists": true,
+      "path": ".work/c25-fpga-final/.mister/logs/quartus-timing.log",
+      "sha256": "21fdc67c227c5e389efc0cf61ed6883e958380c9e90ce9fe2e7c443033fc2967"
+    },
+    "output_files/Diablo.asm.rpt": {
+      "bytes": 5229,
+      "exists": true,
+      "path": ".work/c25-fpga-final/output_files/Diablo.asm.rpt",
+      "sha256": "edc9fce72deb1ff8c019e77be4efb3ee8b3fcb5f1b001395402fd4e50863b5f8"
+    },
+    "output_files/Diablo.compressed.rbf": {
+      "bytes": 2785132,
+      "exists": true,
+      "path": ".work/c25-fpga-final/output_files/Diablo.compressed.rbf",
+      "sha256": "75f37c8fa16ceb602a6737d134b64dcba86db8ce7f6cad63dd86e3b4fafb40d5"
+    },
+    "output_files/Diablo.fit.rpt": {
+      "bytes": 2761671,
+      "exists": true,
+      "path": ".work/c25-fpga-final/output_files/Diablo.fit.rpt",
+      "sha256": "28aecc30c0e80e9971399afcd87748cb026641425e0316179f75701ff30d7d31"
+    },
+    "output_files/Diablo.map.rpt": {
+      "bytes": 1096062,
+      "exists": true,
+      "path": ".work/c25-fpga-final/output_files/Diablo.map.rpt",
+      "sha256": "b12b141e180ff566f369e2eb656021fca855f2b727f710d464f3234457bbd407"
+    },
+    "output_files/Diablo.sof": {
+      "bytes": 6690359,
+      "exists": true,
+      "path": ".work/c25-fpga-final/output_files/Diablo.sof",
+      "sha256": "8ea5121c5fe5435511bccffd768d50040acd4c8b01032ff655c6ec6621e3e8ec"
+    },
+    "output_files/Diablo.sta.rpt": {
+      "bytes": 548680,
+      "exists": true,
+      "path": ".work/c25-fpga-final/output_files/Diablo.sta.rpt",
+      "sha256": "563b9120d37816180832909ab52135976da23169805a3579360b0786d257f7d3"
+    },
+    "output_files/Diablo.timing_corners.rpt": {
+      "bytes": 180641,
+      "exists": true,
+      "path": ".work/c25-fpga-final/output_files/Diablo.timing_corners.rpt",
+      "sha256": "2bf90426f871b9128d64c691fb93e844c208f7ec2fce5b2c7053fe0cee83f202"
+    }
+  },
+  "commands": {
+    "compile": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "support/scripts/compile_fpga_snapshot.ps1",
+      "-SourceDirectory",
+      ".work/c25-fpga-final",
+      "-Action",
+      "compile",
+      "-QuartusRoot",
+      "D:/q17/quartus",
+      "-RepositoryDirectory",
+      "."
+    ],
+    "compress": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "support/scripts/compile_fpga_snapshot.ps1",
+      "-SourceDirectory",
+      ".work/c25-fpga-final",
+      "-Action",
+      "compress",
+      "-QuartusRoot",
+      "D:/q17/quartus",
+      "-RepositoryDirectory",
+      "."
+    ],
+    "timing": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "support/scripts/compile_fpga_snapshot.ps1",
+      "-SourceDirectory",
+      ".work/c25-fpga-final",
+      "-Action",
+      "timing",
+      "-QuartusRoot",
+      "D:/q17/quartus",
+      "-RepositoryDirectory",
+      "."
+    ]
+  },
+  "compile_log": {
+    "critical_warnings": 0,
+    "errors": 0,
+    "path": ".work/c25-fpga-final/.mister/logs/quartus-compile.log",
+    "sha256": "82cd4644c41b69641d3083d760b741a0ff8f04ea95c0e44ec383aa68d6b2ad1f",
+    "warnings": 127
+  },
+  "finished_utc": "2026-09-08T04:02:59.945744+00:00",
+  "root_output_pollution_check": {
+    "checked_roots": [
+      "output_files",
+      "db",
+      "incremental_db"
+    ],
+    "cutoff_local": "2026-09-08T13:47:52.850+10:00",
+    "files_modified_since_cutoff": [],
+    "ok": true
+  },
+  "run_id": "20260908T040259Z-9a1bee67e0dd",
+  "schema": "diablo-c25-fpga-final-v1",
+  "scope": "Fresh current-C25 FPGA compile/compress/four-corner timing in an isolated 85-file snapshot; no ARM or target actions.",
+  "source_provenance": {
+    "git_head_after_build": "8e7422352b333ab7798f00fc589085c69d8e8870",
+    "git_head_subject_after_build": "8e7422352b333ab7798f00fc589085c69d8e8870 2026-09-08T13:49:08+10:00 C25: validate full STA metrics",
+    "note": "Snapshot was created before the current C25 validator commit; source provenance is bound by the immutable 85-file manifest and SDC hash, not by a guessed commit boundary.",
+    "root_sdc_sha256_at_receipt": "0060d9010b1f72b9092161b3e716acfd47d1db32c4be58b9d2c700eda85838a3",
+    "snapshot": {
+      "changed_inputs": [],
+      "created_utc": "2026-09-08T03:47:30.4488981Z",
+      "file_count": 85,
+      "input_records_sha256_after": "8fa697fbc279698e413f9ff44601cd49909ee91aa5d5180a150d732826420541",
+      "input_records_sha256_before": "8fa697fbc279698e413f9ff44601cd49909ee91aa5d5180a150d732826420541",
+      "inputs_unchanged": true,
+      "path": ".work/c25-fpga-final/.mister/fpga-source-snapshot.json",
+      "sha256_after": "faa537808c0cafa4b3dfb0d5e8b5c5ffa510caca4e8b3157a4f3ed49bbd2b083",
+      "sha256_before": "faa537808c0cafa4b3dfb0d5e8b5c5ffa510caca4e8b3157a4f3ed49bbd2b083"
+    },
+    "snapshot_sdc_sha256": "0060d9010b1f72b9092161b3e716acfd47d1db32c4be58b9d2c700eda85838a3",
+    "validator_sha256_at_receipt": "6ad59ed8a234a6d138ba7fa182f3a1479c1b0fda781b73bb7efcbca9e76483b8"
+  },
+  "status": "fail",
+  "status_checks": {
+    "compile_exit_code": 0,
+    "compile_log_has_no_errors": true,
+    "compress_exit_code": 0,
+    "forwarded_mclk_exact": true,
+    "four_corner_setup_scope_positive": true,
+    "full_sta_metrics_positive_and_complete": true,
+    "no_root_quartus_output_modified_since_build_start": true,
+    "required_artifacts_present": true,
+    "residual_unconstrained_scope_3_inputs_10_outputs": true,
+    "snapshot_inputs_unchanged": true,
+    "snapshot_manifest_unchanged": true,
+    "timing_exit_code": 0
+  },
+  "timing": {
+    "forwarded_clock": {
+      "evidence_line": "; HDMI_MCLK_FWD                                                                     ; Generated ; 40.682  ; 24.58 MHz  ; 0.000 ; 20.341 ;            ; 1         ; 1           ;       ;        ;           ;            ; false    ; pll_audio|pll_audio_inst|altera_pll_i|general[0].gpll~PLL_OUTPUT_COUNTER|divclk   ; pll_audio|pll_audio_inst|altera_pll_i|general[0].gpll~PLL_OUTPUT_COUNTER|divclk      ; { HDMI_MCLK }                                                                         ;",
+      "frequency_mhz": 24.58,
+      "name": "HDMI_MCLK_FWD",
+      "period_ns": 40.682,
+      "source_contains": "pll_audio|...|PLL_OUTPUT_COUNTER|divclk",
+      "target": "HDMI_MCLK",
+      "waveform_ns": [
+        0.0,
+        20.341
+      ]
+    },
+    "four_corner_setup_rows": [
+      {
+        "corner": "slow_100C",
+        "kind": "setup",
+        "paths": 3,
+        "worst_slack": "0.210"
+      },
+      {
+        "corner": "slow_minus40C",
+        "kind": "setup",
+        "paths": 3,
+        "worst_slack": "0.095"
+      },
+      {
+        "corner": "fast_100C",
+        "kind": "setup",
+        "paths": 3,
+        "worst_slack": "0.529"
+      },
+      {
+        "corner": "fast_minus40C",
+        "kind": "setup",
+        "paths": 3,
+        "worst_slack": "0.526"
+      }
+    ],
+    "full_sta_report": ".work/c25-fpga-final/output_files/Diablo.sta.rpt",
+    "full_sta_report_sha256": "563b9120d37816180832909ab52135976da23169805a3579360b0786d257f7d3",
+    "metrics": {
+      "corners": [
+        {
+          "metrics": {
+            "hold": 0.244,
+            "minimum_pulse_width": 0.396,
+            "recovery": 4.069,
+            "removal": 0.866,
+            "setup": 0.21
+          },
+          "name": "Slow 1100mV 100C Model"
+        },
+        {
+          "metrics": {
+            "hold": 0.161,
+            "minimum_pulse_width": 0.396,
+            "recovery": 4.239,
+            "removal": 0.73,
+            "setup": 0.095
+          },
+          "name": "Slow 1100mV -40C Model"
+        },
+        {
+          "metrics": {
+            "hold": 0.092,
+            "minimum_pulse_width": 0.396,
+            "recovery": 5.157,
+            "removal": 0.505,
+            "setup": 0.529
+          },
+          "name": "Fast 1100mV 100C Model"
+        },
+        {
+          "metrics": {
+            "hold": 0.074,
+            "minimum_pulse_width": 0.396,
+            "recovery": 5.422,
+            "removal": 0.38,
+            "setup": 0.526
+          },
+          "name": "Fast 1100mV -40C Model"
+        }
+      ],
+      "failures": [],
+      "ok": true,
+      "path": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c25-fpga-final\\output_files\\Diablo.sta.rpt",
+      "required_metrics": [
+        "setup",
+        "hold",
+        "recovery",
+        "removal",
+        "minimum_pulse_width"
+      ],
+      "sha256": "563b9120d37816180832909ab52135976da23169805a3579360b0786d257f7d3"
+    },
+    "timing_corners_report": ".work/c25-fpga-final/output_files/Diablo.timing_corners.rpt",
+    "timing_corners_report_sha256": "2bf90426f871b9128d64c691fb93e844c208f7ec2fce5b2c7053fe0cee83f202",
+    "unconstrained_ports": {
+      "counts": {
+        "input": {
+          "hold": 3,
+          "setup": 3
+        },
+        "output": {
+          "hold": 10,
+          "setup": 10
+        }
+      },
+      "input_ports": [
+        "HDMI_I2C_SDA",
+        "HDMI_TX_INT",
+        "IO_SDA"
+      ],
+      "output_ports": [
+        "HDMI_I2C_SCL",
+        "HDMI_I2C_SDA",
+        "HDMI_I2S",
+        "HDMI_LRCLK",
+        "HDMI_SCLK",
+        "IO_SCL",
+        "IO_SDA",
+        "USER_IO[2]",
+        "USER_IO[4]",
+        "USER_IO[5]"
+      ]
+    }
+  }
+}

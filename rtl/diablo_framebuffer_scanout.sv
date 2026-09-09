@@ -8,6 +8,7 @@ module diablo_framebuffer_scanout (
     input wire session_valid,
     input wire [31:0] session_epoch,
     input wire vblank,
+    input wire frame_rate_cap,
 
     input wire ddram_busy,
     input wire [63:0] ddram_dout,
@@ -54,6 +55,12 @@ module diablo_framebuffer_scanout (
     reg [3:0] state = IDLE;
     reg vblank_d = 1'b0;
     wire vblank_rise = vblank & ~vblank_d;
+    // At the 60 Hz scanout refresh, admit a new DOS frame once every three
+    // vertical blanks. Holding the active framebuffer for the other two
+    // refreshes keeps the cadence exact and never swaps a frame mid-scan.
+    reg [1:0] frame_cap_vblank_count = 0;
+    wire presentation_vblank = vblank_rise &&
+                              (!frame_rate_cap || frame_cap_vblank_count == 2'd2);
     reg [2:0] metadata_index = 0;
     reg [31:0] slot_state [0:2];
     reg [31:0] slot_generation [0:2];
@@ -218,6 +225,7 @@ module diablo_framebuffer_scanout (
         palette_ack_sync_2 <= palette_ack_sync_1;
         if (reset || !session_valid) begin
             state <= IDLE;
+            frame_cap_vblank_count <= 0;
             metadata_index <= 0;
             claim_slot <= 0;
             claim_frame_id <= 0;
@@ -241,9 +249,17 @@ module diablo_framebuffer_scanout (
             palette_word <= 0;
             palette_commit_toggle <= 1'b0;
         end else begin
+            if (!frame_rate_cap) begin
+                frame_cap_vblank_count <= 0;
+            end else if (vblank_rise) begin
+                if (frame_cap_vblank_count == 2'd2)
+                    frame_cap_vblank_count <= 0;
+                else
+                    frame_cap_vblank_count <= frame_cap_vblank_count + 1'b1;
+            end
             case (state)
                 IDLE: begin
-                    if (vblank_rise && pending_valid) begin
+                    if (presentation_vblank && pending_valid) begin
                         if (framebuffer_valid) begin
                             retire_slot <= active_slot;
                             retire_frame_id <= active_frame_id;
@@ -341,7 +357,7 @@ module diablo_framebuffer_scanout (
                         palette_byte_lane <= palette_byte_lane + 1'b1;
                     end
                 end
-                PALETTE_COMMIT: if (vblank_rise) begin
+                PALETTE_COMMIT: if (presentation_vblank) begin
                     // The scaler palette is live. Start its staged 256-entry
                     // upload only in vertical blank, and retain blanking if an
                     // unexpected delay carries the upload beyond this interval.

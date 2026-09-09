@@ -1,0 +1,92 @@
+{
+  "schema": "diablo-target-candidate-run-v1",
+  "recorded_utc": "2026-09-09",
+  "status": "diagnostic-pass-qualification-open",
+  "candidate": {
+    "candidate_id": "47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d",
+    "source_id": "1eb528ddb20e57884a6a22d7f34026d6cf45aed8c65b4505ca7bbd2ffbe303cb",
+    "manifest_sha256": "9cc8eeaad3e995a5abbd03539b4d4f9d350313da8bf63f3860a9807c01803339",
+    "rbf_sha256": "1d87ba18a012d15813b8e5f83aa32a4dd531537292082fa3b888cd5059e77fe7",
+    "package_manifest_sha256": "a0a549bd9336b35e0daa8a1e0c76afdb18276b9a1501114129119ffdec2d764f"
+  },
+  "target": {
+    "host": "192.168.0.69",
+    "kernel_release": "5.15.1-MiSTer",
+    "core": "Diablo",
+    "fpga_state": "operating",
+    "physical_base": "0x3fe00000",
+    "mapped_bytes": 2097152,
+    "video_backend": "fpga-shared-ddr",
+    "sdl_video_driver": "dummy",
+    "sdl_audio_driver": "dummy",
+    "active_release_verified": true
+  },
+  "runs": [
+    {
+      "name": "normal-profile-60s",
+      "status": "pass-runtime-diagnostic",
+      "stop_reason": "duration",
+      "profile": {
+        "presents": 2149,
+        "published": 1940,
+        "backpressure": 279,
+        "backpressure_dropped": 209,
+        "timing_invalid": 0,
+        "average_present_us": 7006,
+        "max_present_us": 527558,
+        "publish_attempts": 2428,
+        "average_publish_us": 5632,
+        "max_publish_us": 41308,
+        "flushes": 2149,
+        "average_flush_us": 1,
+        "max_flush_us": 38,
+        "pcm_health_log_records": 0,
+        "input_poll_errors": 0
+      },
+      "outcomes": {
+        "frame_published": 1940,
+        "backpressure_dropped": 209
+      },
+      "log": ".mister/evidence/target-runs/20260909-pcm-build-v2-profile-engine.log",
+      "log_bytes": 9579,
+      "log_sha256": "6607f8a6c4bfd4ef0c5e436382043cc9f204d4da01331767059f5a025a9078ba"
+    },
+    {
+      "name": "active-spawn-60s",
+      "status": "pass-runtime-diagnostic-with-input-failure",
+      "stop_reason": "duration",
+      "profile": {
+        "presents": 1044,
+        "published": 3,
+        "backpressure": 1041,
+        "backpressure_dropped": 1041,
+        "timing_invalid": 0,
+        "average_present_us": 5801,
+        "max_present_us": 1103715,
+        "publish_attempts": 2085,
+        "average_publish_us": 19,
+        "max_publish_us": 15389,
+        "flushes": 1044,
+        "average_flush_us": 1,
+        "max_flush_us": 16,
+        "pcm_health_log_records": 0,
+        "input_poll_error_count": 1042,
+        "first_input_poll_error": "Diablo MiSTer transport input poll failed: error=3"
+      },
+      "outcomes": {
+        "frame_published": 3,
+        "backpressure_dropped": 1041
+      },
+      "log": ".mister/evidence/target-runs/20260909-pcm-build-v2-spawn-engine.log",
+      "log_bytes": 63466,
+      "log_sha256": "8f7737d2117add24bfad54360ce4255f1ed9c6f1b71ed0d3db33524010bc5135"
+    }
+  ],
+  "limitations": [
+    "No physical HDMI observer or speaker/stereo inspection was available.",
+    "The screenshot command returned only an older 2026-09-08 file; no fresh visual receipt is claimed.",
+    "Nonzero presentation backpressure and the active-spawn input error keep C15, C20, C21, C23 and C24 open.",
+    "The target state-dump utilities were read only after the engine exited; their stale shared-memory snapshot is not used as a live PCM acceptance result.",
+    "No release or accepted candidate is claimed."
+  ]
+}

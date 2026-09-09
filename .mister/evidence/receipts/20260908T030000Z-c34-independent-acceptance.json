@@ -1,0 +1,75 @@
+{
+  "schema": "diablo-c34-independent-acceptance-v1",
+  "status": "pass",
+  "finished_utc": "2026-09-08T02:58:30Z",
+  "commit": "643f806247527dd8fa070c135b97d1813b1b9d66",
+  "parent_lifecycle_commit": "bb2bf6fb9a1988136fbad21209811ef4d10af095",
+  "scope": {
+    "packet_paths": [
+      "support/TRANSPORT_OWNERSHIP.md",
+      "support/reference/mister_command_frame_state.hpp",
+      "support/reference/mister_pcm_resampler.hpp",
+      "support/reference/mister_transport_input.hpp",
+      "support/reference/mister_transport_profiler.hpp",
+      "support/reference/mister_transport_sdl.hpp",
+      "support/reference/transport_abi.hpp",
+      "support/tests/mister_transport_input_test.cpp",
+      "support/tests/transport_abi_test.cpp"
+    ],
+    "candidate": null,
+    "limitations": [
+      "No immutable ARM/RBF candidate was supplied; this receipt cannot promote a board candidate.",
+      "Evidence covers local host/RTL and WSL file-backed lifecycle checks only; it does not prove physical board, ARM, audio-device, video-output, or campaign acceptance."
+    ]
+  },
+  "independent_review": {
+    "lifecycle_apis": [
+      "Adapter::Initialize/Shutdown/Active/Present/PublishPcmBytes are exercised against a file-backed production TransportRuntime.",
+      "The callback admission generation gate rejects entry during runtime transition and holds an in-flight reference through callback completion.",
+      "Epoch rebind resets transport frame ownership and Adapter-side command shadows; PCM resampler reset is generation-driven and callback-owned.",
+      "Profiler reset owns command counters; invalid or backward timestamps do not create samples; command wait completion is recorded once.",
+      "Frame pacing uses wrap-safe lateness and a carried 40 ms fractional remainder for an exact 60 Hz average."
+    ],
+    "lifecycle_receipt": {
+      "path": ".mister/evidence/receipts/20260908T023835Z-transport-lifecycle-232e187fbf42483db41fe6dc472bd781.json",
+      "sha256": "4ef96eca52af2e020063a34af25c3d39ba3fcaa7ad86cffe600f30beb6647fea",
+      "status": "pass",
+      "checks": 5,
+      "source_and_log_hashes_verified": true
+    },
+    "prior_host_receipt": {
+      "path": ".mister/evidence/receipts/20260908T023847Z-934b4267-5c05-45fd-beac-064a0ac8614a.json",
+      "sha256": "14d1868defe94af32b9e8e158c48a8b8c120d449712b9a2e8e80b348cd73d0a4",
+      "status": "pass",
+      "checks": 7
+    },
+    "abi_prerequisite": "PcmHealth.local_queue_frames decodes existing RingControl::flags; packed ABI layout is unchanged and transport_abi_test asserts a 2048 flag value."
+  },
+  "verification": {
+    "local_suite": {
+      "command": "python support/scripts/diablo.py verify --suite local",
+      "exit_code": 0,
+      "receipt": ".mister/evidence/receipts/20260908T025424Z-9aba44bd-ac7c-4391-9675-2f1f15f75e05.json",
+      "receipt_sha256": "6578d3846a06bbfb4761add8f7b5a4f8b6f390257d6491a7956f01e250f015f3",
+      "checks": 22,
+      "passed": 22,
+      "failed": 0,
+      "not_run": 0,
+      "timed_out": 0,
+      "command_log": ".work/build/verification/c34-local-suite-command.log",
+      "command_log_sha256": "05b73257f7d17c757bd16893bb50b0d3eb16f04fd76bbf426804595a97142b01"
+    },
+    "guide_status": {
+      "command": "python support/scripts/guide_status.py",
+      "exit_code": 0,
+      "log": ".work/build/verification/c34-guide-status.log",
+      "log_sha256": "3b968707b0dc0415ae054ee6c68d0710c9943d4881a676acc72b886a8194741f"
+    },
+    "closure_gates": {
+      "command": "python support/scripts/closure_gates.py",
+      "exit_code": 0,
+      "log": ".work/build/verification/c34-closure-gates.log",
+      "log_sha256": "1b35ba9cef66ad2d0ec75624db252a91ebbc026d7b7be9ce4ea729ac4c2ed427"
+    }
+  }
+}

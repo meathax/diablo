@@ -1,0 +1,99 @@
+probe=1
+identity=1 epoch=0xbc6efee4 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xbc6efee4
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xbc6efee4/0xbc6efee4 flags=0x00000000
+ring pcm ok=1 prod=2851037 cons=2851037 cap=32768/32768 bytes=4/4 epoch=0xbc6efee4/0xbc6efee4 flags=0x00000000
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xbc6efee4/0xbc6efee4 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xbc6efee4/0xbc6efee4 flags=0x00000000
+frame[0] ok=1 state=3 gen=0xbc6efee4 producer=0xbc6efee4 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0xf2ef7aed flags=0x00000001
+frame[1] ok=1 state=0 gen=0xbc6efee4 producer=0xbc6efee4 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0x57015f8b flags=0x00000001
+frame[2] ok=1 state=0 gen=0xbc6efee4 producer=0xbc6efee4 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0x116b154b flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1
+probe=2
+identity=1 epoch=0xad518e62 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xad518e62
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring pcm ok=1 prod=205077 cons=196886 cap=32768/32768 bytes=4/4 epoch=0xad518e62/0xad518e62 flags=0x00004000
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xad518e62/0xad518e62 flags=0x00000000
+frame[0] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0x22ba7737 flags=0x00000001
+frame[1] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0x22ba7737 flags=0x00000001
+frame[2] ok=1 state=1 gen=0xad518e62 producer=0xad518e62 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0x6ac9d681 flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1
+probe=3
+identity=1 epoch=0xad518e62 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xad518e62
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring pcm ok=1 prod=588485 cons=582250 cap=32768/32768 bytes=4/4 epoch=0xad518e62/0xad518e62 flags=0x00003fd0
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xad518e62/0xad518e62 flags=0x00000000
+frame[0] ok=1 state=1 gen=0xad518e62 producer=0xad518e62 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0x36e96e73 flags=0x00000001
+frame[1] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0x6e334ca3 flags=0x00000001
+frame[2] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0x6e334ca3 flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1
+probe=4
+identity=1 epoch=0xad518e62 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xad518e62
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring pcm ok=1 prod=969664 cons=967526 cap=32768/32768 bytes=4/4 epoch=0xad518e62/0xad518e62 flags=0x00004000
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xad518e62/0xad518e62 flags=0x00000000
+frame[0] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0x6d3a2133 flags=0x00000001
+frame[1] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0x3b7300c4 flags=0x00000001
+frame[2] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0x3b7300c4 flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1
+probe=5
+identity=1 epoch=0xad518e62 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xad518e62
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring pcm ok=1 prod=1353072 cons=1353072 cap=32768/32768 bytes=4/4 epoch=0xad518e62/0xad518e62 flags=0x00003f62
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xad518e62/0xad518e62 flags=0x00000000
+frame[0] ok=1 state=1 gen=0xad518e62 producer=0xad518e62 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0xc32053e1 flags=0x00000001
+frame[1] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0xf89f799a flags=0x00000001
+frame[2] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0xf89f799a flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1
+probe=6
+identity=1 epoch=0xad518e62 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xad518e62
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring pcm ok=1 prod=1738709 cons=1738488 cap=32768/32768 bytes=4/4 epoch=0xad518e62/0xad518e62 flags=0x00004000
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xad518e62/0xad518e62 flags=0x00000000
+frame[0] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0xbb11d191 flags=0x00000001
+frame[1] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0x895dd5a7 flags=0x00000001
+frame[2] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0x58258411 flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1
+probe=7
+identity=1 epoch=0xad518e62 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xad518e62
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring pcm ok=1 prod=2122116 cons=2122116 cap=32768/32768 bytes=4/4 epoch=0xad518e62/0xad518e62 flags=0x0000399e
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xad518e62/0xad518e62 flags=0x00000000
+frame[0] ok=1 state=1 gen=0xad518e62 producer=0xad518e62 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0x6587a128 flags=0x00000001
+frame[1] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0xf8293d5c flags=0x00000001
+frame[2] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0xc4ef0e6d flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1
+probe=8
+identity=1 epoch=0xad518e62 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xad518e62
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring pcm ok=1 prod=2505524 cons=2505524 cap=32768/32768 bytes=4/4 epoch=0xad518e62/0xad518e62 flags=0x000031b2
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xad518e62/0xad518e62 flags=0x00000000
+frame[0] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0x570817eb flags=0x00000001
+frame[1] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0x8df33f7b flags=0x00000001
+frame[2] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0x6fd3a3ce flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1
+probe=9
+identity=1 epoch=0xad518e62 arm=1 fpga=1 fault=0 detail=0x00000000
+epoch_ok=1 expected_nonzero=1 header_epoch=0xad518e62
+ring input ok=1 prod=0 cons=0 cap=256/256 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring pcm ok=1 prod=2848808 cons=2848808 cap=32768/32768 bytes=4/4 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_records ok=1 prod=0 cons=0 cap=2048/2048 bytes=32/32 epoch=0xad518e62/0xad518e62 flags=0x00000000
+ring command_payload ok=1 prod=0 cons=0 cap=196608/196608 bytes=1/1 epoch=0xad518e62/0xad518e62 flags=0x00000000
+frame[0] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x00001000/307200 palette=0x0004c000/768 crc=0x57015f8b flags=0x00000001
+frame[1] ok=1 state=0 gen=0xad518e62 producer=0xad518e62 pixel=0x0004d000/307200 palette=0x00098000/768 crc=0x116b154b flags=0x00000001
+frame[2] ok=1 state=3 gen=0xad518e62 producer=0xad518e62 pixel=0x00099000/307200 palette=0x000e4000/768 crc=0xf2ef7aed flags=0x00000001
+validate_parts identity=1 stale_epoch=0 rings=1 frames=1

@@ -1,0 +1,8 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-141a061e-8a47-4db1-8178-2cd174161b59-64x67jxq\\rtl", "-s", "i2s_interface_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-141a061e-8a47-4db1-8178-2cd174161b59-64x67jxq\\.work\\build\\verification\\i2s-interface.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-141a061e-8a47-4db1-8178-2cd174161b59-64x67jxq\\sys\\i2s.v", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-141a061e-8a47-4db1-8178-2cd174161b59-64x67jxq\\support\\tests\\i2s_interface_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-141a061e-8a47-4db1-8178-2cd174161b59-64x67jxq\\.work\\build\\verification\\i2s-interface.vvp"]
+
+PASS I2S divider=8: 20 words, channel order and setup/hold
+PASS I2S divider=4: 20 words, channel order and setup/hold
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-141a061e-8a47-4db1-8178-2cd174161b59-64x67jxq\support\tests\i2s_interface_tb.sv:83: $finish called at 312926445 (1ps)

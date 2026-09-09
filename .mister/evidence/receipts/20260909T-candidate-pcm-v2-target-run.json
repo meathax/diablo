@@ -1,0 +1,62 @@
+{
+  "schema": "diablo-target-candidate-run-v1",
+  "recorded_utc": "2026-09-09",
+  "status": "diagnostic-pass-qualification-open",
+  "candidate": {
+    "candidate_id": "9f9130e703b4a120fb4132778d0b99f768855cbd886f062d85dab331f56762bf",
+    "source_id": "1eb528ddb20e57884a6a22d7f34026d6cf45aed8c65b4505ca7bbd2ffbe303cb",
+    "manifest_sha256": "a85229d4996dcecd63c564f789d5ef55b5825bead6bf878a505250e32c9a196a",
+    "rbf_sha256": "7b5eb62411233b96adc244d87fe3ee96b16da13b271fa608d9a70cafd4917b10",
+    "package_manifest_sha256": "90fb9be5ddfd4909f5b09e0765c1a428dd343c902dfed7d4abccfbafc8c55ed5"
+  },
+  "target": {
+    "host": "192.168.0.69",
+    "kernel_release": "5.15.1-MiSTer",
+    "core": "Diablo",
+    "fpga_state": "operating",
+    "physical_base": "0x3fe00000",
+    "mapped_bytes": 2097152,
+    "video_backend": "fpga-shared-ddr",
+    "sdl_video_driver": "dummy",
+    "sdl_audio_driver": "dummy",
+    "active_release_verified": true
+  },
+  "runs": [
+    {
+      "name": "normal-profile-60s",
+      "status": "pass-runtime-diagnostic",
+      "stop_reason": "duration",
+      "profile": {
+        "presents": 2153,
+        "published": 1940,
+        "backpressure": 296,
+        "backpressure_dropped": 213,
+        "timing_invalid": 0,
+        "max_present_us": 536941,
+        "publish_attempts": 2449
+      },
+      "pcm_health_log_records": 0,
+      "log": ".mister/evidence/target-runs/20260909-pcm-v2-profile-engine.log"
+    },
+    {
+      "name": "active-spawn-60s",
+      "status": "diagnostic-fail",
+      "stop_reason": "duration",
+      "profile": {
+        "presents": 1045,
+        "published": 3,
+        "backpressure": 1042,
+        "backpressure_dropped": 1042,
+        "timing_invalid": 0
+      },
+      "input_poll_error": "repeated Diablo MiSTer transport input poll failed: error=3",
+      "log": ".mister/evidence/target-runs/20260909-pcm-v2-spawn-engine.log"
+    }
+  ],
+  "limitations": [
+    "No physical HDMI observer or speaker/stereo inspection was available.",
+    "The screenshot command returned only an older 2026-09-08 file; no fresh visual receipt is claimed.",
+    "Nonzero presentation backpressure and the active-spawn input error keep C15, C20, C21, C23 and C24 open.",
+    "No release or accepted candidate is claimed."
+  ]
+}

@@ -1,0 +1,8 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\rtl", "-s", "i2s_interface_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\.work\\build\\verification\\i2s-interface.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\sys\\i2s.v", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\support\\tests\\i2s_interface_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\.work\\build\\verification\\i2s-interface.vvp"]
+
+PASS I2S divider=8: 20 words, channel order and setup/hold
+PASS I2S divider=4: 20 words, channel order and setup/hold
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\support\tests\i2s_interface_tb.sv:83: $finish called at 312926445 (1ps)

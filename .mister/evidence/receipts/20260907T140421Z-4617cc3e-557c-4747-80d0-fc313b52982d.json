@@ -1,0 +1,2503 @@
+{
+  "schema": "diablo-verification-receipt-v1",
+  "run_id": "4617cc3e-557c-4747-80d0-fc313b52982d",
+  "suite": "local",
+  "started_utc": "2026-09-07T14:04:21.654637+00:00",
+  "finished_utc": "2026-09-07T14:07:43.437838+00:00",
+  "status": "pass",
+  "argv": [
+    "support/scripts/verification.py",
+    "--root",
+    ".",
+    "--suite",
+    "local",
+    "--candidate-manifest",
+    ".mister/evidence/candidates/fpga-candidate-20260907-24-arm.json"
+  ],
+  "cwd": "D:\\Arcade\\AI\\aCORES\\Diablo",
+  "environment_allowlist": {},
+  "tool_identity": {
+    "python": "3.14.6 (main, Jul 31 2026, 07:41:16)  [MINGW GCC UCRT 16.1.0 64 bit (AMD64)]",
+    "python_executable": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+    "g++": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE",
+    "iverilog": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+    "vvp": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE"
+  },
+  "candidate": {
+    "kind": "candidate-manifest",
+    "source_id": "765764590737f77ad860753cadfb3973554ab782799c3aed8827aa3825e15110",
+    "inputs": {
+      "source_files": [
+        {
+          "path": ".gitignore",
+          "bytes": 300,
+          "sha256": "71ff8f46ba6ad0de7e9403293fbc801c079be99fbbfb050664b683c53f104e0b"
+        },
+        {
+          "path": ".mister/source-lock.json",
+          "bytes": 3288,
+          "sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5"
+        },
+        {
+          "path": "Diablo.qpf",
+          "bytes": 55,
+          "sha256": "05b301699f85010719e5426c3bb294632430796bc73b6988648c700b335832ae"
+        },
+        {
+          "path": "Diablo.qsf",
+          "bytes": 4128,
+          "sha256": "cd0aa0d2827dc18a04bf3f0754bff978a9925a911b705fc537b93b9a91e7866c"
+        },
+        {
+          "path": "Diablo.sdc",
+          "bytes": 2084,
+          "sha256": "24d030e96c8e2e078f31f5be172026586e1b231e1ca5547af1095a4e129769e1"
+        },
+        {
+          "path": "Diablo.srf",
+          "bytes": 5747,
+          "sha256": "37f42477f66524e24d5f97f115e7eb4d878be9dbd577496fe32ecd5e2d157d63"
+        },
+        {
+          "path": "Diablo.sv",
+          "bytes": 12600,
+          "sha256": "313e77378d1d8ef605447baa5efa82a34f2fa418decb2badf5898c40f657f5e9"
+        },
+        {
+          "path": "LICENSE.fpga",
+          "bytes": 18092,
+          "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+        },
+        {
+          "path": "build_id.v",
+          "bytes": 27,
+          "sha256": "669aa74df4122c1522b42212d11c6a339fb796c00ad07625903c7264e27e6f3d"
+        },
+        {
+          "path": "files.qip",
+          "bytes": 806,
+          "sha256": "62f8d3fb23ead0c53b4650c6f82d372d3384de544be23fab2fcf392b6cd5950f"
+        },
+        {
+          "path": "rtl/cos.sv",
+          "bytes": 3612,
+          "sha256": "38f233d5b413f739a182a57d85306b4cc3b5d9b5eef993ff6c1ecae8f1eb2bb5"
+        },
+        {
+          "path": "rtl/diablo_command_consumer.sv",
+          "bytes": 28868,
+          "sha256": "5f08cf506eb83689204f0d7b3b063e6256163c811072dd51c7854d3e2639dbae"
+        },
+        {
+          "path": "rtl/diablo_ddr_probe.sv",
+          "bytes": 3145,
+          "sha256": "707c7617e9695af9a10627d5685604decaa1a3069d02a9a3683cad51b1d8bd3c"
+        },
+        {
+          "path": "rtl/diablo_frame_ownership.sv",
+          "bytes": 4795,
+          "sha256": "1e337f12460261746e5ac4b237a39cf0e334906da05617420d6fb0680c113080"
+        },
+        {
+          "path": "rtl/diablo_framebuffer_scanout.sv",
+          "bytes": 18131,
+          "sha256": "c25e9a76bbe561a552a221ee6b37e3b97838d05156a23714f855642bcc166d64"
+        },
+        {
+          "path": "rtl/diablo_input_capture.sv",
+          "bytes": 16646,
+          "sha256": "8360c5b21ef8ceea1064851feb9f7bc6c6e89f9fb125650b6cbc2219207353df"
+        },
+        {
+          "path": "rtl/diablo_pcm_player.sv",
+          "bytes": 15032,
+          "sha256": "818562db79302bb726251fe37a4bbc0c0469084acc83067935c3773a206a0b75"
+        },
+        {
+          "path": "rtl/diablo_transport_abi.svh",
+          "bytes": 4837,
+          "sha256": "3185ff4ca1be0245a104ba17365d0edeb2f1d912cca4fae62ce5b1f1cfccf4e2"
+        },
+        {
+          "path": "rtl/diablo_transport_control_reader.sv",
+          "bytes": 13380,
+          "sha256": "5ff9d899fab789114214ac322ec88f702cd01ca267f2d2466a2d412345152891"
+        },
+        {
+          "path": "rtl/diablo_transport_ddram_arbiter.sv",
+          "bytes": 12577,
+          "sha256": "0463803635dfd7eed92c7146f252e0e4928b779a04bbd776cc3187688ba6b5dc"
+        },
+        {
+          "path": "rtl/lfsr.v",
+          "bytes": 280,
+          "sha256": "291fdc8c9ab4006e92f129aafe484d37187845d94bfb0220446d0286c5108c27"
+        },
+        {
+          "path": "rtl/mycore.v",
+          "bytes": 1914,
+          "sha256": "cd597f8bdb3d6fade1cbab24f327df33e6e73f125816bcf5bbb2bf73bd32bd55"
+        },
+        {
+          "path": "rtl/native_test_pattern.sv",
+          "bytes": 4086,
+          "sha256": "3fd877f3de124677de6e1240d3f5d4279dadbe95f0211e71e55ee7bf1f942dad"
+        },
+        {
+          "path": "rtl/pll.qip",
+          "bytes": 381,
+          "sha256": "00f2d9346ed0b6202a939095275b6c188aa2e722998703515e99f44fb59ff9c9"
+        },
+        {
+          "path": "rtl/pll.v",
+          "bytes": 492,
+          "sha256": "cfe814b4d262b52791cbdd407b6de37834539c07d362f176367ebead7eab41f3"
+        },
+        {
+          "path": "rtl/pll/pll_0002.qip",
+          "bytes": 297,
+          "sha256": "98c91540a36e672f25f071bfaae965b8c9f60c679db4fbe226578c8c78c5052a"
+        },
+        {
+          "path": "rtl/pll/pll_0002.v",
+          "bytes": 2156,
+          "sha256": "376ed2bb02359b8c2c0566356638f0cca3b4047a2446fc3b6349659a66417c0c"
+        },
+        {
+          "path": "rtl/pll/pll_0002_q13.qip",
+          "bytes": 399,
+          "sha256": "58d1281c86501f8926b2b156edeada9bc7c27c4156f456eb3568a5ba40baea0f"
+        },
+        {
+          "path": "support/cmake/arm-linux-gnueabihf.cmake",
+          "bytes": 1251,
+          "sha256": "83b7783ab49e22539849bcc6eb8911eaa7a11bd3a8a49f47166f8eb4ee0029aa"
+        },
+        {
+          "path": "support/cmake/arm-portable.cmake",
+          "bytes": 1568,
+          "sha256": "f9497a2204c2103fb481c48061169bb9642144aa2fc1e8139dd3a4d8917dec15"
+        },
+        {
+          "path": "support/cmake/arm-reference.cmake",
+          "bytes": 1558,
+          "sha256": "5ff67c311cce16677de32614f2357fce2eed7e51042ed8290858f39472d9c545"
+        },
+        {
+          "path": "support/cmake/arm-transport.cmake",
+          "bytes": 9288,
+          "sha256": "5c89b53bf54054f198bfd1b11b1041c905890eb47ef55ea83a78a1530b590e25"
+        },
+        {
+          "path": "support/cmake/host-capture.cmake",
+          "bytes": 1707,
+          "sha256": "2bfbb78844abeb4d22546b7f1441cb315d3264c788b7d3ba44ad713062066033"
+        },
+        {
+          "path": "support/cmake/host-reference.cmake",
+          "bytes": 5049,
+          "sha256": "f8c5ee213d2600967081b1ca69e57245fe37e1728c7370d2c47945f57dd30ff3"
+        },
+        {
+          "path": "support/cmake/host-scenario.cmake",
+          "bytes": 1404,
+          "sha256": "52c3f461ffe7b83ac77d9bf8ec21c40d27788acb9073c6bc747b73df32c1f808"
+        },
+        {
+          "path": "support/cmake/replay-loading.cmake",
+          "bytes": 1315,
+          "sha256": "39900d4bb62f94f156f81e235360818295613ce23b840d7c1ed2297479d795b1"
+        },
+        {
+          "path": "support/host-reference.json",
+          "bytes": 890,
+          "sha256": "9c6227ea90c3393d58d35e303f85fc4000a66cfcbbd7fde6907d7d7cc77f5799"
+        },
+        {
+          "path": "support/patches/host-dependency-fixes.json",
+          "bytes": 1533,
+          "sha256": "eeea4aaa6522995ee2e4ce9beae6a09c53b9e5f7c1b01070f6ef5fc2e5241231"
+        },
+        {
+          "path": "support/patches/miniupnpc-windows-timeout.patch",
+          "bytes": 1941,
+          "sha256": "8f9bd551344ea4c42a458bcf928efb6e4690dfb4315ffc0d2594200b0b4e1236"
+        },
+        {
+          "path": "support/qualification/README.md",
+          "bytes": 3393,
+          "sha256": "dd15abc1244cde3a76c65a447ceaf1c20cf1049abdd184fc191007f92cb5eb76"
+        },
+        {
+          "path": "support/qualification/closure-gates.json",
+          "bytes": 13570,
+          "sha256": "8d067da8d60cdc2919069b6823edeaabb7eeaa0384502f26cad591c01cd325e7"
+        },
+        {
+          "path": "support/reference/arm_runtime_probe.cpp",
+          "bytes": 1624,
+          "sha256": "e246afe6cbc8bb16683136587667a6317fe0ae26fea484fbd7815556914ec776"
+        },
+        {
+          "path": "support/reference/host_capture.hpp",
+          "bytes": 2358,
+          "sha256": "9f13e7c00aad90b3f1f22c9ef57e067101e013015ea24c7eaf7bb9878974f65e"
+        },
+        {
+          "path": "support/reference/host_scenario.hpp",
+          "bytes": 1829,
+          "sha256": "a4012254c48f358ad99cd8c3a551e013ef470eb9804224c45f7c63674e1627ef"
+        },
+        {
+          "path": "support/reference/indexed_frame.hpp",
+          "bytes": 1443,
+          "sha256": "0299d81ea67c4618827fd5ab4f60fc3a52f7422e1047c4623a618919b98a60a2"
+        },
+        {
+          "path": "support/reference/mister_command_renderer.hpp",
+          "bytes": 7690,
+          "sha256": "c7b9e934bb41688a48d2f9c05e89b3e4e91c2b38e3ae267156d0c7748be9b54d"
+        },
+        {
+          "path": "support/reference/mister_command_scene.hpp",
+          "bytes": 4743,
+          "sha256": "7dc7271c20e4d9b061610b1e40b72ff44c60a9741f2b93c31b635abcf12b4443"
+        },
+        {
+          "path": "support/reference/mister_command_transport.hpp",
+          "bytes": 4060,
+          "sha256": "5b6ecd64eef38b31bcd9841df662810c57134881910505fee9a0cbb121abf580"
+        },
+        {
+          "path": "support/reference/mister_main.cpp",
+          "bytes": 1631,
+          "sha256": "923fd040f417f1fc2a1cbd9f116693d05105d843b3cd0756b067a051d0e97045"
+        },
+        {
+          "path": "support/reference/mister_transport.hpp",
+          "bytes": 9935,
+          "sha256": "053d2fee92f3b74db193939c313292673fa5b44033f8e12b0a49d8e528d4b1d9"
+        },
+        {
+          "path": "support/reference/mister_transport_admission.hpp",
+          "bytes": 4852,
+          "sha256": "e9d98e42d185767e81feb93ae6ee5582317ed66654beb528d7af8e29a490d7e4"
+        },
+        {
+          "path": "support/reference/mister_transport_audio.cpp",
+          "bytes": 284,
+          "sha256": "1713b6a32a01b799af53e9bc975a4bd466aa730a2a63b94b01c8155861d67d60"
+        },
+        {
+          "path": "support/reference/mister_transport_audio.hpp",
+          "bytes": 416,
+          "sha256": "85b8d2f869a4e5c097e0eebc9381d27396490d12e89c22f7095a390e7f7eb9ef"
+        },
+        {
+          "path": "support/reference/mister_transport_config.hpp",
+          "bytes": 949,
+          "sha256": "e6434b413a1bdf09c4a33d2ec7ed7d3b1549e49a7506d9a87b6aa14acf0145e8"
+        },
+        {
+          "path": "support/reference/mister_transport_runtime.hpp",
+          "bytes": 15229,
+          "sha256": "45a4938f4ee11ac1adf3a3a4426755eb76533a85950dc905c5afb889036e0937"
+        },
+        {
+          "path": "support/reference/mister_transport_sdl.hpp",
+          "bytes": 62696,
+          "sha256": "465d871dc86fed0c3a15a60f89eba00957342b32f7e82e9fa119960e2096c2b9"
+        },
+        {
+          "path": "support/reference/transport_abi.hpp",
+          "bytes": 26487,
+          "sha256": "c379b8e6aeab5c8e8e24f309a9ddf19a3b4b01fc262a787e63c6cff9a4858b3d"
+        },
+        {
+          "path": "support/reference/transport_input.hpp",
+          "bytes": 3638,
+          "sha256": "19046b7d2809ee527d6cc5a53e66a8ff5ecc0c1e0ad56e42a5274468b34cf359"
+        },
+        {
+          "path": "support/scripts/analyze_presentation_trace.py",
+          "bytes": 7255,
+          "sha256": "d5385e32027b3d616bb5216b4f33a11e09949f94c797f398aebebfc5208cfd77"
+        },
+        {
+          "path": "support/scripts/board_runner.py",
+          "bytes": 8479,
+          "sha256": "c0f23bac5e79fa0672fdef68995856479c97e1845dddf2f2fca8bcf1332f9b26"
+        },
+        {
+          "path": "support/scripts/candidate_manifest.py",
+          "bytes": 12590,
+          "sha256": "ae6100a1a37c0927772f5978dbf1e0970a4433cc3387f549036c81b7a09e598f"
+        },
+        {
+          "path": "support/scripts/closure_gates.py",
+          "bytes": 24601,
+          "sha256": "755109f80d36e09d3b9c06ed127bf613565926475dcc49930dfb739b0b71d6cf"
+        },
+        {
+          "path": "support/scripts/compare_frames.py",
+          "bytes": 2780,
+          "sha256": "aa8e120e9cd5cccfb13b85dcdf534fa59c47ecde7f982166493fc0c538e2c38c"
+        },
+        {
+          "path": "support/scripts/compile_fpga_snapshot.ps1",
+          "bytes": 8583,
+          "sha256": "79c4782c4e5db21c6de2bf1248e4fbd788d4cf9694ac38d010c68e5abf57b295"
+        },
+        {
+          "path": "support/scripts/deployment_manifest.py",
+          "bytes": 7921,
+          "sha256": "28c47d29abf0f260cad910b29bbbc1929a5a00593a1c69ace470602d5a2fc6a1"
+        },
+        {
+          "path": "support/scripts/diablo.py",
+          "bytes": 13903,
+          "sha256": "45e6114ee9dbdaa558597363c04278dd7f1ec0fbebbc641332bb2f3a3511a555"
+        },
+        {
+          "path": "support/scripts/diablo_launch.py",
+          "bytes": 26497,
+          "sha256": "13f948618b39a0226e8ba7d9c903af84dd74332ec903f75438826e46fbcdba59"
+        },
+        {
+          "path": "support/scripts/generate_transport_abi.py",
+          "bytes": 33415,
+          "sha256": "85cdfad14784d138437f01420dac6a3a4d509ea43d6b031470c376aef3441113"
+        },
+        {
+          "path": "support/scripts/guide_status.py",
+          "bytes": 4996,
+          "sha256": "b6d9582d59bd253295bfb80475d14c679c9273ede365782e8e82443136962194"
+        },
+        {
+          "path": "support/scripts/host_build.py",
+          "bytes": 7654,
+          "sha256": "44d1ae4b9fd87a9d51e0c448f805517a1521f40c9079168115171b3679c680ad"
+        },
+        {
+          "path": "support/scripts/host_dependencies.py",
+          "bytes": 2785,
+          "sha256": "1b55cd895e6983dfe3ab609f6593238bef07aa7a953ac4ab5d7d4e6b308bc904"
+        },
+        {
+          "path": "support/scripts/import_template.py",
+          "bytes": 2077,
+          "sha256": "adbe41327e58d3c3d1e623171bc1f6d2c562a702c04180a86c3481103dbec9d7"
+        },
+        {
+          "path": "support/scripts/inspect_arm_runtime.sh",
+          "bytes": 1294,
+          "sha256": "4d93c0d18b233f372a026bc7130d1652f9c9473f60c130d028af95b1620c50ee"
+        },
+        {
+          "path": "support/scripts/mister_preflight.py",
+          "bytes": 11165,
+          "sha256": "3b572a5ba418a503f241d6230db43d4147395ad05f12e781441dac3dd4e6b002"
+        },
+        {
+          "path": "support/scripts/package_release.py",
+          "bytes": 14358,
+          "sha256": "4d8d6a11034f695db503a4514ed56bea8135373444a794294e47f804eb874aa8"
+        },
+        {
+          "path": "support/scripts/quartus_audit.py",
+          "bytes": 20712,
+          "sha256": "aeddd8bf07f3bcaa60988fa75428f6b7fd4ebf001b0c680943d94f76abbbb9e2"
+        },
+        {
+          "path": "support/scripts/replay_arm.py",
+          "bytes": 3800,
+          "sha256": "79adc6210eecf1c21f4dc87364518d47dd006a1192e97e40b8154d4571b657cc"
+        },
+        {
+          "path": "support/scripts/replay_host.py",
+          "bytes": 5962,
+          "sha256": "2f6b111a7ffdfecad8dbd5a449afacda2200caeb5e8ecae2644b8939d366835f"
+        },
+        {
+          "path": "support/scripts/report_fpga_timing.tcl",
+          "bytes": 807,
+          "sha256": "ee25ab06480f06f04e360998e7d502dbe3a3f86b65b93b0071397d68102f8143"
+        },
+        {
+          "path": "support/scripts/run_host.py",
+          "bytes": 3493,
+          "sha256": "eb672d6cb11fbef2ed0a99084ac6a7ab5c5eaed6c6ef35a512896b8bfcd74462"
+        },
+        {
+          "path": "support/scripts/scenario_arm.py",
+          "bytes": 4424,
+          "sha256": "d46eccb1dc54d5f84adc952ff4a6bc7dd9e1a8d06525c7eeac3fa7217f52258a"
+        },
+        {
+          "path": "support/scripts/scenario_host.py",
+          "bytes": 6378,
+          "sha256": "b227e28871b36adb495cf5e4d148b8c525866f86f85baab09fec892c1bd26e66"
+        },
+        {
+          "path": "support/scripts/scene_oracle.py",
+          "bytes": 7890,
+          "sha256": "5841cee87f678058e564cbe52cb75b5e81543aff13f1a361cbbd16074439b22b"
+        },
+        {
+          "path": "support/scripts/test_command_consumer.py",
+          "bytes": 2497,
+          "sha256": "95b834ddf0363d225bb9b7bcc7b61a2e46014630fc6c6fefded680bb7ccda845"
+        },
+        {
+          "path": "support/scripts/test_command_renderer.py",
+          "bytes": 1099,
+          "sha256": "116c68b642ed379ca637d1dbb128ccb653c945f819af2916a392cc0e72008190"
+        },
+        {
+          "path": "support/scripts/test_command_transport.py",
+          "bytes": 1763,
+          "sha256": "eef4f6cdafd7c247f2493127c2d8d0fcb2b84a8e1a79c2389b00c33a7866999c"
+        },
+        {
+          "path": "support/scripts/test_ddr_probe.py",
+          "bytes": 3483,
+          "sha256": "7f8aa9d4570015a11e9acdd2c07afc28bfea7e2d2c23204982e44cbc518be342"
+        },
+        {
+          "path": "support/scripts/test_host_png.py",
+          "bytes": 1545,
+          "sha256": "1e66825c6f56fc85f3caad399219d396dd6af417f5584cd5717583ddaf21ad08"
+        },
+        {
+          "path": "support/scripts/test_mister_transport_input.py",
+          "bytes": 4126,
+          "sha256": "c3ed2291837fd41bf6c1c47e1af9b3ecc0b62e1aa3753fdb38d1c1bb1a1410d2"
+        },
+        {
+          "path": "support/scripts/test_transport_abi.py",
+          "bytes": 8878,
+          "sha256": "3c4143b6e0eaf27ebdfe095ce8d5b10e75ae05fa6174fd2bb6319e19a21c4152"
+        },
+        {
+          "path": "support/scripts/test_transport_control.py",
+          "bytes": 5400,
+          "sha256": "a49dfad49ebfa80d1a7756263ceafb7210ca4797904c19d9b0992348280a95ca"
+        },
+        {
+          "path": "support/scripts/verification.py",
+          "bytes": 24688,
+          "sha256": "5bc605f3cbf3d2f1a123e46d0cf1ec8ae6e07a8bfb6f14952dc57f67b6f8fec2"
+        },
+        {
+          "path": "support/tests/diablo_command_consumer_tb.sv",
+          "bytes": 13231,
+          "sha256": "8b3852dccea9a1896278ffed14f8d6e7eea6d06bab2e745c36c63e174dcfab52"
+        },
+        {
+          "path": "support/tests/diablo_ddr_probe_tb.sv",
+          "bytes": 2105,
+          "sha256": "41cd02861463b0fd301a2a6f7c3a9cfd2ebef671f047f3ce8858de424220b4eb"
+        },
+        {
+          "path": "support/tests/diablo_frame_ownership_tb.sv",
+          "bytes": 3857,
+          "sha256": "59808a32483ad1521d1573aa7fc8ecb69927b1dee13c8b894ce73b4cdef0d6c7"
+        },
+        {
+          "path": "support/tests/diablo_framebuffer_scanout_tb.sv",
+          "bytes": 8487,
+          "sha256": "a8648a61e8df44c4371c7131633e1fed2167514b38c26bb291ef7350f9294610"
+        },
+        {
+          "path": "support/tests/diablo_input_capture_tb.sv",
+          "bytes": 6057,
+          "sha256": "50488d05cad1bb7e3697f9fb585ffc9eaea7dd2add0a42a4f65f4d2370c7f56b"
+        },
+        {
+          "path": "support/tests/diablo_pcm_player_long_tb.sv",
+          "bytes": 2582,
+          "sha256": "0806113e587a1aa3068f74fa8196c7b58602f55a8648e2ee98b5e0bf118511ab"
+        },
+        {
+          "path": "support/tests/diablo_pcm_player_tb.sv",
+          "bytes": 3761,
+          "sha256": "3c738e70af6aabc857a44dde9812bfac3e0c8e8da6719b7c4bc76513ce251de4"
+        },
+        {
+          "path": "support/tests/diablo_transport_control_reader_tb.sv",
+          "bytes": 6214,
+          "sha256": "f617b241d35958302274ace6265908406450f34372ac92af7e713a9347ae3f14"
+        },
+        {
+          "path": "support/tests/diablo_transport_ddram_arbiter_tb.sv",
+          "bytes": 6845,
+          "sha256": "66435af5f41e9b658f26a8183aff19d9738053db4c65f766a2a73cc72281e2d6"
+        },
+        {
+          "path": "support/tests/diablo_transport_integrated_tb.sv",
+          "bytes": 13371,
+          "sha256": "a80b539d424385adfb73a8de57dd91a653282a8275d0ddebcaac8d4de5ac0723"
+        },
+        {
+          "path": "support/tests/host_png_test.cpp",
+          "bytes": 865,
+          "sha256": "3ac43a5ea4136bfd78d2413878247ee86e80faed0d88ec008dececdcaa3c3580"
+        },
+        {
+          "path": "support/tests/i2s_interface_tb.sv",
+          "bytes": 2887,
+          "sha256": "2a8b28df1c9d353e25ece5a94a60c61c27a78d2b5f70961d717f49f2e469aaf9"
+        },
+        {
+          "path": "support/tests/indexed_frame_probe.cpp",
+          "bytes": 1203,
+          "sha256": "dcbf9a5623aa8faafe5fe319ffecae6e824c986503388023219ad7209071da89"
+        },
+        {
+          "path": "support/tests/mister_command_renderer_test.cpp",
+          "bytes": 9016,
+          "sha256": "67bc7891e831963b1174fc78f0ba6cd93bfa3ba6062311250562ca746f52aed7"
+        },
+        {
+          "path": "support/tests/mister_command_transport_test.cpp",
+          "bytes": 3860,
+          "sha256": "af1f3cfdca92af8a1954d4e9ac8decb18cfa8486acbe544e08811276aba95b1c"
+        },
+        {
+          "path": "support/tests/mister_transport_admission_test.cpp",
+          "bytes": 1899,
+          "sha256": "a7579feb798073933d9cef0c74339ee6a82c7dc8317fbd45fe867a1124055efd"
+        },
+        {
+          "path": "support/tests/mister_transport_config_test.cpp",
+          "bytes": 1458,
+          "sha256": "a3b3a2cd64fb5658ff1c6450ca595a75b45db9899a835e347d1277974a279d8d"
+        },
+        {
+          "path": "support/tests/mister_transport_input_test.cpp",
+          "bytes": 12580,
+          "sha256": "094727fd78ddaf25231ff9e6516d1dc0dca0f9586e73827675807f7804f6d7a8"
+        },
+        {
+          "path": "support/tests/native_test_pattern_tb.sv",
+          "bytes": 4878,
+          "sha256": "87260ce2d468c4ea41747b444d729f3e2eab964962d5cadf52bc565210dfd9d6"
+        },
+        {
+          "path": "support/tests/test_board_runner.py",
+          "bytes": 2693,
+          "sha256": "2d7c796db0fa3a9346083e1803d012f1551c514e3505867882a2d52d2d9b82fb"
+        },
+        {
+          "path": "support/tests/test_candidate_manifest.py",
+          "bytes": 7036,
+          "sha256": "28bea2814ae6c8581e8a45e11264d5855f330c6269f2615d832f6cc1e1ed7e16"
+        },
+        {
+          "path": "support/tests/test_closure_gates.py",
+          "bytes": 8611,
+          "sha256": "87a4322202405419cb723b3710d1e1a148de4f05a497130659353eb7fe6d4e6f"
+        },
+        {
+          "path": "support/tests/test_compile_fpga_snapshot.py",
+          "bytes": 3456,
+          "sha256": "99935c8de1d79977ed5af48ffbc197e8095368577ab8c123d62bc897abe634e1"
+        },
+        {
+          "path": "support/tests/test_deployment_manifest.py",
+          "bytes": 2576,
+          "sha256": "619ef1d8157fc8ca420cc83ca7039b45d655ea7d46e9a388b1dbfd4978e8ad84"
+        },
+        {
+          "path": "support/tests/test_diablo_launch.py",
+          "bytes": 8812,
+          "sha256": "aa0d50deecd35a057a2acecf6e9de59e6d4edac0421939cdb8855b4d83063b92"
+        },
+        {
+          "path": "support/tests/test_foundation.py",
+          "bytes": 5865,
+          "sha256": "4bd11e5af3db135b487fbdb76ddbfdc3e34322e98d77d681f18c4e118c8614a4"
+        },
+        {
+          "path": "support/tests/test_frame_comparison.py",
+          "bytes": 2476,
+          "sha256": "2e36e8143cb2a410e1f495ebd646885a0bb25d82daa014d1db33aea4e7fbd8b5"
+        },
+        {
+          "path": "support/tests/test_guide_status.py",
+          "bytes": 2955,
+          "sha256": "9ea7bd6f9d233bd78ac16271504977f2b447ce4e8a590dedeafb2aa503afd600"
+        },
+        {
+          "path": "support/tests/test_host_build.py",
+          "bytes": 3213,
+          "sha256": "c095075294c7fbfc9a3056602b6d2471a23741472fb3d0a3f3bf1b06bad276c0"
+        },
+        {
+          "path": "support/tests/test_mister_preflight.py",
+          "bytes": 3349,
+          "sha256": "8e1ca9ac27b25e564b167ab401477e74b174b3367267f4461648797dfec45369"
+        },
+        {
+          "path": "support/tests/test_package_release.py",
+          "bytes": 5332,
+          "sha256": "62f40f0d22a4493b24087495ef61b3713bd23652bb2a8442d17bdf33d04b2ecd"
+        },
+        {
+          "path": "support/tests/test_presentation_trace.py",
+          "bytes": 3550,
+          "sha256": "196ee9419965909e812fed576ed39909ad0f79d61e8289bda7276ad897396433"
+        },
+        {
+          "path": "support/tests/test_quartus_audit.py",
+          "bytes": 16276,
+          "sha256": "cef26db98cf74bf72e62b0a6d991578833f658eb8d0163f09ab8ec5735663586"
+        },
+        {
+          "path": "support/tests/test_scene_oracle.py",
+          "bytes": 2442,
+          "sha256": "6f9164aef20d8bea84ccb0f7812876720cdc2949adbb7503ad1ff661d43813eb"
+        },
+        {
+          "path": "support/tests/test_verification.py",
+          "bytes": 2621,
+          "sha256": "80c00dd280947428b20b9faa2f9d578c2ca651fe01ae81290e4c4944075b3936"
+        },
+        {
+          "path": "support/tests/transport_abi_tb.sv",
+          "bytes": 3284,
+          "sha256": "cbc59ad82cf979159204813a6d0bb1e50d195afcda890a52665f857862cda5b0"
+        },
+        {
+          "path": "support/tests/transport_abi_test.cpp",
+          "bytes": 14694,
+          "sha256": "f39f2e4b1c487f624e2a1b241646055d030f110be688919ede6e74e061ef0423"
+        },
+        {
+          "path": "support/transport/command_scene_probe.cpp",
+          "bytes": 4284,
+          "sha256": "021a3477f85dfef83d04800a6be59ad9b93ecf9541e5ebb5c74e1bd0aec80dd5"
+        },
+        {
+          "path": "support/transport/transport_abi.json",
+          "bytes": 969,
+          "sha256": "c7bb585e588647a4203944b0c38e08199486e4af8bb3e16ff34042f35f184b8b"
+        },
+        {
+          "path": "support/transport/transport_copy_bench.cpp",
+          "bytes": 4513,
+          "sha256": "ffc03af9f7f21d05ebfe5cb82818c90e0c06b2f958c4b18158cc55fcc4c74fac"
+        },
+        {
+          "path": "support/transport/transport_header_probe.cpp",
+          "bytes": 15150,
+          "sha256": "a92f036f98fda1bbdaa7a052c6cd1926c3536589fc996596994942ff8c4a5603"
+        },
+        {
+          "path": "support/transport/transport_input_injector.cpp",
+          "bytes": 5617,
+          "sha256": "610db9f564f812b84d51c03370a232461f2d9bc97aa304882bc9a45bb3d277bf"
+        },
+        {
+          "path": "support/transport/transport_probe.cpp",
+          "bytes": 5092,
+          "sha256": "f976f253c8b2224bd23d5f90b9142aa15764777a0bc9b033111f93e81d881124"
+        },
+        {
+          "path": "support/transport/transport_runtime_probe.cpp",
+          "bytes": 1711,
+          "sha256": "1139f9b67554f6db6676433a3a09d62cd18f7d85f516bfc8f248b56c9e8f65cb"
+        },
+        {
+          "path": "support/transport/transport_state_dump.cpp",
+          "bytes": 3524,
+          "sha256": "65658f4ad1afd77cb78f8f01eae5b9f747f67b66d087023dee3178d3fac9cb29"
+        },
+        {
+          "path": "sys/alsa.sv",
+          "bytes": 3798,
+          "sha256": "74943b658cd3f4adc5b74c72f225fb42b95122a1c5e453df860a4c6a9bf72fc9"
+        },
+        {
+          "path": "sys/arcade_video.v",
+          "bytes": 8597,
+          "sha256": "ce64cdd7f900ded7b9cd9aa728dab7383b7561cdc75dfe82ab23fe27a3d217d3"
+        },
+        {
+          "path": "sys/ascal.vhd",
+          "bytes": 95952,
+          "sha256": "b460748da9c97fdb0efa5949ba55437eb7778112b3d683c39649427ea1a893af"
+        },
+        {
+          "path": "sys/audio_out.sv",
+          "bytes": 6483,
+          "sha256": "11aab123cce330e894d3ce9cf18e71460edbee43d3580a76d3bd1d516b3df40c"
+        },
+        {
+          "path": "sys/build_id.tcl",
+          "bytes": 2202,
+          "sha256": "148dc6a8124d36ac2898a45d085960cc05178a76d7297fde8877925fc0a74e88"
+        },
+        {
+          "path": "sys/ddr_svc.sv",
+          "bytes": 2662,
+          "sha256": "8dfa874b9a93b4dbbe3b2fcf4f9035a895262cc090d398f4099941a626f41c08"
+        },
+        {
+          "path": "sys/emu_ports.vh",
+          "bytes": 4025,
+          "sha256": "0b8f96815236ea4fcfec6fa3592b58f4c53f12094f31a26fd509709b503225e0"
+        },
+        {
+          "path": "sys/f2sdram_safe_terminator.sv",
+          "bytes": 8185,
+          "sha256": "400bcbcfc0b4aae324fe813866a5443d577bf4de9b4ab1454cb068733d170261"
+        },
+        {
+          "path": "sys/gamma_corr.sv",
+          "bytes": 3186,
+          "sha256": "2754944c6fe05d921374d1fecc26621782520b3bc6fbf600ca561e9f37c7af88"
+        },
+        {
+          "path": "sys/hps_io.sv",
+          "bytes": 27008,
+          "sha256": "f4a085fc23bdcefb57c600866a39a448c749cd3c93910f7005316e8df9019bec"
+        },
+        {
+          "path": "sys/hq2x.sv",
+          "bytes": 10537,
+          "sha256": "2146b69cf63c26a4b41407e9ac1b4462db4d7e3ea6d8a99f31ba12712d68f975"
+        },
+        {
+          "path": "sys/i2c.v",
+          "bytes": 2269,
+          "sha256": "09bd7ebd5d84fb57f6a9d569e5214f3154c49e55826c15bd78884f3c781fec5b"
+        },
+        {
+          "path": "sys/i2s.v",
+          "bytes": 839,
+          "sha256": "927d2aea6797fb837f383e5e8a3259609e132ed24883127240ab21601f467efa"
+        },
+        {
+          "path": "sys/iir_filter.v",
+          "bytes": 5659,
+          "sha256": "570a8095c15af84a60015b5eab105cee6e2d7edde77e20f0ce40c075ab2db8b7"
+        },
+        {
+          "path": "sys/ltc2308.sv",
+          "bytes": 3568,
+          "sha256": "825fa1197c8e9f31c19c2fef1b01693133fb7df3cfb2dd831f2848a98fc6899c"
+        },
+        {
+          "path": "sys/math.sv",
+          "bytes": 2065,
+          "sha256": "d384fa9fcf73100cb28a2affc5db1e4aacc87620287971c3882507fc3af056cc"
+        },
+        {
+          "path": "sys/mcp23009.sv",
+          "bytes": 1825,
+          "sha256": "f168485e0b64c0545060f25b858c9f1c12b57024ce441754bb6a0cb0e9072e3f"
+        },
+        {
+          "path": "sys/mt32pi.sv",
+          "bytes": 6243,
+          "sha256": "4ad39571d16a4b25347030d75ffdf601803ddec71e2e3fcabe962103cc45a1a2"
+        },
+        {
+          "path": "sys/osd.v",
+          "bytes": 7644,
+          "sha256": "3d544d9ed6e3e39b49ec814dff884176e7f6a052e4a5693a9c5f0e6005e9d83e"
+        },
+        {
+          "path": "sys/pll.13.qip",
+          "bytes": 1185,
+          "sha256": "f25f58e7c0290583f33ee0fdd729a4470cc69312686f0f1ecb95c61115d61cec"
+        },
+        {
+          "path": "sys/pll_audio.13.qip",
+          "bytes": 1384,
+          "sha256": "60edce734c54e4b9f9d56f078bc797841e52c6817f4d27e0cfe77db5d77b2596"
+        },
+        {
+          "path": "sys/pll_audio.qip",
+          "bytes": 55038,
+          "sha256": "278496eefe70d18f6b3ccf624c3a4595ccca74a9a6740eb4520200f1e929a236"
+        },
+        {
+          "path": "sys/pll_audio.v",
+          "bytes": 17313,
+          "sha256": "1662fff7650cd443db81db7f0707f5583d223372b3e3c41af2d41ea4f3ac38f3"
+        },
+        {
+          "path": "sys/pll_audio/pll_audio_0002.qip",
+          "bytes": 423,
+          "sha256": "4cedd5394006286e0be61acdcbb6455f35cdf5c1488f4eb4a76b60e20eb43fb8"
+        },
+        {
+          "path": "sys/pll_audio/pll_audio_0002.v",
+          "bytes": 2161,
+          "sha256": "2b24d2a561d81cc8b20f725884ee9c243e619058e42ebcdcf6f491d33008696c"
+        },
+        {
+          "path": "sys/pll_cfg.qip",
+          "bytes": 540,
+          "sha256": "7c1573f321012132479272242434d02058b1bcfe8d89843130ef11173a901eae"
+        },
+        {
+          "path": "sys/pll_cfg/altera_pll_reconfig_core.v",
+          "bytes": 85094,
+          "sha256": "9058d2c68e9cb0b1b6b3ab5487daad8aeaf04461e162aba317857dd133329189"
+        },
+        {
+          "path": "sys/pll_cfg/altera_pll_reconfig_top.v",
+          "bytes": 14825,
+          "sha256": "34c11c19e6bf3797d2db2e41314ce802f5a01041265ce943b54e7f20eb2027c9"
+        },
+        {
+          "path": "sys/pll_cfg/pll_cfg.v",
+          "bytes": 4627,
+          "sha256": "e07ae93193537830b3bc9029465e763a6bfe354c25b7e7747eeeb4094b08ad10"
+        },
+        {
+          "path": "sys/pll_cfg/pll_cfg_hdmi.v",
+          "bytes": 51491,
+          "sha256": "d3874dda124af03656054fa1ae1ee70f1a4d3cea6d4670795a5168325bb6760a"
+        },
+        {
+          "path": "sys/pll_hdmi.13.qip",
+          "bytes": 1361,
+          "sha256": "625df824716313233400454bc1142615fb3a234a494225691c8a554753b1731b"
+        },
+        {
+          "path": "sys/pll_hdmi.qip",
+          "bytes": 76832,
+          "sha256": "5571604010bf98858a0797a2286d2389e105d32a97b42508865b02ba4237dd0d"
+        },
+        {
+          "path": "sys/pll_hdmi.v",
+          "bytes": 17805,
+          "sha256": "499561547c1045a46f1137558e2bab83d8e026e5d32669b5c5779a264b7ed676"
+        },
+        {
+          "path": "sys/pll_hdmi/pll_hdmi_0002.qip",
+          "bytes": 223,
+          "sha256": "de648286a832ee72839dd6abb444231a4238d32b2c26f29426399d2221d7bf5b"
+        },
+        {
+          "path": "sys/pll_hdmi/pll_hdmi_0002.v",
+          "bytes": 6483,
+          "sha256": "27c77f35c89e97994477801f83edf3c7e9c5b9e57df49864434d300c40e9f1f7"
+        },
+        {
+          "path": "sys/pll_hdmi_adj.vhd",
+          "bytes": 11988,
+          "sha256": "ae18c82eef2f6b9c7783c68ac272d03f570eb1bdaddce14a1908c351da51a71b"
+        },
+        {
+          "path": "sys/pll_q13.qip",
+          "bytes": 380,
+          "sha256": "c2b9c95a49d9b1100b0640bbdeea1acff845b0a8cbc11a7259c0913d2c61cfa8"
+        },
+        {
+          "path": "sys/pll_q17.qip",
+          "bytes": 341,
+          "sha256": "7139faf33ae28066e805f290b15401eddb092d4b7d31b529a3ce1f0213fbc90a"
+        },
+        {
+          "path": "sys/scandoubler.v",
+          "bytes": 4697,
+          "sha256": "d36181c5fde9df0a504c547e23f60bcf201420052ada2682f081b00fd9485e6b"
+        },
+        {
+          "path": "sys/scanlines.v",
+          "bytes": 1441,
+          "sha256": "1fc7ac5359fd224a3fc06388f7671e07bf57cf6a39f35803a265661c56c564d4"
+        },
+        {
+          "path": "sys/sd_card.sv",
+          "bytes": 12938,
+          "sha256": "25114f9a0e9ab4dd702633ae927fc825dc79a4d9f7746c1bb75dbd10d61eb6d6"
+        },
+        {
+          "path": "sys/shadowmask.sv",
+          "bytes": 3617,
+          "sha256": "88429d137b4ce9f6538a052f03d874604f46decf6d69b3fc824cc795efcf3193"
+        },
+        {
+          "path": "sys/sigma_delta_dac.v",
+          "bytes": 934,
+          "sha256": "352d31dd185bce14d9d1e8a4999fbb5f2b5b2e42b048bdc9f4b828119cc5127a"
+        },
+        {
+          "path": "sys/spdif.v",
+          "bytes": 9218,
+          "sha256": "a617bba332c4611caf81ba585b8f6828c7899aec5f81664a870f10419cb9b451"
+        },
+        {
+          "path": "sys/sys.qip",
+          "bytes": 3306,
+          "sha256": "246a7032e993b5e0591d22122921fd919e55dc49441fe6b2ee2b80e98fd40f84"
+        },
+        {
+          "path": "sys/sys.tcl",
+          "bytes": 11160,
+          "sha256": "e9ab2b7c89b4347854810387550a65458aa3ec9de1bd26ad74328d73376f6a88"
+        },
+        {
+          "path": "sys/sys_analog.tcl",
+          "bytes": 3085,
+          "sha256": "e4cbfd22985fa046b546c0cfc626fccf773d9098b7c6a595f8bea66d67d25203"
+        },
+        {
+          "path": "sys/sys_dual_sdram.tcl",
+          "bytes": 2559,
+          "sha256": "4f41376069b2070079d8ba4ae4a722c8ecfe3ca4b99798d0bdd8cda986b5ad5b"
+        },
+        {
+          "path": "sys/sys_top.sdc",
+          "bytes": 3642,
+          "sha256": "0a5fa4015b82ad7ce38e56d1ae4aadea6209af59c5dd9eff56a11139cf16ce86"
+        },
+        {
+          "path": "sys/sys_top.v",
+          "bytes": 44952,
+          "sha256": "9bc5562bcc9d923aa3bff1a9c976c52492edb9ef981f428b7a4101c919a711b8"
+        },
+        {
+          "path": "sys/sysmem.sv",
+          "bytes": 16222,
+          "sha256": "9f8cf78563cc31beb7dfc6d7048c51ba536ff4f1f9f640b4ff9f8d574456c94e"
+        },
+        {
+          "path": "sys/vga_out.sv",
+          "bytes": 2042,
+          "sha256": "02a533c3dfd547afddea2946019ecc79bbe9c27bb6128c0999fa5fc9e78f8108"
+        },
+        {
+          "path": "sys/video_cleaner.sv",
+          "bytes": 1900,
+          "sha256": "44b986d9bf8412e56bf8e4eae3dc87e04b4c378e58ec6119de5a8aed320e3572"
+        },
+        {
+          "path": "sys/video_freak.sv",
+          "bytes": 8301,
+          "sha256": "6a9b8565f66894a8f2ec10c916593e980d260f29f1886bfe70bf6f3b0cf6edc0"
+        },
+        {
+          "path": "sys/video_freezer.sv",
+          "bytes": 2971,
+          "sha256": "0f3f4710b072b7e90b0b6bfe7607dec18dbd6bed78d1994f32d6fa72a6b7aef3"
+        },
+        {
+          "path": "sys/video_mixer.sv",
+          "bytes": 4715,
+          "sha256": "31ed2c917bd6680b4d60328e71a4f28015bd5fcec21e15b290eacec88971167d"
+        },
+        {
+          "path": "sys/yc_out.sv",
+          "bytes": 9570,
+          "sha256": "b31f179f06c89ba1505cc044fdd9aa5609fac0986418f26c840991c34023fc19"
+        }
+      ],
+      "git": {
+        "head": "47b57cbd657f8d15f30096843b90617154195b4b\n",
+        "status_porcelain_v1": " M .gitignore\n M Diablo.qpf\n M Diablo.qsf\n M Diablo.sdc\n M Diablo.srf\n M Diablo.sv\n M files.qip\n M rtl/cos.sv\n M rtl/lfsr.v\n M rtl/mycore.v\n M rtl/pll.qip\n M rtl/pll.v\n M rtl/pll/pll_0002.v\n M support/cmake/arm-reference.cmake\n M support/patches/host-dependency-fixes.json\n M support/patches/miniupnpc-windows-timeout.patch\n M support/qualification/README.md\n M support/scripts/candidate_manifest.py\n M support/scripts/closure_gates.py\n M support/scripts/diablo_launch.py\n M support/scripts/verification.py\n M support/tests/test_candidate_manifest.py\n M support/tests/test_closure_gates.py\n M support/tests/test_verification.py\n M sys/arcade_video.v\n M sys/build_id.tcl\n M sys/ddr_svc.sv\n M sys/emu_ports.vh\n M sys/f2sdram_safe_terminator.sv\n M sys/i2c.v\n M sys/iir_filter.v\n M sys/math.sv\n M sys/mt32pi.sv\n M sys/pll_audio.v\n M sys/pll_audio/pll_audio_0002.v\n M sys/pll_cfg/altera_pll_reconfig_core.v\n M sys/pll_cfg/altera_pll_reconfig_top.v\n M sys/pll_cfg/pll_cfg.v\n M sys/pll_hdmi.v\n M sys/pll_hdmi/pll_hdmi_0002.v\n M sys/sd_card.sv\n M sys/sys.tcl\n M sys/sys_analog.tcl\n M sys/sys_dual_sdram.tcl\n M sys/sys_top.sdc\n M sys/video_cleaner.sv\n M sys/video_freak.sv\n M sys/video_freezer.sv\n M sys/video_mixer.sv\n?? support/scripts/board_runner.py\n?? support/scripts/deployment_manifest.py\n?? support/scripts/mister_preflight.py\n?? support/scripts/package_release.py\n?? support/scripts/scene_oracle.py\n?? support/tests/test_board_runner.py\n?? support/tests/test_deployment_manifest.py\n?? support/tests/test_mister_preflight.py\n?? support/tests/test_package_release.py\n?? support/tests/test_scene_oracle.py"
+      }
+    },
+    "candidate_id": "01eda1749ecb4d747b9dba7e914a36939c66e05a3f61a617dda85569702c019c",
+    "limitation": null,
+    "manifest_source_id": "d50f7c4f19ae8cb5156b09a22b2e95ebe39f7bbc8518a791486a7af293d3202f",
+    "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-24-arm.json",
+    "artifact_count": 4
+  },
+  "dependency_snapshot": [
+    {
+      "path": ".gitignore",
+      "bytes": 300,
+      "sha256": "71ff8f46ba6ad0de7e9403293fbc801c079be99fbbfb050664b683c53f104e0b"
+    },
+    {
+      "path": ".mister/source-lock.json",
+      "bytes": 3288,
+      "sha256": "0b7e06b4cfe0073ab11e50ff31086d5707838ec7b5ad6541b38257bfe7679ad5"
+    },
+    {
+      "path": "Diablo.qpf",
+      "bytes": 55,
+      "sha256": "05b301699f85010719e5426c3bb294632430796bc73b6988648c700b335832ae"
+    },
+    {
+      "path": "Diablo.qsf",
+      "bytes": 4128,
+      "sha256": "cd0aa0d2827dc18a04bf3f0754bff978a9925a911b705fc537b93b9a91e7866c"
+    },
+    {
+      "path": "Diablo.sdc",
+      "bytes": 2084,
+      "sha256": "24d030e96c8e2e078f31f5be172026586e1b231e1ca5547af1095a4e129769e1"
+    },
+    {
+      "path": "Diablo.srf",
+      "bytes": 5747,
+      "sha256": "37f42477f66524e24d5f97f115e7eb4d878be9dbd577496fe32ecd5e2d157d63"
+    },
+    {
+      "path": "Diablo.sv",
+      "bytes": 12600,
+      "sha256": "313e77378d1d8ef605447baa5efa82a34f2fa418decb2badf5898c40f657f5e9"
+    },
+    {
+      "path": "LICENSE.fpga",
+      "bytes": 18092,
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+    },
+    {
+      "path": "build_id.v",
+      "bytes": 27,
+      "sha256": "669aa74df4122c1522b42212d11c6a339fb796c00ad07625903c7264e27e6f3d"
+    },
+    {
+      "path": "files.qip",
+      "bytes": 806,
+      "sha256": "62f8d3fb23ead0c53b4650c6f82d372d3384de544be23fab2fcf392b6cd5950f"
+    },
+    {
+      "path": "rtl/cos.sv",
+      "bytes": 3612,
+      "sha256": "38f233d5b413f739a182a57d85306b4cc3b5d9b5eef993ff6c1ecae8f1eb2bb5"
+    },
+    {
+      "path": "rtl/diablo_command_consumer.sv",
+      "bytes": 28868,
+      "sha256": "5f08cf506eb83689204f0d7b3b063e6256163c811072dd51c7854d3e2639dbae"
+    },
+    {
+      "path": "rtl/diablo_ddr_probe.sv",
+      "bytes": 3145,
+      "sha256": "707c7617e9695af9a10627d5685604decaa1a3069d02a9a3683cad51b1d8bd3c"
+    },
+    {
+      "path": "rtl/diablo_frame_ownership.sv",
+      "bytes": 4795,
+      "sha256": "1e337f12460261746e5ac4b237a39cf0e334906da05617420d6fb0680c113080"
+    },
+    {
+      "path": "rtl/diablo_framebuffer_scanout.sv",
+      "bytes": 18131,
+      "sha256": "c25e9a76bbe561a552a221ee6b37e3b97838d05156a23714f855642bcc166d64"
+    },
+    {
+      "path": "rtl/diablo_input_capture.sv",
+      "bytes": 16646,
+      "sha256": "8360c5b21ef8ceea1064851feb9f7bc6c6e89f9fb125650b6cbc2219207353df"
+    },
+    {
+      "path": "rtl/diablo_pcm_player.sv",
+      "bytes": 15032,
+      "sha256": "818562db79302bb726251fe37a4bbc0c0469084acc83067935c3773a206a0b75"
+    },
+    {
+      "path": "rtl/diablo_transport_abi.svh",
+      "bytes": 4837,
+      "sha256": "3185ff4ca1be0245a104ba17365d0edeb2f1d912cca4fae62ce5b1f1cfccf4e2"
+    },
+    {
+      "path": "rtl/diablo_transport_control_reader.sv",
+      "bytes": 13380,
+      "sha256": "5ff9d899fab789114214ac322ec88f702cd01ca267f2d2466a2d412345152891"
+    },
+    {
+      "path": "rtl/diablo_transport_ddram_arbiter.sv",
+      "bytes": 12577,
+      "sha256": "0463803635dfd7eed92c7146f252e0e4928b779a04bbd776cc3187688ba6b5dc"
+    },
+    {
+      "path": "rtl/lfsr.v",
+      "bytes": 280,
+      "sha256": "291fdc8c9ab4006e92f129aafe484d37187845d94bfb0220446d0286c5108c27"
+    },
+    {
+      "path": "rtl/mycore.v",
+      "bytes": 1914,
+      "sha256": "cd597f8bdb3d6fade1cbab24f327df33e6e73f125816bcf5bbb2bf73bd32bd55"
+    },
+    {
+      "path": "rtl/native_test_pattern.sv",
+      "bytes": 4086,
+      "sha256": "3fd877f3de124677de6e1240d3f5d4279dadbe95f0211e71e55ee7bf1f942dad"
+    },
+    {
+      "path": "rtl/pll.qip",
+      "bytes": 381,
+      "sha256": "00f2d9346ed0b6202a939095275b6c188aa2e722998703515e99f44fb59ff9c9"
+    },
+    {
+      "path": "rtl/pll.v",
+      "bytes": 492,
+      "sha256": "cfe814b4d262b52791cbdd407b6de37834539c07d362f176367ebead7eab41f3"
+    },
+    {
+      "path": "rtl/pll/pll_0002.qip",
+      "bytes": 297,
+      "sha256": "98c91540a36e672f25f071bfaae965b8c9f60c679db4fbe226578c8c78c5052a"
+    },
+    {
+      "path": "rtl/pll/pll_0002.v",
+      "bytes": 2156,
+      "sha256": "376ed2bb02359b8c2c0566356638f0cca3b4047a2446fc3b6349659a66417c0c"
+    },
+    {
+      "path": "rtl/pll/pll_0002_q13.qip",
+      "bytes": 399,
+      "sha256": "58d1281c86501f8926b2b156edeada9bc7c27c4156f456eb3568a5ba40baea0f"
+    },
+    {
+      "path": "support/cmake/arm-linux-gnueabihf.cmake",
+      "bytes": 1251,
+      "sha256": "83b7783ab49e22539849bcc6eb8911eaa7a11bd3a8a49f47166f8eb4ee0029aa"
+    },
+    {
+      "path": "support/cmake/arm-portable.cmake",
+      "bytes": 1568,
+      "sha256": "f9497a2204c2103fb481c48061169bb9642144aa2fc1e8139dd3a4d8917dec15"
+    },
+    {
+      "path": "support/cmake/arm-reference.cmake",
+      "bytes": 1558,
+      "sha256": "5ff67c311cce16677de32614f2357fce2eed7e51042ed8290858f39472d9c545"
+    },
+    {
+      "path": "support/cmake/arm-transport.cmake",
+      "bytes": 9288,
+      "sha256": "5c89b53bf54054f198bfd1b11b1041c905890eb47ef55ea83a78a1530b590e25"
+    },
+    {
+      "path": "support/cmake/host-capture.cmake",
+      "bytes": 1707,
+      "sha256": "2bfbb78844abeb4d22546b7f1441cb315d3264c788b7d3ba44ad713062066033"
+    },
+    {
+      "path": "support/cmake/host-reference.cmake",
+      "bytes": 5049,
+      "sha256": "f8c5ee213d2600967081b1ca69e57245fe37e1728c7370d2c47945f57dd30ff3"
+    },
+    {
+      "path": "support/cmake/host-scenario.cmake",
+      "bytes": 1404,
+      "sha256": "52c3f461ffe7b83ac77d9bf8ec21c40d27788acb9073c6bc747b73df32c1f808"
+    },
+    {
+      "path": "support/cmake/replay-loading.cmake",
+      "bytes": 1315,
+      "sha256": "39900d4bb62f94f156f81e235360818295613ce23b840d7c1ed2297479d795b1"
+    },
+    {
+      "path": "support/host-reference.json",
+      "bytes": 890,
+      "sha256": "9c6227ea90c3393d58d35e303f85fc4000a66cfcbbd7fde6907d7d7cc77f5799"
+    },
+    {
+      "path": "support/patches/host-dependency-fixes.json",
+      "bytes": 1533,
+      "sha256": "eeea4aaa6522995ee2e4ce9beae6a09c53b9e5f7c1b01070f6ef5fc2e5241231"
+    },
+    {
+      "path": "support/patches/miniupnpc-windows-timeout.patch",
+      "bytes": 1941,
+      "sha256": "8f9bd551344ea4c42a458bcf928efb6e4690dfb4315ffc0d2594200b0b4e1236"
+    },
+    {
+      "path": "support/qualification/README.md",
+      "bytes": 3393,
+      "sha256": "dd15abc1244cde3a76c65a447ceaf1c20cf1049abdd184fc191007f92cb5eb76"
+    },
+    {
+      "path": "support/qualification/closure-gates.json",
+      "bytes": 13570,
+      "sha256": "8d067da8d60cdc2919069b6823edeaabb7eeaa0384502f26cad591c01cd325e7"
+    },
+    {
+      "path": "support/reference/arm_runtime_probe.cpp",
+      "bytes": 1624,
+      "sha256": "e246afe6cbc8bb16683136587667a6317fe0ae26fea484fbd7815556914ec776"
+    },
+    {
+      "path": "support/reference/host_capture.hpp",
+      "bytes": 2358,
+      "sha256": "9f13e7c00aad90b3f1f22c9ef57e067101e013015ea24c7eaf7bb9878974f65e"
+    },
+    {
+      "path": "support/reference/host_scenario.hpp",
+      "bytes": 1829,
+      "sha256": "a4012254c48f358ad99cd8c3a551e013ef470eb9804224c45f7c63674e1627ef"
+    },
+    {
+      "path": "support/reference/indexed_frame.hpp",
+      "bytes": 1443,
+      "sha256": "0299d81ea67c4618827fd5ab4f60fc3a52f7422e1047c4623a618919b98a60a2"
+    },
+    {
+      "path": "support/reference/mister_command_renderer.hpp",
+      "bytes": 7690,
+      "sha256": "c7b9e934bb41688a48d2f9c05e89b3e4e91c2b38e3ae267156d0c7748be9b54d"
+    },
+    {
+      "path": "support/reference/mister_command_scene.hpp",
+      "bytes": 4743,
+      "sha256": "7dc7271c20e4d9b061610b1e40b72ff44c60a9741f2b93c31b635abcf12b4443"
+    },
+    {
+      "path": "support/reference/mister_command_transport.hpp",
+      "bytes": 4060,
+      "sha256": "5b6ecd64eef38b31bcd9841df662810c57134881910505fee9a0cbb121abf580"
+    },
+    {
+      "path": "support/reference/mister_main.cpp",
+      "bytes": 1631,
+      "sha256": "923fd040f417f1fc2a1cbd9f116693d05105d843b3cd0756b067a051d0e97045"
+    },
+    {
+      "path": "support/reference/mister_transport.hpp",
+      "bytes": 9935,
+      "sha256": "053d2fee92f3b74db193939c313292673fa5b44033f8e12b0a49d8e528d4b1d9"
+    },
+    {
+      "path": "support/reference/mister_transport_admission.hpp",
+      "bytes": 4852,
+      "sha256": "e9d98e42d185767e81feb93ae6ee5582317ed66654beb528d7af8e29a490d7e4"
+    },
+    {
+      "path": "support/reference/mister_transport_audio.cpp",
+      "bytes": 284,
+      "sha256": "1713b6a32a01b799af53e9bc975a4bd466aa730a2a63b94b01c8155861d67d60"
+    },
+    {
+      "path": "support/reference/mister_transport_audio.hpp",
+      "bytes": 416,
+      "sha256": "85b8d2f869a4e5c097e0eebc9381d27396490d12e89c22f7095a390e7f7eb9ef"
+    },
+    {
+      "path": "support/reference/mister_transport_config.hpp",
+      "bytes": 949,
+      "sha256": "e6434b413a1bdf09c4a33d2ec7ed7d3b1549e49a7506d9a87b6aa14acf0145e8"
+    },
+    {
+      "path": "support/reference/mister_transport_runtime.hpp",
+      "bytes": 15229,
+      "sha256": "45a4938f4ee11ac1adf3a3a4426755eb76533a85950dc905c5afb889036e0937"
+    },
+    {
+      "path": "support/reference/mister_transport_sdl.hpp",
+      "bytes": 62696,
+      "sha256": "465d871dc86fed0c3a15a60f89eba00957342b32f7e82e9fa119960e2096c2b9"
+    },
+    {
+      "path": "support/reference/transport_abi.hpp",
+      "bytes": 26487,
+      "sha256": "c379b8e6aeab5c8e8e24f309a9ddf19a3b4b01fc262a787e63c6cff9a4858b3d"
+    },
+    {
+      "path": "support/reference/transport_input.hpp",
+      "bytes": 3638,
+      "sha256": "19046b7d2809ee527d6cc5a53e66a8ff5ecc0c1e0ad56e42a5274468b34cf359"
+    },
+    {
+      "path": "support/scripts/analyze_presentation_trace.py",
+      "bytes": 7255,
+      "sha256": "d5385e32027b3d616bb5216b4f33a11e09949f94c797f398aebebfc5208cfd77"
+    },
+    {
+      "path": "support/scripts/board_runner.py",
+      "bytes": 8479,
+      "sha256": "c0f23bac5e79fa0672fdef68995856479c97e1845dddf2f2fca8bcf1332f9b26"
+    },
+    {
+      "path": "support/scripts/candidate_manifest.py",
+      "bytes": 12590,
+      "sha256": "ae6100a1a37c0927772f5978dbf1e0970a4433cc3387f549036c81b7a09e598f"
+    },
+    {
+      "path": "support/scripts/closure_gates.py",
+      "bytes": 24601,
+      "sha256": "755109f80d36e09d3b9c06ed127bf613565926475dcc49930dfb739b0b71d6cf"
+    },
+    {
+      "path": "support/scripts/compare_frames.py",
+      "bytes": 2780,
+      "sha256": "aa8e120e9cd5cccfb13b85dcdf534fa59c47ecde7f982166493fc0c538e2c38c"
+    },
+    {
+      "path": "support/scripts/compile_fpga_snapshot.ps1",
+      "bytes": 8583,
+      "sha256": "79c4782c4e5db21c6de2bf1248e4fbd788d4cf9694ac38d010c68e5abf57b295"
+    },
+    {
+      "path": "support/scripts/deployment_manifest.py",
+      "bytes": 7921,
+      "sha256": "28c47d29abf0f260cad910b29bbbc1929a5a00593a1c69ace470602d5a2fc6a1"
+    },
+    {
+      "path": "support/scripts/diablo.py",
+      "bytes": 13903,
+      "sha256": "45e6114ee9dbdaa558597363c04278dd7f1ec0fbebbc641332bb2f3a3511a555"
+    },
+    {
+      "path": "support/scripts/diablo_launch.py",
+      "bytes": 26497,
+      "sha256": "13f948618b39a0226e8ba7d9c903af84dd74332ec903f75438826e46fbcdba59"
+    },
+    {
+      "path": "support/scripts/generate_transport_abi.py",
+      "bytes": 33415,
+      "sha256": "85cdfad14784d138437f01420dac6a3a4d509ea43d6b031470c376aef3441113"
+    },
+    {
+      "path": "support/scripts/guide_status.py",
+      "bytes": 4996,
+      "sha256": "b6d9582d59bd253295bfb80475d14c679c9273ede365782e8e82443136962194"
+    },
+    {
+      "path": "support/scripts/host_build.py",
+      "bytes": 7654,
+      "sha256": "44d1ae4b9fd87a9d51e0c448f805517a1521f40c9079168115171b3679c680ad"
+    },
+    {
+      "path": "support/scripts/host_dependencies.py",
+      "bytes": 2785,
+      "sha256": "1b55cd895e6983dfe3ab609f6593238bef07aa7a953ac4ab5d7d4e6b308bc904"
+    },
+    {
+      "path": "support/scripts/import_template.py",
+      "bytes": 2077,
+      "sha256": "adbe41327e58d3c3d1e623171bc1f6d2c562a702c04180a86c3481103dbec9d7"
+    },
+    {
+      "path": "support/scripts/inspect_arm_runtime.sh",
+      "bytes": 1294,
+      "sha256": "4d93c0d18b233f372a026bc7130d1652f9c9473f60c130d028af95b1620c50ee"
+    },
+    {
+      "path": "support/scripts/mister_preflight.py",
+      "bytes": 11165,
+      "sha256": "3b572a5ba418a503f241d6230db43d4147395ad05f12e781441dac3dd4e6b002"
+    },
+    {
+      "path": "support/scripts/package_release.py",
+      "bytes": 14358,
+      "sha256": "4d8d6a11034f695db503a4514ed56bea8135373444a794294e47f804eb874aa8"
+    },
+    {
+      "path": "support/scripts/quartus_audit.py",
+      "bytes": 20712,
+      "sha256": "aeddd8bf07f3bcaa60988fa75428f6b7fd4ebf001b0c680943d94f76abbbb9e2"
+    },
+    {
+      "path": "support/scripts/replay_arm.py",
+      "bytes": 3800,
+      "sha256": "79adc6210eecf1c21f4dc87364518d47dd006a1192e97e40b8154d4571b657cc"
+    },
+    {
+      "path": "support/scripts/replay_host.py",
+      "bytes": 5962,
+      "sha256": "2f6b111a7ffdfecad8dbd5a449afacda2200caeb5e8ecae2644b8939d366835f"
+    },
+    {
+      "path": "support/scripts/report_fpga_timing.tcl",
+      "bytes": 807,
+      "sha256": "ee25ab06480f06f04e360998e7d502dbe3a3f86b65b93b0071397d68102f8143"
+    },
+    {
+      "path": "support/scripts/run_host.py",
+      "bytes": 3493,
+      "sha256": "eb672d6cb11fbef2ed0a99084ac6a7ab5c5eaed6c6ef35a512896b8bfcd74462"
+    },
+    {
+      "path": "support/scripts/scenario_arm.py",
+      "bytes": 4424,
+      "sha256": "d46eccb1dc54d5f84adc952ff4a6bc7dd9e1a8d06525c7eeac3fa7217f52258a"
+    },
+    {
+      "path": "support/scripts/scenario_host.py",
+      "bytes": 6378,
+      "sha256": "b227e28871b36adb495cf5e4d148b8c525866f86f85baab09fec892c1bd26e66"
+    },
+    {
+      "path": "support/scripts/scene_oracle.py",
+      "bytes": 7890,
+      "sha256": "5841cee87f678058e564cbe52cb75b5e81543aff13f1a361cbbd16074439b22b"
+    },
+    {
+      "path": "support/scripts/test_command_consumer.py",
+      "bytes": 2497,
+      "sha256": "95b834ddf0363d225bb9b7bcc7b61a2e46014630fc6c6fefded680bb7ccda845"
+    },
+    {
+      "path": "support/scripts/test_command_renderer.py",
+      "bytes": 1099,
+      "sha256": "116c68b642ed379ca637d1dbb128ccb653c945f819af2916a392cc0e72008190"
+    },
+    {
+      "path": "support/scripts/test_command_transport.py",
+      "bytes": 1763,
+      "sha256": "eef4f6cdafd7c247f2493127c2d8d0fcb2b84a8e1a79c2389b00c33a7866999c"
+    },
+    {
+      "path": "support/scripts/test_ddr_probe.py",
+      "bytes": 3483,
+      "sha256": "7f8aa9d4570015a11e9acdd2c07afc28bfea7e2d2c23204982e44cbc518be342"
+    },
+    {
+      "path": "support/scripts/test_host_png.py",
+      "bytes": 1545,
+      "sha256": "1e66825c6f56fc85f3caad399219d396dd6af417f5584cd5717583ddaf21ad08"
+    },
+    {
+      "path": "support/scripts/test_mister_transport_input.py",
+      "bytes": 4126,
+      "sha256": "c3ed2291837fd41bf6c1c47e1af9b3ecc0b62e1aa3753fdb38d1c1bb1a1410d2"
+    },
+    {
+      "path": "support/scripts/test_transport_abi.py",
+      "bytes": 8878,
+      "sha256": "3c4143b6e0eaf27ebdfe095ce8d5b10e75ae05fa6174fd2bb6319e19a21c4152"
+    },
+    {
+      "path": "support/scripts/test_transport_control.py",
+      "bytes": 5400,
+      "sha256": "a49dfad49ebfa80d1a7756263ceafb7210ca4797904c19d9b0992348280a95ca"
+    },
+    {
+      "path": "support/scripts/verification.py",
+      "bytes": 24688,
+      "sha256": "5bc605f3cbf3d2f1a123e46d0cf1ec8ae6e07a8bfb6f14952dc57f67b6f8fec2"
+    },
+    {
+      "path": "support/tests/diablo_command_consumer_tb.sv",
+      "bytes": 13231,
+      "sha256": "8b3852dccea9a1896278ffed14f8d6e7eea6d06bab2e745c36c63e174dcfab52"
+    },
+    {
+      "path": "support/tests/diablo_ddr_probe_tb.sv",
+      "bytes": 2105,
+      "sha256": "41cd02861463b0fd301a2a6f7c3a9cfd2ebef671f047f3ce8858de424220b4eb"
+    },
+    {
+      "path": "support/tests/diablo_frame_ownership_tb.sv",
+      "bytes": 3857,
+      "sha256": "59808a32483ad1521d1573aa7fc8ecb69927b1dee13c8b894ce73b4cdef0d6c7"
+    },
+    {
+      "path": "support/tests/diablo_framebuffer_scanout_tb.sv",
+      "bytes": 8487,
+      "sha256": "a8648a61e8df44c4371c7131633e1fed2167514b38c26bb291ef7350f9294610"
+    },
+    {
+      "path": "support/tests/diablo_input_capture_tb.sv",
+      "bytes": 6057,
+      "sha256": "50488d05cad1bb7e3697f9fb585ffc9eaea7dd2add0a42a4f65f4d2370c7f56b"
+    },
+    {
+      "path": "support/tests/diablo_pcm_player_long_tb.sv",
+      "bytes": 2582,
+      "sha256": "0806113e587a1aa3068f74fa8196c7b58602f55a8648e2ee98b5e0bf118511ab"
+    },
+    {
+      "path": "support/tests/diablo_pcm_player_tb.sv",
+      "bytes": 3761,
+      "sha256": "3c738e70af6aabc857a44dde9812bfac3e0c8e8da6719b7c4bc76513ce251de4"
+    },
+    {
+      "path": "support/tests/diablo_transport_control_reader_tb.sv",
+      "bytes": 6214,
+      "sha256": "f617b241d35958302274ace6265908406450f34372ac92af7e713a9347ae3f14"
+    },
+    {
+      "path": "support/tests/diablo_transport_ddram_arbiter_tb.sv",
+      "bytes": 6845,
+      "sha256": "66435af5f41e9b658f26a8183aff19d9738053db4c65f766a2a73cc72281e2d6"
+    },
+    {
+      "path": "support/tests/diablo_transport_integrated_tb.sv",
+      "bytes": 13371,
+      "sha256": "a80b539d424385adfb73a8de57dd91a653282a8275d0ddebcaac8d4de5ac0723"
+    },
+    {
+      "path": "support/tests/host_png_test.cpp",
+      "bytes": 865,
+      "sha256": "3ac43a5ea4136bfd78d2413878247ee86e80faed0d88ec008dececdcaa3c3580"
+    },
+    {
+      "path": "support/tests/i2s_interface_tb.sv",
+      "bytes": 2887,
+      "sha256": "2a8b28df1c9d353e25ece5a94a60c61c27a78d2b5f70961d717f49f2e469aaf9"
+    },
+    {
+      "path": "support/tests/indexed_frame_probe.cpp",
+      "bytes": 1203,
+      "sha256": "dcbf9a5623aa8faafe5fe319ffecae6e824c986503388023219ad7209071da89"
+    },
+    {
+      "path": "support/tests/mister_command_renderer_test.cpp",
+      "bytes": 9016,
+      "sha256": "67bc7891e831963b1174fc78f0ba6cd93bfa3ba6062311250562ca746f52aed7"
+    },
+    {
+      "path": "support/tests/mister_command_transport_test.cpp",
+      "bytes": 3860,
+      "sha256": "af1f3cfdca92af8a1954d4e9ac8decb18cfa8486acbe544e08811276aba95b1c"
+    },
+    {
+      "path": "support/tests/mister_transport_admission_test.cpp",
+      "bytes": 1899,
+      "sha256": "a7579feb798073933d9cef0c74339ee6a82c7dc8317fbd45fe867a1124055efd"
+    },
+    {
+      "path": "support/tests/mister_transport_config_test.cpp",
+      "bytes": 1458,
+      "sha256": "a3b3a2cd64fb5658ff1c6450ca595a75b45db9899a835e347d1277974a279d8d"
+    },
+    {
+      "path": "support/tests/mister_transport_input_test.cpp",
+      "bytes": 12580,
+      "sha256": "094727fd78ddaf25231ff9e6516d1dc0dca0f9586e73827675807f7804f6d7a8"
+    },
+    {
+      "path": "support/tests/native_test_pattern_tb.sv",
+      "bytes": 4878,
+      "sha256": "87260ce2d468c4ea41747b444d729f3e2eab964962d5cadf52bc565210dfd9d6"
+    },
+    {
+      "path": "support/tests/test_board_runner.py",
+      "bytes": 2693,
+      "sha256": "2d7c796db0fa3a9346083e1803d012f1551c514e3505867882a2d52d2d9b82fb"
+    },
+    {
+      "path": "support/tests/test_candidate_manifest.py",
+      "bytes": 7036,
+      "sha256": "28bea2814ae6c8581e8a45e11264d5855f330c6269f2615d832f6cc1e1ed7e16"
+    },
+    {
+      "path": "support/tests/test_closure_gates.py",
+      "bytes": 8611,
+      "sha256": "87a4322202405419cb723b3710d1e1a148de4f05a497130659353eb7fe6d4e6f"
+    },
+    {
+      "path": "support/tests/test_compile_fpga_snapshot.py",
+      "bytes": 3456,
+      "sha256": "99935c8de1d79977ed5af48ffbc197e8095368577ab8c123d62bc897abe634e1"
+    },
+    {
+      "path": "support/tests/test_deployment_manifest.py",
+      "bytes": 2576,
+      "sha256": "619ef1d8157fc8ca420cc83ca7039b45d655ea7d46e9a388b1dbfd4978e8ad84"
+    },
+    {
+      "path": "support/tests/test_diablo_launch.py",
+      "bytes": 8812,
+      "sha256": "aa0d50deecd35a057a2acecf6e9de59e6d4edac0421939cdb8855b4d83063b92"
+    },
+    {
+      "path": "support/tests/test_foundation.py",
+      "bytes": 5865,
+      "sha256": "4bd11e5af3db135b487fbdb76ddbfdc3e34322e98d77d681f18c4e118c8614a4"
+    },
+    {
+      "path": "support/tests/test_frame_comparison.py",
+      "bytes": 2476,
+      "sha256": "2e36e8143cb2a410e1f495ebd646885a0bb25d82daa014d1db33aea4e7fbd8b5"
+    },
+    {
+      "path": "support/tests/test_guide_status.py",
+      "bytes": 2955,
+      "sha256": "9ea7bd6f9d233bd78ac16271504977f2b447ce4e8a590dedeafb2aa503afd600"
+    },
+    {
+      "path": "support/tests/test_host_build.py",
+      "bytes": 3213,
+      "sha256": "c095075294c7fbfc9a3056602b6d2471a23741472fb3d0a3f3bf1b06bad276c0"
+    },
+    {
+      "path": "support/tests/test_mister_preflight.py",
+      "bytes": 3349,
+      "sha256": "8e1ca9ac27b25e564b167ab401477e74b174b3367267f4461648797dfec45369"
+    },
+    {
+      "path": "support/tests/test_package_release.py",
+      "bytes": 5332,
+      "sha256": "62f40f0d22a4493b24087495ef61b3713bd23652bb2a8442d17bdf33d04b2ecd"
+    },
+    {
+      "path": "support/tests/test_presentation_trace.py",
+      "bytes": 3550,
+      "sha256": "196ee9419965909e812fed576ed39909ad0f79d61e8289bda7276ad897396433"
+    },
+    {
+      "path": "support/tests/test_quartus_audit.py",
+      "bytes": 16276,
+      "sha256": "cef26db98cf74bf72e62b0a6d991578833f658eb8d0163f09ab8ec5735663586"
+    },
+    {
+      "path": "support/tests/test_scene_oracle.py",
+      "bytes": 2442,
+      "sha256": "6f9164aef20d8bea84ccb0f7812876720cdc2949adbb7503ad1ff661d43813eb"
+    },
+    {
+      "path": "support/tests/test_verification.py",
+      "bytes": 2621,
+      "sha256": "80c00dd280947428b20b9faa2f9d578c2ca651fe01ae81290e4c4944075b3936"
+    },
+    {
+      "path": "support/tests/transport_abi_tb.sv",
+      "bytes": 3284,
+      "sha256": "cbc59ad82cf979159204813a6d0bb1e50d195afcda890a52665f857862cda5b0"
+    },
+    {
+      "path": "support/tests/transport_abi_test.cpp",
+      "bytes": 14694,
+      "sha256": "f39f2e4b1c487f624e2a1b241646055d030f110be688919ede6e74e061ef0423"
+    },
+    {
+      "path": "support/transport/command_scene_probe.cpp",
+      "bytes": 4284,
+      "sha256": "021a3477f85dfef83d04800a6be59ad9b93ecf9541e5ebb5c74e1bd0aec80dd5"
+    },
+    {
+      "path": "support/transport/transport_abi.json",
+      "bytes": 969,
+      "sha256": "c7bb585e588647a4203944b0c38e08199486e4af8bb3e16ff34042f35f184b8b"
+    },
+    {
+      "path": "support/transport/transport_copy_bench.cpp",
+      "bytes": 4513,
+      "sha256": "ffc03af9f7f21d05ebfe5cb82818c90e0c06b2f958c4b18158cc55fcc4c74fac"
+    },
+    {
+      "path": "support/transport/transport_header_probe.cpp",
+      "bytes": 15150,
+      "sha256": "a92f036f98fda1bbdaa7a052c6cd1926c3536589fc996596994942ff8c4a5603"
+    },
+    {
+      "path": "support/transport/transport_input_injector.cpp",
+      "bytes": 5617,
+      "sha256": "610db9f564f812b84d51c03370a232461f2d9bc97aa304882bc9a45bb3d277bf"
+    },
+    {
+      "path": "support/transport/transport_probe.cpp",
+      "bytes": 5092,
+      "sha256": "f976f253c8b2224bd23d5f90b9142aa15764777a0bc9b033111f93e81d881124"
+    },
+    {
+      "path": "support/transport/transport_runtime_probe.cpp",
+      "bytes": 1711,
+      "sha256": "1139f9b67554f6db6676433a3a09d62cd18f7d85f516bfc8f248b56c9e8f65cb"
+    },
+    {
+      "path": "support/transport/transport_state_dump.cpp",
+      "bytes": 3524,
+      "sha256": "65658f4ad1afd77cb78f8f01eae5b9f747f67b66d087023dee3178d3fac9cb29"
+    },
+    {
+      "path": "sys/alsa.sv",
+      "bytes": 3798,
+      "sha256": "74943b658cd3f4adc5b74c72f225fb42b95122a1c5e453df860a4c6a9bf72fc9"
+    },
+    {
+      "path": "sys/arcade_video.v",
+      "bytes": 8597,
+      "sha256": "ce64cdd7f900ded7b9cd9aa728dab7383b7561cdc75dfe82ab23fe27a3d217d3"
+    },
+    {
+      "path": "sys/ascal.vhd",
+      "bytes": 95952,
+      "sha256": "b460748da9c97fdb0efa5949ba55437eb7778112b3d683c39649427ea1a893af"
+    },
+    {
+      "path": "sys/audio_out.sv",
+      "bytes": 6483,
+      "sha256": "11aab123cce330e894d3ce9cf18e71460edbee43d3580a76d3bd1d516b3df40c"
+    },
+    {
+      "path": "sys/build_id.tcl",
+      "bytes": 2202,
+      "sha256": "148dc6a8124d36ac2898a45d085960cc05178a76d7297fde8877925fc0a74e88"
+    },
+    {
+      "path": "sys/ddr_svc.sv",
+      "bytes": 2662,
+      "sha256": "8dfa874b9a93b4dbbe3b2fcf4f9035a895262cc090d398f4099941a626f41c08"
+    },
+    {
+      "path": "sys/emu_ports.vh",
+      "bytes": 4025,
+      "sha256": "0b8f96815236ea4fcfec6fa3592b58f4c53f12094f31a26fd509709b503225e0"
+    },
+    {
+      "path": "sys/f2sdram_safe_terminator.sv",
+      "bytes": 8185,
+      "sha256": "400bcbcfc0b4aae324fe813866a5443d577bf4de9b4ab1454cb068733d170261"
+    },
+    {
+      "path": "sys/gamma_corr.sv",
+      "bytes": 3186,
+      "sha256": "2754944c6fe05d921374d1fecc26621782520b3bc6fbf600ca561e9f37c7af88"
+    },
+    {
+      "path": "sys/hps_io.sv",
+      "bytes": 27008,
+      "sha256": "f4a085fc23bdcefb57c600866a39a448c749cd3c93910f7005316e8df9019bec"
+    },
+    {
+      "path": "sys/hq2x.sv",
+      "bytes": 10537,
+      "sha256": "2146b69cf63c26a4b41407e9ac1b4462db4d7e3ea6d8a99f31ba12712d68f975"
+    },
+    {
+      "path": "sys/i2c.v",
+      "bytes": 2269,
+      "sha256": "09bd7ebd5d84fb57f6a9d569e5214f3154c49e55826c15bd78884f3c781fec5b"
+    },
+    {
+      "path": "sys/i2s.v",
+      "bytes": 839,
+      "sha256": "927d2aea6797fb837f383e5e8a3259609e132ed24883127240ab21601f467efa"
+    },
+    {
+      "path": "sys/iir_filter.v",
+      "bytes": 5659,
+      "sha256": "570a8095c15af84a60015b5eab105cee6e2d7edde77e20f0ce40c075ab2db8b7"
+    },
+    {
+      "path": "sys/ltc2308.sv",
+      "bytes": 3568,
+      "sha256": "825fa1197c8e9f31c19c2fef1b01693133fb7df3cfb2dd831f2848a98fc6899c"
+    },
+    {
+      "path": "sys/math.sv",
+      "bytes": 2065,
+      "sha256": "d384fa9fcf73100cb28a2affc5db1e4aacc87620287971c3882507fc3af056cc"
+    },
+    {
+      "path": "sys/mcp23009.sv",
+      "bytes": 1825,
+      "sha256": "f168485e0b64c0545060f25b858c9f1c12b57024ce441754bb6a0cb0e9072e3f"
+    },
+    {
+      "path": "sys/mt32pi.sv",
+      "bytes": 6243,
+      "sha256": "4ad39571d16a4b25347030d75ffdf601803ddec71e2e3fcabe962103cc45a1a2"
+    },
+    {
+      "path": "sys/osd.v",
+      "bytes": 7644,
+      "sha256": "3d544d9ed6e3e39b49ec814dff884176e7f6a052e4a5693a9c5f0e6005e9d83e"
+    },
+    {
+      "path": "sys/pll.13.qip",
+      "bytes": 1185,
+      "sha256": "f25f58e7c0290583f33ee0fdd729a4470cc69312686f0f1ecb95c61115d61cec"
+    },
+    {
+      "path": "sys/pll_audio.13.qip",
+      "bytes": 1384,
+      "sha256": "60edce734c54e4b9f9d56f078bc797841e52c6817f4d27e0cfe77db5d77b2596"
+    },
+    {
+      "path": "sys/pll_audio.qip",
+      "bytes": 55038,
+      "sha256": "278496eefe70d18f6b3ccf624c3a4595ccca74a9a6740eb4520200f1e929a236"
+    },
+    {
+      "path": "sys/pll_audio.v",
+      "bytes": 17313,
+      "sha256": "1662fff7650cd443db81db7f0707f5583d223372b3e3c41af2d41ea4f3ac38f3"
+    },
+    {
+      "path": "sys/pll_audio/pll_audio_0002.qip",
+      "bytes": 423,
+      "sha256": "4cedd5394006286e0be61acdcbb6455f35cdf5c1488f4eb4a76b60e20eb43fb8"
+    },
+    {
+      "path": "sys/pll_audio/pll_audio_0002.v",
+      "bytes": 2161,
+      "sha256": "2b24d2a561d81cc8b20f725884ee9c243e619058e42ebcdcf6f491d33008696c"
+    },
+    {
+      "path": "sys/pll_cfg.qip",
+      "bytes": 540,
+      "sha256": "7c1573f321012132479272242434d02058b1bcfe8d89843130ef11173a901eae"
+    },
+    {
+      "path": "sys/pll_cfg/altera_pll_reconfig_core.v",
+      "bytes": 85094,
+      "sha256": "9058d2c68e9cb0b1b6b3ab5487daad8aeaf04461e162aba317857dd133329189"
+    },
+    {
+      "path": "sys/pll_cfg/altera_pll_reconfig_top.v",
+      "bytes": 14825,
+      "sha256": "34c11c19e6bf3797d2db2e41314ce802f5a01041265ce943b54e7f20eb2027c9"
+    },
+    {
+      "path": "sys/pll_cfg/pll_cfg.v",
+      "bytes": 4627,
+      "sha256": "e07ae93193537830b3bc9029465e763a6bfe354c25b7e7747eeeb4094b08ad10"
+    },
+    {
+      "path": "sys/pll_cfg/pll_cfg_hdmi.v",
+      "bytes": 51491,
+      "sha256": "d3874dda124af03656054fa1ae1ee70f1a4d3cea6d4670795a5168325bb6760a"
+    },
+    {
+      "path": "sys/pll_hdmi.13.qip",
+      "bytes": 1361,
+      "sha256": "625df824716313233400454bc1142615fb3a234a494225691c8a554753b1731b"
+    },
+    {
+      "path": "sys/pll_hdmi.qip",
+      "bytes": 76832,
+      "sha256": "5571604010bf98858a0797a2286d2389e105d32a97b42508865b02ba4237dd0d"
+    },
+    {
+      "path": "sys/pll_hdmi.v",
+      "bytes": 17805,
+      "sha256": "499561547c1045a46f1137558e2bab83d8e026e5d32669b5c5779a264b7ed676"
+    },
+    {
+      "path": "sys/pll_hdmi/pll_hdmi_0002.qip",
+      "bytes": 223,
+      "sha256": "de648286a832ee72839dd6abb444231a4238d32b2c26f29426399d2221d7bf5b"
+    },
+    {
+      "path": "sys/pll_hdmi/pll_hdmi_0002.v",
+      "bytes": 6483,
+      "sha256": "27c77f35c89e97994477801f83edf3c7e9c5b9e57df49864434d300c40e9f1f7"
+    },
+    {
+      "path": "sys/pll_hdmi_adj.vhd",
+      "bytes": 11988,
+      "sha256": "ae18c82eef2f6b9c7783c68ac272d03f570eb1bdaddce14a1908c351da51a71b"
+    },
+    {
+      "path": "sys/pll_q13.qip",
+      "bytes": 380,
+      "sha256": "c2b9c95a49d9b1100b0640bbdeea1acff845b0a8cbc11a7259c0913d2c61cfa8"
+    },
+    {
+      "path": "sys/pll_q17.qip",
+      "bytes": 341,
+      "sha256": "7139faf33ae28066e805f290b15401eddb092d4b7d31b529a3ce1f0213fbc90a"
+    },
+    {
+      "path": "sys/scandoubler.v",
+      "bytes": 4697,
+      "sha256": "d36181c5fde9df0a504c547e23f60bcf201420052ada2682f081b00fd9485e6b"
+    },
+    {
+      "path": "sys/scanlines.v",
+      "bytes": 1441,
+      "sha256": "1fc7ac5359fd224a3fc06388f7671e07bf57cf6a39f35803a265661c56c564d4"
+    },
+    {
+      "path": "sys/sd_card.sv",
+      "bytes": 12938,
+      "sha256": "25114f9a0e9ab4dd702633ae927fc825dc79a4d9f7746c1bb75dbd10d61eb6d6"
+    },
+    {
+      "path": "sys/shadowmask.sv",
+      "bytes": 3617,
+      "sha256": "88429d137b4ce9f6538a052f03d874604f46decf6d69b3fc824cc795efcf3193"
+    },
+    {
+      "path": "sys/sigma_delta_dac.v",
+      "bytes": 934,
+      "sha256": "352d31dd185bce14d9d1e8a4999fbb5f2b5b2e42b048bdc9f4b828119cc5127a"
+    },
+    {
+      "path": "sys/spdif.v",
+      "bytes": 9218,
+      "sha256": "a617bba332c4611caf81ba585b8f6828c7899aec5f81664a870f10419cb9b451"
+    },
+    {
+      "path": "sys/sys.qip",
+      "bytes": 3306,
+      "sha256": "246a7032e993b5e0591d22122921fd919e55dc49441fe6b2ee2b80e98fd40f84"
+    },
+    {
+      "path": "sys/sys.tcl",
+      "bytes": 11160,
+      "sha256": "e9ab2b7c89b4347854810387550a65458aa3ec9de1bd26ad74328d73376f6a88"
+    },
+    {
+      "path": "sys/sys_analog.tcl",
+      "bytes": 3085,
+      "sha256": "e4cbfd22985fa046b546c0cfc626fccf773d9098b7c6a595f8bea66d67d25203"
+    },
+    {
+      "path": "sys/sys_dual_sdram.tcl",
+      "bytes": 2559,
+      "sha256": "4f41376069b2070079d8ba4ae4a722c8ecfe3ca4b99798d0bdd8cda986b5ad5b"
+    },
+    {
+      "path": "sys/sys_top.sdc",
+      "bytes": 3642,
+      "sha256": "0a5fa4015b82ad7ce38e56d1ae4aadea6209af59c5dd9eff56a11139cf16ce86"
+    },
+    {
+      "path": "sys/sys_top.v",
+      "bytes": 44952,
+      "sha256": "9bc5562bcc9d923aa3bff1a9c976c52492edb9ef981f428b7a4101c919a711b8"
+    },
+    {
+      "path": "sys/sysmem.sv",
+      "bytes": 16222,
+      "sha256": "9f8cf78563cc31beb7dfc6d7048c51ba536ff4f1f9f640b4ff9f8d574456c94e"
+    },
+    {
+      "path": "sys/vga_out.sv",
+      "bytes": 2042,
+      "sha256": "02a533c3dfd547afddea2946019ecc79bbe9c27bb6128c0999fa5fc9e78f8108"
+    },
+    {
+      "path": "sys/video_cleaner.sv",
+      "bytes": 1900,
+      "sha256": "44b986d9bf8412e56bf8e4eae3dc87e04b4c378e58ec6119de5a8aed320e3572"
+    },
+    {
+      "path": "sys/video_freak.sv",
+      "bytes": 8301,
+      "sha256": "6a9b8565f66894a8f2ec10c916593e980d260f29f1886bfe70bf6f3b0cf6edc0"
+    },
+    {
+      "path": "sys/video_freezer.sv",
+      "bytes": 2971,
+      "sha256": "0f3f4710b072b7e90b0b6bfe7607dec18dbd6bed78d1994f32d6fa72a6b7aef3"
+    },
+    {
+      "path": "sys/video_mixer.sv",
+      "bytes": 4715,
+      "sha256": "31ed2c917bd6680b4d60328e71a4f28015bd5fcec21e15b290eacec88971167d"
+    },
+    {
+      "path": "sys/yc_out.sv",
+      "bytes": 9570,
+      "sha256": "b31f179f06c89ba1505cc044fdd9aa5609fac0986418f26c840991c34023fc19"
+    }
+  ],
+  "results": [
+    {
+      "id": "python-foundation",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 300,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests",
+          "-p",
+          "test_*.py",
+          "-v"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/python-foundation.log",
+      "log_sha256": "cadd22a4d0de860dd46346b1aba92fa6449f9c73e8dbac9a8b39e7fed4cbcb30",
+      "log_bytes": 17468
+    },
+    {
+      "id": "command-renderer",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\scripts\\test_command_renderer.py"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/command-renderer.log",
+      "log_sha256": "9253d97b91b475c50030fca9af4cc1310e8b7c87437e034eb570d2bd79a33c7f",
+      "log_bytes": 317
+    },
+    {
+      "id": "command-transport",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\scripts\\test_command_transport.py"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/command-transport.log",
+      "log_sha256": "a775b4f9fd9f969f13846e424dc2993a50453c61d8900fd0d42a84fcd2577dee",
+      "log_bytes": 365
+    },
+    {
+      "id": "transport-abi-host",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE",
+          "-std=c++23",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\reference",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\transport_abi_test.cpp",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport_abi_test.exe"
+        ],
+        [
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport_abi_test.exe",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport_abi_header.hex"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/transport-abi-host.log",
+      "log_sha256": "f2a96b25b5b36b666b2b54e5f311c356f83df6c04893600a4ef641dfd9c023e8",
+      "log_bytes": 999
+    },
+    {
+      "id": "indexed-frame-probe",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE",
+          "-std=c++23",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\reference",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\indexed_frame_probe.cpp",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\indexed_frame_probe.exe"
+        ],
+        [
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\indexed_frame_probe.exe",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\indexed_frame_probe.bin"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/indexed-frame-probe.log",
+      "log_sha256": "4bcedd318b58084fea1862e56de7a2130da3df944ed8238414b7d614b67ab60d",
+      "log_bytes": 967
+    },
+    {
+      "id": "host-png",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\scripts\\test_host_png.py",
+          "--build-dir",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/host-png.log",
+      "log_sha256": "676dc4f87001dc3edc8a4081961298628a3efc2cf13ee86978e5355709bdb27e",
+      "log_bytes": 747
+    },
+    {
+      "id": "transport-sdl-input",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 240,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\scripts\\test_mister_transport_input.py",
+          "--sdl-build-include",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\_deps\\sdl2-build\\include\\SDL2",
+          "--sdl-source-include",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\_deps\\sdl2-src\\include",
+          "--sdl-library",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\_deps\\sdl2-build\\libSDL2.a"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/transport-sdl-input.log",
+      "log_sha256": "7e395f6f7807e430a43b8c9ccdf91f6b37453e6619d7999a94ce95ac771a4236",
+      "log_bytes": 2497
+    },
+    {
+      "id": "command-consumer",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_command_consumer_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\command-consumer.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_command_consumer.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_command_consumer_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\command-consumer.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/command-consumer.log",
+      "log_sha256": "fa56412f5a298e316b9d7ef734c05da7bc02ca75395b4c56faab23928d036d59",
+      "log_bytes": 1249
+    },
+    {
+      "id": "ddr-probe",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_ddr_probe_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\ddr-probe.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_ddr_probe.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_ddr_probe_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\ddr-probe.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/ddr-probe.log",
+      "log_sha256": "3399c634161e4c8060aa2ff31257b663194668a4620643eed7d86ce2f17fd623",
+      "log_bytes": 1176
+    },
+    {
+      "id": "frame-ownership",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_frame_ownership_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\frame-ownership.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_frame_ownership.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_frame_ownership_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\frame-ownership.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/frame-ownership.log",
+      "log_sha256": "4ef0532bdcb423cd62e15d9b706fc5654bce3f11f69f98ba0a4d971619561d73",
+      "log_bytes": 1228
+    },
+    {
+      "id": "framebuffer-scanout",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_framebuffer_scanout_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\framebuffer-scanout.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_framebuffer_scanout.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_framebuffer_scanout_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\framebuffer-scanout.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/framebuffer-scanout.log",
+      "log_sha256": "4f626c8c938d11cfe6d90f336f2f9d93321f160440fae10dfad3c6a02cbd634e",
+      "log_bytes": 1247
+    },
+    {
+      "id": "input-capture",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_input_capture_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\input-capture.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_input_capture.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_input_capture_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\input-capture.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/input-capture.log",
+      "log_sha256": "bf0cb085fe09118f5ffd31989b2663e8cee7f426c61b7b849521f3e55d59eff2",
+      "log_bytes": 1234
+    },
+    {
+      "id": "i2s-interface",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "i2s_interface_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\i2s-interface.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\sys\\i2s.v",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\i2s_interface_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\i2s-interface.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/i2s-interface.log",
+      "log_sha256": "3f12a29ab27307ecbe41e2ea0e553cb52aa889939adb9261385bca6b6cb4b9d6",
+      "log_bytes": 1257
+    },
+    {
+      "id": "pcm-player",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_pcm_player_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\pcm-player.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_pcm_player.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_pcm_player_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\pcm-player.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/pcm-player.log",
+      "log_sha256": "890e0e5cbef1e28a1af853be506c61c9a9376def4e08fc8a2441cbb3b6ae3772",
+      "log_bytes": 1183
+    },
+    {
+      "id": "pcm-player-long",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_pcm_player_long_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\pcm-player-long.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_pcm_player.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_pcm_player_long_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\pcm-player-long.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/pcm-player-long.log",
+      "log_sha256": "9368ca3c14deac1e186c0924edbaf764452ca85aba1b9b054d02f03fef5e331f",
+      "log_bytes": 1237
+    },
+    {
+      "id": "transport-control-reader",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_transport_control_reader_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport-control-reader.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_transport_control_reader.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_transport_control_reader_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport-control-reader.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/transport-control-reader.log",
+      "log_sha256": "b4a7a828a011e95ba3823849a30dfb72bb51c9ca2269667f66e79c1ab23499fe",
+      "log_bytes": 1281
+    },
+    {
+      "id": "transport-ddram-arbiter",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_transport_ddram_arbiter_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport-ddram-arbiter.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_transport_ddram_arbiter.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_transport_ddram_arbiter_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport-ddram-arbiter.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/transport-ddram-arbiter.log",
+      "log_sha256": "7e24d0d0c1471e53a9591a44fc3d295bdf49af23e0e32ef7b719cc8c4d2d0782",
+      "log_bytes": 1261
+    },
+    {
+      "id": "transport-integrated-ddr",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 180,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "diablo_transport_integrated_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport-integrated-ddr.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_transport_ddram_arbiter.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_transport_control_reader.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_framebuffer_scanout.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_pcm_player.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_input_capture.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\diablo_command_consumer.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\diablo_transport_integrated_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport-integrated-ddr.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/transport-integrated-ddr.log",
+      "log_sha256": "29051fac58e9dbca177645ef8815358d72047c984f29996bbe6b12e6d0a19882",
+      "log_bytes": 2099
+    },
+    {
+      "id": "transport-abi-rtl",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 240,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE",
+          "-std=c++23",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\reference",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\transport_abi_test.cpp",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport_abi_fixture.exe"
+        ],
+        [
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport_abi_fixture.exe",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\transport-abi\\header.hex"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "transport_abi_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport-abi-rtl.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\transport_abi_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\transport-abi-rtl.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/transport-abi-rtl.log",
+      "log_sha256": "9a849c6347247678baa9df9543c1c0836c5886306a3f005890ddda0bea8cde6e",
+      "log_bytes": 2040
+    },
+    {
+      "id": "native-test-pattern",
+      "status": "pass",
+      "exit_code": 0,
+      "timeout_seconds": 240,
+      "commands": [
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+          "-g2012",
+          "-I",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl",
+          "-s",
+          "native_test_pattern_tb",
+          "-o",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\native-test-pattern.vvp",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\rtl\\native_test_pattern.sv",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\support\\tests\\native_test_pattern_tb.sv"
+        ],
+        [
+          "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE",
+          "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-4617cc3e-557c-4747-80d0-fc313b52982d-nf936pgd\\.work\\build\\verification\\native-test-pattern.vvp"
+        ]
+      ],
+      "log": ".mister/evidence/runs/4617cc3e-557c-4747-80d0-fc313b52982d/native-test-pattern.log",
+      "log_sha256": "50a0fdc3a98ec8ba9292ebc0d116d884176566780c3262b398035c8e909c8df8",
+      "log_bytes": 1291
+    }
+  ],
+  "scope": "Local host/RTL verification only. This receipt is not ARM, hardware, audio, video, input-device or campaign acceptance evidence."
+}

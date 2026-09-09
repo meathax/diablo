@@ -42,7 +42,7 @@ class PackageReleaseTest(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
-    def create(self, name: str = "package") -> Path:
+    def create(self, name: str = "package", **kwargs: str) -> Path:
         output = self.root / name
         with mock.patch.object(package_release.candidate_manifest, "verify_manifest", return_value=[]):
             result = package_release.create_package(
@@ -53,6 +53,7 @@ class PackageReleaseTest(unittest.TestCase):
                 "de10-nano-test",
                 output,
                 "assets",
+                **kwargs,
             )
         self.assertEqual(str(output.resolve()), result["package"])
         return output
@@ -75,6 +76,32 @@ class PackageReleaseTest(unittest.TestCase):
             if source.is_file():
                 self.assertEqual(source.read_bytes(),
                                  (package / "licenses" / source.relative_to(package_release.THIRD_PARTY_NOTICES)).read_bytes())
+
+    def test_bundled_hellfire_mod_is_packaged_and_staged(self) -> None:
+        mod = self.root / "source" / "hf"
+        (mod / "lua/mods/hf").mkdir(parents=True)
+        (mod / "manifest.ini").write_text("[mod]\nname=Hellfire\n", encoding="utf-8")
+        (mod / "lua/mods/hf/init.lua").write_text("hellfire.enable()\n", encoding="utf-8")
+        candidate = json.loads(self.candidate.read_text(encoding="utf-8"))
+        for path in sorted(mod.rglob("*")):
+            if path.is_file():
+                candidate["artifacts"].append({
+                    "path": path.relative_to(self.root).as_posix(),
+                    "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                })
+        self.candidate.write_text(json.dumps(candidate) + "\n", encoding="utf-8")
+
+        package = self.create("hellfire-package", hellfire_mod="source/hf")
+        self.assertEqual([], package_release.verify_package(package, "de10-nano-test"))
+        self.assertTrue((package / "assets/mods/hf/manifest.ini").is_file())
+        save_root = self.root / "save-root"
+        save_root.mkdir()
+        mister_launcher._stage_hellfire_mod(package, save_root)
+        staged = save_root / "mods/hf/lua/mods/hf/init.lua"
+        self.assertEqual("hellfire.enable()\n", staged.read_text(encoding="utf-8"))
+        staged.write_text("user change\n", encoding="utf-8")
+        with self.assertRaisesRegex(mister_launcher.LaunchError, "differs from package"):
+            mister_launcher._stage_hellfire_mod(package, save_root)
 
     def run_menu(self, package: Path, campaign: str, target: Path, arguments: tuple[str, ...] = ()) -> list[str]:
         entry = package / ("Diablo.sh" if campaign == "diablo" else "Hellfire.sh")

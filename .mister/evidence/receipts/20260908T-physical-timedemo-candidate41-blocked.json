@@ -1,0 +1,36 @@
+{
+  "candidate": {
+    "candidate_id": "a5f2b83c0191d56e44a7b1babd5988e3fc0530a9f973f6e6bb739b13479ab989",
+    "manifest": ".mister/evidence/candidates/fpga-candidate-20260908-41-doc-sync.json",
+    "manifest_sha256": "c87c3b7dc214f23c4dc299c9010cbf2e8e031c2962a1a05604d59fa7452b0579",
+    "source_id": "7901cdc0d54c3d8d3a527a85445c78d4d1ad5330e1b223f426a3ed15dc914d0d"
+  },
+  "limitations": [
+    "The target was concurrently owned by a MAME core, so the launcher could not obtain exact candidate-RBF admission.",
+    "The timedemo was aborted after cleanup of the launcher background process; no timedemo result is accepted."
+  ],
+  "results": [
+    {
+      "id": "launcher-board-timedemo-candidate41-blocked",
+      "log": ".mister/evidence/runs/candidate41-physical-timedemo-blocked/launch-observation.log",
+      "log_bytes": 941,
+      "log_sha256": "6a0235c93da28ddaab5b969e0d5be2f1f27975d57e88a9858a2a2ceb1f159a6a",
+      "observations": {
+        "launcher": "not_started-exact-rbf-admission-unavailable",
+        "target_process": "MAME.rbf",
+        "target_contention": "fail-concurrent-MAME-core",
+        "timedemo": "not_run",
+        "physical_video": "not_run",
+        "physical_audio": "not_run",
+        "physical_input": "not_run",
+        "campaign": "not_run",
+        "performance": "not_run"
+      },
+      "status": "blocked"
+    }
+  ],
+  "schema": "diablo-verification-receipt-v1",
+  "scope": "Candidate41 Diablo timedemo target-attempt ownership diagnostic; no acceptance",
+  "status": "blocked",
+  "suite": "board"
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "diablo-presentation-trace-qualification-v1",
+  "recorded_utc": "2026-09-09",
+  "status": "pass-trace-qualification-open",
+  "candidate": {
+    "candidate_id": "47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d",
+    "source_id": "1eb528ddb20e57884a6a22d7f34026d6cf45aed8c65b4505ca7bbd2ffbe303cb",
+    "manifest_sha256": "9cc8eeaad3e995a5abbd03539b4d4f9d350313da8bf63f3860a9807c01803339",
+    "rbf_sha256": "1d87ba18a012d15813b8e5f83aa32a4dd531537292082fa3b888cd5059e77fe7"
+  },
+  "target": {
+    "host": "192.168.0.69",
+    "kernel_release": "5.15.1-MiSTer",
+    "core": "Diablo",
+    "physical_base": "0x3fe00000",
+    "sdl_video_driver": "dummy",
+    "sdl_audio_driver": "dummy",
+    "campaign": "diablo",
+    "engine_args": ["--spawn"],
+    "duration_seconds": 60
+  },
+  "trace": {
+    "path": ".mister/evidence/target-runs/20260909-pcm-build-v2-presentation.jsonl",
+    "bytes": 366950,
+    "sha256": "59f11dd52086724ad9c0eaaec446eb7e752bb6ed220d6088c98e188f0c8c7cb5",
+    "schema": "diablo-presentation-trace-v1",
+    "records": 2107,
+    "dropped_records": 0,
+    "timing_invalid_records": 0,
+    "analysis_status": "pass",
+    "attempts": 2107,
+    "published": 1850,
+    "backpressure": 341,
+    "outcomes": {
+      "frame_published": 1850,
+      "backpressure_dropped": 257
+    },
+    "present_duration_ns": {
+      "p50": 6388623,
+      "p95": 12070091,
+      "p99": 16051246,
+      "p999": 21030753,
+      "max": 533072894
+    },
+    "presentation_interval_ns": {
+      "p50": 12412568,
+      "p95": 70372845,
+      "p99": 99515015,
+      "p999": 114384962,
+      "max": 550807791
+    }
+  },
+  "limitations": [
+    "This is a dummy-SDL transport trace, not a physical HDMI/audio/input measurement.",
+    "The 60-second run provides a complete trace but not sufficient repeated paired runs for C21 closure.",
+    "Presentation interval tails and backpressure exceed the 60 FPS qualification target; no release acceptance is claimed."
+  ]
+}

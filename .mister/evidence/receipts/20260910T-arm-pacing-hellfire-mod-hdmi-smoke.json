@@ -1,0 +1,105 @@
+{
+  "schema": "diablo-hdmi-smoke-receipt-v1",
+  "candidate_id": "231b07f5dda6b085f02501e22db91250b00ca36f294277cd05c677b63ec3feb1",
+  "source_id": "cbae344a744646a00023a4cb533bd1e4b28e08384a9c4b63a9cc1562ca722c95",
+  "package_manifest_sha256": "16b898783708d507f9afd1b8224efcefd20df2d49512c100d4b2f951ffbbd2d3",
+  "observer": {
+    "kind": "windows-directshow-hdmi",
+    "video_device": "UGREEN 25773",
+    "audio_device": "Digital Audio Interface (UGREEN 25773)",
+    "video_mode": "1920x1080",
+    "capture_directory": ".work/physical-acceptance"
+  },
+  "campaigns": {
+    "diablo": {
+      "runtime_root": "/tmp/diablo-persist-load6-231b07f5dda6",
+      "wrapper_status": "pass",
+      "exit_code": 0,
+      "stop_reason": "duration",
+      "engine_log": {
+        "path": "/tmp/diablo-persist-load6-231b07f5dda6/engine.log",
+        "bytes": 8066,
+        "lines": 164,
+        "sha256": "79ae2f7041e59ed842c61de33de517b3bfd31a07e4b481e0942ec2271a8356bf",
+        "error_markers": 0
+      },
+      "gameplay_frame": {
+        "path": ".work/physical-acceptance/diablo-load6-character.png",
+        "sha256": "f97e619e5ca31a8ed158a09f3deeddf74948f252178d7617e0e86977dc0f3dc3",
+        "bytes": 1008786,
+        "observed_fps_overlay": "56.0"
+      },
+      "save_load": {
+        "save_root": "/media/fat/saves/Diablo/physical-acceptance-231b07",
+        "save_file": "single_0.sv",
+        "save_bytes": 75545,
+        "engine_log_opened_save": true,
+        "load_thread_completed": true
+      }
+    },
+    "hellfire": {
+      "runtime_root": "/tmp/hellfire-physical-game2-231b07f5dda6",
+      "wrapper_status": "pass",
+      "exit_code": 0,
+      "stop_reason": "duration",
+      "engine_log": {
+        "path": "/tmp/hellfire-physical-game2-231b07f5dda6/engine.log",
+        "bytes": 14204,
+        "lines": 233,
+        "sha256": "093825705db411d1d12ddf096df1248988f311a18f956600ad72beac7c51defb",
+        "error_markers": 2,
+        "pcm_health_markers_at_stop": 2
+      },
+      "mod_stage": {
+        "path": "/media/fat/saves/Diablo/physical-acceptance-231b07-hf/mods/hf",
+        "files": 24
+      },
+      "gameplay_frame": {
+        "path": ".work/physical-acceptance/hellfire-game2-after-return.png",
+        "sha256": "5f07c8472ea725d0a403b2cf02aa5302f556a3831798332810a0199f83101181",
+        "bytes": 1014821,
+        "observed_fps_overlay": "56.1"
+      }
+    }
+  },
+  "audio": {
+    "diablo": {
+      "path": ".work/physical-acceptance/diablo-hdmi-audio-live.wav",
+      "sha256": "2b0494f628c01ed2b61754759aa6b32d459efa299b9e985429cec7beba2c34ac",
+      "bytes": 1146702,
+      "duration_seconds": 5.97,
+      "mean_volume_db": -37.9,
+      "max_volume_db": -19.7
+    },
+    "hellfire": {
+      "path": ".work/physical-acceptance/hellfire-hdmi-audio-game.wav",
+      "sha256": "95a81993063260b7eb53cc4ed904d31f71d77165239d49c7f5179c1d540b934e",
+      "bytes": 573006,
+      "duration_seconds": 5.97,
+      "mean_volume_db": -19.7,
+      "max_volume_db": -6.7
+    }
+  },
+  "synthetic_input_smoke": {
+    "injector": "/media/fat/linux/transport_input_injector",
+    "input_is_synthetic": true,
+    "diablo_menu_to_gameplay": true,
+    "hellfire_menu_to_gameplay": true,
+    "persistent_save_observed": true
+  },
+  "verification": {
+    "focused_tests": 44,
+    "skipped_tests": 6,
+    "local_lifecycle_all_seven_pass": true,
+    "active_candidate_verified": true,
+    "rollback_candidate_retained": "4ea1b402d080d528389f272228d6a0fe9436c9493f3d2b2978653440df0620be"
+  },
+  "limitations": [
+    "Synthetic transport input is not hands-on keyboard, mouse or controller acceptance.",
+    "The target exposes no standard gamepad event node; physical 8BitDo stick, button and trigger paths remain unproven.",
+    "The HDMI audio files prove a non-silent capture path, not speaker-listening quality.",
+    "Short gameplay overlays observed 55.0, 56.0, 56.1 and 56.9 FPS; sustained 60 FPS pacing is not yet accepted.",
+    "Hellfire ends with two PCM health diagnostic lines containing underrun counts; audible impact was not established."
+  ],
+  "status": "evidence_partial"
+}

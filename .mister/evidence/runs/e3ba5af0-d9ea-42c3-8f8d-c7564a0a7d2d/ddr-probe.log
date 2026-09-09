@@ -1,0 +1,7 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-e3ba5af0-d9ea-42c3-8f8d-c7564a0a7d2d-xd_51j6l\\rtl", "-s", "diablo_ddr_probe_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-e3ba5af0-d9ea-42c3-8f8d-c7564a0a7d2d-xd_51j6l\\.work\\build\\verification\\ddr-probe.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-e3ba5af0-d9ea-42c3-8f8d-c7564a0a7d2d-xd_51j6l\\rtl\\diablo_ddr_probe.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-e3ba5af0-d9ea-42c3-8f8d-c7564a0a7d2d-xd_51j6l\\support\\tests\\diablo_ddr_probe_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-e3ba5af0-d9ea-42c3-8f8d-c7564a0a7d2d-xd_51j6l\\.work\\build\\verification\\ddr-probe.vvp"]
+
+diablo_ddr_probe_tb: PASS
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-e3ba5af0-d9ea-42c3-8f8d-c7564a0a7d2d-xd_51j6l\support\tests\diablo_ddr_probe_tb.sv:61: $finish called at 205000 (1ps)

@@ -1,0 +1,12 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f01487c7-dbf3-4002-9558-cdd6669963a7-ak4z7d21\\support\\scripts\\test_host_png.py", "--build-dir", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host"]
+
+Test project D:/Arcade/AI/aCORES/Diablo/.work/build/reference-host
+    Start 558: HostPngLoading.EmptyPathReturnsNull
+1/2 Test #558: HostPngLoading.EmptyPathReturnsNull ...   Passed    0.05 sec
+    Start 559: HostPngLoading.AbsoluteWindowsPaths
+2/2 Test #559: HostPngLoading.AbsoluteWindowsPaths ...   Passed    0.03 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   0.17 sec
+host PNG regression passed

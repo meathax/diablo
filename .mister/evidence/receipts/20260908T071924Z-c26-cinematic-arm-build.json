@@ -1,0 +1,42 @@
+{
+  "schema": "c26-cinematic-arm-build-v1",
+  "status": "pass",
+  "finished_utc": "2026-09-08T07:19:24.8592008Z",
+  "source_commit": "bb92a6e8e334b3ba8c48beb0a6a4e8e22ed74bb5",
+  "source_paths": [
+    "support/cmake/arm-transport.cmake",
+    "support/reference/mister_movie_frame.hpp",
+    "support/tests/mister_transport_cinematic_test.cpp",
+    "support/scripts/test_mister_transport_cinematic.py"
+  ],
+  "source_sha256": {
+    "support/cmake/arm-transport.cmake": "f5dc3a08e3bd6116034f3f7092c8b60d844836f4954944e6e48b8f7087105626",
+    "support/reference/mister_movie_frame.hpp": "cb8ac40d16ae1b8adca40c628abe0374ea05dee933e4bac1d7cc354f30d8e9d2",
+    "support/tests/mister_transport_cinematic_test.cpp": "f3bc02b6a68a92276020c96ac30dce62aa5e2b5b1ed5fc7527d7802b32a9ed4d",
+    "support/scripts/test_mister_transport_cinematic.py": "03049019988477764cbeb2c05ea6d53838a02aca82539655ad60ee08ab69be55"
+  },
+  "source_paths_clean_after_build": true,
+  "configure_log": ".work/c26/cinematic-overlay-configure-postfix.log",
+  "configure_log_sha256": "3f702930fedec6dfc47ff68e8b7bfd32145e03a7b7733f0e2b227f51278b0d28",
+  "generated_overlay": "/home/meath/.cache/diablo-arm-engine-c34-clean/mister-engine-overlay/storm_svid.cpp",
+  "generated_overlay_sha256": "7eb4e877ede5aa192a9a249806ec70ad97e5a96f191f54316277b09530f12d7d",
+  "focused_receipt": ".mister/evidence/receipts/20260908T071323Z-transport-cinematic-b13ec080887b4b5b8f839707d7d04328.json",
+  "focused_receipt_sha256": "37724387b3d276367efbc3242d76390e12b4875315c8ce49f9785c53efbeb1a5",
+  "build_command": "wsl -d Ubuntu -- cmake --build /home/meath/.cache/diablo-arm-engine-c34-clean --target devilutionx -j 4",
+  "build_exit_code": 0,
+  "build_log": ".work/c26/cinematic-arm-build.log",
+  "build_log_sha256": "87d470c352b151076f63cd3bdacbb91b53aaf5ccd8d47ee7a6a6749564e4b529",
+  "build_log_bytes": 159470,
+  "compiler_warning_line_count": 1,
+  "compiler_error_line_count": 0,
+  "material_warning_sample": [
+    "/home/meath/.cache/diablo-arm-engine-c34-clean/_deps/lua-src/lua-5.4.7/src/lauxlib.c:586:5: warning: '__builtin_memcpy' specified bound 4294967294 exceeds maximum object size 2147483647 [-Wstringop-overflow=]"
+  ],
+  "artifact_source": "/home/meath/.cache/diablo-arm-engine-c34-clean/devilutionx",
+  "artifact_source_sha256": "67e82c01d45050f4ea7892f75d33cd9f2075be7ce02425aa9529fa11de7909ed",
+  "artifact_windows_path": ".work/c26/cinematic-arm-artifact-d2ccbc3/devilutionx",
+  "artifact_sha256": "67e82c01d45050f4ea7892f75d33cd9f2075be7ce02425aa9529fa11de7909ed",
+  "artifact_bytes": 8522808,
+  "qemu_version_smoke": "not_run: qemu-arm and qemu-arm-static unavailable in Ubuntu WSL",
+  "no_quartus_or_deploy": true
+}

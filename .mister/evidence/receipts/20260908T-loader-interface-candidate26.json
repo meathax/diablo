@@ -1,0 +1,57 @@
+{
+  "schema": "diablo-target-loader-interface-v1",
+  "status": "observed-read-only",
+  "target_host": "192.168.0.69",
+  "target_root": "/media/fat",
+  "candidate_id": "b4f6f38b2bb5ec0b4ef9ff3e6624340030e0b15c234e007be2ee0fd2ce5c9dbb",
+  "observed_utc": "2026-09-07T15:54:58.5349746Z",
+  "interface": "write load_core /media/fat/<path> to /dev/MiSTer_cmd through an authorized target process",
+  "files": [
+    {
+      "path": "Scripts/wifi.sh",
+      "bytes": 96637,
+      "sha256": "9d1e3165c44b25529fd71b4781ab848a2b0ce2b08815e9c6ffbc12ba9285e4f9",
+      "observed_lines": [
+        {
+          "line": 238,
+          "text": "timeout 2 sh -c 'printf \"%s\\n\" \"load_core /media/fat/menu.rbf\" > /dev/MiSTer_cmd' >/dev/null 2>&1 || true"
+        }
+      ]
+    },
+    {
+      "path": "Scripts/MiSTer_SAM_on.sh",
+      "bytes": 152520,
+      "sha256": "53f8836926f33308fa1676d42e359e6d2bb3d7e9308d4cc2d673b6e55369a948",
+      "observed_lines": [
+        {
+          "line": 2891,
+          "text": "echo \"load_core ${mra}\" >/dev/MiSTer_cmd"
+        },
+        {
+          "line": 2895,
+          "text": "echo \"load_core /media/fat/_Computer/Amiga.mgl\" >/dev/MiSTer_cmd"
+        },
+        {
+          "line": 2897,
+          "text": "echo \"load_core ${amigacore}\" >/dev/MiSTer_cmd"
+        },
+        {
+          "line": 2900,
+          "text": "echo \"load_core /tmp/SAM_Game.mgl\" >/dev/MiSTer_cmd"
+        },
+        {
+          "line": 2906,
+          "text": "echo \"load_core /media/fat/menu.rbf\" >/dev/MiSTer_cmd"
+        },
+        {
+          "line": 4266,
+          "text": "echo load_core /media/fat/menu.rbf > /dev/MiSTer_cmd"
+        },
+        {
+          "line": 4286,
+          "text": "#echo load_core /media/fat/menu.rbf > /dev/MiSTer_cmd"
+        }
+      ]
+    }
+  ]
+}

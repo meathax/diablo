@@ -1,0 +1,48 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\\support\\scripts\\test_transport_abi.py"]
+
+D:\vibes\fpga\toolchains\msys64\ucrt64\bin\python.EXE D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\scripts\generate_transport_abi.py --check
+D:\vibes\fpga\toolchains\msys64\ucrt64\bin\g++.EXE -std=c++23 -Wall -Wextra -Werror -I D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\reference D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\tests\transport_abi_test.cpp -o D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\.work\build\transport-abi\transport_abi_test.exe
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\.work\build\transport-abi\transport_abi_test.exe D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\.work\build\transport-abi\header.hex
+transport ABI host checks passed
+C:\Windows\system32\wsl.exe -d Ubuntu -- g++ -std=c++23 -Wall -Wextra -Werror -I /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/reference /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/transport/transport_state_dump.cpp -o /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/.work/build/transport-abi/transport_state_dump.exe
+C:\Windows\system32\wsl.exe -d Ubuntu -- g++ -std=c++23 -Wall -Wextra -Werror -I /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/reference /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/tests/transport_state_dump_test.cpp -o /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/.work/build/transport-abi/transport_state_dump_test.exe
+C:\Windows\system32\wsl.exe -d Ubuntu -- /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/.work/build/transport-abi/transport_state_dump_test.exe /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/.work/build/transport-abi/transport_state_dump.exe
+transport state dump file-backed output test passed
+D:\vibes\fpga\toolchains\msys64\ucrt64\bin\iverilog.EXE -g2012 -I D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\rtl -s transport_abi_tb -o D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\.work\build\transport-abi\transport_abi_tb.vvp D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\tests\transport_abi_tb.sv
+D:\vibes\fpga\toolchains\msys64\ucrt64\bin\vvp.EXE D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\.work\build\transport-abi\transport_abi_tb.vvp
+transport ABI C++/RTL layout checks passed
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\tests\transport_abi_tb.sv:53: $finish called at 0 (1ps)
+D:\vibes\fpga\toolchains\msys64\ucrt64\bin\iverilog.EXE -g2012 -I D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\rtl -s diablo_frame_ownership_tb -o D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\.work\build\transport-abi\frame-ownership.vvp D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\rtl\diablo_frame_ownership.sv D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\tests\diablo_frame_ownership_tb.sv
+D:\vibes\fpga\toolchains\msys64\ucrt64\bin\vvp.EXE D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\.work\build\transport-abi\frame-ownership.vvp
+diablo frame ownership RTL checks passed
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\tests\diablo_frame_ownership_tb.sv:106: $finish called at 126000 (1ps)
+C:\Windows\system32\wsl.exe -d Ubuntu -- mkdir -p /tmp/diablo-verify
+C:\Windows\system32\wsl.exe -d Ubuntu -- arm-linux-gnueabihf-g++ -std=c++23 -O2 -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=hard -I /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/reference /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/tests/transport_abi_test.cpp -o /tmp/diablo-verify/transport-abi-test
+In file included from /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/tests/transport_abi_test.cpp:1:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/reference/transport_abi.hpp: In member function ‘std::expected<unsigned int, diablo::mister::transport::AttachError> diablo::mister::transport::AbiView::ArmConsumeInput(std::span<diablo::mister::transport::InputEvent>, uint32_t) const’:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/reference/transport_abi.hpp:475:59: note: parameter passing for argument of type ‘std::span<diablo::mister::transport::InputEvent>’ changed in GCC 7.1
+  475 |     [[nodiscard]] std::expected<std::size_t, AttachError> ArmConsumeInput(
+      |                                                           ^~~~~~~~~~~~~~~
+In file included from /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/tests/transport_abi_test.cpp:2:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/reference/transport_input.hpp: In member function ‘std::expected<unsigned int, diablo::mister::transport::AttachError> diablo::mister::transport::InputConsumer::Poll(std::span<diablo::mister::transport::InputEvent>)’:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/support/reference/transport_input.hpp:37:63: note: parameter passing for argument of type ‘std::span<diablo::mister::transport::InputEvent>’ changed in GCC 7.1
+   37 |         [[nodiscard]] std::expected<std::size_t, AttachError> Poll(std::span<InputEvent> scratch)
+      |                                                               ^~~~
+C:\Windows\system32\wsl.exe -d Ubuntu -- qemu-arm -cpu cortex-a9 -L / /tmp/diablo-verify/transport-abi-test /mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/.work/build/transport-abi/header.hex
+qemu-arm: Could not open '/lib/ld-linux-armhf.so.3': No such file or directory
+Traceback (most recent call last):
+  File "D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\scripts\test_transport_abi.py", line 213, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\scripts\test_transport_abi.py", line 154, in main
+    run(wsl_command([qemu, '-cpu', 'cortex-a9', '-L', sysroot, arm_binary, arm_fixture],
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    distribution), commands, env=wsl_env)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg\support\scripts\test_transport_abi.py", line 27, in run
+    subprocess.run(command, cwd=cwd, env=env, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\vibes\fpga\toolchains\msys64\ucrt64\lib\python3.14\subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\Windows\\system32\\wsl.exe', '-d', 'Ubuntu', '--', 'qemu-arm', '-cpu', 'cortex-a9', '-L', '/', '/tmp/diablo-verify/transport-abi-test', '/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/verification/diablo-verify-1b57e244-5e61-4bdc-b9fc-590801132147-nm2sbiyg/.work/build/transport-abi/header.hex']' returned non-zero exit status 255.

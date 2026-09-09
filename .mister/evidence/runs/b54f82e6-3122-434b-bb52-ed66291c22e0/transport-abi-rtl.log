@@ -1,0 +1,9 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b54f82e6-3122-434b-bb52-ed66291c22e0-iyqaeh32\\rtl", "-s", "transport_abi_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b54f82e6-3122-434b-bb52-ed66291c22e0-iyqaeh32\\.work\\build\\verification\\transport-abi-rtl.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b54f82e6-3122-434b-bb52-ed66291c22e0-iyqaeh32\\support\\tests\\transport_abi_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b54f82e6-3122-434b-bb52-ed66291c22e0-iyqaeh32\\.work\\build\\verification\\transport-abi-rtl.vvp"]
+
+ERROR: D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-b54f82e6-3122-434b-bb52-ed66291c22e0-iyqaeh32\support\tests\transport_abi_tb.sv:26: $readmemh: Unable to open .work/build/transport-abi/header.hex for reading.
+FAIL transport magic
+FATAL: D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-b54f82e6-3122-434b-bb52-ed66291c22e0-iyqaeh32\support\tests\transport_abi_tb.sv:29: 
+       Time: 0  Scope: transport_abi_tb

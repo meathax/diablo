@@ -1,0 +1,38 @@
+{
+  "schema": "diablo-verification-receipt-v1",
+  "run_id": "59d3c070-cc47-4585-99a9-d6b12de859e1",
+  "suite": "arm",
+  "started_utc": "2026-09-07T10:42:14.253741+00:00",
+  "finished_utc": "2026-09-07T10:42:16.002875+00:00",
+  "status": "fail",
+  "argv": [
+    "D:/vibes/fpga/temp/.ctx-mode-btZqOo/script.py"
+  ],
+  "cwd": "D:\\Arcade\\AI\\aCORES\\Diablo",
+  "environment_allowlist": {},
+  "tool_identity": {
+    "python": "3.14.6 (main, Jul 31 2026, 07:41:16)  [MINGW GCC UCRT 16.1.0 64 bit (AMD64)]",
+    "python_executable": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python3.exe",
+    "g++": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE",
+    "iverilog": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+    "vvp": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE"
+  },
+  "candidate": {
+    "kind": "invalid-source-snapshot",
+    "source_id": null,
+    "candidate_id": null,
+    "inputs": {
+      "source_files": []
+    },
+    "limitation": "candidate manifest verification failed: source inputs no longer match manifest"
+  },
+  "dependency_snapshot": [],
+  "results": [
+    {
+      "id": "candidate-validation",
+      "status": "fail",
+      "reason": "candidate manifest verification failed: source inputs no longer match manifest"
+    }
+  ],
+  "scope": "Local host/RTL verification only. This receipt is not ARM, hardware, audio, video, input-device or campaign acceptance evidence."
+}

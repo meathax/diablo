@@ -44,14 +44,16 @@ python support/scripts/package_release.py create `
   --artifact abi=.work/build/transport-abi/header.hex `
   --artifact launcher=support/scripts/mister_launcher.py `
   --assets .work/build/arm-engine-transport-assets `
+  --hellfire-mod .work/sources/devilutionx/mods/hf `
   --board-profile <miSTer-profile> `
   --output .work/release/<candidate>
 python support/scripts/package_release.py verify --package .work/release/<candidate> `
   --board-profile <miSTer-profile>
 ```
 
-The v2 package contains 192 files: four fixed runtime roles, deployment/package
-manifests, `NOTICE.txt`, `SETUP.md` and the complete redistributable assets tree.
+The v2 package contains four fixed runtime roles, deployment/package manifests,
+`NOTICE.txt`, `SETUP.md` and the complete redistributable assets tree, including
+the unpacked Hellfire `hf` mod required by the Hellfire launcher.
 The target launcher is standard-library Python and verifies the package before
 writing `load_core` to `/dev/MiSTer_cmd`; it creates the current-boot admission
 and passes the transport lease FD to the engine. `deploy_package.py` provides the

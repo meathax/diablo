@@ -1,0 +1,27 @@
+candidate_id=a5f2b83c0191d56e44a7b1babd5988e3fc0530a9f973f6e6bb739b13479ab989
+source_id=7901cdc0d54c3d8d3a527a85445c78d4d1ad5330e1b223f426a3ed15dc914d0d
+manifest=.mister/evidence/candidates/fpga-candidate-20260908-41-doc-sync.json
+runtime=/media/fat/tmp_esc/diablo-candidate41-normal60b
+campaign=diablo
+boot_id=1b0c1cc1-0374-4f1c-8657-6799a54485f1
+launcher_status=pass
+launcher_exit_code=0
+launcher_timed_out=true
+exact_rbf_process=/media/fat/MiSTer /media/fat/_CodexDiabloCandidate41/Diablo.rbf
+fpga_state=operating
+data_root=/media/fat/tmp_esc/diablo-transport-assets
+engine=/media/fat/_CodexDiabloCandidate41/devilutionx
+pcm_health=queued=0 local_queue=8033 producer=1023162 consumer=1023162 underrun=6732 resync=0 callbacks=459 drops=0 frames=1023162 dropped_frames=0
+pcm_startup_underruns=6732
+pcm_active_underrun_delta=0_observed_after_startup_sample
+pcm_active_resync_delta=0
+pcm_drops=0
+physical_video=black_observer_capture; not_accepted
+physical_audio=not_accepted; speaker_output_not_inspected; startup_underruns_present
+physical_input=not_run
+campaign_progression=not_run
+performance=not_run
+target_contention=clear_during_run; only_exact_candidate_mister_process_observed_after_exit
+video_observer=.mister/evidence/runs/candidate41-physical-normal60/video-observer.png
+video_observer_sha256=ba331a9dae85f6054d4e8dced038551fc7e48a6695b6571e1e592075a3286aa3
+notes=Candidate41 clean normal-session launcher admission and controlled exit passed. The observer image remained black/stale, so physical video/core identity is unresolved. No drop or resync delta was observed after the startup health sample, but the startup underrun count and lack of speaker inspection keep C15 open.

@@ -14,6 +14,7 @@ module diablo_framebuffer_scanout_tb;
     reg session_valid = 0;
     reg [31:0] session_epoch = EPOCH;
     reg vblank = 0;
+    reg frame_rate_cap = 0;
     reg ddram_busy = 0;
     reg [63:0] ddram_dout = 0;
     reg ddram_dout_ready = 0;
@@ -43,7 +44,7 @@ module diablo_framebuffer_scanout_tb;
     reg [31:0] header_display_epoch = 0;
 
     diablo_framebuffer_scanout dut (
-        .clk(clk), .reset(reset), .session_valid(session_valid), .session_epoch(session_epoch), .vblank(vblank),
+        .clk(clk), .reset(reset), .session_valid(session_valid), .session_epoch(session_epoch), .vblank(vblank), .frame_rate_cap(frame_rate_cap),
         .ddram_busy(ddram_busy), .ddram_dout(ddram_dout), .ddram_dout_ready(ddram_dout_ready),
         .ddram_burstcnt(ddram_burstcnt), .ddram_addr(ddram_addr), .ddram_rd(ddram_rd),
         .ddram_din(ddram_din), .ddram_be(ddram_be), .ddram_we(ddram_we),
@@ -91,6 +92,12 @@ module diablo_framebuffer_scanout_tb;
             else if (ddram_be == 8'h0f && ddram_addr == BASE_WORD + 29'd38) frame_state[2] <= ddram_din[31:0];
             else if (ddram_be == 8'hf0 && ddram_addr == BASE_WORD + 29'd27) begin
                 frame_display_epoch[0] <= ddram_din[63:32];
+                if (ddram_din[31:0] !== EPOCH) $fatal(1, "FAIL producer epoch clobbered");
+            end else if (ddram_be == 8'hf0 && ddram_addr == BASE_WORD + 29'd35) begin
+                frame_display_epoch[1] <= ddram_din[63:32];
+                if (ddram_din[31:0] !== EPOCH) $fatal(1, "FAIL producer epoch clobbered");
+            end else if (ddram_be == 8'hf0 && ddram_addr == BASE_WORD + 29'd43) begin
+                frame_display_epoch[2] <= ddram_din[63:32];
                 if (ddram_din[31:0] !== EPOCH) $fatal(1, "FAIL producer epoch clobbered");
             end else if (ddram_be == 8'hff && ddram_addr == BASE_WORD + 29'd46)
                 last_presented_frame_id <= ddram_din;
@@ -192,6 +199,32 @@ module diablo_framebuffer_scanout_tb;
             $display("FAIL ownership writes display=%d free=%d palette=%d oldstate=%d stalestate=%d frame_epoch=%d last=%d header_epoch=%d",
                      display_writes, free_writes, palette_writes, frame_state[0], frame_state[2], frame_display_epoch[0],
                      last_presented_frame_id, header_display_epoch);
+            $fatal(1);
+        end
+
+        // With the cap enabled, a prepared frame can only replace the active
+        // framebuffer on every third refresh. The frame is held for the two
+        // intervening refreshes, so pacing is regular rather than jittery.
+        frame_rate_cap = 1;
+        frame_state[0] = 2;
+        frame_id[0] = 9;
+        wait_for_palette_stage();
+        pulse_vblank();
+        repeat (4) @(posedge clk);
+        if (framebuffer_base !== 32'h3fe4d000 || dut.active_frame_id !== 8) begin
+            $display("FAIL framerate cap switched on first refresh base=%h active=%d", framebuffer_base, dut.active_frame_id);
+            $fatal(1);
+        end
+        pulse_vblank();
+        repeat (4) @(posedge clk);
+        if (framebuffer_base !== 32'h3fe4d000 || dut.active_frame_id !== 8) begin
+            $display("FAIL framerate cap switched on second refresh base=%h active=%d", framebuffer_base, dut.active_frame_id);
+            $fatal(1);
+        end
+        pulse_vblank();
+        repeat (4) @(posedge clk);
+        if (framebuffer_base !== 32'h3fe01000 || dut.active_frame_id !== 9 || frame_state[0] !== 3) begin
+            $display("FAIL framerate cap missed third refresh base=%h active=%d state=%d", framebuffer_base, dut.active_frame_id, frame_state[0]);
             $fatal(1);
         end
         $display("framebuffer scanout checks passed");

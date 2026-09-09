@@ -1,0 +1,37 @@
+{
+  "schema": "diablo-verification-receipt-v1",
+  "status": "pass",
+  "suite": "board",
+  "candidate": {
+    "candidate_id": "77077a3e3a3dced9686028b966a0fb2239be840950ba8a4fe9262d554d52ef4e",
+    "source_id": "4bcf897462aacbd53a7b084f7196cd41fc0647ce41b6fd56ebea148f331bac5f",
+    "manifest": "D:/Arcade/AI/aCORES/Diablo/.mister/evidence/candidates/fpga-candidate-20260908-31-r12-role-path-hardening.json",
+    "manifest_sha256": "29af2f68ffda6719c0b550e2c28f869a1c2c92268e7ee7de787820aa4820e507"
+  },
+  "scope": "Physical MiSTer package and launcher lifecycle smoke; no video/audio/input/gameplay/performance acceptance",
+  "results": [
+    {
+      "id": "launcher-board",
+      "status": "pass",
+      "log": ".mister/evidence/runs/candidate31-physical-launch/launch-observation.log",
+      "log_sha256": "edc278005a831bbed8089f347678fa005bb4f0358b335e2cb49614462c7211b5",
+      "log_bytes": 2087,
+      "observations": {
+        "package_preflight": "pass",
+        "launcher": "pass",
+        "exact_rbf_process": "observed",
+        "arm_transport_frames": "observed",
+        "arm_transport_pcm": "observed",
+        "physical_video": "not_accepted",
+        "core_identity": "not_accepted",
+        "pcm_underrun_free": "not_accepted"
+      }
+    }
+  ],
+  "limitations": [
+    "Target screenshot API returned no data; no physical video acceptance is claimed",
+    "Target API/OSD identity still reports AO486 for the loaded RBF",
+    "PCM underrun counters increased during the run",
+    "No campaign, multiplayer or performance result is implied"
+  ]
+}

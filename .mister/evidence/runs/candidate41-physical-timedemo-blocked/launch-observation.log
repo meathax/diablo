@@ -1,0 +1,12 @@
+candidate_id=a5f2b83c0191d56e44a7b1babd5988e3fc0530a9f973f6e6bb739b13479ab989
+source_id=7901cdc0d54c3d8d3a527a85445c78d4d1ad5330e1b223f426a3ed15dc914d0d
+manifest=.mister/evidence/candidates/fpga-candidate-20260908-41-doc-sync.json
+mode=diablo-demo-0-timedemo
+command=/media/fat/_CodexDiabloCandidate41/diablo_launcher.py --spawn --demo 0 --timedemo --duration 35
+launcher_result=not_created
+target_process_during_attempt=/media/fat/MiSTer /media/fat/_CodexMameCandidate20260908c8/MAME.rbf
+target_state_dump=stale-candidate41-epoch; arm=1 fpga=1 fault=0 display_epoch=0x000007a6 last_frame=1958
+target_ownership=blocked-by-concurrent-MAME-core
+cleanup=launcher-background-pids-1607-1609-terminated; external-MAME-left-running
+status=blocked
+notes=The launcher waited for exact candidate RBF admission while another MAME core owned MiSTer. The attempt was aborted without accepting timedemo evidence; no source or artifact fault was inferred.

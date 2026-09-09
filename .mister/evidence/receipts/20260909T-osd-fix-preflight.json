@@ -1,0 +1,2361 @@
+{
+  "candidate": {
+    "candidate_id": "bdd6bd29824fc9c42270bd4423569f82d479713e082998bb320fbc04465bc362",
+    "manifest": "D:\\Arcade\\AI\\aCORES\\Diablo\\.mister\\evidence\\candidates\\fpga-candidate-20260909-osd-fix-complete.json",
+    "manifest_sha256": "b865b5c086c36b2c0b9e9abd03e3a313ec367dcd1aa6738285eb7755712968a7",
+    "source_id": "0e0797177dd02bb5d89f839b053766c7742deadf750ce30a89c5d14a817be218"
+  },
+  "finished_utc": "2026-09-09T05:20:49Z",
+  "limitations": [
+    "No physical video/audio/input observer was used",
+    "No gameplay, campaign, save, multiplayer or performance result is implied",
+    "The staged package was not installed as the active core"
+  ],
+  "package": {
+    "board_profile": "de10-nano-mister-pending",
+    "local": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\package-board-controls-osd-fix-20260909",
+    "remote_files": [
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "package-manifest.json",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "devilutionx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "Diablo.rbf",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "transport_abi.hex",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "diablo_launcher.py",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "deployment.json",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "NOTICE.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "SETUP.md",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "Diablo.sh",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "Hellfire.sh",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "LICENSE.fpga",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "LICENSE.engine.md",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/asio-COPYING.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/asio.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/assets-CC-BY.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/assets-OFL.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/bzip2.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/concurrentqueue.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/dr-libs.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/fmt.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/gcc-GPL3.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/gcc-runtime-exception.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/INDEX.md",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/libnatpmp.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/libpng.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/libsmackerdec.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/libsodium.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/libstdc-pstl.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/libzt.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/lua-readme.html",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/lwip.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/magic-enum.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/miniupnpc.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/mpqfs.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/sdl-audiolib-GPL.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/sdl-audiolib-LGPL.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/sdl-image.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/sdl2.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/sheenbidi.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/sol2.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/speex-resampler.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/unordered-dense.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/zerotier-copying.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/zerotier-license.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "licenses/zlib.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/arena/church.dun",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/arena/circle_of_death.dun",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/arena/hell.dun",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ASSETS_VERSION",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/boxleftend.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/boxmiddle.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/boxrightend.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/charbg.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/dirtybuc.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/dirtybucp.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/health.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/healthbox.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/hintbox.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/hintboxbackground.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/hinticons.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/inv/objcurs-widths.txt",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/monstertags.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/panel8buc.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/panel8bucp.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/repairAllBtn.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/repairSingleBtn.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/resistance.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/stash.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/stashnavbtns.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/store.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/tabBtnUp.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/talkbutton.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/data/xpbar.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-01.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-02.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-03.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-04.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-05.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-1f4.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-1f6.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-1f9.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-20.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-26.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/12-e0.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/22-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/22-01.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/22-02.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/22-03.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/22-04.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/22-05.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/22-20.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-01.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-02.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-03.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-04.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-05.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-1f4.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-1f6.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-1f9.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-20.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-26.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/24-e0.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/30-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/30-01.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/30-02.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/30-03.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/30-04.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/30-05.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/30-20.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/30-e0.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/42-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/42-01.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/42-02.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/42-03.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/42-04.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/42-05.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/42-20.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/46-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/46-01.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/46-02.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/46-03.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/46-04.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/46-05.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/46-20.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/black.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/blue.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/buttonface.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/buttonpushed.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/gamedialogred.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/gamedialogwhite.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/gamedialogyellow.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/goldui.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/golduis.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/grayui.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/grayuis.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/orange.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/red.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/tr/12-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/tr/24-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/tr/30-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/tr/42-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/tr/46-00.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/white.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/whitegold.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/fonts/yellow.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cut2w.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cut3w.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cut4w.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cutgatew.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cutl1dw.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cutportlw.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cutportrw.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cutstartw.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/cutttw.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/gendata/pause.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/levels/l1data/sklkngt.dun",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/levels/l2data/bonechat.dun",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/levels/towndata/automap.amp",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/levels/towndata/automap.dun",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/lua/devilutionx/events.lua",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/lua/inspect.lua",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/lua/mods/adria_refills_mana/init.lua",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/lua/mods/clock/init.lua",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/lua/mods/Floating Numbers - Damage/init.lua",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/lua/mods/Floating Numbers - XP/init.lua",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/lua/repl_prelude.lua",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/lua_internal/get_lua_function_signature.lua",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/plrgfx/warrior/whu/whufm.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/plrgfx/warrior/whu/whulm.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/plrgfx/warrior/whu/whuqm.trn",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/barbarian/animations.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/barbarian/attributes.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/barbarian/sounds.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/barbarian/sprites.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/barbarian/starting_loadout.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/bard/animations.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/bard/attributes.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/bard/sounds.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/bard/sprites.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/bard/starting_loadout.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/classdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/monk/animations.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/monk/attributes.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/monk/sounds.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/monk/sprites.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/monk/starting_loadout.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/rogue/animations.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/rogue/attributes.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/rogue/sounds.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/rogue/sprites.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/rogue/starting_loadout.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/sorcerer/animations.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/sorcerer/attributes.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/sorcerer/sounds.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/sorcerer/sprites.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/sorcerer/starting_loadout.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/warrior/animations.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/warrior/attributes.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/warrior/sounds.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/warrior/sprites.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/classes/warrior/starting_loadout.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/Experience.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/items/item_prefixes.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/items/item_suffixes.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/items/itemdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/items/unique_itemdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/missiles/misdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/missiles/missile_sprites.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/monsters/monstdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/monsters/unique_monstdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/objects/objdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/quests/questdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/sound/effects.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/spells/spelldat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/text/textdat.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/towners/quest_dialog.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/txtdata/towners/towners.tsv",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/button.png",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/creditsw.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/diablo.pal",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/directions.png",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/directions2.png",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/dvl_but_sml.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/dvl_lrpopup.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/mainmenuw.clx",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/menu-levelup.png",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "assets/ui_art/menu.png",
+        "sha256": null,
+        "sha256_match": false
+      }
+    ],
+    "remote_relative": "_CodexDiabloCandidateOsdFix"
+  },
+  "problems": [
+    "remote package file is missing: package-manifest.json",
+    "remote package file is missing: devilutionx",
+    "remote package file is missing: Diablo.rbf",
+    "remote package file is missing: transport_abi.hex",
+    "remote package file is missing: diablo_launcher.py",
+    "remote package file is missing: deployment.json",
+    "remote package file is missing: NOTICE.txt",
+    "remote package file is missing: SETUP.md",
+    "remote package file is missing: Diablo.sh",
+    "remote package file is missing: Hellfire.sh",
+    "remote package file is missing: LICENSE.fpga",
+    "remote package file is missing: LICENSE.engine.md",
+    "remote package file is missing: licenses/asio-COPYING.txt",
+    "remote package file is missing: licenses/asio.txt",
+    "remote package file is missing: licenses/assets-CC-BY.txt",
+    "remote package file is missing: licenses/assets-OFL.txt",
+    "remote package file is missing: licenses/bzip2.txt",
+    "remote package file is missing: licenses/concurrentqueue.txt",
+    "remote package file is missing: licenses/dr-libs.txt",
+    "remote package file is missing: licenses/fmt.txt",
+    "remote package file is missing: licenses/gcc-GPL3.txt",
+    "remote package file is missing: licenses/gcc-runtime-exception.txt",
+    "remote package file is missing: licenses/INDEX.md",
+    "remote package file is missing: licenses/libnatpmp.txt",
+    "remote package file is missing: licenses/libpng.txt",
+    "remote package file is missing: licenses/libsmackerdec.txt",
+    "remote package file is missing: licenses/libsodium.txt",
+    "remote package file is missing: licenses/libstdc-pstl.txt",
+    "remote package file is missing: licenses/libzt.txt",
+    "remote package file is missing: licenses/lua-readme.html",
+    "remote package file is missing: licenses/lwip.txt",
+    "remote package file is missing: licenses/magic-enum.txt",
+    "remote package file is missing: licenses/miniupnpc.txt",
+    "remote package file is missing: licenses/mpqfs.txt",
+    "remote package file is missing: licenses/sdl-audiolib-GPL.txt",
+    "remote package file is missing: licenses/sdl-audiolib-LGPL.txt",
+    "remote package file is missing: licenses/sdl-image.txt",
+    "remote package file is missing: licenses/sdl2.txt",
+    "remote package file is missing: licenses/sheenbidi.txt",
+    "remote package file is missing: licenses/sol2.txt",
+    "remote package file is missing: licenses/speex-resampler.txt",
+    "remote package file is missing: licenses/unordered-dense.txt",
+    "remote package file is missing: licenses/zerotier-copying.txt",
+    "remote package file is missing: licenses/zerotier-license.txt",
+    "remote package file is missing: licenses/zlib.txt",
+    "remote package file is missing: assets/arena/church.dun",
+    "remote package file is missing: assets/arena/circle_of_death.dun",
+    "remote package file is missing: assets/arena/hell.dun",
+    "remote package file is missing: assets/ASSETS_VERSION",
+    "remote package file is missing: assets/data/boxleftend.clx",
+    "remote package file is missing: assets/data/boxmiddle.clx",
+    "remote package file is missing: assets/data/boxrightend.clx",
+    "remote package file is missing: assets/data/charbg.clx",
+    "remote package file is missing: assets/data/dirtybuc.clx",
+    "remote package file is missing: assets/data/dirtybucp.clx",
+    "remote package file is missing: assets/data/health.clx",
+    "remote package file is missing: assets/data/healthbox.clx",
+    "remote package file is missing: assets/data/hintbox.clx",
+    "remote package file is missing: assets/data/hintboxbackground.clx",
+    "remote package file is missing: assets/data/hinticons.clx",
+    "remote package file is missing: assets/data/inv/objcurs-widths.txt",
+    "remote package file is missing: assets/data/monstertags.clx",
+    "remote package file is missing: assets/data/panel8buc.clx",
+    "remote package file is missing: assets/data/panel8bucp.clx",
+    "remote package file is missing: assets/data/repairAllBtn.clx",
+    "remote package file is missing: assets/data/repairSingleBtn.clx",
+    "remote package file is missing: assets/data/resistance.clx",
+    "remote package file is missing: assets/data/stash.clx",
+    "remote package file is missing: assets/data/stashnavbtns.clx",
+    "remote package file is missing: assets/data/store.clx",
+    "remote package file is missing: assets/data/tabBtnUp.clx",
+    "remote package file is missing: assets/data/talkbutton.clx",
+    "remote package file is missing: assets/data/xpbar.clx",
+    "remote package file is missing: assets/fonts/12-00.clx",
+    "remote package file is missing: assets/fonts/12-01.clx",
+    "remote package file is missing: assets/fonts/12-02.clx",
+    "remote package file is missing: assets/fonts/12-03.clx",
+    "remote package file is missing: assets/fonts/12-04.clx",
+    "remote package file is missing: assets/fonts/12-05.clx",
+    "remote package file is missing: assets/fonts/12-1f4.clx",
+    "remote package file is missing: assets/fonts/12-1f6.clx",
+    "remote package file is missing: assets/fonts/12-1f9.clx",
+    "remote package file is missing: assets/fonts/12-20.clx",
+    "remote package file is missing: assets/fonts/12-26.clx",
+    "remote package file is missing: assets/fonts/12-e0.clx",
+    "remote package file is missing: assets/fonts/22-00.clx",
+    "remote package file is missing: assets/fonts/22-01.clx",
+    "remote package file is missing: assets/fonts/22-02.clx",
+    "remote package file is missing: assets/fonts/22-03.clx",
+    "remote package file is missing: assets/fonts/22-04.clx",
+    "remote package file is missing: assets/fonts/22-05.clx",
+    "remote package file is missing: assets/fonts/22-20.clx",
+    "remote package file is missing: assets/fonts/24-00.clx",
+    "remote package file is missing: assets/fonts/24-01.clx",
+    "remote package file is missing: assets/fonts/24-02.clx",
+    "remote package file is missing: assets/fonts/24-03.clx",
+    "remote package file is missing: assets/fonts/24-04.clx",
+    "remote package file is missing: assets/fonts/24-05.clx",
+    "remote package file is missing: assets/fonts/24-1f4.clx",
+    "remote package file is missing: assets/fonts/24-1f6.clx",
+    "remote package file is missing: assets/fonts/24-1f9.clx",
+    "remote package file is missing: assets/fonts/24-20.clx",
+    "remote package file is missing: assets/fonts/24-26.clx",
+    "remote package file is missing: assets/fonts/24-e0.clx",
+    "remote package file is missing: assets/fonts/30-00.clx",
+    "remote package file is missing: assets/fonts/30-01.clx",
+    "remote package file is missing: assets/fonts/30-02.clx",
+    "remote package file is missing: assets/fonts/30-03.clx",
+    "remote package file is missing: assets/fonts/30-04.clx",
+    "remote package file is missing: assets/fonts/30-05.clx",
+    "remote package file is missing: assets/fonts/30-20.clx",
+    "remote package file is missing: assets/fonts/30-e0.clx",
+    "remote package file is missing: assets/fonts/42-00.clx",
+    "remote package file is missing: assets/fonts/42-01.clx",
+    "remote package file is missing: assets/fonts/42-02.clx",
+    "remote package file is missing: assets/fonts/42-03.clx",
+    "remote package file is missing: assets/fonts/42-04.clx",
+    "remote package file is missing: assets/fonts/42-05.clx",
+    "remote package file is missing: assets/fonts/42-20.clx",
+    "remote package file is missing: assets/fonts/46-00.clx",
+    "remote package file is missing: assets/fonts/46-01.clx",
+    "remote package file is missing: assets/fonts/46-02.clx",
+    "remote package file is missing: assets/fonts/46-03.clx",
+    "remote package file is missing: assets/fonts/46-04.clx",
+    "remote package file is missing: assets/fonts/46-05.clx",
+    "remote package file is missing: assets/fonts/46-20.clx",
+    "remote package file is missing: assets/fonts/black.trn",
+    "remote package file is missing: assets/fonts/blue.trn",
+    "remote package file is missing: assets/fonts/buttonface.trn",
+    "remote package file is missing: assets/fonts/buttonpushed.trn",
+    "remote package file is missing: assets/fonts/gamedialogred.trn",
+    "remote package file is missing: assets/fonts/gamedialogwhite.trn",
+    "remote package file is missing: assets/fonts/gamedialogyellow.trn",
+    "remote package file is missing: assets/fonts/goldui.trn",
+    "remote package file is missing: assets/fonts/golduis.trn",
+    "remote package file is missing: assets/fonts/grayui.trn",
+    "remote package file is missing: assets/fonts/grayuis.trn",
+    "remote package file is missing: assets/fonts/orange.trn",
+    "remote package file is missing: assets/fonts/red.trn",
+    "remote package file is missing: assets/fonts/tr/12-00.clx",
+    "remote package file is missing: assets/fonts/tr/24-00.clx",
+    "remote package file is missing: assets/fonts/tr/30-00.clx",
+    "remote package file is missing: assets/fonts/tr/42-00.clx",
+    "remote package file is missing: assets/fonts/tr/46-00.clx",
+    "remote package file is missing: assets/fonts/white.trn",
+    "remote package file is missing: assets/fonts/whitegold.trn",
+    "remote package file is missing: assets/fonts/yellow.trn",
+    "remote package file is missing: assets/gendata/cut2w.clx",
+    "remote package file is missing: assets/gendata/cut3w.clx",
+    "remote package file is missing: assets/gendata/cut4w.clx",
+    "remote package file is missing: assets/gendata/cutgatew.clx",
+    "remote package file is missing: assets/gendata/cutl1dw.clx",
+    "remote package file is missing: assets/gendata/cutportlw.clx",
+    "remote package file is missing: assets/gendata/cutportrw.clx",
+    "remote package file is missing: assets/gendata/cutstartw.clx",
+    "remote package file is missing: assets/gendata/cutttw.clx",
+    "remote package file is missing: assets/gendata/pause.trn",
+    "remote package file is missing: assets/levels/l1data/sklkngt.dun",
+    "remote package file is missing: assets/levels/l2data/bonechat.dun",
+    "remote package file is missing: assets/levels/towndata/automap.amp",
+    "remote package file is missing: assets/levels/towndata/automap.dun",
+    "remote package file is missing: assets/lua/devilutionx/events.lua",
+    "remote package file is missing: assets/lua/inspect.lua",
+    "remote package file is missing: assets/lua/mods/adria_refills_mana/init.lua",
+    "remote package file is missing: assets/lua/mods/clock/init.lua",
+    "remote package file is missing: assets/lua/mods/Floating Numbers - Damage/init.lua",
+    "remote package file is missing: assets/lua/mods/Floating Numbers - XP/init.lua",
+    "remote package file is missing: assets/lua/repl_prelude.lua",
+    "remote package file is missing: assets/lua_internal/get_lua_function_signature.lua",
+    "remote package file is missing: assets/plrgfx/warrior/whu/whufm.trn",
+    "remote package file is missing: assets/plrgfx/warrior/whu/whulm.trn",
+    "remote package file is missing: assets/plrgfx/warrior/whu/whuqm.trn",
+    "remote package file is missing: assets/txtdata/classes/barbarian/animations.tsv",
+    "remote package file is missing: assets/txtdata/classes/barbarian/attributes.tsv",
+    "remote package file is missing: assets/txtdata/classes/barbarian/sounds.tsv",
+    "remote package file is missing: assets/txtdata/classes/barbarian/sprites.tsv",
+    "remote package file is missing: assets/txtdata/classes/barbarian/starting_loadout.tsv",
+    "remote package file is missing: assets/txtdata/classes/bard/animations.tsv",
+    "remote package file is missing: assets/txtdata/classes/bard/attributes.tsv",
+    "remote package file is missing: assets/txtdata/classes/bard/sounds.tsv",
+    "remote package file is missing: assets/txtdata/classes/bard/sprites.tsv",
+    "remote package file is missing: assets/txtdata/classes/bard/starting_loadout.tsv",
+    "remote package file is missing: assets/txtdata/classes/classdat.tsv",
+    "remote package file is missing: assets/txtdata/classes/monk/animations.tsv",
+    "remote package file is missing: assets/txtdata/classes/monk/attributes.tsv",
+    "remote package file is missing: assets/txtdata/classes/monk/sounds.tsv",
+    "remote package file is missing: assets/txtdata/classes/monk/sprites.tsv",
+    "remote package file is missing: assets/txtdata/classes/monk/starting_loadout.tsv",
+    "remote package file is missing: assets/txtdata/classes/rogue/animations.tsv",
+    "remote package file is missing: assets/txtdata/classes/rogue/attributes.tsv",
+    "remote package file is missing: assets/txtdata/classes/rogue/sounds.tsv",
+    "remote package file is missing: assets/txtdata/classes/rogue/sprites.tsv",
+    "remote package file is missing: assets/txtdata/classes/rogue/starting_loadout.tsv",
+    "remote package file is missing: assets/txtdata/classes/sorcerer/animations.tsv",
+    "remote package file is missing: assets/txtdata/classes/sorcerer/attributes.tsv",
+    "remote package file is missing: assets/txtdata/classes/sorcerer/sounds.tsv",
+    "remote package file is missing: assets/txtdata/classes/sorcerer/sprites.tsv",
+    "remote package file is missing: assets/txtdata/classes/sorcerer/starting_loadout.tsv",
+    "remote package file is missing: assets/txtdata/classes/warrior/animations.tsv",
+    "remote package file is missing: assets/txtdata/classes/warrior/attributes.tsv",
+    "remote package file is missing: assets/txtdata/classes/warrior/sounds.tsv",
+    "remote package file is missing: assets/txtdata/classes/warrior/sprites.tsv",
+    "remote package file is missing: assets/txtdata/classes/warrior/starting_loadout.tsv",
+    "remote package file is missing: assets/txtdata/Experience.tsv",
+    "remote package file is missing: assets/txtdata/items/item_prefixes.tsv",
+    "remote package file is missing: assets/txtdata/items/item_suffixes.tsv",
+    "remote package file is missing: assets/txtdata/items/itemdat.tsv",
+    "remote package file is missing: assets/txtdata/items/unique_itemdat.tsv",
+    "remote package file is missing: assets/txtdata/missiles/misdat.tsv",
+    "remote package file is missing: assets/txtdata/missiles/missile_sprites.tsv",
+    "remote package file is missing: assets/txtdata/monsters/monstdat.tsv",
+    "remote package file is missing: assets/txtdata/monsters/unique_monstdat.tsv",
+    "remote package file is missing: assets/txtdata/objects/objdat.tsv",
+    "remote package file is missing: assets/txtdata/quests/questdat.tsv",
+    "remote package file is missing: assets/txtdata/sound/effects.tsv",
+    "remote package file is missing: assets/txtdata/spells/spelldat.tsv",
+    "remote package file is missing: assets/txtdata/text/textdat.tsv",
+    "remote package file is missing: assets/txtdata/towners/quest_dialog.tsv",
+    "remote package file is missing: assets/txtdata/towners/towners.tsv",
+    "remote package file is missing: assets/ui_art/button.png",
+    "remote package file is missing: assets/ui_art/creditsw.clx",
+    "remote package file is missing: assets/ui_art/diablo.pal",
+    "remote package file is missing: assets/ui_art/directions.png",
+    "remote package file is missing: assets/ui_art/directions2.png",
+    "remote package file is missing: assets/ui_art/dvl_but_sml.clx",
+    "remote package file is missing: assets/ui_art/dvl_lrpopup.clx",
+    "remote package file is missing: assets/ui_art/mainmenuw.clx",
+    "remote package file is missing: assets/ui_art/menu-levelup.png",
+    "remote package file is missing: assets/ui_art/menu.png"
+  ],
+  "schema": "diablo-mister-preflight-v1",
+  "scope": "read-only MiSTer Samba deployment preflight; no physical acceptance",
+  "started_utc": "2026-09-09T05:20:46Z",
+  "status": "fail",
+  "target": {
+    "host": "192.168.0.69",
+    "name": "_CodexDiabloCandidateOsdFix",
+    "probes": [
+      {
+        "bytes": 1162128,
+        "bytes_match": true,
+        "elf_header": true,
+        "exists": true,
+        "match": true,
+        "path": "MiSTer",
+        "sha256": "ef0dbfde3744ccb160444932d8a7d31f298b16a95db506852c99ece018321596",
+        "sha256_match": true
+      },
+      {
+        "bytes": 2452588,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "menu.rbf",
+        "sha256": "821bcf66181a00ff550e4a4110dc11c9fa8e68d38e9cb5558b3ddb99ca938934",
+        "sha256_match": true
+      },
+      {
+        "bytes": 22548,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "MiSTer.ini",
+        "sha256": "9ff6ec916adc0270797d1313c0cfd97ca567792f2297150068bf554d8445e2f3",
+        "sha256_match": true
+      },
+      {
+        "bytes": 24576,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "config/cores_recent.cfg",
+        "sha256": "faa6cd57188bbc9a18d51f08edd636d0a2b7db6ba05e083f1104cb1d06aa1e96",
+        "sha256_match": true
+      }
+    ],
+    "root": "\\\\192.168.0.69\\sdcard\\"
+  }
+}

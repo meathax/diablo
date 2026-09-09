@@ -1,0 +1,26 @@
+{
+  "schema": "diablo-candidate-deployment-receipt-v1",
+  "status": "pass",
+  "recorded_utc": "2026-09-08T22:25:50Z",
+  "candidate_id": "abbf37b542704e0957ad7b495916536e0661beead84e6f282e137bbf50dc72da",
+  "source_id": "0f20722e1ed0c368430bdfbf39081ff4afb9203357d5aef5aef2c253e92b7dd0",
+  "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260909-pcm-epoch-rebind-final5.json",
+  "candidate_manifest_sha256": "bb1183fe065620c461bb0376e1b27a80436387b8c4a2e4ec7ce888e6128f4cd9",
+  "package": ".work/package-candidate-abbf-final5",
+  "package_manifest_sha256": "3fb6eebea9aaebf0e0f2515240fa78106c5ee06c319f128cb74240cec894472d",
+  "target": {
+    "host": "192.168.0.69",
+    "root": "\\\\192.168.0.69\\sdcard",
+    "staged_package": "_CodexDiabloCandidateEpochRebindFinal5",
+    "active_release": ".diablo-releases/abbf37b542704e0957ad7b495916536e0661beead84e6f282e137bbf50dc72da",
+    "previous_release": ".diablo-releases/c0bd6701d73f0aa040fd0eef9cd6ea2cb0994649b9541cbe3b0974135013842c",
+    "board_profile": "de10-nano-mister-pending"
+  },
+  "transaction": {
+    "method": "deploy_package.install",
+    "atomic_activation": true,
+    "active_release_verified": true,
+    "user_data_preserved": true,
+    "rollback_candidate": "c0bd6701d73f0aa040fd0eef9cd6ea2cb0994649b9541cbe3b0974135013842c"
+  }
+}

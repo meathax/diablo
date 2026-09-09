@@ -1,0 +1,88 @@
+{
+  "schema": "diablo-target-candidate-run-v1",
+  "status": "diagnostic-pass-qualification-open",
+  "recorded_utc": "2026-09-09",
+  "candidate": {
+    "candidate_id": "37ed7ab5ff03334303b455108ce1942eefcf93988627b1789884c79bcc44f491",
+    "source_id": "642c56c59915b0388674dc884cdc6e5f99c062191fc84a31ccab6cf0581efd24",
+    "manifest": ".mister/evidence/candidates/fpga-candidate-20260909-pcm-epoch-rebind-final.json",
+    "manifest_sha256": "a1499c637cd85c853e21672cef47da907f63221aebd51a8db477a3de3e889243",
+    "package_manifest_sha256": "9ad94b8814ea85d14d38c4772bba61f461dfb0bae5f4e40b86e7980c09aef7fc",
+    "rbf_sha256": "bcb2a24eddce301eec96f4b282d33ad1f56e86fc155f303c5fa63e90256f9c29",
+    "engine_sha256": "f444ce3fce534b43c1157540adf1a40fd596e7de43382b2d1619baa71ee77c6d"
+  },
+  "target": {
+    "host": "192.168.0.69",
+    "kernel_release": "5.15.1-MiSTer",
+    "core": "Diablo",
+    "fpga_state": "operating",
+    "physical_base": "0x3fe00000",
+    "mapped_bytes": 2097152,
+    "video_backend": "fpga-shared-ddr",
+    "sdl_video_driver": "dummy",
+    "sdl_audio_driver": "dummy",
+    "active_release": "/media/fat/.diablo-releases/37ed7ab5ff03334303b455108ce1942eefcf93988627b1789884c79bcc44f491",
+    "active_release_verified": true
+  },
+  "run": {
+    "campaign": "diablo",
+    "engine_args": ["--spawn"],
+    "duration_seconds": 60,
+    "profile_enabled": true,
+    "input_trace_enabled": true,
+    "launcher_status": "pass",
+    "launcher_exit_code": 0,
+    "launcher_stop_reason": "duration",
+    "launcher_timed_out": true,
+    "remote_runtime": "/media/fat/tmp_esc/diablo-candidate-pcm-epoch-rebind-final-liveprobe",
+    "launcher_log": ".mister/evidence/target-runs/20260909-pcm-epoch-rebind-final-liveprobe-launcher.json",
+    "engine_log": ".mister/evidence/target-runs/20260909-pcm-epoch-rebind-final-liveprobe-engine.log",
+    "engine_log_bytes": 8264,
+    "engine_log_sha256": "56bb7268ee7e691eaa6685a2f2904b469533b783ee13b57d26871c6a0e268eed",
+    "input_poll_error_count": 0,
+    "error_3_count": 0,
+    "pcm_underrun_count": 0,
+    "pcm_resync_count": 0,
+    "pcm_epoch_probes": {
+      "probe_lines": 99,
+      "samples": 9,
+      "epoch_ok": 9,
+      "epoch_bad": 0,
+      "ring_pcm_ok": 9,
+      "ring_pcm_bad": 0,
+      "stale_epoch_zero": 9,
+      "stale_epoch_nonzero": 0,
+      "fpga_one": 9,
+      "fpga_zero": 0,
+      "fault_zero": 9,
+      "probe_errors": 0,
+      "identities": ["1"]
+    },
+    "presentation_trace": {
+      "path": ".mister/evidence/target-runs/20260909-pcm-epoch-rebind-final-liveprobe-presentation.jsonl",
+      "bytes": 373753,
+      "sha256": "0058b7b40e346e689ff665b92acae25318b66aff80a9ff247644df7c2ddcfd02",
+      "schema": "diablo-presentation-trace-v1",
+      "records": 2122,
+      "timing_invalid_records": 0,
+      "frame_published": 1881,
+      "backpressure_dropped": 241,
+      "backpressure_total": 339
+    }
+  },
+  "candidate_bound_suites": {
+    "arm_qemu_receipt": ".mister/evidence/receipts/20260908T190425Z-b8d0708d-2263-437f-a745-a214d8d221cb.json",
+    "arm_qemu_receipt_sha256": "26eeccfc3663f2bb1daab84b723d02eba8a9a7635608fc676a933e6b9fdc5074",
+    "arm_qemu_status": "pass",
+    "preflight_receipt": ".mister/evidence/receipts/20260909T-candidate-epoch-rebind-final-preflight.json",
+    "preflight_receipt_sha256": "6dae74a2291669808548372f9d925410a54b2b5578bc74b0804de670a85872b4",
+    "deployment_receipt": ".mister/evidence/receipts/20260909T-candidate-epoch-rebind-final-deployment.json",
+    "deployment_receipt_sha256": "2edc144b5aae340d447172b49fbdc13a585e799311b611cf25115c44cdd0ac89"
+  },
+  "limitations": [
+    "No physical HDMI observer or speaker/stereo inspection was available.",
+    "Dummy SDL drivers prove the candidate-bound runtime path only; they do not close physical video/audio gates.",
+    "Presentation backpressure remains above the acceptance target, so C15, C20 and C21 remain open.",
+    "This run does not close controller, campaign, save/load, clean-install/update/rollback, menu, physical or release gates."
+  ]
+}

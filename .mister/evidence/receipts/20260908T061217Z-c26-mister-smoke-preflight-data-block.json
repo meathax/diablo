@@ -1,0 +1,38 @@
+{
+  "schema": "c26.mister.smoke.preflight.v1",
+  "status": "blocked_before_activation",
+  "timestamp_utc": "2026-09-08T06:12:17.2439615Z",
+  "target": "192.168.0.69",
+  "boot_id": "beee22b4-e4d8-4b96-9f00-c19d21e39f44",
+  "kernel": "5.15.1-MiSTer",
+  "candidate_id": "8530508c0923c8d14766f584019bb4bd5b78ed614c95facb474d5b6788ed1376",
+  "package_root": "/media/fat/_CodexDiabloC26_0232f7",
+  "package_manifest_sha256": "8d4b9deebaf6849fe9487bac93ab8a6d4d00079b7026bcbf5eae434fed92ed9b",
+  "staged_rbf_sha256": "bd9bfdd38ab314566b941e61bc86086493ac96c4a8409f15569851fa2d64d3c1",
+  "local_package_manifest_sha256": "8d4b9deebaf6849fe9487bac93ab8a6d4d00079b7026bcbf5eae434fed92ed9b",
+  "local_rbf_sha256": "bd9bfdd38ab314566b941e61bc86086493ac96c4a8409f15569851fa2d64d3c1",
+  "command_path": "/dev/MiSTer_cmd",
+  "command_path_present": true,
+  "target_misterclaw_available": false,
+  "conflict_processes": [],
+  "data_checks": [
+    {
+      "present": false,
+      "path": "/media/fat/tmp_esc/diablo-data/diabdat.mpq"
+    },
+    {
+      "present": false,
+      "path": "/media/fat/games/Diablo/diabdat.mpq"
+    },
+    {
+      "present": false,
+      "path": "/media/fat/games/Diablo/data/diabdat.mpq"
+    }
+  ],
+  "first_failure": "Supported diablo_launcher.py requires campaign data file diabdat.mpq; no checked target data root contains it.",
+  "activation_attempted": false,
+  "target_mutation": false,
+  "dependent_smoke_checks": "not_run",
+  "physical_evidence": "not_obtained",
+  "next_required_input": "User-authorized Diablo data root containing diabdat.mpq (and Hellfire files if Hellfire campaign), then rerun preflight."
+}

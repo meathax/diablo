@@ -1,0 +1,5 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE", "-std=c++23", "-Wall", "-Wextra", "-Werror", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-eb11e3b2-4151-4979-9cb7-20f109ca2855-u6xew1mp\\support\\reference", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-eb11e3b2-4151-4979-9cb7-20f109ca2855-u6xew1mp\\support\\tests\\indexed_frame_probe.cpp", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-eb11e3b2-4151-4979-9cb7-20f109ca2855-u6xew1mp\\.work\\build\\verification\\indexed_frame_probe.exe"]
+
+
+$ ["D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-eb11e3b2-4151-4979-9cb7-20f109ca2855-u6xew1mp\\.work\\build\\verification\\indexed_frame_probe.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-eb11e3b2-4151-4979-9cb7-20f109ca2855-u6xew1mp\\.work\\build\\verification\\indexed_frame_probe.bin"]
+

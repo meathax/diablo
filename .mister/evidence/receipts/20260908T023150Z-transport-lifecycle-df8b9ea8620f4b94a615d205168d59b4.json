@@ -1,0 +1,73 @@
+{
+  "schema": "diablo-transport-lifecycle-test-v1",
+  "run_id": "df8b9ea8620f4b94a615d205168d59b4",
+  "status": "fail",
+  "finished_utc": "2026-09-08T02:31:50.540626+00:00",
+  "distribution": "Ubuntu",
+  "source": {
+    "path": "support\\tests\\mister_transport_lifecycle_test.cpp",
+    "sha256": "ba0b931867505cea0ffdae3ae4d686cc6e1704b28f20bb4279208bb4f8430bb8"
+  },
+  "inputs": {
+    "runtime_header": "45a4938f4ee11ac1adf3a3a4426755eb76533a85950dc905c5afb889036e0937",
+    "adapter_header": "82ffabd3433a00ea875434ab86297cb7ca9582f0eb06d0cb552615c01412d336",
+    "abi_header": "7d391f67b396cbc3c749fb1a4bd77310d194f17c86cd6e3a09fd3d9699ef69b2"
+  },
+  "commands": {
+    "compile": [
+      "C:\\Windows\\system32\\wsl.exe",
+      "-d",
+      "Ubuntu",
+      "--",
+      "g++",
+      "-std=c++23",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-I",
+      "/mnt/d/Arcade/AI/aCORES/Diablo/support/reference",
+      "/mnt/d/Arcade/AI/aCORES/Diablo/support/tests/mister_transport_lifecycle_test.cpp",
+      "-I/usr/include/SDL2",
+      "-D_REENTRANT",
+      "-lSDL2",
+      "-o",
+      "/tmp/diablo-transport-lifecycle-df8b9ea8620f4b94a615d205168d59b4/transport-lifecycle"
+    ],
+    "run": [
+      "C:\\Windows\\system32\\wsl.exe",
+      "-d",
+      "Ubuntu",
+      "--",
+      "env",
+      "SDL_VIDEODRIVER=dummy",
+      "DIABLO_MISTER_PROFILE=0",
+      "/tmp/diablo-transport-lifecycle-df8b9ea8620f4b94a615d205168d59b4/transport-lifecycle",
+      "/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/transport-lifecycle/df8b9ea8620f4b94a615d205168d59b4/transport-runtime-memory.bin",
+      "/mnt/d/Arcade/AI/aCORES/Diablo/.work/build/transport-lifecycle/df8b9ea8620f4b94a615d205168d59b4/transport-runtime.lock"
+    ]
+  },
+  "outputs": {
+    "compile_log": {
+      "path": ".work/build/transport-lifecycle/df8b9ea8620f4b94a615d205168d59b4/compile.log",
+      "sha256": "d4d09e3d1a86ed14d5fa63b7f005258297570dc3846842c1debb12cce770bb03"
+    },
+    "run_log": {
+      "path": ".work/build/transport-lifecycle/df8b9ea8620f4b94a615d205168d59b4/run.log",
+      "sha256": "2a696458c883d7e8869aa7ffa57f6416cb27653ebabd58772d868b92b48f37a3"
+    },
+    "shared_file": ".work/build/transport-lifecycle/df8b9ea8620f4b94a615d205168d59b4/transport-runtime-memory.bin",
+    "lock_file": ".work/build/transport-lifecycle/df8b9ea8620f4b94a615d205168d59b4/transport-runtime.lock",
+    "wsl_binary": "/tmp/diablo-transport-lifecycle-df8b9ea8620f4b94a615d205168d59b4/transport-lifecycle"
+  },
+  "checks": [
+    "64 production Adapter Initialize cycles with requested file-backed epochs",
+    "idempotent Initialize while active",
+    "idempotent Shutdown from inactive and active states",
+    "production Present fault recovery rebinds a fresh epoch and resets frame ownership",
+    "public PCM callback publication during active runtime and concurrent shutdown admission"
+  ],
+  "scope": "Linux/WSL file-backed production Adapter lifecycle and callback admission only; no FPGA, board, scene, performance or physical acceptance.",
+  "exit_code": 1
+}

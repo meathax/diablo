@@ -20,6 +20,7 @@ import os
 from pathlib import Path
 import re
 import secrets
+import shutil
 import signal
 import subprocess
 import sys
@@ -198,6 +199,48 @@ def _writable(path: Path, label: str) -> Path:
         except FileNotFoundError:
             pass
     return path.resolve()
+
+
+def _stage_hellfire_mod(package: Path, save_root: Path) -> None:
+    """Stage the packaged Hellfire mod into the campaign preference tree."""
+    source = package / "assets" / "mods" / "hf"
+    if source.is_symlink() or not source.is_dir():
+        raise LaunchError("package is missing the bundled Hellfire mod")
+    source_files = []
+    for path in sorted(source.rglob("*")):
+        if path.is_symlink():
+            raise LaunchError(f"bundled Hellfire mod contains a symlink: {path.relative_to(source)}")
+        if path.is_file():
+            source_files.append(path)
+        elif not path.is_dir():
+            raise LaunchError(f"bundled Hellfire mod contains an unsupported entry: {path.relative_to(source)}")
+    if not source_files:
+        raise LaunchError("bundled Hellfire mod is empty")
+
+    destination = save_root / "mods" / "hf"
+    for source_path in source_files:
+        relative = source_path.relative_to(source)
+        current = save_root
+        for part in (Path("mods") / "hf" / relative.parent).parts:
+            current /= part
+            if current.is_symlink() or (current.exists() and not current.is_dir()):
+                raise LaunchError(f"Hellfire mod staging path is not a real directory: {current}")
+            current.mkdir(exist_ok=True)
+            if current.is_symlink():
+                raise LaunchError(f"Hellfire mod staging path is a symlink: {current}")
+        target = destination / relative
+        if target.is_symlink() or target.exists():
+            if target.is_symlink() or not target.is_file():
+                raise LaunchError(f"existing Hellfire mod file is not a real file: {target}")
+            if sha256_file(target) != sha256_file(source_path):
+                raise LaunchError(f"existing Hellfire mod differs from package: {target}")
+
+    for source_path in source_files:
+        relative = source_path.relative_to(source)
+        target = destination / relative
+        if not target.exists():
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source_path, target)
 
 
 def _boot_id(path: Path) -> str:
@@ -446,6 +489,8 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
     data_root = args.data_root.resolve()
     _require_campaign_data(data_root, args.campaign)
     save_root = _writable(args.save_root.resolve(), "save root")
+    if args.campaign == "hellfire":
+        _stage_hellfire_mod(package, save_root)
     config_root = _writable((args.config_root or (save_root / "config")).resolve(), "config root")
     runtime_root = _writable((args.runtime_root or (Path("/tmp") / ("diablo-" + candidate_id[:16]))).resolve(), "runtime root")
     boot_id = _boot_id(args.boot_id_file)
@@ -486,7 +531,11 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
                     "DIABLO_DATA_DIR": str(data_root), "DIABLO_SAVE_DIR": str(save_root),
                     "DIABLO_CAMPAIGN": args.campaign, "SDL_VIDEODRIVER": "dummy",
                     "SDL_AUDIODRIVER": "dummy", "SDL_RENDER_DRIVER": "software",
-                    "DIABLO_MISTER_FORCE_FRAME_PACING": "1" if _force_frame_pacing(args.engine_arg) else "0"})
+                    "DIABLO_MISTER_FORCE_FRAME_PACING": "1" if _force_frame_pacing(args.engine_arg) else "0",
+                    # Dirty-region copies are the measured lower-cost path for
+                    # the shared-DDR indexed framebuffer. Preserve an explicit
+                    # environment override for diagnostics and rollback.
+                    "DIABLO_MISTER_DIRTY_COPY": os.environ.get("DIABLO_MISTER_DIRTY_COPY", "1")})
         command = _engine_args(args, package, save_root, config_root, log_path)
         with log_path.open("ab") as output:
             process = _start_engine(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,

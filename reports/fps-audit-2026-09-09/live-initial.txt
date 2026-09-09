@@ -1,0 +1,282 @@
+[Language]
+Code=en
+
+[Mods]
+clock=0
+hf=0
+adria_refills_mana=0
+Floating Numbers - XP=0
+Floating Numbers - Damage=0
+
+[GameMode]
+Game=0
+Shareware=0
+
+[StartUp]
+Diablo Intro=1
+Hellfire Intro=1
+Splash=2
+
+[Graphics]
+Width=640
+Height=480
+Fullscreen=1
+Fit to Screen=1
+Upscale=1
+Scaling Quality=0
+Integer Scaling=0
+Frame Rate Control=2
+Brightness Correction=0
+Zoom=0
+Show FPS=1
+Per-pixel Lighting=0
+Color Cycling=1
+Alternate nest art=0
+Hardware Cursor=1
+Hardware Cursor For Items=0
+Hardware Cursor Maximum Size=128
+
+[Audio]
+Sound Volume=0
+Audio Cues Volume=0
+Music Volume=0
+Walking Sound=1
+Auto Equip Sound=0
+Item Pickup Sound=0
+Sample Rate=22050
+Channels=2
+Buffer Size=2048
+Resampler=Speex
+Resampling Quality=3
+Device=
+
+[Diablo]
+LastSinglePlayerHero=1
+LastMultiplayerHero=0
+
+[Hellfire]
+LastSinglePlayerHero=0
+LastMultiplayerHero=0
+SItem=
+
+[Game]
+Speed=20
+Friendly Fire=1
+MultiplayerFullQuests=0
+Randomize Quests=1
+Theo Quest=0
+Cow Quest=0
+Run in Town=0
+Quick Cast=1
+Test Bard=0
+Test Barbarian=0
+Experience Bar=0
+Floating Item Info Box=0
+Store UI=0
+Show health values=0
+Show mana values=0
+Show Multiplayer Party Information=0
+Enemy Health Bar=0
+Show Monster Type=0
+Show Item Labels=0
+Auto Refill Belt=1
+Auto Equip Weapons=1
+Auto Equip Armor=0
+Auto Equip Helms=0
+Auto Equip Shields=0
+Auto Equip Jewelry=0
+Auto Gold Pickup=1
+Auto Elixir Pickup=0
+Auto Oil Pickup=0
+Heal Potion Pickup=0
+Full Heal Potion Pickup=0
+Mana Potion Pickup=0
+Full Mana Potion Pickup=0
+Rejuvenation Potion Pickup=0
+Full Rejuvenation Potion Pickup=0
+Auto Pickup in Town=0
+Disable Crippling Shrines=0
+Grab Input=0
+Pause Game When Window Loses Focus=1
+Skip loading screen threshold, ms=0
+
+[Network]
+Port=6112
+Bind Address=0.0.0.0
+Previous Game ID=
+Previous Host=
+
+[Keymapping]
+BeltItem1=1
+BeltItem2=2
+BeltItem3=3
+BeltItem4=4
+BeltItem5=5
+BeltItem6=6
+BeltItem7=7
+BeltItem8=8
+QuickSpell1=F5
+QuickSpell2=F6
+QuickSpell3=F7
+QuickSpell4=F8
+QuickSpell5=
+QuickSpell6=
+QuickSpell7=
+QuickSpell8=
+QuickSpell9=
+QuickSpell10=
+QuickSpell11=
+QuickSpell12=
+QuickSpellPrevious=SCROLLUPMOUSE
+QuickSpellNext=SCROLLDOWNMOUSE
+UseHealthPotion=
+UseManaPotion=
+DisplaySpells=S
+QuickSave=F2
+QuickLoad=F3
+QuitGame=
+StopHero=
+ItemHighlighting=LALT
+ToggleItemHighlighting=RCONTROL
+ToggleAutomap=TAB
+CycleAutomapType=
+Inventory=I
+Character=C
+Party=Y
+QuestLog=Q
+SpellBook=B
+QuickMessage1=F9
+QuickMessage2=F10
+QuickMessage3=F11
+QuickMessage4=F12
+QuickMessage5=
+QuickMessage6=
+QuickMessage7=
+QuickMessage8=
+QuickMessage9=
+QuickMessage10=
+HideInfoScreens=SPACE
+Zoom=Z
+PauseGame=P
+PauseGameAlternate=PAUSE
+DecreaseBrightness=F
+IncreaseBrightness=G
+Help=F1
+Screenshot=PRINT
+GameInfo=V
+ChatLog=L
+SortInv=R
+
+[Padmapping]
+BeltItem1=
+BeltItem2=
+BeltItem3=
+BeltItem4=
+BeltItem5=
+BeltItem6=
+BeltItem7=
+BeltItem8=
+QuickSpell1=RT+X
+QuickSpell2=RT+Y
+QuickSpell3=RT+A
+QuickSpell4=RT+B
+QuickSpell5=
+QuickSpell6=
+QuickSpell7=
+QuickSpell8=
+QuickSpell9=
+QuickSpell10=
+QuickSpell11=
+QuickSpell12=
+PrimaryAction=A
+SecondaryAction=Y
+SpellAction=X
+CancelAction=B
+MoveUp=
+MoveDown=
+MoveLeft=
+MoveRight=
+StandGround=LT
+ToggleStandGround=
+UseHealthPotion=LB
+UseManaPotion=RB
+Character=Left
+Inventory=Right
+QuestLog=Down
+SpellBook=Up
+DisplaySpells=B
+ToggleAutomap=Select
+AutomapMoveUp=RT+Up
+AutomapMoveDown=RT+Down
+AutomapMoveLeft=RT+Left
+AutomapMoveRight=RT+Right
+MouseUp=
+MouseDown=
+MouseLeft=
+MouseRight=
+LeftMouseClick1=RS
+LeftMouseClick2=
+RightMouseClick1=RT+RS
+RightMouseClick2=
+PadHotspellMenu=
+PadMenuNavigator=
+ToggleGameMenu1=Start
+ToggleGameMenu2=
+QuickSave=
+QuickLoad=
+ItemHighlighting=
+ToggleItemHighlighting=LS
+HideInfoScreens=
+Zoom=
+PauseGame=
+DecreaseBrightness=
+IncreaseBrightness=
+Help=
+Screenshot=
+GameInfo=
+SortInv=
+ChatLog=
+
+[Controller]
+Mapping=
+deadzone=0.07
+
+[NetMsg]
+QuickMessage1=I need help! Come here!
+QuickMessage2=Follow me.
+QuickMessage3=Here's something for you.
+QuickMessage4=Now you DIE!
+QuickMessage5=Heal yourself!
+QuickMessage6=Watch out!
+QuickMessage7=Thanks.
+QuickMessage8=Retreat!
+QuickMessage9=Sorry.
+QuickMessage10=I'm waiting.
+VERBOSE: Loading palette from levels\towndata\town.pal
+VERBOSE: Load thread finished in 2755ms
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: fopen("/media/fat/config/Diablo/diablo.ini", "wb")
+VERBOSE: fwrite(data, 4222)
+VERBOSE: Loading palette from gendata\cutstart.pal
+VERBOSE: Opening /media/fat/saves/Diablo/single_1.sv
+VERBOSE: Failed to remove file: /media/fat/saves/Diablo/single_1.tmp
+VERBOSE: Removed file: /media/fat/saves/Diablo/single_1.tmp
+VERBOSE: Closing /media/fat/saves/Diablo/single_1.sv
+VERBOSE: Re-encoding dungeon CELs: 3,547 frames, 2,176,004 bytes
+VERBOSE:  Re-encoded dungeon CELs: 3,547 frames, 2,107,478 bytes. Extracted 34 foliage tiles.
+VERBOSE: Loading palette from levels\towndata\town.pal
+VERBOSE: Load thread finished in 2752ms
+Diablo MiSTer PCM health changed: queued=0 local_queue=7777 producer=5764491 consumer=5764491 underrun=325 resync=0 callbacks=2586 drops=0 frames=5764491 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8395 producer=7509889 consumer=7509889 underrun=404 resync=0 callbacks=3369 drops=0 frames=7509889 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=7411 producer=9175038 consumer=9175038 underrun=483 resync=0 callbacks=4116 drops=0 frames=9175038 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=6687 producer=10920436 consumer=10920436 underrun=545 resync=0 callbacks=4899 drops=0 frames=10920436 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=7708 producer=11000684 consumer=11000684 underrun=561 resync=0 callbacks=4935 drops=0 frames=11000684 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8754 producer=12665833 consumer=12665833 underrun=641 resync=0 callbacks=5682 drops=0 frames=12665833 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8362 producer=14406773 consumer=14406773 underrun=724 resync=0 callbacks=6463 drops=0 frames=14406773 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8085 producer=16149941 consumer=16149941 underrun=809 resync=0 callbacks=7245 drops=0 frames=16149941 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=7132 producer=17890881 consumer=17890881 underrun=888 resync=0 callbacks=8026 drops=0 frames=17890881 dropped_frames=0
+3332 (devilutionx) R 3323 3332 3332 0 -1 4210944 13299 0 0 0 17056 294 0 0 20 0 2 0 414966 54743040 7832 4294967295 4759552 11233704 3200821776 0 0 0 0 0 16386 0 0 0 17 1 0 0 0 0 0 11239100 11317152 12247040 3200822118 3200822417 3200822417 3200823187 0
+devilutionx
+SDLAudioP2

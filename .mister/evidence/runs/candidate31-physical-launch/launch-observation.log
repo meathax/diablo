@@ -1,0 +1,24 @@
+Candidate31 physical launcher smoke observation
+UTC: 2026-09-07T18:01:58Z start; target boot observed 080c3ae9-9a27-4c35-9b02-5c546a21d609
+Candidate: 77077a3e3a3dced9686028b966a0fb2239be840950ba8a4fe9262d554d52ef4e
+Source: 4bcf897462aacbd53a7b084f7196cd41fc0647ce41b6fd56ebea148f331bac5f
+Candidate manifest SHA256: 29af2f68ffda6719c0b550e2c28f869a1c2c92268e7ee7de787820aa4820e507
+Package: _CodexDiabloCandidate31 (190 files; runtime package v2 with 184 asset files)
+Package manifest SHA256: 3c76e96889b891aabaa35464d1e9028d8065f9be14b1bfaa613924209ff31e0b
+Deployment manifest SHA256: e1c087bcedfe0d756969c50ffd469b6c458a45dec1ac7c77c0e9b8cf816f1d34
+
+Target admission and lifecycle:
+- /bin/python3 diablo_launcher.py verified the package, created current-boot admission and acquired the transport lease.
+- MiSTer process matched the requested RBF exactly: /media/fat/MiSTer /media/fat/_CodexDiabloCandidate31/Diablo.rbf.
+- FPGA manager state was operating.
+- devilutionx launched with the Diablo campaign and complete package asset root; exit_code=0 after controlled duration termination.
+- Transport state during run: epoch=0x11d6f6fb arm=1 fpga=1 fault=0 detail=0x00000000; frame IDs advanced through 1516 and display_epoch reached 0x000005ec.
+- Engine log confirms ui_art/diablo.pal and bundled asset discovery were available; no missing-asset error occurred.
+
+Observed blockers and limits:
+- The target screenshot API returned no screenshot data for this run; prior candidate29 capture was black. No physical video acceptance is claimed.
+- The target API/OSD identity still reports AO486 while the MiSTer process and FPGA status identify the requested Diablo RBF; independent core identity must be resolved before promotion.
+- PCM health logged continuously increasing underrun counters (for example underrun=574 through 5624); active-play audio remains open.
+- No physical audio, controls, campaign progression, save/load, multiplayer, clean install/update/rollback or performance acceptance is claimed.
+See launcher-result.json and engine.log in this directory for exact hashes.
+

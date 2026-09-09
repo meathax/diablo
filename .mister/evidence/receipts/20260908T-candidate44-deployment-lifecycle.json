@@ -1,0 +1,25 @@
+{
+  "board_profile": "de10-nano-mister-pending",
+  "candidate_id": "46ab7f456862f553bd3dd7a60e114376595fc2416f0b694bfb52f2481918803b",
+  "checks": {
+    "clean_install": true,
+    "final_manifest_verify": true,
+    "interrupted_update_preserves_activation": true,
+    "rollback": true,
+    "save_preserved": true,
+    "staging_clean": true,
+    "successful_update": true
+  },
+  "finished_utc": "2026-09-07T23:58:00Z",
+  "limitations": [
+    "No menu entry was activated",
+    "No physical video/audio/input observer was used"
+  ],
+  "package": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\package-board-candidate-44-lifecycle",
+  "package_manifest_sha256": "b4231f57a497f94d101f21c164bf23fb92355cfeb4eb8a92634e3959705a824d",
+  "schema": "diablo-deployment-lifecycle-v1",
+  "scope": "local package transaction qualification; no physical MiSTer acceptance",
+  "started_utc": "2026-09-07T23:57:48Z",
+  "status": "pass",
+  "update_fixture_candidate_id": "44a8022f418163a9b9e011e6dd60f04f07a001e8937b57848afc0f57e2d227d2"
+}

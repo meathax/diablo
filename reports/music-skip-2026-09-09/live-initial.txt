@@ -1,0 +1,90 @@
+VERBOSE:  Re-encoded dungeon CELs: 3,547 frames, 2,107,478 bytes. Extracted 34 foliage tiles.
+VERBOSE: Loading palette from levels\towndata\town.pal
+VERBOSE: Load thread finished in 3170ms
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: fopen("/media/fat/config/Diablo/diablo.ini", "wb")
+VERBOSE: fwrite(data, 4222)
+VERBOSE: Loading palette from gendata\cutstart.pal
+VERBOSE: Opening /media/fat/saves/Diablo/single_1.sv
+VERBOSE: Failed to remove file: /media/fat/saves/Diablo/single_1.tmp
+VERBOSE: Removed file: /media/fat/saves/Diablo/single_1.tmp
+VERBOSE: Closing /media/fat/saves/Diablo/single_1.sv
+VERBOSE: Re-encoding dungeon CELs: 3,547 frames, 2,176,004 bytes
+VERBOSE:  Re-encoded dungeon CELs: 3,547 frames, 2,107,478 bytes. Extracted 34 foliage tiles.
+VERBOSE: Loading palette from levels\towndata\town.pal
+VERBOSE: Load thread finished in 2755ms
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: Loading palette from ui_art\diablo.pal
+VERBOSE: fopen("/media/fat/config/Diablo/diablo.ini", "wb")
+VERBOSE: fwrite(data, 4222)
+VERBOSE: Loading palette from gendata\cutstart.pal
+VERBOSE: Opening /media/fat/saves/Diablo/single_1.sv
+VERBOSE: Failed to remove file: /media/fat/saves/Diablo/single_1.tmp
+VERBOSE: Removed file: /media/fat/saves/Diablo/single_1.tmp
+VERBOSE: Closing /media/fat/saves/Diablo/single_1.sv
+VERBOSE: Re-encoding dungeon CELs: 3,547 frames, 2,176,004 bytes
+VERBOSE:  Re-encoded dungeon CELs: 3,547 frames, 2,107,478 bytes. Extracted 34 foliage tiles.
+VERBOSE: Loading palette from levels\towndata\town.pal
+VERBOSE: Load thread finished in 2752ms
+Diablo MiSTer PCM health changed: queued=0 local_queue=7777 producer=5764491 consumer=5764491 underrun=325 resync=0 callbacks=2586 drops=0 frames=5764491 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8395 producer=7509889 consumer=7509889 underrun=404 resync=0 callbacks=3369 drops=0 frames=7509889 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=7411 producer=9175038 consumer=9175038 underrun=483 resync=0 callbacks=4116 drops=0 frames=9175038 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=6687 producer=10920436 consumer=10920436 underrun=545 resync=0 callbacks=4899 drops=0 frames=10920436 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=7708 producer=11000684 consumer=11000684 underrun=561 resync=0 callbacks=4935 drops=0 frames=11000684 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8754 producer=12665833 consumer=12665833 underrun=641 resync=0 callbacks=5682 drops=0 frames=12665833 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8362 producer=14406773 consumer=14406773 underrun=724 resync=0 callbacks=6463 drops=0 frames=14406773 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8085 producer=16149941 consumer=16149941 underrun=809 resync=0 callbacks=7245 drops=0 frames=16149941 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=7132 producer=17890881 consumer=17890881 underrun=888 resync=0 callbacks=8026 drops=0 frames=17890881 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=6905 producer=19712068 consumer=19712068 underrun=967 resync=0 callbacks=8843 drops=0 frames=19712068 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=7642 producer=21453007 consumer=21453007 underrun=1049 resync=0 callbacks=9624 drops=0 frames=21453007 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=2229 local_queue=6636 producer=21936725 consumer=21934496 underrun=1128 resync=0 callbacks=9841 drops=0 frames=21936725 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=6794 producer=23753455 consumer=23753455 underrun=1210 resync=0 callbacks=10656 drops=0 frames=23753455 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 local_queue=8472 producer=25496623 consumer=25496623 underrun=1291 resync=0 callbacks=11438 drops=0 frames=25496623 dropped_frames=0
+[Language]
+Code=en
+
+[Mods]
+clock=0
+hf=0
+adria_refills_mana=0
+Floating Numbers - XP=0
+Floating Numbers - Damage=0
+
+[GameMode]
+Game=0
+Shareware=0
+
+[StartUp]
+Diablo Intro=1
+Hellfire Intro=1
+Splash=2
+
+[Graphics]
+Width=640
+Height=480
+Fullscreen=1
+Fit to Screen=1
+Upscale=1
+Scaling Quality=0
+Integer Scaling=0
+Frame Rate Control=2
+Brightness Correction=0
+Zoom=0
+Show FPS=1
+Per-pixel Lighting=0
+Color Cycling=1
+Alternate nest art=0
+Hardware Cursor=1
+Hardware Cursor For Items=0
+Hardware Cursor Maximum Size=128
+
+[Audio]
+Sound Volume=0
+Audio Cues Volume=0
+Music Volume=0
+Walking Sound=1
+Auto Equip Sound=0
+Item Pickup Sound=0

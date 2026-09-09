@@ -1,0 +1,35 @@
+{
+  "schema": "diablo-verification-receipt-v1",
+  "status": "pass",
+  "suite": "board",
+  "candidate": {
+    "candidate_id": "4a3b9ad2982f6b5834ecfe95a3c10669a2d30a947adf456ab992c731f22a320a",
+    "source_id": "5ec6e11b606c592ceaa2b26b65c8a92713e06ba73e8f65105462bd0b10cd4c73",
+    "manifest": "D:/Arcade/AI/aCORES/Diablo/.mister/evidence/candidates/fpga-candidate-20260908-29-launcher-fd.json",
+    "manifest_sha256": "3b3b60a6d121eb77ab3d4e5ca9dc674e97bbc00e5ffaca09a3106380f1d3008f"
+  },
+  "scope": "Physical MiSTer package and launcher lifecycle smoke; no video/audio/input/gameplay/performance acceptance",
+  "results": [
+    {
+      "id": "launcher-board",
+      "status": "pass",
+      "log": ".mister/evidence/runs/candidate29-physical-launch/launch-observation.log",
+      "log_sha256": "bca781e48f873751ec8c9ada6d5b2dee8def8e7d32311e81b56b006cd0d7c9b7",
+      "log_bytes": 2130,
+      "observations": {
+        "package_preflight": "pass",
+        "launcher": "pass",
+        "arm_transport_frames": "observed",
+        "arm_transport_pcm": "observed",
+        "physical_video": "not_accepted",
+        "core_identity": "not_accepted"
+      }
+    }
+  ],
+  "limitations": [
+    "Capture was black at observer resolution",
+    "mister_osd_info identified AO486 for the loaded RBF",
+    "Demo/timedemo trial rebooted the target and is recorded separately",
+    "No campaign, multiplayer or performance result is implied"
+  ]
+}

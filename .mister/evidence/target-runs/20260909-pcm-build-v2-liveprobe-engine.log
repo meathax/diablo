@@ -1,0 +1,165 @@
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Missing: devilutionx
+VERBOSE: Missing: fonts
+VERBOSE:   Found: hellfire in /media/fat/_CodexDiabloGameData/
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Found user preferred locales: C
+VERBOSE: Trying to load translation: C
+VERBOSE: No suitable translation found
+DEBUG: Unknown pixel format
+INFO: Created renderer: software
+VERBOSE: Removed file: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/Diablo1ReadOnlyTest.foo
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: fopen("/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/diablo.ini", "wb")
+VERBOSE: fwrite(data, 3922)
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE:   Found: DIABDAT in /media/fat/_CodexDiabloGameData/
+VERBOSE: Missing: hfbard
+VERBOSE: Missing: hfbarb
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/_CodexDiabloGameData/
+    pref: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/
+  config: /media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/
+  assets: /media/fat/.diablo-releases/47eba876be5699e2482c79661e103e1b6401d6edeebb13efc3b316b51fade27d/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/_CodexDiabloGameData/'
+     2. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/saves/'
+     3. '/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+DEBUG: That operation is not supported
+VERBOSE: Aulib sampleRate=22050 channels=2 frameSize=1024 format=0x8010
+VERBOSE: fopen("/media/fat/tmp_esc/diablo-candidate-pcm-build-v2-liveprobe/config/diablo.ini", "wb")
+VERBOSE: fwrite(data, 4222)
+INFO: Adding joystick 0: misterclaw-pad
+VERBOSE: Control: device None -> Gamepad, mode None -> Gamepad
+INFO: Opening game controller for joystick at index 0
+DEBUG: Unexpected controller element crc
+INFO: Opened game controller with mapping:
+030053cf790000000600000001000000,misterclaw-pad,a:b10,b:b11,x:b13,y:b14,back:b20,guide:b22,start:b21,leftshoulder:b16,rightshoulder:b17,dpup:b23,dpdown:b24,dpleft:b25,dpright:b26,leftx:a0,lefty:a1,rightx:a3,righty:a4,lefttrigger:a2,righttrigger:a5,crc:cf53,platform:Linux
+VERBOSE: Control: device Gamepad -> KeyboardAndMouse, mode Gamepad -> KeyboardAndMouse
+VERBOSE: SVid audio depth=16 channels=1 rate=22050
+DL pacing
+Diablo MiSTer transport frame backpressure; using SDL pacing
+Diablo MiSTer transport frame backpressure; using SDL pacing
+Diablo MiSTer transport frame backpressure; using SDL pacing
+Diablo MiSTer profile: presents=3031 published=2787 backpressure=325 timing_invalid=0 average_present_us=6905 max_present_us=558356 publish_attempts=3356 average_publish_us=5744 max_publish_us=46100 flushes=3031 average_flush_us=1 max_flush_us=22 command_attempts=0 command_batches=0 command_no_slot=0 command_overflow=0 command_publish_failures=0 command_fence_failures=0 command_frame_failures=0
+Diablo MiSTer profile outcomes: runtime_unavailable=0 recovery_deferred=0 recovery_failed=0 invalid_surface=0 command_published=0 command_rejected=0 frame_published=2787 publish_failed=0 backpressure_dropped=244
+Diablo MiSTer command profile: build_count=0 average_build_us=0 max_build_us=0 wait_count=0 average_wait_us=0 max_wait_us=0

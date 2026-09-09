@@ -1,0 +1,40 @@
+{
+  "candidate": {
+    "candidate_id": "56860713d38990ae28f1846e5f22850ed68b9ee228f6178c11e53fcb0f2d8a9b",
+    "manifest": ".mister/evidence/candidates/fpga-candidate-20260908-40-integrated-tb.json",
+    "manifest_sha256": "41bd0513171bda2f72751eecc6f8a1573086efab05f789ae24838f3990bce900",
+    "source_id": "13b93de9eb32d9fc72701886c164853622bc744c18cddec1b660f127ffc70c7d"
+  },
+  "limitations": [
+    "The target was concurrently running an unrelated NFS_SE install/rollback process; no clean board ownership existed for the 60-second attempt",
+    "The run observed active underrun growth and dropped PCM frames before the target state changed; no physical video/audio/input/campaign acceptance is granted"
+  ],
+  "results": [
+    {
+      "id": "launcher-board-normal60-candidate40-attempt",
+      "log": ".mister/evidence/runs/candidate40-physical-attempt-normal60/launch-observation.log",
+      "log_bytes": 1240,
+      "log_sha256": "39e5723bb32e2714a5df1a87fbea69f648f6bebd6f41cdff7dde1ed3a08abcc7",
+      "observations": {
+        "launcher": "pass-on-clean-5s-smoke",
+        "package_preflight": "pass",
+        "exact_rbf_process": "observed-intermittently",
+        "fpga_operating": "observed",
+        "pcm_local_queue_frames": "16384",
+        "pcm_active_underrun_delta": "6725-before-contention",
+        "pcm_drops": "4",
+        "physical_video": "not_accepted",
+        "physical_audio": "not_accepted",
+        "physical_input": "not_run",
+        "campaign": "not_run",
+        "performance": "not_run",
+        "target_contention": "fail"
+      },
+      "status": "blocked"
+    }
+  ],
+  "schema": "diablo-verification-receipt-v1",
+  "scope": "Candidate40 physical launch attempt; invalidated by concurrent target ownership and active PCM faults",
+  "status": "blocked",
+  "suite": "board"
+}

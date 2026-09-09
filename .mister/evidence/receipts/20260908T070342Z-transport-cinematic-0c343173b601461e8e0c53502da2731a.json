@@ -1,0 +1,41 @@
+{
+  "schema": "diablo-transport-cinematic-test-v1",
+  "run_id": "0c343173b601461e8e0c53502da2731a",
+  "status": "fail",
+  "finished_utc": "2026-09-08T07:03:42.662274+00:00",
+  "distribution": "Ubuntu",
+  "source": {
+    "path": "support/tests/mister_transport_cinematic_test.cpp",
+    "sha256": "27e7900061c59cf65fece623a00cccec619e25ceaf989a445760f965f1d209d1"
+  },
+  "inputs": {
+    "adapter_header": "82ffabd3433a00ea875434ab86297cb7ca9582f0eb06d0cb552615c01412d336",
+    "abi_header": "7d391f67b396cbc3c749fb1a4bd77310d194f17c86cd6e3a09fd3d9699ef69b2",
+    "overlay_cmake": "e473ef8ffbff1e26a3b8ef7fd26b5b65ac3c663beb4046676ec900a596f54f1c"
+  },
+  "generated_hook": {
+    "status": "blocked",
+    "reason": "generated mister-engine-overlay/storm/storm_svid.cpp was not found",
+    "searched_builds": []
+  },
+  "compile_status": "pass",
+  "run_status": "fail",
+  "outputs": {
+    "compile_log": ".work/build/transport-cinematic/0c343173b601461e8e0c53502da2731a/compile.log",
+    "run_log": ".work/build/transport-cinematic/0c343173b601461e8e0c53502da2731a/run.log",
+    "compile_log_sha256": "4f28e956526597d5df1415d27f9da1f08751e9935ceeb2ea8043e1c2380e577d",
+    "run_log_sha256": "1e62809e30e0b28265091684d00a2c568f9893200412289c39a9e46279904017",
+    "shared_file": ".work/build/transport-cinematic/0c343173b601461e8e0c53502da2731a/transport-runtime-memory.bin",
+    "lock_file": ".work/build/transport-cinematic/0c343173b601461e8e0c53502da2731a/transport-runtime.lock",
+    "wsl_binary": "/tmp/diablo-transport-cinematic-0c343173b601461e8e0c53502da2731a/transport-cinematic"
+  },
+  "checks": [
+    "native indexed 640x480 title and two changing cinematic frames preserve pixels and palette",
+    "full frame pipeline backpressure leaves only retained title frames and no movie publication",
+    "movie publication resumes after retirement and return-to-title publishes the title source",
+    "disabled transport follows the normal inactive initialization path",
+    "generated active movie hook returns before generic RenderPresent and stages non-native geometry"
+  ],
+  "scope": "Focused host adapter and generated cinematic-hook regression; no FPGA, board, input, audio or physical acceptance.",
+  "exit_code": 1
+}

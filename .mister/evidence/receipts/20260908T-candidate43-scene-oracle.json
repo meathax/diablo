@@ -1,0 +1,44 @@
+{
+  "arm": {
+    "binary_sha256": "ead7cc2ac6417ce88833a66e7fcf400d85058061964a96f43a44658fb3bee87c",
+    "build_role": null,
+    "captures": [],
+    "run": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\runtime\\arm-replays\\742d6ace2dd84dea88b391094bf84e9b\\run.json",
+    "run_sha256": "14aca7fd2d1af4faaba56815314d1206abb3eeecba0652e7a3f14505b155d385"
+  },
+  "candidate": {
+    "candidate_id": "82ebd70596f62e5c3e60c00d6609a728359da1186b8ad140c1cd2e90ef6f534f",
+    "manifest": "D:\\Arcade\\AI\\aCORES\\Diablo\\.mister\\evidence\\candidates\\fpga-candidate-20260908-43-video-policy.json",
+    "manifest_sha256": "680c79298f3db7747e40dc20087861c193416aa6a0590e1820e561a17fcc2ddd",
+    "source_id": "10486a2923b134085cbdb7d71e65b419545a4bce979e2fd5d6e9f73907a9c87f"
+  },
+  "comparison": {
+    "detail": "capture directory is missing: D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\runtime\\replays\\1eca0c34580144f0990f0150fe655af3\\frames",
+    "difference": "capture validation",
+    "equal": false
+  },
+  "errors": [
+    "host scenario is not a passed town-v1 run",
+    "ARM scenario is not a passed town-v1 run",
+    "host run build role is not diablo",
+    "ARM run build role is not diablo",
+    "capture directory is missing: D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\runtime\\replays\\1eca0c34580144f0990f0150fe655af3\\frames"
+  ],
+  "host": {
+    "build_role": null,
+    "captures": [],
+    "executable_sha256": "d4429fe6788b3ab3785333ba79f77e99deb9f079dc28dac96095d447b80dfb7b",
+    "run": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\runtime\\replays\\1eca0c34580144f0990f0150fe655af3\\run.json",
+    "run_sha256": "50a453c9691298bed47b1a21c7e9fb56d88112654408506fc514b5ea9dcfccf2"
+  },
+  "run_id": "baa1ef20-f088-440e-ab67-8c9f1dd021ca",
+  "scenario": {
+    "campaign": null,
+    "demo_sha256": null,
+    "frames_compared": 0,
+    "name": null
+  },
+  "schema": "diablo-scene-oracle-v1",
+  "scope": "Exact native640 host-reference versus ARM/QEMU indexed frame and RGB888 palette equality; no FPGA, physical HDMI, audio, input, FPS or full-campaign claim",
+  "status": "fail"
+}

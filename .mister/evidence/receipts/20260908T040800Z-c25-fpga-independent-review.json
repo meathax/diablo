@@ -1,0 +1,294 @@
+{
+  "schema": "diablo-c25-fpga-independent-review-v1",
+  "reviewed_utc": "2026-09-08T04:11:28.588Z",
+  "scope": "Read-only verification of the exact C25 snapshot receipt and produced FPGA artifacts; no Quartus rerun, source edit, target action, or release claim.",
+  "source_snapshot": {
+    "path": ".work/c25-fpga-final/.mister/fpga-source-snapshot.json",
+    "manifest_sha256": "faa537808c0cafa4b3dfb0d5e8b5c5ffa510caca4e8b3157a4f3ed49bbd2b083",
+    "schema": "diablo-fpga-source-snapshot-v1",
+    "file_count": 85,
+    "source_inputs": [
+      "Diablo.sv",
+      "Diablo.qpf",
+      "Diablo.qsf",
+      "Diablo.sdc",
+      "Diablo.srf",
+      "files.qip",
+      "build_id.v",
+      "LICENSE.fpga",
+      "rtl",
+      "sys",
+      "support/scripts/report_fpga_timing.tcl"
+    ],
+    "manifest_records_match_actual": true,
+    "manifest_mismatch_count": 0,
+    "root_sdc_path": "Diablo.sdc",
+    "root_sdc_sha256": "0060d9010b1f72b9092161b3e716acfd47d1db32c4be58b9d2c700eda85838a3",
+    "snapshot_sdc_sha256": "0060d9010b1f72b9092161b3e716acfd47d1db32c4be58b9d2c700eda85838a3",
+    "validator_path": "support/scripts/validate_c25_sdc.py",
+    "validator_sha256": "6ad59ed8a234a6d138ba7fa182f3a1479c1b0fda781b73bb7efcbca9e76483b8",
+    "receipt_root_sdc_match": true,
+    "receipt_validator_match": true,
+    "receipt_snapshot_binding": true,
+    "git_head_after_build": "8e7422352b333ab7798f00fc589085c69d8e8870"
+  },
+  "original_receipt": {
+    "path": ".mister/evidence/receipts/20260908T040336Z-d409d0ee3204-c25-fpga-final.json",
+    "sha256": "6d617ddb60073eee7a6e5ab9af2f819755c705a4631a5695b967706acb48533b",
+    "status": "pass",
+    "stable_during_review": true,
+    "observed_exit_codes": {
+      "compile_exit_code": 0,
+      "compress_exit_code": 0,
+      "timing_exit_code": 0
+    },
+    "root_output_pollution_check": {
+      "checked_roots": [
+        "output_files",
+        "db",
+        "incremental_db"
+      ],
+      "cutoff_local": "2026-09-08T13:47:52.850+10:00",
+      "files_modified_since_cutoff": [],
+      "ok": true
+    }
+  },
+  "artifacts": {
+    "all_declared_artifacts_match_actual": true,
+    "mismatch_count": 0,
+    "files": [
+      {
+        "path": ".work/c25-fpga-final/.mister/logs/quartus-compile.log",
+        "bytes": 178028,
+        "sha256": "82cd4644c41b69641d3083d760b741a0ff8f04ea95c0e44ec383aa68d6b2ad1f",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/.mister/logs/quartus-compress.log",
+        "bytes": 1607,
+        "sha256": "4729c7fc41cb98ad279bb6520a9328e1bb9a2a84bea6354cf52d8350141438ba",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/.mister/logs/quartus-timing.log",
+        "bytes": 21081,
+        "sha256": "21fdc67c227c5e389efc0cf61ed6883e958380c9e90ce9fe2e7c443033fc2967",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/output_files/Diablo.asm.rpt",
+        "bytes": 5229,
+        "sha256": "edc9fce72deb1ff8c019e77be4efb3ee8b3fcb5f1b001395402fd4e50863b5f8",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/output_files/Diablo.compressed.rbf",
+        "bytes": 2785132,
+        "sha256": "75f37c8fa16ceb602a6737d134b64dcba86db8ce7f6cad63dd86e3b4fafb40d5",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/output_files/Diablo.fit.rpt",
+        "bytes": 2761671,
+        "sha256": "28aecc30c0e80e9971399afcd87748cb026641425e0316179f75701ff30d7d31",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/output_files/Diablo.map.rpt",
+        "bytes": 1096062,
+        "sha256": "b12b141e180ff566f369e2eb656021fca855f2b727f710d464f3234457bbd407",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/output_files/Diablo.sof",
+        "bytes": 6690359,
+        "sha256": "8ea5121c5fe5435511bccffd768d50040acd4c8b01032ff655c6ec6621e3e8ec",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/output_files/Diablo.sta.rpt",
+        "bytes": 548680,
+        "sha256": "563b9120d37816180832909ab52135976da23169805a3579360b0786d257f7d3",
+        "matches_receipt": true
+      },
+      {
+        "path": ".work/c25-fpga-final/output_files/Diablo.timing_corners.rpt",
+        "bytes": 180641,
+        "sha256": "2bf90426f871b9128d64c691fb93e844c208f7ec2fce5b2c7053fe0cee83f202",
+        "matches_receipt": true
+      }
+    ],
+    "sof": {
+      "path": ".work/c25-fpga-final/output_files/Diablo.sof",
+      "sha256": "8ea5121c5fe5435511bccffd768d50040acd4c8b01032ff655c6ec6621e3e8ec",
+      "bytes": 6690359
+    },
+    "compressed_rbf": {
+      "path": ".work/c25-fpga-final/output_files/Diablo.compressed.rbf",
+      "sha256": "75f37c8fa16ceb602a6737d134b64dcba86db8ce7f6cad63dd86e3b4fafb40d5",
+      "bytes": 2785132
+    },
+    "sta_report": {
+      "path": ".work/c25-fpga-final/output_files/Diablo.sta.rpt",
+      "sha256": "563b9120d37816180832909ab52135976da23169805a3579360b0786d257f7d3",
+      "bytes": 548680
+    },
+    "timing_corners_report": {
+      "path": ".work/c25-fpga-final/output_files/Diablo.timing_corners.rpt",
+      "sha256": "2bf90426f871b9128d64c691fb93e844c208f7ec2fce5b2c7053fe0cee83f202",
+      "bytes": 180641
+    }
+  },
+  "timing": {
+    "receipt_checks_all_true": true,
+    "compile_compress_timing_exit_codes_zero": true,
+    "full_sta_summary_line_values": [
+      "0.095",
+      "0.074",
+      "4.069",
+      "0.380",
+      "0.396"
+    ],
+    "expected_worst_case_slack_setup_hold_recovery_removal_minpulse": [
+      "0.095",
+      "0.074",
+      "4.069",
+      "0.380",
+      "0.396"
+    ],
+    "full_sta_summary_match": true,
+    "category_summary_counts": {
+      "Setup": 8,
+      "Hold": 8,
+      "Recovery": 8,
+      "Removal": 8,
+      "Minimum Pulse Width": 8
+    },
+    "category_summary_counts_all_four_corners": true,
+    "four_corner_setup_rows": [
+      {
+        "corner": "slow_100C",
+        "kind": "setup",
+        "paths": 3,
+        "worst_slack": "0.210"
+      },
+      {
+        "corner": "slow_minus40C",
+        "kind": "setup",
+        "paths": 3,
+        "worst_slack": "0.095"
+      },
+      {
+        "corner": "fast_100C",
+        "kind": "setup",
+        "paths": 3,
+        "worst_slack": "0.529"
+      },
+      {
+        "corner": "fast_minus40C",
+        "kind": "setup",
+        "paths": 3,
+        "worst_slack": "0.526"
+      }
+    ],
+    "four_corner_setup_report_match": true,
+    "full_metrics_corners": [
+      {
+        "metrics": {
+          "hold": 0.244,
+          "minimum_pulse_width": 0.396,
+          "recovery": 4.069,
+          "removal": 0.866,
+          "setup": 0.21
+        },
+        "name": "Slow 1100mV 100C Model"
+      },
+      {
+        "metrics": {
+          "hold": 0.161,
+          "minimum_pulse_width": 0.396,
+          "recovery": 4.239,
+          "removal": 0.73,
+          "setup": 0.095
+        },
+        "name": "Slow 1100mV -40C Model"
+      },
+      {
+        "metrics": {
+          "hold": 0.092,
+          "minimum_pulse_width": 0.396,
+          "recovery": 5.157,
+          "removal": 0.505,
+          "setup": 0.529
+        },
+        "name": "Fast 1100mV 100C Model"
+      },
+      {
+        "metrics": {
+          "hold": 0.074,
+          "minimum_pulse_width": 0.396,
+          "recovery": 5.422,
+          "removal": 0.38,
+          "setup": 0.526
+        },
+        "name": "Fast 1100mV -40C Model"
+      }
+    ],
+    "all_five_metrics_positive_all_four_corners": true,
+    "forwarded_clock": {
+      "name": "HDMI_MCLK_FWD",
+      "target": "HDMI_MCLK",
+      "period_ns": 40.682,
+      "frequency_mhz": 24.58,
+      "report_line_matches": true
+    },
+    "sta_report_sha256": "563b9120d37816180832909ab52135976da23169805a3579360b0786d257f7d3",
+    "timing_corners_report_sha256": "2bf90426f871b9128d64c691fb93e844c208f7ec2fce5b2c7053fe0cee83f202",
+    "category_summary_counts_note": "Each required category appears in the four-corner index and four detailed corner sections; count is 8 per category."
+  },
+  "residual_unconstrained_scope": {
+    "input_ports": [
+      "HDMI_I2C_SDA",
+      "HDMI_TX_INT",
+      "IO_SDA"
+    ],
+    "output_ports": [
+      "HDMI_I2C_SCL",
+      "HDMI_I2C_SDA",
+      "HDMI_I2S",
+      "HDMI_LRCLK",
+      "HDMI_SCLK",
+      "IO_SCL",
+      "IO_SDA",
+      "USER_IO[2]",
+      "USER_IO[4]",
+      "USER_IO[5]"
+    ],
+    "input_count": 3,
+    "output_count": 10,
+    "matches_receipt_membership": true,
+    "qualification": "Exact residual scope for this snapshot only; external IO-rate/board contracts and physical acceptance remain open."
+  },
+  "independent_checks": {
+    "manifest_85_records": true,
+    "manifest_records_match_actual": true,
+    "receipt_artifacts_match_actual": true,
+    "receipt_status_checks_true": true,
+    "exit_codes_zero": true,
+    "five_metric_four_corner_positive": true,
+    "four_corner_setup_rows_match": true,
+    "residual_membership_3_inputs_10_outputs": true,
+    "mclk_40_682_ns": true,
+    "root_and_snapshot_sdc_match": true,
+    "validator_hash_match": true,
+    "receipt_stable": true,
+    "category_summary_counts_at_least_four": true
+  },
+  "overall": true,
+  "limitations": [
+    "Qualifies only .work/c25-fpga-final and its immutable 85-file manifest.",
+    "Fresh build is bound to this snapshot; do not infer current root source beyond the recorded SDC/validator hash matches.",
+    "Terra actual IO-rate/external contract review and all physical board/video/audio acceptance remain open.",
+    "No release or deployment claim."
+  ]
+}

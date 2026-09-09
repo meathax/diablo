@@ -1,0 +1,42 @@
+{
+  "schema": "diablo-c34-closure-receipt-v1",
+  "status": "pass",
+  "generated_utc": "2026-09-09T06:36:34.569Z",
+  "task": "C34",
+  "inventory": {
+    "receipt": ".mister/evidence/receipts/20260909T-c34-scaffolding-inventory.json",
+    "marker_groups": 5,
+    "source_lists": 16,
+    "disposition": "all audited markers are retained test/probe/compatibility evidence; no unused project scaffolding remained in the audited source/QIP scope"
+  },
+  "ownership": {
+    "document": "support/TRANSPORT_OWNERSHIP.md",
+    "extracted_modules": [
+      "support/reference/mister_transport_lifecycle.hpp",
+      "support/reference/mister_transport_pacing.hpp",
+      "support/reference/mister_command_frame_state.hpp",
+      "support/reference/mister_transport_profiler.hpp",
+      "support/reference/mister_transport_input.hpp",
+      "support/reference/mister_pcm_resampler.hpp"
+    ],
+    "adapter_boundary": "lifecycle/session, frame submission/cache, command completion, audio publication/resampling and input reconciliation have explicit owners; no new cross-module mutable globals"
+  },
+  "verification": {
+    "lifecycle_receipt": ".mister/evidence/receipts/20260909T062024Z-transport-lifecycle-87048333bca940238a493cd1687c702d.json",
+    "candidate_bound_local_receipt": ".mister/evidence/receipts/20260909T062902Z-69fd2e05-276a-4f6c-a18d-ada57f364531.json",
+    "local_pass_count": 23,
+    "local_not_run_count": 0,
+    "focused_osd_test": "python -m unittest support.tests.test_show_controls_osd",
+    "focused_osd_status": "pass",
+    "diff_check": "pass",
+    "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260909-c34-lifecycle-v3.json",
+    "candidate_id": "8a1c676a8dfdca3afae0ab22dc947b2596b6bb8d4e3ce235330d02eba6af5267",
+    "source_id": "ab7ec1b41654d40410ea8f70677d4ad7ac9939f168b4614de6389e10f4b22273",
+    "package": ".work/package-c34-lifecycle-20260909-v2",
+    "package_status": "verified",
+    "arm_engine_sha256": "6c8f77edc4161bd876fb27649b244d447eb61c1fd654c4e29843a401f3238fd1",
+    "fpga_rbf_sha256": "474fd8950f665dc4fdf078c8b542360cbcb38f994b3f3ff40819a4754ce05085",
+    "fpga_rebuilt": false
+  },
+  "scope_note": "C34 source/ownership closure only; physical controller observation, endurance, performance, save/relaunch and final release gates remain tracked separately."
+}\n

@@ -1,0 +1,164 @@
+{
+  "schema": "diablo-fpga-unconstrained-io-scope-v1",
+  "generated_utc": "2026-09-08T02:38:11.3668122Z",
+  "status": "scope_resolved_with_acceptance_gaps",
+  "repository": "D:\\Arcade\\AI\\aCORES\\Diablo",
+  "build_snapshot": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c34",
+  "source_snapshot_manifest": {
+    "path": ".work/c34/.mister/fpga-source-snapshot.json",
+    "sha256": "f21def4465f337aee2e549c4a8cbbbfa868962187952bc9202b45dbdc5f054d0",
+    "file_count": 85
+  },
+  "reports": [
+    {
+      "path": ".work/c34/output_files/Diablo.sta.rpt",
+      "bytes": 550747,
+      "sha256": "19b384cb4251c56b3bfd1391bece94cfc0fe15101a2755110d29b46b628116a0"
+    },
+    {
+      "path": ".work/c34/output_files/Diablo.sta.summary",
+      "bytes": 18283,
+      "sha256": "e9482a5fe127c3d7dc1024dcef2cf3010c486b4e577ce64f407281251328dd45"
+    },
+    {
+      "path": ".work/c34/output_files/Diablo.timing_corners.rpt",
+      "bytes": 172929,
+      "sha256": "beaa3278310d33f62a84187e5b729eb708749504d2078981f978ab193043d430"
+    }
+  ],
+  "supporting_sources": [
+    { "path": ".work/c34/sys/sys_top.v", "sha256": "9bc5562bcc9d923aa3bff1a9c976c52492edb9ef981f428b7a4101c919a711b8", "refs": "ports 22-125; SDIO 127-143; LED 156-157; HPS interrupt 230-234; HDMI I2C 1129-1139; audio 1557-1616; USER_IO 1659-1675" },
+    { "path": ".work/c34/Diablo.sdc", "sha256": "24d030e96c8e2e078f31f5be172026586e1b231e1ca5547af1095a4e129769e1", "refs": "HDMI video delays 23-27; no listed external I/O delay" },
+    { "path": ".work/c34/sys/sys_top.sdc", "sha256": "0a5fa4015b82ad7ce38e56d1ae4aadea6209af59c5dd9eff56a11139cf16ce86", "refs": "clocks 2-7; false paths 24-38, 43-77; LED_* exception 26" },
+    { "path": ".work/c34/Diablo.qsf", "sha256": "cd0aa0d2827dc18a04bf3f0754bff978a9925a911b705fc537b93b9a91e7866c", "refs": "top/output setup 11,18-20; HDMI_TX_INT pin 169; LED pins 183-198" },
+    { "path": ".work/c34/sys/sys.tcl", "sha256": "e9ab2b7c89b4347854810387550a65458aa3ec9de1bd26ad74328d73376f6a88", "refs": "IO_SCL/IO_SDA 20-24; USER_IO 31-40; SDCD_SPDIF 43-48; SD_SPI 103-108; HDMI/interrupt 123-170" },
+    { "path": ".work/c34/sys/sys_analog.tcl", "sha256": "e4cbfd22985fa046b546c0cfc626fccf773d9098b7c6a595f8bea66d67d25203", "refs": "SDIO pins/IO standards/pulls 2-14" },
+    { "path": ".work/c34/sys/mcp23009.sv", "sha256": "f168485e0b64c0545060f25b858c9f1c12b57024ce441754bb6a0cb0e9072e3f", "refs": "I2C ports 5-16; controller clock 43-120" }
+  ],
+  "sta_summary": {
+    "report_lines": {
+      "counts": "1483-1492",
+      "unconstrained_inputs": "1519-1527 and duplicate 1561-1569",
+      "unconstrained_outputs": "1531-1557 and duplicate 1573-1599"
+    },
+    "illegal_clocks": { "setup": 0, "hold": 0 },
+    "unconstrained_clocks": { "setup": 0, "hold": 0 },
+    "unconstrained_input_ports": { "setup": 4, "hold": 4, "paths_setup": 14, "paths_hold": 14 },
+    "unconstrained_output_ports": { "setup": 22, "hold": 22, "paths_setup": 82, "paths_hold": 82 }
+  },
+  "unconstrained_inputs": [
+    {
+      "port": "HDMI_I2C_SDA",
+      "report_role": "inout input side",
+      "report_line": 1523,
+      "classification": "active asynchronous/open-drain HDMI I2C; unresolved external input timing",
+      "rtl_refs": "sys/sys_top.v:31,1130,1133-1139",
+      "constraint_refs": "sys/sys_top.sdc:7 creates hdmi_sck; no input delay or exception for this port"
+    },
+    {
+      "port": "HDMI_TX_INT",
+      "report_role": "input",
+      "report_line": 1524,
+      "classification": "active asynchronous HDMI interrupt/status input; unresolved",
+      "rtl_refs": "sys/sys_top.v:44,234 (sampled into HPS gp_in)",
+      "constraint_refs": "Diablo.qsf:169 assigns the pin; no input delay, synchronizer, or false path in SDC"
+    },
+    {
+      "port": "IO_SDA",
+      "report_role": "inout input side",
+      "report_line": 1525,
+      "classification": "active asynchronous/open-drain board I2C; unresolved external input timing",
+      "rtl_refs": "sys/sys_top.v:105-106,163-175; sys/mcp23009.sv:5-16,43-120",
+      "constraint_refs": "sys/sys_top.sdc:3,20-22 clocks FPGA_CLK2_50; no input delay or exception for this port"
+    },
+    {
+      "port": "SDCD_SPDIF",
+      "report_role": "inout input side",
+      "report_line": 1526,
+      "classification": "active mode-multiplexed SD card-detect/SPDIF input; unresolved asynchronous timing",
+      "rtl_refs": "sys/sys_top.v:104,131,1559",
+      "constraint_refs": "sys/sys.tcl:43-48 pin/pull/IO setup; no input delay or exception"
+    }
+  ],
+  "unconstrained_outputs": [
+    {
+      "ports": ["HDMI_I2C_SCL", "HDMI_I2C_SDA"],
+      "report_role": "output side",
+      "report_lines": [1535,1536],
+      "classification": "active open-drain HDMI I2C; unresolved external output timing",
+      "rtl_refs": "sys/sys_top.v:30-31,1129-1139",
+      "constraint_refs": "sys/sys_top.sdc:7 clocks hdmi_sck; no output delay/exception"
+    },
+    {
+      "ports": ["HDMI_I2S", "HDMI_LRCLK", "HDMI_MCLK", "HDMI_SCLK"],
+      "report_role": "output side",
+      "report_lines": [1537,1538,1539,1540],
+      "classification": "active synchronous HDMI I2S audio data/clocks; unresolved external output timing",
+      "rtl_refs": "sys/sys_top.v:33-36,1569-1577,1580-1616",
+      "constraint_refs": "sys/sys.tcl:125-141 assigns pins/IO standards; no output delay or generated output-clock contract"
+    },
+    {
+      "ports": ["IO_SCL", "IO_SDA"],
+      "report_role": "output side",
+      "report_lines": [1541,1542],
+      "classification": "active synchronous/open-drain board I2C; unresolved external output timing",
+      "rtl_refs": "sys/sys_top.v:105-106,163-175; sys/mcp23009.sv:5-16,43-120",
+      "constraint_refs": "sys/sys.tcl:20-24; sys/sys_top.sdc:3,20-22; no output delay/exception"
+    },
+    {
+      "ports": ["LED[0]", "LED[2]", "LED[6]"],
+      "report_role": "output side",
+      "report_lines": [1543,1544,1545],
+      "classification": "deliberate board status LED outputs; partial constraint caused by SDC wildcard mismatch",
+      "rtl_refs": "sys/sys_top.v:121,156-157",
+      "constraint_refs": "Diablo.qsf:183-198 maps vector LED bits; sys/sys_top.sdc:26 targets LED_* and does not match LED[0]/LED[2]/LED[6]",
+      "disposition": "likely deliberate static/status path, but requires a targeted documented exception or an external timing contract to remove the acceptance ambiguity"
+    },
+    {
+      "ports": ["SDCD_SPDIF"],
+      "report_role": "inout output side",
+      "report_lines": [1546],
+      "classification": "active mode-multiplexed SD card-detect/SPDIF output; unresolved external output timing",
+      "rtl_refs": "sys/sys_top.v:104,131,1559,1564",
+      "constraint_refs": "sys/sys.tcl:43-48; no output delay/exception"
+    },
+    {
+      "ports": ["SDIO_CLK", "SDIO_CMD", "SDIO_DAT[0]", "SDIO_DAT[1]", "SDIO_DAT[2]", "SDIO_DAT[3]"],
+      "report_role": "output side (SDIO_CMD/DAT are inout declarations)",
+      "report_lines": [1547,1548,1549,1550,1551,1552],
+      "classification": "active mode-multiplexed SDIO/VGA bus; unresolved external output timing",
+      "rtl_refs": "sys/sys_top.v:84-87,127-143; SDIO_DAT[0] is also read at line 133",
+      "constraint_refs": "sys/sys_analog.tcl:2-14 assigns SDIO pins/IO standards/pulls; no output delay/exception"
+    },
+    {
+      "ports": ["SD_SPI_CS"],
+      "report_role": "output side",
+      "report_lines": [1553],
+      "classification": "active synchronous SD SPI chip-select; unresolved external output timing",
+      "rtl_refs": "sys/sys_top.v:99-103,134-143",
+      "constraint_refs": "sys/sys.tcl:103-108 assigns SD SPI pins/IO standard; no output delay/exception"
+    },
+    {
+      "ports": ["USER_IO[2]", "USER_IO[4]", "USER_IO[5]"],
+      "report_role": "inout output side",
+      "report_lines": [1554,1555,1556],
+      "classification": "active multifunction USER_IO/audio-mux interface; unresolved external input/output timing",
+      "rtl_refs": "sys/sys_top.v:123-124,1661-1675; bits 2/4/5 select HDMI_I2S/SCLK/LRCLK when SW[1]",
+      "constraint_refs": "sys/sys.tcl:31-40 assigns USER_IO pins/IO standard/pulls; no input/output delay or exception"
+    }
+  ],
+  "acceptance": {
+    "genuine_missing_constraint": true,
+    "blocking_scope": "A claim of fully constrained setup/hold timing is blocked for the active external interfaces above until each receives a real board timing contract or a deliberate, port-specific asynchronous/false-path decision. No external delay values are invented here.",
+    "known_deliberate_case": "LED[0], LED[2], and LED[6] are status outputs driven by the LED vector; the existing LED_* false-path pattern does not match these vector names.",
+    "not_observed": ["No blanket false paths added", "No source or constraint files edited", "No rebuild or deployment performed", "No external connector acceptance inferred"]
+  },
+  "receipts_mirrored": [
+    { "path": ".mister/evidence/receipts/20260908T022330Z-c34-fpga-build-evidence.json", "sha256": "01097e7cf5201a11c84bbbe8a7d2365d074cffd50e8d8f60b78e67b2deff83e9", "byte_identical_to_c34": true, "read_only": true },
+    { "path": ".mister/evidence/receipts/20260908T023121Z-c34-sta-full-timing-supplement.json", "sha256": "d5a351f4d3a879e3b67d0fd3e2291548bb46d6598337f371684bf87a8606564b", "byte_identical_to_c34": true, "read_only": true }
+  ],
+  "open": [
+    "Provide board-level input/output timing contracts for active HDMI I2C, board I2C, SD/SDIO, audio, USER_IO, and interrupt paths, or explicitly classify each as asynchronous with targeted exceptions.",
+    "Resolve the LED vector exception decision before claiming a fully constrained report."
+  ]
+}

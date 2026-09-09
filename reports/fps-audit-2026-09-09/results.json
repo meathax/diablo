@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-09",
+  "engine_sha256": "dec3e6ed0cf78d2763899c2dd62dc03071c3cdab2ddaa156015740bd6fb0f051",
+  "method": "user-reported on-screen FPS at same house; live proc affinity verification",
+  "full_view": {
+    "lighting_off": {
+      "before": 39,
+      "after": 59.7
+    },
+    "lighting_on": {
+      "before": 22,
+      "after": 43
+    }
+  },
+  "zoom": {
+    "fps": 60,
+    "lighting": true,
+    "user_rejected": true
+  },
+  "temporary_change": "game main and audio threads CPU 1 -> CPU 0",
+  "permanent_changes": true,
+  "lighting_target_ms_saved": 6.589147286821703,
+  "installed_candidate": "098d98e6c084d52126aa30ad5806decc0fe8384b5f13b79d849551a00a3f7a01",
+  "fresh_launch_verified": true,
+  "fresh_launch_user_fps": {
+    "lighting_on": 43,
+    "lighting_off_minimum": 59.2
+  },
+  "tests_passed": 26,
+  "transient_22fps_cause": "unresolved; user recheck returned expected rates"
+}

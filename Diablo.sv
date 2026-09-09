@@ -79,6 +79,7 @@ assign VIDEO_ARY = (!ar) ? 12'd3 : 12'd0;
 localparam CONF_STR = {
     "Diablo;;",
     "O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+    "O[1],DOS framerate,OFF,ON;",
     "P1,Show controls;",
     "P1-,A: Attack/talk/lift/confirm;",
     "P1-,X: Cast/belt equip/hold drop;",
@@ -184,6 +185,7 @@ wire [31:0] framebuffer_base;
 wire framebuffer_blank;
 diablo_framebuffer_scanout frame_scanout (
     .clk(clk_sys), .reset(reset), .session_valid(transport_session_valid), .session_epoch(transport_epoch), .vblank(FB_VBL),
+    .frame_rate_cap(status[1]),
     .ddram_busy(frame_ddram_busy), .ddram_dout(frame_ddram_dout), .ddram_dout_ready(frame_ddram_dout_ready),
     .ddram_burstcnt(frame_ddram_burstcnt), .ddram_addr(frame_ddram_addr), .ddram_rd(frame_ddram_rd),
     .ddram_din(frame_ddram_din), .ddram_be(frame_ddram_be), .ddram_we(frame_ddram_we),

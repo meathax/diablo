@@ -1,0 +1,7 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2ac2bd6a-bae2-4739-938c-ed10ed28b557-pqvezcu_\\rtl", "-s", "diablo_frame_ownership_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2ac2bd6a-bae2-4739-938c-ed10ed28b557-pqvezcu_\\.work\\build\\verification\\frame-ownership.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2ac2bd6a-bae2-4739-938c-ed10ed28b557-pqvezcu_\\rtl\\diablo_frame_ownership.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2ac2bd6a-bae2-4739-938c-ed10ed28b557-pqvezcu_\\support\\tests\\diablo_frame_ownership_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2ac2bd6a-bae2-4739-938c-ed10ed28b557-pqvezcu_\\.work\\build\\verification\\frame-ownership.vvp"]
+
+diablo frame ownership RTL checks passed
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-2ac2bd6a-bae2-4739-938c-ed10ed28b557-pqvezcu_\support\tests\diablo_frame_ownership_tb.sv:106: $finish called at 126000 (1ps)

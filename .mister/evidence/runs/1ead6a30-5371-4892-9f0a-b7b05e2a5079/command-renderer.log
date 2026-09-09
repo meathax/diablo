@@ -1,0 +1,4 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-1ead6a30-5371-4892-9f0a-b7b05e2a5079-2nsd_aoi\\support\\scripts\\test_command_renderer.py"]
+
+software command renderer checks passed
+software command renderer test passed

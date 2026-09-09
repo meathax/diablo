@@ -1,0 +1,301 @@
+[0/2] Re-checking globbed directories...
+[1/2] Re-running CMake...
+-- Could NOT find ALSA (missing: ALSA_LIBRARY ALSA_INCLUDE_DIR) 
+-- Checking for module 'jack'
+--   Package 'jack' not found
+-- Checking for module 'libpipewire-0.3>=0.3.20'
+--   Package 'libpipewire-0.3' not found
+-- Checking for module 'libpulse>=0.9.15'
+--   Package 'libpulse' not found
+-- Checking for module 'esound'
+--   Package 'esound' not found
+-- Checking for module 'sndio'
+--   Package 'sndio' not found
+-- Checking for module 'bcm_host'
+--   Package 'bcm_host' not found
+-- Checking for module 'brcmegl'
+--   Package 'brcmegl' not found
+-- Checking for module 'egl'
+--   Package 'egl' not found
+-- Checking for modules 'libdrm;gbm;egl'
+--   Package 'libdrm' not found
+--   Package 'gbm' not found
+--   Package 'egl' not found
+-- Checking for modules 'wayland-client>=1.18;wayland-egl;wayland-cursor;egl;xkbcommon>=0.5.0'
+--   Package 'wayland-client' not found
+--   Package 'wayland-egl' not found
+--   Package 'wayland-cursor' not found
+--   Package 'egl' not found
+--   Package 'xkbcommon' not found
+-- Checking for one of the modules 'dbus-1;dbus'
+-- Checking for one of the modules 'ibus-1.0;ibus'
+-- Checking for modules 'libunwind;libunwind-generic'
+--   Package 'libunwind' not found
+--   Package 'libunwind-generic' not found
+-- 
+-- SDL2 was configured with the following options:
+-- 
+-- Platform: Linux
+-- 64-bit:   FALSE
+-- Compiler: /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/bin/armv7-neon-linux-gnueabihf-gcc
+-- Revision: SDL-release-2.32.8-0-g98d1f3a45
+-- 
+-- Subsystems:
+--   Atomic:	ON
+--   Audio:	ON
+--   Video:	ON
+--   Render:	ON
+--   Events:	ON
+--   Joystick:	ON
+--   Haptic:	ON
+--   Hidapi:	ON
+--   Power:	ON
+--   Threads:	ON
+--   Timers:	ON
+--   File:	ON
+--   Loadso:	ON
+--   CPUinfo:	ON
+--   Filesystem:	ON
+--   Sensor:	ON
+--   Locale:	ON
+--   Misc:	ON
+-- 
+-- Options:
+--   SDL2_DISABLE_INSTALL        (Wanted: ON): OFF
+--   SDL2_DISABLE_SDL2MAIN       (Wanted: OFF): OFF
+--   SDL2_DISABLE_UNINSTALL      (Wanted: OFF): OFF
+--   SDL_3DNOW                   (Wanted: OFF): OFF
+--   SDL_ALSA                    (Wanted: ON): OFF
+--   SDL_ALSA_SHARED             (Wanted: ON): OFF
+--   SDL_ALTIVEC                 (Wanted: ON): OFF
+--   SDL_ARMNEON                 (Wanted: OFF): OFF
+--   SDL_ARMSIMD                 (Wanted: OFF): OFF
+--   SDL_ARTS                    (Wanted: ON): OFF
+--   SDL_ARTS_SHARED             (Wanted: ON): OFF
+--   SDL_ASAN                    (Wanted: OFF): OFF
+--   SDL_ASSEMBLY                (Wanted: ON): ON
+--   SDL_ASSERTIONS              (Wanted: auto): auto
+--   SDL_BACKGROUNDING_SIGNAL    (Wanted: OFF): OFF
+--   SDL_CCACHE                  (Wanted: ON): ON
+--   SDL_CLOCK_GETTIME           (Wanted: ON): ON
+--   SDL_COCOA                   (Wanted: OFF): OFF
+--   SDL_DBUS                    (Wanted: ON): OFF
+--   SDL_DIRECTFB                (Wanted: OFF): OFF
+--   SDL_DIRECTFB_SHARED         (Wanted: OFF): OFF
+--   SDL_DIRECTX                 (Wanted: OFF): OFF
+--   SDL_DISKAUDIO               (Wanted: ON): ON
+--   SDL_DUMMYAUDIO              (Wanted: ON): ON
+--   SDL_DUMMYVIDEO              (Wanted: ON): ON
+--   SDL_ESD                     (Wanted: ON): OFF
+--   SDL_ESD_SHARED              (Wanted: ON): OFF
+--   SDL_FOREGROUNDING_SIGNAL    (Wanted: OFF): OFF
+--   SDL_FUSIONSOUND             (Wanted: OFF): OFF
+--   SDL_FUSIONSOUND_SHARED      (Wanted: OFF): OFF
+--   SDL_GCC_ATOMICS             (Wanted: ON): ON
+--   SDL_HIDAPI                  (Wanted: ON): ON
+--   SDL_HIDAPI_JOYSTICK         (Wanted: ON): ON
+--   SDL_HIDAPI_LIBUSB           (Wanted: OFF): OFF
+--   SDL_IBUS                    (Wanted: ON): OFF
+--   SDL_INSTALL_TESTS           (Wanted: OFF): OFF
+--   SDL_JACK                    (Wanted: ON): OFF
+--   SDL_JACK_SHARED             (Wanted: ON): OFF
+--   SDL_KMSDRM                  (Wanted: ON): OFF
+--   SDL_KMSDRM_SHARED           (Wanted: ON): OFF
+--   SDL_LASX                    (Wanted: OFF): OFF
+--   SDL_LIBC                    (Wanted: ON): ON
+--   SDL_LIBICONV                (Wanted: OFF): OFF
+--   SDL_LIBSAMPLERATE           (Wanted: ON): OFF
+--   SDL_LIBSAMPLERATE_SHARED    (Wanted: ON): OFF
+--   SDL_LIBUDEV                 (Wanted: ON): OFF
+--   SDL_LSX                     (Wanted: OFF): OFF
+--   SDL_METAL                   (Wanted: OFF): OFF
+--   SDL_MMX                     (Wanted: OFF): OFF
+--   SDL_NAS                     (Wanted: ON): OFF
+--   SDL_NAS_SHARED              (Wanted: ON): OFF
+--   SDL_OFFSCREEN               (Wanted: ON): ON
+--   SDL_OPENGL                  (Wanted: ON): OFF
+--   SDL_OPENGLES                (Wanted: ON): ON
+--   SDL_OSS                     (Wanted: ON): ON
+--   SDL_PIPEWIRE                (Wanted: ON): OFF
+--   SDL_PIPEWIRE_SHARED         (Wanted: ON): OFF
+--   SDL_PTHREADS                (Wanted: ON): ON
+--   SDL_PTHREADS_SEM            (Wanted: ON): ON
+--   SDL_PULSEAUDIO              (Wanted: ON): OFF
+--   SDL_PULSEAUDIO_SHARED       (Wanted: ON): OFF
+--   SDL_RENDER_D3D              (Wanted: OFF): OFF
+--   SDL_RENDER_METAL            (Wanted: OFF): OFF
+--   SDL_RPATH                   (Wanted: ON): OFF
+--   SDL_RPI                     (Wanted: ON): OFF
+--   SDL_SNDIO                   (Wanted: ON): OFF
+--   SDL_SNDIO_SHARED            (Wanted: ON): OFF
+--   SDL_SSE                     (Wanted: OFF): OFF
+--   SDL_SSE2                    (Wanted: OFF): OFF
+--   SDL_SSE3                    (Wanted: OFF): OFF
+--   SDL_SSEMATH                 (Wanted: OFF): OFF
+--   SDL_STATIC_PIC              (Wanted: OFF): OFF
+--   SDL_SYSTEM_ICONV            (Wanted: ON): ON
+--   SDL_TESTS                   (Wanted: OFF): OFF
+--   SDL_VENDOR_INFO             (Wanted: ): OFF
+--   SDL_VIRTUAL_JOYSTICK        (Wanted: ON): ON
+--   SDL_VIVANTE                 (Wanted: ON): OFF
+--   SDL_VULKAN                  (Wanted: ON): ON
+--   SDL_WASAPI                  (Wanted: OFF): OFF
+--   SDL_WAYLAND                 (Wanted: ON): OFF
+--   SDL_WAYLAND_LIBDECOR        (Wanted: ON): OFF
+--   SDL_WAYLAND_LIBDECOR_SHARED (Wanted: ON): OFF
+--   SDL_WAYLAND_QT_TOUCH        (Wanted: ON): OFF
+--   SDL_WAYLAND_SHARED          (Wanted: ON): OFF
+--   SDL_X11                     (Wanted: ON): OFF
+--   SDL_X11_SHARED              (Wanted: ON): OFF
+--   SDL_X11_XCURSOR             (Wanted: ON): OFF
+--   SDL_X11_XDBE                (Wanted: ON): OFF
+--   SDL_X11_XFIXES              (Wanted: ON): OFF
+--   SDL_X11_XINPUT              (Wanted: ON): OFF
+--   SDL_X11_XRANDR              (Wanted: ON): OFF
+--   SDL_X11_XSCRNSAVER          (Wanted: ON): OFF
+--   SDL_X11_XSHAPE              (Wanted: ON): OFF
+--   SDL_XINPUT                  (Wanted: OFF): OFF
+-- 
+--  CFLAGS:        -mcpu=cortex-a9 -mfpu=neon -mfloat-abi=hard -idirafter "/home/meath/.cache/diablo-arm-engine-transport/_deps/sdl2-src/src/video/khronos" -DHAVE_LINUX_VERSION_H
+--  EXTRA_CFLAGS:   -Wall -Wundef -fno-strict-aliasing -Wdeclaration-after-statement -fvisibility=hidden -Wshadow -Wno-unused-local-typedefs -fdiagnostics-color=always -DMESA_EGL_NO_X11_HEADERS -DEGL_NO_X11 -D_REENTRANT
+--  EXTRA_LDFLAGS: -pthread -Wl,--no-undefined
+--  EXTRA_LIBS:    m;dl
+-- 
+--  Build Shared Library: OFF
+--  Build Static Library: ON
+--  Build Static Library with Position Independent Code: OFF
+-- 
+-- If something was not detected, although the libraries
+-- were installed, then make sure you have set the
+-- CFLAGS and LDFLAGS environment variables correctly.
+-- 
+-- Building for target architecture: armv7
+-- Found AWK program: /usr/bin/gawk
+-- Creating standard configuration
+-- Could NOT find Gettext (missing: GETTEXT_MSGMERGE_EXECUTABLE GETTEXT_MSGFMT_EXECUTABLE) 
+-- Configuring done (84.8s)
+-- Generating done (2.1s)
+-- Build files have been written to: /home/meath/.cache/diablo-arm-engine-transport
+[0/4] Re-checking globbed directories...
+[1/13] Trimming /home/meath/.cache/diablo-arm-engine-transport/mods/hf
+[2/13] Trimming /home/meath/.cache/diablo-arm-engine-transport/assets
+[3/13] Building CXX object _deps/sdl_audiolib-build/CMakeFiles/SDL_audiolib.dir/__/__/mister-engine-overlay/aulib.cpp.o
+[4/13] Linking CXX static library _deps/sdl_audiolib-build/libSDL_audiolib.a
+[5/13] Building CXX object CMakeFiles/devilutionx.dir/mister-engine-overlay/main.cpp.o
+[6/13] Building CXX object Source/CMakeFiles/libdevilutionx_sound.dir/__/mister-engine-overlay/engine/sound.cpp.o
+In file included from /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/ostream:44,
+                 from /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/istream:43,
+                 from /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/sstream:42,
+                 from /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/chrono:51,
+                 from /mnt/d/Arcade/AI/aCORES/Diablo/support/cmake/../reference/mister_transport_pacing.hpp:5,
+                 from /mnt/d/Arcade/AI/aCORES/Diablo/support/cmake/../reference/mister_transport_sdl.hpp:9,
+                 from /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/engine/sound.cpp:7:
+/home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/format: In function 'std::string std::vformat(string_view, format_args)':
+/home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/format:4851:3: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+ 4851 |   vformat(string_view __fmt, format_args __args)
+      |   ^~~~~~~
+In file included from /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/engine/sound.cpp:33:
+In function 'std::string devilution::detail::format(std::string_view, Args&& ...) [with Args = {const char*}]',
+    inlined from 'void devilution::LogError(LogCategory, std::string_view, Args&& ...) [with Args = {const char*}]' at /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:173:7,
+    inlined from 'void devilution::music_start(_music_id)' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/engine/sound.cpp:380:11,
+    inlined from 'void devilution::music_start(_music_id)' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/engine/sound.cpp:355:6:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:64:64: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+   64 |         return std::vformat(fmt, std::make_format_args(args...));
+      |                                                                ^
+In function 'std::string devilution::detail::format(std::string_view, Args&& ...) [with Args = {const char*}]',
+    inlined from 'void devilution::LogError(LogCategory, std::string_view, Args&& ...) [with Args = {const char*}]' at /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:173:7,
+    inlined from 'void devilution::snd_init()' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/engine/sound.cpp:299:11:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:64:64: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+   64 |         return std::vformat(fmt, std::make_format_args(args...));
+      |                                                                ^
+In function 'std::string devilution::detail::format(std::string_view, Args&& ...) [with Args = {int, int, int, short unsigned int}]',
+    inlined from 'void devilution::LogVerbose(LogCategory, std::string_view, Args&& ...) [with Args = {int, int, int, short unsigned int}]' at /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:100:7,
+    inlined from 'void devilution::snd_init()' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/engine/sound.cpp:302:12:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:64:64: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+   64 |         return std::vformat(fmt, std::make_format_args(args...));
+      |                                                                ^
+[7/13] Building CXX object Source/CMakeFiles/libdevilutionx.dir/__/mister-engine-overlay/engine/dx.cpp.o
+[8/13] Building CXX object Source/CMakeFiles/libdevilutionx.dir/mnt/d/Arcade/AI/aCORES/Diablo/support/reference/mister_transport_audio.cpp.o
+[9/13] Building CXX object Source/CMakeFiles/libdevilutionx.dir/__/mister-engine-overlay/storm_svid.cpp.o
+In file included from /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/ostream:44,
+                 from /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/istream:43,
+                 from /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/sstream:42,
+                 from /home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/chrono:51,
+                 from /mnt/d/Arcade/AI/aCORES/Diablo/support/cmake/../reference/mister_transport_pacing.hpp:5,
+                 from /mnt/d/Arcade/AI/aCORES/Diablo/support/cmake/../reference/mister_transport_sdl.hpp:9,
+                 from /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:4:
+/home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/format: In function 'std::string std::vformat(string_view, format_args)':
+/home/meath/.cache/diablo-toolchain-1.3.1/x-tools/armv7-neon-linux-gnueabihf/armv7-neon-linux-gnueabihf/include/c++/15.2.0/format:4851:3: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+ 4851 |   vformat(string_view __fmt, format_args __args)
+      |   ^~~~~~~
+In file included from /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/display.h:21,
+                 from /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:40:
+In function 'std::string devilution::detail::format(std::string_view, Args&& ...) [with Args = {const char*}]',
+    inlined from 'void devilution::Log(std::string_view, Args&& ...) [with Args = {const char*}]' at /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:78:7,
+    inlined from 'bool devilution::{anonymous}::BlitFrame()' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:254:7,
+    inlined from 'bool devilution::SVidPlayContinue()' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:532:16:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:64:64: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+   64 |         return std::vformat(fmt, std::make_format_args(args...));
+      |                                                                ^
+In function 'std::string devilution::detail::format(std::string_view, Args&& ...) [with Args = {const char*}]',
+    inlined from 'void devilution::Log(std::string_view, Args&& ...) [with Args = {const char*}]' at /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:78:7,
+    inlined from 'bool devilution::{anonymous}::BlitFrame()' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:314:8,
+    inlined from 'bool devilution::SVidPlayContinue()' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:532:16:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:64:64: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+   64 |         return std::vformat(fmt, std::make_format_args(args...));
+      |                                                                ^
+In function 'std::string devilution::detail::format(std::string_view, Args&& ...) [with Args = {unsigned int&, unsigned int&, unsigned int&}]',
+    inlined from 'void devilution::LogVerbose(LogCategory, std::string_view, Args&& ...) [with Args = {unsigned int&, unsigned int&, unsigned int&}]' at /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:100:7,
+    inlined from 'bool devilution::SVidPlayBegin(const char*, int)' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:392:12:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:64:64: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+   64 |         return std::vformat(fmt, std::make_format_args(args...));
+      |                                                                ^
+In function 'std::string devilution::detail::format(std::string_view, Args&& ...) [with Args = {const char*}]',
+    inlined from 'void devilution::LogError(LogCategory, std::string_view, Args&& ...) [with Args = {const char*}]' at /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:173:7,
+    inlined from 'bool devilution::SVidPlayBegin(const char*, int)' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:413:12:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:64:64: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+   64 |         return std::vformat(fmt, std::make_format_args(args...));
+      |                                                                ^
+In function 'std::string devilution::detail::format(std::string_view, Args&& ...) [with Args = {const char*}]',
+    inlined from 'void devilution::LogError(LogCategory, std::string_view, Args&& ...) [with Args = {const char*}]' at /mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:173:7,
+    inlined from 'bool devilution::SVidPlayBegin(const char*, int)' at /home/meath/.cache/diablo-arm-engine-transport/mister-engine-overlay/storm_svid.cpp:418:12:
+/mnt/d/Arcade/AI/aCORES/Diablo/.work/sources/devilutionx/Source/utils/log.hpp:64:64: note: parameter passing for argument of type 'std::format_args' {aka 'std::basic_format_args<std::basic_format_context<std::__format::_Sink_iter<char>, char> >'} changed in GCC 9.1
+   64 |         return std::vformat(fmt, std::make_format_args(args...));
+      |                                                                ^
+[10/13] Linking CXX executable devilutionx
+-- 📚 zlib: static library from source
+-- 📚 bzip2: static library from source
+-- 📚 lua: static library from source
+-- 📚 SDL2: static library from source
+CMake Warning at /home/meath/.cache/diablo-arm-engine-transport/_deps/sdl2-src/cmake/sdlchecks.cmake:128 (message):
+  Unable to found the alsa development library
+Call Stack (most recent call first):
+  /home/meath/.cache/diablo-arm-engine-transport/_deps/sdl2-src/CMakeLists.txt:1490 (CheckALSA)
+
+
+CMake Deprecation Warning at /home/meath/.cache/diablo-arm-engine-transport/_deps/sdl2-src/CMakeLists.txt:3290 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- 📚 SDL_image: static library from source
+-- Suitable system png package not found, will use png from source
+-- 📚 libpng: static library from source
+-- 📚 SDL_audiolib: static library from source
+CMake Deprecation Warning at /home/meath/.cache/diablo-arm-engine-transport/_deps/sdl_audiolib-src/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 3.10 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax
+  to tell CMake that the project requires at least <min> but has been updated
+  to work with policies introduced by <max> or earlier.
+
+
+-- 📚 SheenBidi: static library from source
+-- Suitable unordered_dense package not found, will use unordered_dense from source
+-- 📚 unordered_dense: static library from source
+-- 📚 magic_enum: static library from source

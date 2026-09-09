@@ -1,0 +1,17 @@
+{
+  "schema": "diablo-menu-linux-regression-v1",
+  "status": "pass",
+  "source_id": "849f297e6950bc8927bf797009d5684c7d68c1873bbae75dd380f1a68a412bca",
+  "command": "wsl.exe -d Ubuntu --cd D:\\Arcade\\AI\\aCORES\\Diablo --exec python3 -m unittest support.tests.test_package_release support.tests.test_deploy_package",
+  "tests": 15,
+  "exit_code": 0,
+  "log": ".work/menu-linux-tests-20260909.log",
+  "log_bytes": 303,
+  "log_sha256": "18a2072f7b33f34d2ecfbb3189ec9fa34f16a94de308dbe77a9dd216b7ab9218",
+  "sources": {
+    "support/scripts/package_release.py": "a3c11d1131f2821b2950d48f2dd3e894158703f9a05018bc11a543a852c50f75",
+    "support/tests/test_package_release.py": "fc67d1125866c38a0fd52758f99fd2e71d57f50c1146ca07937551357fd26472",
+    "support/licenses/devilutionx-LICENSE.md": "049382c17367e384c622369abbeda0cab1d65658c28611717e18afead341e586"
+  },
+  "scope": "Local POSIX shell/bootstrap and transactional package tests using a stub launcher, including argument forwarding, activation, update/rollback, rejected mutation and exact license copying. Not MiSTer menu, real engine, video/audio/input, campaign or release acceptance."
+}

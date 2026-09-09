@@ -1,0 +1,58 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-7fb425b1-2345-4c28-8fa0-f5c8434ddddd-u5hr81ps\\support\\scripts\\test_mister_transport_input.py", "--sdl-build-include", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\_deps\\sdl2-build\\include\\SDL2", "--sdl-source-include", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\_deps\\sdl2-src\\include", "--sdl-library", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\reference-host\\_deps\\sdl2-build\\libSDL2.a"]
+
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c: In function 'SDL_UpdateMouseFocus.isra':
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c:383:28: warning: 'w' may be used uninitialized [-Wmaybe-uninitialized]
+  383 |         if (x < 0 || y < 0 || x >= w || y >= h) {
+      |                            ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c:381:13: note: 'w' was declared here
+  381 |         int w, h;
+      |             ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c:383:38: warning: 'h' may be used uninitialized [-Wmaybe-uninitialized]
+  383 |         if (x < 0 || y < 0 || x >= w || y >= h) {
+      |                                      ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c:381:16: note: 'h' was declared here
+  381 |         int w, h;
+      |                ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\render\SDL_render.c: In function 'SDL_CreateRenderer_REAL':
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\render\SDL_render.c:1099:23: warning: 'window_h' may be used uninitialized [-Wmaybe-uninitialized]
+ 1099 |         int window_w, window_h;
+      |                       ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\render\SDL_render.c:1099:13: warning: 'window_w' may be used uninitialized [-Wmaybe-uninitialized]
+ 1099 |         int window_w, window_h;
+      |             ^
+Diablo MiSTer transport SDL input event filtered
+Diablo MiSTer transport SDL input event filtered
+Diablo MiSTer profile trace open failed: transport-profile-trace-test.jsonl
+transport input reconciliation checks passed
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c: In function 'SDL_UpdateMouseFocus.isra':
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c:383:28: warning: 'w' may be used uninitialized [-Wmaybe-uninitialized]
+  383 |         if (x < 0 || y < 0 || x >= w || y >= h) {
+      |                            ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c:381:13: note: 'w' was declared here
+  381 |         int w, h;
+      |             ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c:383:38: warning: 'h' may be used uninitialized [-Wmaybe-uninitialized]
+  383 |         if (x < 0 || y < 0 || x >= w || y >= h) {
+      |                                      ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\events\SDL_mouse.c:381:16: note: 'h' was declared here
+  381 |         int w, h;
+      |                ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\render\SDL_render.c: In function 'SDL_CreateRenderer_REAL':
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\render\SDL_render.c:1099:23: warning: 'window_h' may be used uninitialized [-Wmaybe-uninitialized]
+ 1099 |         int window_w, window_h;
+      |                       ^
+D:\Arcade\AI\aCORES\Diablo\.work\build\reference-host\_deps\sdl2-src\src\render\SDL_render.c:1099:13: warning: 'window_w' may be used uninitialized [-Wmaybe-uninitialized]
+ 1099 |         int window_w, window_h;
+      |             ^
+one virtual device: 
+Traceback (most recent call last):
+  File "D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-7fb425b1-2345-4c28-8fa0-f5c8434ddddd-u5hr81ps\support\scripts\test_mister_transport_input.py", line 91, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-7fb425b1-2345-4c28-8fa0-f5c8434ddddd-u5hr81ps\support\scripts\test_mister_transport_input.py", line 85, in main
+    subprocess.run([str(executable)], cwd=ROOT, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\vibes\fpga\toolchains\msys64\ucrt64\lib\python3.14\subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-7fb425b1-2345-4c28-8fa0-f5c8434ddddd-u5hr81ps\\.work\\build\\transport-input\\mister_virtual_gamepad_test.exe']' returned non-zero exit status 1.

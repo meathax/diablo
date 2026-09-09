@@ -1,0 +1,4 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\\rtl", "-s", "diablo_input_capture_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\\.work\\build\\verification\\input-capture.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\\rtl\\diablo_input_capture.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\\support\\tests\\diablo_input_capture_tb.sv"]
+
+D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\.work\build\verification\input-capture.vvp: No such file or directory
+error: Code generator failure: -1

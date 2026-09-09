@@ -1,0 +1,57 @@
+{
+  "schema": "diablo-c25-sdc-trial-v1",
+  "run_id": "20260908T031004Z-bc6954502261",
+  "status": "fail",
+  "finished_utc": "2026-09-08T03:10:12.375181+00:00",
+  "quartus_sta": "D:\\Q17\\quartus\\bin64\\quartus_sta.exe",
+  "immutable_snapshot": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c34",
+  "immutable_snapshot_manifest_sha256": "f21def4465f337aee2e549c4a8cbbbfa868962187952bc9202b45dbdc5f054d0",
+  "snapshot_inputs_unchanged": true,
+  "source": {
+    "sdc": "Diablo.sdc",
+    "sdc_sha256": "0060d9010b1f72b9092161b3e716acfd47d1db32c4be58b9d2c700eda85838a3",
+    "c25_additions_sha256": "43a95fe1074bcfd2d6159373ff182b5dda4333f7bfdc52b6117f0444454f92b8",
+    "decision_packets": {
+      "io_timing": "884da3bc107a93d493b739d4fa16f2ee2981bef434e528f37e28e7d77727f887",
+      "hdmi_mclk": "2ae620aafb013fca0878797a611caa25db8e5951a1f42dc272cee1d6ddb3f774"
+    }
+  },
+  "command": [
+    "D:\\Q17\\quartus\\bin64\\quartus_sta.exe",
+    "-t",
+    "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c25\\runs\\20260908T031004Z-bc6954502261\\c25-trial.tcl",
+    "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c25\\runs\\20260908T031004Z-bc6954502261\\fitted-trial\\Diablo",
+    "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c25\\runs\\20260908T031004Z-bc6954502261\\c25-additions.sdc",
+    "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c25\\runs\\20260908T031004Z-bc6954502261\\summary.tsv",
+    "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c25\\runs\\20260908T031004Z-bc6954502261\\baseline.report_sdc.rpt",
+    "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c25\\runs\\20260908T031004Z-bc6954502261\\after.report_sdc.rpt"
+  ],
+  "artifacts": {
+    "trial_root": ".work/c25/runs/20260908T031004Z-bc6954502261/fitted-trial",
+    "tcl": ".work/c25/runs/20260908T031004Z-bc6954502261/c25-trial.tcl",
+    "additions": ".work/c25/runs/20260908T031004Z-bc6954502261/c25-additions.sdc",
+    "quartus_log": {
+      "path": ".work/c25/runs/20260908T031004Z-bc6954502261/quartus_sta.log",
+      "sha256": "a430642cff1315c43e9b953fb827f7201a5972e2b8751dd2d3c00c8eaadb0a28"
+    },
+    "summary": {
+      "path": ".work/c25/runs/20260908T031004Z-bc6954502261/summary.tsv",
+      "sha256": "cfd1facb1e2b8b595d9f06d6cb3c067de91d76e90888add8b88632392257fe39"
+    },
+    "baseline_report_sdc": null,
+    "after_report_sdc": null
+  },
+  "summary": {
+    "baseline_led_count": "3",
+    "baseline_led_names": "LED[0],LED[2],LED[6]",
+    "baseline_sdcd_count": "1",
+    "baseline_sdcd_names": "SDCD_SPDIF",
+    "baseline_analog_count": "7",
+    "baseline_analog_names": "SDIO_CLK,SDIO_CMD,SDIO_DAT[0],SDIO_DAT[1],SDIO_DAT[2],SDIO_DAT[3],SD_SPI_CS",
+    "baseline_forbidden_output_names": "HDMI_I2C_SCL,HDMI_I2C_SDA,HDMI_I2S,HDMI_LRCLK,HDMI_SCLK,IO_SCL,IO_SDA,USER_IO[2],USER_IO[4],USER_IO[5]",
+    "baseline_forbidden_input_names": "HDMI_I2C_SDA,HDMI_TX_INT,IO_SDA",
+    "baseline_mclk_source_period": "40.682"
+  },
+  "scope": "Read-only fitted-netlist C25 SDC trial: exact LED/SDCD/analog alias false paths plus HDMI_MCLK forwarded clock; no I2S, I2C, HDMI_TX_INT, USER_IO exceptions or external data delays.",
+  "exit_code": 3
+}

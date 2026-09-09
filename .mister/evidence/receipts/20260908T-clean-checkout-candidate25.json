@@ -1,0 +1,28 @@
+{
+  "schema": "diablo-clean-checkout-verification-v1",
+  "run_id": "20260908-clean-checkout-candidate25",
+  "observed_utc": "2026-09-07T14:59:04.2586662Z",
+  "status": "pass",
+  "base_head": "47b57cbd657f8d15f30096843b90617154195b4b",
+  "worktree": ".work/clean-checkout-candidate24",
+  "candidate_id": "14eaf763fab2f4ced58d72dc095a03d65293f4609631a098a0f0eb5b5d162bdf",
+  "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260907-25-arm.json",
+  "candidate_manifest_sha256": "27c4d2b04c0d00bab6aa3f3df04a33327f6107cc8b73dfd5baed37c631237416",
+  "candidate_source_id": "4ae4640bfc0888e7899eeac37e337f8a703e517ffff6a326b8e40a304c305797",
+  "method": "Detached worktree from committed HEAD with the current intended source/support overlay; no private runtime data or generated evidence copied.",
+  "command": "python -m unittest discover -s support/tests -p test_*.py -q",
+  "result": {
+    "tests": 128,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "elapsed_seconds": 57.761
+  },
+  "fixture_bootstrap": {
+    "temporary_build_directory": ".work/build",
+    "temporary_build_id": "build_id.v",
+    "value": "`define BUILD_DATE \"000000\"",
+    "cleanup": "both generated fixtures removed after the run"
+  },
+  "scope": "Python foundation and launcher verification from a clean checkout overlay. This does not prove a clean Quartus/ARM rebuild or physical MiSTer acceptance."
+}

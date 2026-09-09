@@ -1,0 +1,89 @@
+{
+  "schema": "diablo-release-closeout-v1",
+  "status": "identity-lifecycle-and-target-launch-pass-physical-gates-open",
+  "recorded_utc": "2026-09-10",
+  "candidate_id": "231b07f5dda6b085f02501e22db91250b00ca36f294277cd05c677b63ec3feb1",
+  "source_id": "cbae344a744646a00023a4cb533bd1e4b28e08384a9c4b63a9cc1562ca722c95",
+  "package_manifest_sha256": "16b898783708d507f9afd1b8224efcefd20df2d49512c100d4b2f951ffbbd2d3",
+  "package_archive": {
+    "path": ".work/build/arm-pacing-hellfire-20260910b/package.tar.gz",
+    "bytes": 7261176,
+    "sha256": "679e7cb34021bff7bed836661ba366094b120b1a1abd0bd6cf926177abd1bbad"
+  },
+  "package": {
+    "board_profile": "de10-nano-mister-pending",
+    "files": 253,
+    "manifest_records": 252,
+    "deployment_asset_files": 208,
+    "hellfire_mod_files": 24
+  },
+  "target_activation": {
+    "status": "pass",
+    "active_release": ".diablo-releases/231b07f5dda6b085f02501e22db91250b00ca36f294277cd05c677b63ec3feb1",
+    "previous_release": ".diablo-releases/4ea1b402d080d528389f272228d6a0fe9436c9493f3d2b2978653440df0620be",
+    "rollback_retained": true,
+    "remote_package_verify": true,
+    "staged_hf_files": 24
+  },
+  "checks": {
+    "candidate_manifest_verify": true,
+    "package_verify": true,
+    "focused_tests_passed": 44,
+    "focused_tests_skipped": 6,
+    "local_deployment_lifecycle": {
+      "status": "pass",
+      "clean_install": true,
+      "interrupted_update_preserves_activation": true,
+      "successful_update": true,
+      "rollback": true,
+      "save_preserved": true,
+      "final_manifest_verify": true,
+      "staging_clean": true
+    },
+    "target_diablo_launch": {
+      "status": "pass",
+      "duration_seconds": 35,
+      "exit_code": 0,
+      "core_changed": false,
+      "engine_processes_after": 0,
+      "error_markers": 0
+    },
+    "target_hellfire_launch": {
+      "status": "pass",
+      "duration_seconds": 35,
+      "exit_code": 0,
+      "core_changed": false,
+      "engine_processes_after": 0,
+      "error_markers": 0,
+      "hf_missing_markers": 0,
+      "hf_override_markers": 12
+    },
+    "target_menu_wrapper_relaunch": {
+      "diablo": "pass",
+      "hellfire": "pass",
+      "physical_menu_observation": false
+    }
+  },
+  "physical_gate_audit": {
+    "observer_available": false,
+    "linux_framebuffer": "/dev/fb0 MiSTer_fb; captures Linux console rather than FPGA HDMI",
+    "input_event_nodes": [
+      "Telink Wireless Receiver Mouse",
+      "Telink Wireless Receiver Consumer Control",
+      "Telink Wireless Receiver System Control",
+      "Telink Wireless Receiver",
+      "MiSTer virtual input",
+      "mrext",
+      "misterclaw",
+      "snap-preview-kbd"
+    ],
+    "usb_8bitdo_devices": 2,
+    "gamepad_event_node_exposed": false
+  },
+  "limitations": [
+    "No physical HDMI or speaker observer was available; both target runs used dummy SDL.",
+    "Physical controller, keyboard, mouse, menu, cinematic and interactive gameplay progression remain unobserved.",
+    "Save/load and long-duration 60-FPS/performance acceptance remain unobserved.",
+    "Multiplayer remains disabled and out of scope."
+  ]
+}

@@ -72,9 +72,11 @@ SETUP_TEXT = """# Diablo MiSTer package setup
 4. After transactional installation has created `/media/fat/.diablo-install.json`,
    copy `Diablo.sh` and `Hellfire.sh` to `/media/fat/Scripts/`. Select either entry
    from the MiSTer Scripts menu. They follow the active installation, including
-   updates and rollback, and run the package launcher with Python 3.
-   Default game data: `/media/fat/games/Diablo`; saves: `/media/fat/saves/Diablo`;
-   configuration: `/media/fat/config/Diablo`. The launcher separates campaigns.
+    updates and rollback, and run the package launcher with Python 3.
+    Default game data: `/media/fat/games/Diablo`; saves: `/media/fat/saves/Diablo`;
+    configuration: `/media/fat/config/Diablo`. The launcher separates campaigns.
+    Complete packages include the redistributable Hellfire `hf` mod in the
+    asset tree; the launcher stages it into the save root for Hellfire.
    For another layout, export DIABLO_INSTALL_ROOT, DIABLO_DATA_ROOT,
    DIABLO_SAVE_ROOT or DIABLO_CONFIG_ROOT before invoking the script.
    Keep MPQs outside managed releases. Python 3 must be available on PATH.
@@ -167,30 +169,34 @@ def _safe_source(root: Path, value: str, label: str) -> Path:
     return resolved
 
 
-def _safe_asset_source(root: Path, value: str) -> Path:
+def _safe_tree_source(root: Path, value: str, label: str) -> Path:
     path = Path(value)
     if path.is_absolute() or ".." in path.parts:
-        raise ValueError("assets source must be a relative directory below the source root")
+        raise ValueError(f"{label} must be a relative directory below the source root")
     candidate = root / path
     resolved = candidate.resolve()
     try:
         resolved.relative_to(root.resolve())
     except ValueError as error:
-        raise ValueError("assets source escapes the source root") from error
+        raise ValueError(f"{label} escapes the source root") from error
     if candidate.is_symlink() or resolved.is_symlink() or not resolved.is_dir():
-        raise ValueError(f"assets source must be a real directory: {path}")
+        raise ValueError(f"{label} must be a real directory: {path}")
     files = list(resolved.rglob("*"))
     if not any(entry.is_file() for entry in files):
-        raise ValueError("assets source must contain at least one file")
+        raise ValueError(f"{label} must contain at least one file")
     for entry in files:
         relative = entry.relative_to(resolved).as_posix().lower()
         if any(marker in relative for marker in PRIVATE_MARKERS):
-            raise ValueError(f"assets source contains private-looking path: {relative}")
+            raise ValueError(f"{label} contains private-looking path: {relative}")
         if entry.is_symlink():
-            raise ValueError(f"assets source must not contain symlinks: {entry}")
+            raise ValueError(f"{label} must not contain symlinks: {entry}")
         if not entry.is_file() and not entry.is_dir():
-            raise ValueError(f"assets source contains unsupported entry: {entry}")
+            raise ValueError(f"{label} contains unsupported entry: {entry}")
     return resolved
+
+
+def _safe_asset_source(root: Path, value: str) -> Path:
+    return _safe_tree_source(root, value, "assets source")
 
 
 def _safe_package_file(root: Path, value: str, label: str) -> Path:
@@ -324,7 +330,8 @@ def _copy_asset_tree(source: Path, destination: Path, candidate_hashes: set[str]
 
 
 def create_package(root: Path, candidate_path: Path, artifacts: Iterable[tuple[str, str]],
-                   board_profile: str, output: Path, assets: str | None = None) -> dict[str, object]:
+                   board_profile: str, output: Path, assets: str | None = None,
+                   hellfire_mod: str | None = None) -> dict[str, object]:
     root = root.resolve()
     candidate_path = candidate_path if candidate_path.is_absolute() else root / candidate_path
     candidate = _manifest_from_candidate(root, candidate_path)
@@ -337,6 +344,8 @@ def create_package(root: Path, candidate_path: Path, artifacts: Iterable[tuple[s
     if assets is None:
         raise ValueError("--assets is required for a complete package")
     asset_source = _safe_asset_source(root, assets)
+    hellfire_mod_source = (_safe_tree_source(root, hellfire_mod, "Hellfire mod source")
+                           if hellfire_mod is not None else None)
     output = output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = Path(tempfile.mkdtemp(prefix=output.name + ".", dir=output.parent))
@@ -349,6 +358,8 @@ def create_package(root: Path, candidate_path: Path, artifacts: Iterable[tuple[s
                 raise ValueError(f"{role} source is not an artifact in the selected candidate manifest: {source_value}")
             shutil.copyfile(source, temporary / target_names[role])
         _copy_asset_tree(asset_source, temporary / "assets", candidate_hashes)
+        if hellfire_mod_source is not None:
+            _copy_asset_tree(hellfire_mod_source, temporary / "assets" / "mods" / "hf", candidate_hashes)
         (temporary / "NOTICE.txt").write_text(NOTICE_TEXT, encoding="utf-8")
         (temporary / "SETUP.md").write_text(SETUP_TEXT, encoding="utf-8")
         for name, source in PACKAGE_LICENSE_SOURCES.items():
@@ -486,6 +497,7 @@ def main(argv: list[str] | None = None) -> int:
     create.add_argument("--candidate-manifest", type=Path, required=True)
     create.add_argument("--artifact", action="append", required=True, metavar="ROLE=PATH")
     create.add_argument("--assets", required=True, metavar="PATH")
+    create.add_argument("--hellfire-mod", required=True, metavar="PATH")
     create.add_argument("--board-profile", required=True)
     create.add_argument("--output", type=Path, required=True)
     verify = subparsers.add_parser("verify")
@@ -495,8 +507,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "create":
             result = create_package(args.root, args.candidate_manifest,
-                                    [_parse_artifact(value) for value in args.artifact],
-                                    args.board_profile, args.output, args.assets)
+                                     [_parse_artifact(value) for value in args.artifact],
+                                     args.board_profile, args.output, args.assets, args.hellfire_mod)
         else:
             problems = verify_package(args.package, args.board_profile)
             result = {"package": str(args.package.resolve()), "ok": not problems, "problems": problems}

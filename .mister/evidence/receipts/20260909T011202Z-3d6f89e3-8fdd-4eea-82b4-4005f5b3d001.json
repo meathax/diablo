@@ -1,0 +1,43 @@
+{
+  "schema": "diablo-verification-receipt-v1",
+  "run_id": "3d6f89e3-8fdd-4eea-82b4-4005f5b3d001",
+  "suite": "local",
+  "started_utc": "2026-09-09T01:12:02.058898+00:00",
+  "finished_utc": "2026-09-09T01:12:08.307366+00:00",
+  "status": "fail",
+  "argv": [
+    "support/scripts/verification.py",
+    "--suite",
+    "local",
+    "--candidate-manifest",
+    ".mister/evidence/candidates/fpga-candidate-20260909-session-monitor-menu-v3.json"
+  ],
+  "cwd": "D:\\Arcade\\AI\\aCORES\\Diablo",
+  "environment_allowlist": {},
+  "tool_identity": {
+    "python": "3.14.6 (main, Jul 31 2026, 07:41:16)  [MINGW GCC UCRT 16.1.0 64 bit (AMD64)]",
+    "python_executable": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+    "g++": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE",
+    "iverilog": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE",
+    "vvp": "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE"
+  },
+  "candidate": {
+    "kind": "invalid-source-snapshot",
+    "source_id": null,
+    "candidate_id": null,
+    "inputs": {
+      "source_files": []
+    },
+    "limitation": "candidate manifest verification failed: source inputs no longer match manifest"
+  },
+  "generated_source_inputs": [],
+  "dependency_snapshot": [],
+  "results": [
+    {
+      "id": "candidate-validation",
+      "status": "fail",
+      "reason": "candidate manifest verification failed: source inputs no longer match manifest"
+    }
+  ],
+  "scope": "Local host/RTL verification only. This receipt is not ARM, hardware, audio, video, input-device or campaign acceptance evidence."
+}

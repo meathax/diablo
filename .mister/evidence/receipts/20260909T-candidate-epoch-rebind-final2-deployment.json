@@ -1,0 +1,32 @@
+{
+  "schema": "diablo-mister-deployment-v1",
+  "status": "pass",
+  "recorded_utc": "2026-09-09",
+  "candidate": {
+    "candidate_id": "ca88bc75483e9a3c89d095ef2e928900f1de517faf9b425aa500f5c5c4b8337a",
+    "source_id": "8f0a7f89c33d51963f6ceafa9da489493c3ad924fa8510bf61e3b9347fddff7d",
+    "package_manifest_sha256": "abe436619a0b0781c5f9503823feba15fe11fc28500250f40c5ccbcc37a4c76a",
+    "rbf_sha256": "bcb2a24eddce301eec96f4b282d33ad1f56e86fc155f303c5fa63e90256f9c29"
+  },
+  "target": {
+    "host": "192.168.0.69",
+    "staging_share": "\\\\192.168.0.69\\sdcard\\_CodexDiabloCandidateEpochRebindFinal2",
+    "release": "/media/fat/.diablo-releases/ca88bc75483e9a3c89d095ef2e928900f1de517faf9b425aa500f5c5c4b8337a",
+    "install_state": "/media/fat/.diablo-install.json",
+    "active_release_verified": true,
+    "previous_candidate_id": "37ed7ab5ff03334303b455108ce1942eefcf93988627b1789884c79bcc44f491"
+  },
+  "transaction": {
+    "method": "ssh-python-atomic-install",
+    "staging_root": "/media/fat/.diablo-staging",
+    "release_root": "/media/fat/.diablo-releases",
+    "manifest_files_rehashed": true,
+    "release_promotion": "atomic-os-replace",
+    "activation_pointer_promotion": "atomic-os-replace",
+    "package_manifest_bytes": 37388,
+    "package_manifest_sha256": "abe436619a0b0781c5f9503823feba15fe11fc28500250f40c5ccbcc37a4c76a"
+  },
+  "limitations": [
+    "This proves transactional install, manifest rehash and activation-pointer update only; it does not close clean-image install/update/rollback or physical acceptance."
+  ]
+}

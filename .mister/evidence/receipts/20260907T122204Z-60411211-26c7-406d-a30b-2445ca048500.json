@@ -1,0 +1,108 @@
+{
+  "candidate": {
+    "candidate_id": "c51d3976a656612a65bb0414d2608f22f858f24de6facdba85530a37af9cfd77",
+    "manifest": "D:\\Arcade\\AI\\aCORES\\Diablo\\.mister\\evidence\\candidates\\fpga-candidate-20260907-19-arm.json",
+    "manifest_sha256": "f43b5bbc269c3a0d4bdaeacfc391a24201f49072f88680077cbe1b93e9dc0b14",
+    "source_id": "e5b9898a1e799dfde021d4957192e3f41230ae24c56220591b751fcda29a2227"
+  },
+  "finished_utc": "2026-09-07T12:22:08Z",
+  "limitations": [
+    "No physical video/audio/input observer was used",
+    "No gameplay, campaign, save, multiplayer or performance result is implied",
+    "The staged package was not installed as the active core"
+  ],
+  "package": {
+    "board_profile": "de10-nano-mister-pending",
+    "local": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\package-board-candidate-19",
+    "remote_files": [
+      {
+        "bytes": 8518704,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "devilutionx",
+        "sha256": "11ed2bf67edfc99b80ed6ff541cd991d20cd39cbd82f6b43c9b038dbb06f3ced",
+        "sha256_match": true
+      },
+      {
+        "bytes": 2612856,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "Diablo.rbf",
+        "sha256": "56da955190bd2f39b45b2fd137ee17bd771e06ebb77b6150e9a634f93b793f9c",
+        "sha256_match": true
+      },
+      {
+        "bytes": 12288,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "transport_abi.hex",
+        "sha256": "aefc42fc0a1969800ef9ed8cbddb5d76155b7433ecaa1b6dc1a04a507e1737cd",
+        "sha256_match": true
+      },
+      {
+        "bytes": 1014,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "deployment.json",
+        "sha256": "d33988169add166c77e214e01db81986bbf7fd757c9d0c27eafe0e724906e432",
+        "sha256_match": true
+      }
+    ],
+    "remote_relative": "_CodexDiabloCandidate19"
+  },
+  "problems": [
+    "target probe is missing: config/MiSTer.ini"
+  ],
+  "schema": "diablo-mister-preflight-v1",
+  "scope": "read-only MiSTer Samba deployment preflight; no physical acceptance",
+  "started_utc": "2026-09-07T12:22:04Z",
+  "status": "fail",
+  "target": {
+    "host": "192.168.0.69",
+    "name": "MISTER",
+    "probes": [
+      {
+        "bytes": 1162128,
+        "bytes_match": true,
+        "elf_header": true,
+        "exists": true,
+        "match": true,
+        "path": "MiSTer",
+        "sha256": "ef0dbfde3744ccb160444932d8a7d31f298b16a95db506852c99ece018321596",
+        "sha256_match": true
+      },
+      {
+        "bytes": 2452588,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "menu.rbf",
+        "sha256": "821bcf66181a00ff550e4a4110dc11c9fa8e68d38e9cb5558b3ddb99ca938934",
+        "sha256_match": true
+      },
+      {
+        "bytes": null,
+        "bytes_match": false,
+        "exists": false,
+        "match": false,
+        "path": "config/MiSTer.ini",
+        "sha256": null,
+        "sha256_match": false
+      },
+      {
+        "bytes": 24576,
+        "bytes_match": true,
+        "exists": true,
+        "match": true,
+        "path": "config/cores_recent.cfg",
+        "sha256": "2a100761ec11a974ff6bdfe52bc2ac164df6a6765df1726994848b16a48aa0e6",
+        "sha256_match": true
+      }
+    ],
+    "root": "\\\\192.168.0.69\\sdcard\\"
+  }
+}

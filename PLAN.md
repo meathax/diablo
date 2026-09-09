@@ -21,6 +21,7 @@ Updated 9 September 2026. This is the active plan; detailed historical audit mat
 ## Only remaining work
 
 1. Physical smoke test on the current candidate:
+   - Ensure the attached 8BitDo controller is paired/active first; the latest target inventory sees two `2dc8:301c` receivers in `IDLE` state with HID raw nodes but no gamepad event node.
    - Launch Diablo and Hellfire.
    - Confirm menu navigation, character movement, both sticks, D-pad/buttons, keyboard, mouse, cinematic and OSD selection.
 
@@ -30,8 +31,8 @@ Updated 9 September 2026. This is the active plan; detailed historical audit mat
    - If stable, keep the current PCM diagnostic fix; do not pursue artificial endurance tuning.
 
 3. Release closeout:
-   - Single-player build and final package verification are complete; keep the recorded rollback release.
-   - Confirm one clean relaunch and a save/load smoke check.
+   - Single-player build, final package verification and the candidate-specific deployment lifecycle are complete; keep the recorded rollback release.
+   - The exact active candidate now has an automated relaunch/save-load pass; retain the physical relaunch observation in the hands-on smoke gate.
    - Keep the prior release for rollback, verify the final package/hash, and update `PROGRESS.md`.
 
 ## Exit condition

@@ -1,0 +1,29 @@
+{
+  "schema": "diablo-arm-incremental-build-v1",
+  "status": "pass",
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu",
+    "--",
+    "cmake",
+    "--build",
+    "/home/meath/.cache/diablo-arm-engine-candidate26-clean",
+    "--target",
+    "devilutionx",
+    "-j",
+    "8"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 182.3438856601715,
+  "source_id": "affa173cd5e6639ed5e43a9a4baa972e51e54aaaf6862723d31268ffa4a96465",
+  "source_unchanged": true,
+  "log": ".work/build/arm-engine-c34-ownership/build.log",
+  "log_sha256": "5d0f2e393476072c6c1a86899ec778d3b260fd5ac690b4853c4513eb5439020e",
+  "scope": "Incremental production ARM transport engine rebuild; not clean-build or physical acceptance.",
+  "artifact": {
+    "path": ".work/build/arm-engine-c34-ownership/devilutionx",
+    "bytes": 8518704,
+    "sha256": "d790990953427fa3df2146529b9a17f91f4549b9cd749e7c504793651a39e214"
+  }
+}

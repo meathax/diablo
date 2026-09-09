@@ -1,0 +1,131 @@
+{
+  "schema": "diablo-c25-validator-metrics-v1",
+  "status": "pass",
+  "finished_utc": "2026-09-08T03:43:04.865920+00:00",
+  "command": [
+    "D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe",
+    "support/scripts/validate_c25_sdc.py",
+    "--validate-receipt",
+    ".mister/evidence/receipts/20260908T032026Z-b330abd83176-c25-sdc-trial.json"
+  ],
+  "source_receipt": {
+    "path": ".mister/evidence/receipts/20260908T032026Z-b330abd83176-c25-sdc-trial.json",
+    "sha256": "a82a3b75562109970d873e9e0c2fe415f38be3509f2877926fb70fad74da6a16"
+  },
+  "validator": {
+    "path": "support/scripts/validate_c25_sdc.py",
+    "sha256": "1ac0e79a800775c3b9ef03633a67a8c47093ef61cf287568b419115eda92c8c2"
+  },
+  "reports": {
+    "baseline_sta_report": {
+      "path": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c34\\output_files\\Diablo.sta.rpt",
+      "sha256": "19b384cb4251c56b3bfd1391bece94cfc0fe15101a2755110d29b46b628116a0",
+      "required_metrics": [
+        "setup",
+        "hold",
+        "recovery",
+        "removal",
+        "minimum_pulse_width"
+      ],
+      "corners": [
+        {
+          "name": "Slow 1100mV 100C Model",
+          "metrics": {
+            "setup": 0.21,
+            "hold": 0.202,
+            "recovery": 3.362,
+            "removal": 0.86,
+            "minimum_pulse_width": 0.396
+          }
+        },
+        {
+          "name": "Slow 1100mV -40C Model",
+          "metrics": {
+            "setup": 0.188,
+            "hold": 0.094,
+            "recovery": 3.579,
+            "removal": 0.818,
+            "minimum_pulse_width": 0.396
+          }
+        },
+        {
+          "name": "Fast 1100mV 100C Model",
+          "metrics": {
+            "setup": 0.529,
+            "hold": 0.131,
+            "recovery": 4.709,
+            "removal": 0.436,
+            "minimum_pulse_width": 0.396
+          }
+        },
+        {
+          "name": "Fast 1100mV -40C Model",
+          "metrics": {
+            "setup": 0.526,
+            "hold": 0.107,
+            "recovery": 5.05,
+            "removal": 0.361,
+            "minimum_pulse_width": 0.396
+          }
+        }
+      ],
+      "failures": [],
+      "ok": true
+    },
+    "after_sta_report": {
+      "path": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\c25\\runs\\20260908T032026Z-b330abd83176\\fitted-trial\\output_files\\Diablo.sta.rpt",
+      "sha256": "0e7a7f064a5a9af3162af82825536b3d9677a6e1675dfa034936a0ccb8d13fd0",
+      "required_metrics": [
+        "setup",
+        "hold",
+        "recovery",
+        "removal",
+        "minimum_pulse_width"
+      ],
+      "corners": [
+        {
+          "name": "Slow 1100mV 100C Model",
+          "metrics": {
+            "setup": 0.21,
+            "hold": 0.202,
+            "recovery": 3.362,
+            "removal": 0.86,
+            "minimum_pulse_width": 0.396
+          }
+        },
+        {
+          "name": "Slow 1100mV -40C Model",
+          "metrics": {
+            "setup": 0.188,
+            "hold": 0.094,
+            "recovery": 3.579,
+            "removal": 0.818,
+            "minimum_pulse_width": 0.396
+          }
+        },
+        {
+          "name": "Fast 1100mV 100C Model",
+          "metrics": {
+            "setup": 0.529,
+            "hold": 0.131,
+            "recovery": 4.709,
+            "removal": 0.436,
+            "minimum_pulse_width": 0.396
+          }
+        },
+        {
+          "name": "Fast 1100mV -40C Model",
+          "metrics": {
+            "setup": 0.526,
+            "hold": 0.107,
+            "recovery": 5.05,
+            "removal": 0.361,
+            "minimum_pulse_width": 0.396
+          }
+        }
+      ],
+      "failures": [],
+      "ok": true
+    }
+  }
+}

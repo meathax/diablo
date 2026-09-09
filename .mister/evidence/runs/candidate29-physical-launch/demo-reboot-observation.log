@@ -1,0 +1,5 @@
+Candidate: 4a3b9ad2982f6b5834ecfe95a3c10669a2d30a947adf456ab992c731f22a320a
+Source: 5ec6e11b606c592ceaa2b26b65c8a92713e06ba73e8f65105462bd0b10cd4c73
+Trial: candidate29 launcher with demo_0.dmo, --spawn --demo 0 --timedemo, 50-second controlled run
+Result: target became unreachable during the trial and rebooted; the next boot ID was 080c3ae9-9a27-4c35-9b02-5c546a21d609 and Core: (none).
+The post-reboot target log retained the demo engine log and launcher result but no kernel panic record survived. This is a release blocker until reproduced with serial/watchdog evidence and fixed or explicitly scoped.

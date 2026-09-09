@@ -1,0 +1,184 @@
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Missing: devilutionx
+VERBOSE: Missing: fonts
+VERBOSE:   Found: hellfire in /media/fat/tmp_esc/diablo-transport-assets/
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Found user preferred locales: C
+VERBOSE: Trying to load translation: C
+VERBOSE: No suitable translation found
+DEBUG: Unknown pixel format
+INFO: Created renderer: software
+VERBOSE: Removed file: /media/fat/tmp_esc/diablo-candidate29-save/Diablo1ReadOnlyTest.foo
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: fopen("/media/fat/tmp_esc/diablo-candidate29-config/diablo.ini", "wb")
+VERBOSE: fwrite(data, 3988)
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE:   Found: DIABDAT in /media/fat/tmp_esc/diablo-transport-assets/
+VERBOSE: Missing: hfbard
+VERBOSE: Missing: hfbarb
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+VERBOSE: Paths:
+    base: /media/fat/tmp_esc/diablo-transport-assets/
+    pref: /media/fat/tmp_esc/diablo-candidate29-save/
+  config: /media/fat/tmp_esc/diablo-candidate29-config/
+  assets: /media/fat/_CodexDiabloCandidate29/assets/
+VERBOSE: MPQ search paths:
+     1. '/media/fat/tmp_esc/diablo-transport-assets/'
+     2. '/media/fat/tmp_esc/diablo-candidate29-save/'
+     3. '/media/fat/tmp_esc/diablo-candidate29-config/'
+     4. '/usr/local/share/diasurgical/devilutionx/'
+     5. '/usr/share/diasurgical/devilutionx/'
+     6. ''
+DEBUG: That operation is not supported
+VERBOSE: Aulib sampleRate=22050 channels=2 frameSize=2048 format=0x8010
+VERBOSE: fopen("/media/fat/tmp_esc/diablo-candidate29-config/diablo.ini", "wb")
+VERBOSE: fwrite(data, 4288)
+VERBOSE: Control: device None -> KeyboardAndMouse, mode None -> KeyboardAndMouse
+VERBOSE: SVid audio depth=16 channels=1 rate=22050
+DL pacing
+Diablo MiSTer PCM health changed: queued=0 producer=106996 consumer=106996 underrun=413 resync=0 callbacks=24 drops=0 frames=106996 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=2794 producer=160495 consumer=157701 underrun=623 resync=0 callbacks=36 drops=0 frames=160495 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=3183 producer=213993 consumer=210810 underrun=936 resync=0 callbacks=48 drops=0 frames=213993 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=852 producer=263034 consumer=262182 underrun=1184 resync=0 callbacks=59 drops=0 frames=263034 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 producer=312075 consumer=312075 underrun=1440 resync=0 callbacks=70 drops=0 frames=312075 dropped_frames=0
+Diablo MiSTer transport frame backpressure; using SDL pacing
+Diablo MiSTer PCM health changed: queued=1483 producer=365573 consumer=364090 underrun=1695 resync=0 callbacks=82 drops=0 frames=365573 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=220 producer=414614 consumer=414394 underrun=1950 resync=0 callbacks=93 drops=0 frames=414614 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=1629 producer=477029 consumer=475400 underrun=2318 resync=0 callbacks=107 drops=0 frames=477029 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=563 producer=526070 consumer=525507 underrun=2572 resync=0 callbacks=118 drops=0 frames=526070 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=2456 producer=579568 consumer=577112 underrun=2876 resync=0 callbacks=130 drops=0 frames=579568 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=172 producer=628609 consumer=628437 underrun=3129 resync=0 callbacks=141 drops=0 frames=628609 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=2748 producer=682108 consumer=679360 underrun=3386 resync=0 callbacks=153 drops=0 frames=682108 dropped_frames=0
+Diablo MiSTer transport frame backpressure; using SDL pacing
+Diablo MiSTer PCM health changed: queued=365 producer=731148 consumer=730783 underrun=3584 resync=0 callbacks=164 drops=0 frames=731148 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=2213 producer=784647 consumer=782434 underrun=3889 resync=0 callbacks=176 drops=0 frames=784647 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=27 producer=833688 consumer=833661 underrun=4095 resync=0 callbacks=187 drops=0 frames=833688 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=3426 producer=887186 consumer=883760 underrun=4406 resync=0 callbacks=199 drops=0 frames=887186 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=511 producer=936227 consumer=935716 underrun=4659 resync=0 callbacks=210 drops=0 frames=936227 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=2407 producer=989726 consumer=987319 underrun=4918 resync=0 callbacks=222 drops=0 frames=989726 dropped_frames=0
+Diablo MiSTer transport frame backpressure; using SDL pacing
+Diablo MiSTer PCM health changed: queued=1436 producer=1038766 consumer=1037330 underrun=5164 resync=0 callbacks=233 drops=0 frames=1038766 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=3281 producer=1092265 consumer=1088984 underrun=5372 resync=0 callbacks=245 drops=0 frames=1092265 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=1140 producer=1141306 consumer=1140166 underrun=5661 resync=0 callbacks=256 drops=0 frames=1141306 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=0 producer=1190346 consumer=1190346 underrun=5863 resync=0 callbacks=267 drops=0 frames=1190346 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=996 producer=1243845 consumer=1242849 underrun=6125 resync=0 callbacks=279 drops=0 frames=1243845 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=2845 producer=1297344 consumer=1294499 underrun=6387 resync=0 callbacks=291 drops=0 frames=1297344 dropped_frames=0
+Diablo MiSTer transport frame backpressure; using SDL pacing
+Diablo MiSTer PCM health changed: queued=317 producer=1346384 consumer=1346067 underrun=6635 resync=0 callbacks=302 drops=0 frames=1346384 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=4458 producer=1399883 consumer=1395425 underrun=6895 resync=0 callbacks=314 drops=0 frames=1399883 dropped_frames=0
+Diablo MiSTer PCM health changed: queued=276 producer=1480131 consumer=1479855 underrun=7135 resync=0 callbacks=332 drops=0 frames=1480131 dropped_frames=0

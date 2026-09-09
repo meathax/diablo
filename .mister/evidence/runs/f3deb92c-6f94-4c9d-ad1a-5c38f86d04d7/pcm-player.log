@@ -1,0 +1,7 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\rtl", "-s", "diablo_pcm_player_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\.work\\build\\verification\\pcm-player.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\rtl\\diablo_pcm_player.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\support\\tests\\diablo_pcm_player_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\\.work\\build\\verification\\pcm-player.vvp"]
+
+FATAL: D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-f3deb92c-6f94-4c9d-ad1a-5c38f86d04d7-ln7uzqnu\support\tests\diablo_pcm_player_tb.sv:174: PCM stopped-producer interval did not output silence
+       Time: 685000  Scope: diablo_pcm_player_tb

@@ -1,0 +1,28 @@
+{
+  "schema": "diablo-c34-scaffolding-inventory-v1",
+  "status": "partial",
+  "generated_utc": "2026-09-09T05:31:00Z",
+  "scope": "source-code inventory excluding .git, .mister, .work and interpreter caches",
+  "marker_count": 8,
+  "markers": [
+    {"path": "support/tests/mister_command_transport_test.cpp", "lines": [69, 80], "disposition": "retain; slot-zero wire-layout assertions"},
+    {"path": "support/tests/test_video_source_policy.py", "lines": [25, 27], "disposition": "retain; regression asserts no stale TODO"},
+    {"path": "support/tests/transport_abi_test.cpp", "lines": [241], "disposition": "retain; negative ownership test"},
+    {"path": "support/transport/command_scene_probe.cpp", "lines": [2, 46], "disposition": "retain; deterministic slot-zero probe"},
+    {"path": "sys/sys_top.v", "lines": [237], "disposition": "retain; imported HPS-I/O compatibility note, not project scaffolding"}
+  ],
+  "source_lists": [
+    "Diablo.qsf", "files.qip", "rtl/pll/pll_0002.qip", "rtl/pll/pll_0002_q13.qip",
+    "rtl/pll.qip", "sys/pll.13.qip", "sys/pll_audio/pll_audio_0002.qip",
+    "sys/pll_audio.13.qip", "sys/pll_audio.qip", "sys/pll_cfg.qip",
+    "sys/pll_hdmi/pll_hdmi_0002.qip", "sys/pll_hdmi.13.qip", "sys/pll_hdmi.qip",
+    "sys/pll_q13.qip", "sys/pll_q17.qip", "sys/sys.qip"
+  ],
+  "verification": {
+    "local_receipt": ".mister/evidence/receipts/20260909T050600Z-e410b291-85f6-426a-8340-f7c2cac266c6.json",
+    "local_status": "pass",
+    "guide_status": "pass",
+    "closure_matrix_check": "pass"
+  },
+  "limitation": "This inventory closes the stale-marker/source-list audit only; ownership refactor and final candidate qualification remain open."
+}

@@ -1,0 +1,110 @@
+{
+  "arm": {
+    "binary_sha256": "4ef9b4b1557174908809da0fee8c424a1a12e83b10caa45b11db0969925189e2",
+    "build_role": "arm-reference",
+    "captures": [
+      {
+        "bytes": 308000,
+        "file": "frame-0.d8f",
+        "frame": 0,
+        "logic_ms": 0,
+        "sha256": "aca1e02772e620573fa9dde99cc09c819c340271827482fa10b02552d1f87e1a"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-128.d8f",
+        "frame": 128,
+        "logic_ms": 6400,
+        "sha256": "1064d8e594e403b6421c5400a434a01c4396072146084cefe29ab9c797dd21cd"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-256.d8f",
+        "frame": 256,
+        "logic_ms": 12800,
+        "sha256": "3dc0e0700bbb97c1692cf5730f6a974d2dae877a72e3cb165a71652f77066ca3"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-384.d8f",
+        "frame": 384,
+        "logic_ms": 19200,
+        "sha256": "a2e614ffa50e851d58ecb463a344880e38ce293bf64d7206d8a281b5b3802724"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-512.d8f",
+        "frame": 512,
+        "logic_ms": 25600,
+        "sha256": "f8c38367794823c82c55e2f7de869747052902fa9674e601461cef34764faa4c"
+      }
+    ],
+    "run": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\runtime\\arm-scenarios\\22c90d7e33ae4072b6e65633f9d190cb\\run.json",
+    "run_sha256": "773ceb9946adc60569e1bb97dfe566f4c28ca47235fefa21672f9d9093a87d9a"
+  },
+  "candidate": {
+    "candidate_id": "22724f0735a69634f5a562e678e8d4faee8f2546a67a5c4277b977e77cc3fba4",
+    "manifest": "D:\\Arcade\\AI\\aCORES\\Diablo\\.mister\\evidence\\candidates\\fpga-candidate-20260908-45-release-lifecycle.json",
+    "manifest_sha256": "8700e993fe332df8c8d7f43fbc4e6cacdf2d0d6dfab28fa7ec976eb6d5c9c515",
+    "source_id": "b1086210041de4d4b2ce4b992f1823b88dfa0b31ec84a70dd387d2d1caef899a"
+  },
+  "comparison": {
+    "equal": true,
+    "frames_compared": 5,
+    "scope": "All supplied indexed frames and all RGB888 palette entries"
+  },
+  "errors": [],
+  "host": {
+    "build_role": "host-reference",
+    "captures": [
+      {
+        "bytes": 308000,
+        "file": "frame-0.d8f",
+        "frame": 0,
+        "logic_ms": 0,
+        "sha256": "aca1e02772e620573fa9dde99cc09c819c340271827482fa10b02552d1f87e1a"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-128.d8f",
+        "frame": 128,
+        "logic_ms": 6400,
+        "sha256": "1064d8e594e403b6421c5400a434a01c4396072146084cefe29ab9c797dd21cd"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-256.d8f",
+        "frame": 256,
+        "logic_ms": 12800,
+        "sha256": "3dc0e0700bbb97c1692cf5730f6a974d2dae877a72e3cb165a71652f77066ca3"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-384.d8f",
+        "frame": 384,
+        "logic_ms": 19200,
+        "sha256": "a2e614ffa50e851d58ecb463a344880e38ce293bf64d7206d8a281b5b3802724"
+      },
+      {
+        "bytes": 308000,
+        "file": "frame-512.d8f",
+        "frame": 512,
+        "logic_ms": 25600,
+        "sha256": "f8c38367794823c82c55e2f7de869747052902fa9674e601461cef34764faa4c"
+      }
+    ],
+    "executable_sha256": "d4429fe6788b3ab3785333ba79f77e99deb9f079dc28dac96095d447b80dfb7b",
+    "run": "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\runtime\\scenarios\\d83bcc074733451994a1f282923438ec\\run.json",
+    "run_sha256": "c624a361bc73a52a24fe882d8f014ff8383fc62af26f27001acb89f010c7d5f2"
+  },
+  "run_id": "92fcc58e-0200-4fc6-bf0f-06c0b6e8f136",
+  "scenario": {
+    "campaign": "diablo",
+    "demo_sha256": "e143884fc7d5fcdb03e1e5f9bbd93451870d9aa1dc793b567fb6390ff49430df",
+    "frames_compared": 5,
+    "name": "town-v1"
+  },
+  "schema": "diablo-scene-oracle-v1",
+  "scope": "Exact native640 host-reference versus ARM/QEMU indexed frame and RGB888 palette equality; no FPGA, physical HDMI, audio, input, FPS or full-campaign claim",
+  "status": "pass"
+}

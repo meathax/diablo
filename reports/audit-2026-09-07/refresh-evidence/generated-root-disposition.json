@@ -1,5 +1,5 @@
 {
-  "schema": "diablo-generated-root-disposition-v1",
+  "schema": "diablo-generated-root-disposition-v2",
   "status": "pass",
   "recorded_utc": "2026-09-07T11:04:03Z",
   "files": [
@@ -20,7 +20,37 @@
       "action": "ignore-and-clean",
       "producer": "Quartus pin-model generation",
       "private_data": false
+    },
+    {
+      "path": " 2",
+      "bytes": 173,
+      "sha256": "1fc1347fd0431c05107bfc42fec413bafa1fd71b66d6aab8a18f5578bcc367f9",
+      "kind": "shell-error diagnostic output",
+      "action": "moved-to-ignored-disposition",
+      "destination": ".work/build/root-generated-disposition/20260909/ 2",
+      "producer": "malformed shell redirection during a target diagnostic command",
+      "private_data": false
+    },
+    {
+      "path": ";",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "kind": "empty shell-error artifact",
+      "action": "moved-to-ignored-disposition",
+      "destination": ".work/build/root-generated-disposition/20260909/;",
+      "producer": "malformed shell redirection during a target diagnostic command",
+      "private_data": false
+    },
+    {
+      "path": "NUL",
+      "bytes": 94,
+      "sha256": "7a06a88934ce76c40e646f5883ff645dcac4c645db7c34d58a00afd93c797aac",
+      "kind": "accidental SSH host-key capture",
+      "action": "moved-to-ignored-disposition",
+      "destination": ".work/build/root-generated-disposition/20260909/NUL",
+      "producer": "Windows shell redirection to a reserved device name",
+      "private_data": true
     }
   ],
-  "reason": "Neither file is a source input, candidate artifact, receipt log, or required runtime file. The existing cleanup workflow already removes the pin-model dump; the root ignore and cleanup rules now cover both generated outputs."
+  "reason": "These files are not source inputs, candidate artifacts, receipt logs, or required runtime files. The original Icarus/Quartus outputs and the later shell debris are preserved by hash in ignored build-specific locations; no credentials or private payloads were added to the disposition record."
 }

@@ -1,0 +1,52 @@
+{
+  "schema": "diablo-target-controller-hid-inventory-v1",
+  "status": "physical_controller_precondition_open",
+  "recorded_utc": "2026-09-09T19:29:43.628Z",
+  "target": "MiSTer de10-nano",
+  "usb_devices": [
+    {
+      "bus_path": "1-1.3",
+      "vendor_id": "2dc8",
+      "product_id": "301c",
+      "manufacturer": "8BitDo",
+      "product": "IDLE",
+      "interface_driver": "usbhid",
+      "hidraw": "/dev/hidraw0",
+      "input_event_nodes": []
+    },
+    {
+      "bus_path": "1-1.4",
+      "vendor_id": "2dc8",
+      "product_id": "301c",
+      "manufacturer": "8BitDo",
+      "product": "IDLE",
+      "interface_driver": "usbhid",
+      "hidraw": "/dev/hidraw1",
+      "input_event_nodes": []
+    }
+  ],
+  "input_inventory": {
+    "event_nodes": [
+      "event0",
+      "event1",
+      "event2",
+      "event3",
+      "event4",
+      "event5",
+      "event6",
+      "event7"
+    ],
+    "gamepad_event_nodes": [],
+    "joystick_nodes": []
+  },
+  "raw_report_probe": {
+    "duration_seconds_per_device": 2,
+    "devices": [
+      {"path": "/dev/hidraw0", "ready": false, "bytes": 0},
+      {"path": "/dev/hidraw1", "ready": false, "bytes": 0}
+    ],
+    "interpretation": "Neither IDLE receiver produced an HID report during the nonblocking probe. This supports the conclusion that no controller is currently active/paired, while not replacing a user-operated pairing test."
+  },
+  "interpretation": "The target detects two 8BitDo USB receivers at the HID layer, but both are IDLE and expose no gamepad event interface. This is a physical pairing/activation prerequisite, not evidence of a Diablo mapping defect.",
+  "required_next_action": "Pair or activate the attached 8BitDo controller(s), then repeat the physical HDMI control smoke with a human operator."
+}

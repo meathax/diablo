@@ -1,0 +1,46 @@
+{
+  "schema": "diablo-target-candidate-run-v1",
+  "status": "diagnostic-pass-qualification-open",
+  "recorded_utc": "2026-09-10",
+  "candidate": {
+    "candidate_id": "566ca7a6221829412201fb6ded0046e0b20befeffdff6dc4efb0dd8ff00a2baa",
+    "source_id": "f68f5227d794cf89df14bfc1ede472354c625e820809e38bfc8f3bda291498a2",
+    "package": ".work/build/arm-pacing-20260910/package",
+    "package_manifest_sha256": "dfd72f72e1d1887d422e16e792a3b1c2c81e09ef55989707bdbfafee3a574209"
+  },
+  "target": {
+    "name": "MiSTer DE10-Nano",
+    "kernel_release": "5.15.1-MiSTer",
+    "physical_base": "0x3fe00000",
+    "video_backend": "fpga-shared-ddr",
+    "sdl_video_driver": "dummy",
+    "sdl_audio_driver": "dummy"
+  },
+  "run": {
+    "campaign": "diablo",
+    "duration_seconds": 35,
+    "status": "pass",
+    "timed_out": true,
+    "core_changed": false,
+    "stop_reason": "duration",
+    "exit_code": 0,
+    "forced_frame_pacing": true,
+    "log": "/tmp/diablo-physical-566ca7a622182941/engine.log",
+    "log_sha256": "67875cc0066981871909ce1a12821269900943da00ebee714454bb98979624ae",
+    "log_bytes": 6413,
+    "log_lines": 151,
+    "asset_markers": 2,
+    "audio_markers": 2,
+    "error_fatal_assert_fault_markers": 0,
+    "underrun_resync_backpressure_markers": 0
+  },
+  "post_run": {
+    "engine_processes": 0,
+    "log_present": true
+  },
+  "limitations": [
+    "Dummy SDL proves the candidate-bound runtime path only; it is not physical HDMI or speaker acceptance.",
+    "No controller, keyboard, mouse, menu, cinematic, gameplay, or save/load observer was used.",
+    "This bounded run does not qualify the 60-FPS or endurance targets."
+  ]
+}

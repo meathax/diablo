@@ -1,0 +1,70 @@
+{
+  "schema": "diablo-fpga-clean-build-v1",
+  "run_id": "20260908-clean-fpga-candidate26",
+  "observed_utc": "2026-09-07T15:54:35.7164011Z",
+  "status": "pass",
+  "base_head": "47b57cbd657f8d15f30096843b90617154195b4b",
+  "worktree": ".work/clean-checkout-candidate24",
+  "snapshot": ".work/clean-checkout-candidate24/.work/build/fpga-clean-candidate25",
+  "snapshot_manifest_sha256": "0dc62be46f271781934262b32e63eb9dfcde864376c559ba6702788d915f77f9",
+  "snapshot_file_count": 84,
+  "candidate_id": "b4f6f38b2bb5ec0b4ef9ff3e6624340030e0b15c234e007be2ee0fd2ce5c9dbb",
+  "candidate_manifest": ".mister/evidence/candidates/fpga-candidate-20260908-26-arm.json",
+  "candidate_manifest_sha256": "c4cfd9bc39c2361134ee107def0ea740590fb0d5e6e95d95bbcabc04f3575776",
+  "candidate_source_id": "13d7c55ed51ffd4b869a14271a5a780815e6c7eb0ad02166d62ee994c5ba30fd",
+  "quartus_root": "D:/Q17/quartus",
+  "actions": {
+    "compile": {
+      "exit_code": 0,
+      "log": ".work/clean-checkout-candidate24/.work/build/fpga-clean-candidate25/.mister/logs/quartus-compile.log",
+      "log_sha256": "dbe1cb20324a5d9fce767923844d37dc9ea380e0499cc1db867d3a29ca345c08"
+    },
+    "compress": {
+      "exit_code": 0,
+      "log": ".work/clean-checkout-candidate24/.work/build/fpga-clean-candidate25/.mister/logs/quartus-compress.log",
+      "log_sha256": "164ba5a0d008da065b8ed402a2f4cad706aafa9f7389b6f0ca864d4c9c5b0ab0"
+    },
+    "timing": {
+      "exit_code": 0,
+      "log": ".work/clean-checkout-candidate24/.work/build/fpga-clean-candidate25/.mister/logs/quartus-timing.log",
+      "log_sha256": "e6c9dd5479ff5030bc75dd89f9223d1361d6098683e84fc0bc7380c984b05602"
+    }
+  },
+  "generated_input_restoration": {
+    "path": "build_id.v",
+    "preflight_rewrites_it": "true",
+    "post_action_hash_matches_snapshot": "true",
+    "followup_actions_pass": "true"
+  },
+  "artifacts": {
+    "sof": {
+      "path": "output_files/Diablo.sof",
+      "bytes": 6690359,
+      "sha256": "53ccc445cec939d29128bae87272d7861b84a6403117e2757e9ad44ece4516f2"
+    },
+    "raw_rbf": {
+      "path": "output_files/Diablo.rbf",
+      "bytes": 2582688,
+      "sha256": "566f24bd1d667265648173b8d4fba255f7035718540d5ef6046bf6f572758d3f"
+    },
+    "compressed_rbf": {
+      "path": "output_files/Diablo.compressed.rbf",
+      "bytes": 2582688,
+      "sha256": "566f24bd1d667265648173b8d4fba255f7035718540d5ef6046bf6f572758d3f"
+    }
+  },
+  "timing": {
+    "setup_paths_per_corner": 3,
+    "violated_paths_per_corner": 0,
+    "worst_case_slack_ns": 0.014,
+    "reported_slacks_ns": [
+      0.204,
+      0.014,
+      0.525,
+      0.522
+    ],
+    "errors": 0,
+    "warnings": 0
+  },
+  "scope": "Clean detached-checkout FPGA snapshot sync, direct Quartus compile, compression and timing. ARM artifact was reused from the verified build; target loading and physical acceptance remain open."
+}

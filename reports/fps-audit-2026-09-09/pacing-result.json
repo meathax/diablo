@@ -1,0 +1,13 @@
+{
+  "candidate": "566ca7a6221829412201fb6ded0046e0b20befeffdff6dc4efb0dd8ff00a2baa",
+  "user_result": "buttery smooth 60fps",
+  "tests": "pacing and transport input regression passed",
+  "samples": 586,
+  "retirement_rate": 48.20809890837152,
+  "median_ms": 17.625123000016174,
+  "p95_ms": 33.689730000105556,
+  "max_ms": 35.75252600012391,
+  "gaps_over25ms": 142,
+  "baseline_gaps_over25ms": 56,
+  "scope": "12 second read-only FPGA retirement sample; polling resolution approximately 2ms; not HDMI timing qualification"
+}

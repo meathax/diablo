@@ -1,0 +1,7 @@
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-23749dae-fefe-4d73-a5f9-490ae16d76d8-6weox527\\rtl", "-s", "diablo_pcm_player_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-23749dae-fefe-4d73-a5f9-490ae16d76d8-6weox527\\.work\\build\\verification\\pcm-player.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-23749dae-fefe-4d73-a5f9-490ae16d76d8-6weox527\\rtl\\diablo_pcm_player.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-23749dae-fefe-4d73-a5f9-490ae16d76d8-6weox527\\support\\tests\\diablo_pcm_player_tb.sv"]
+
+
+$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-23749dae-fefe-4d73-a5f9-490ae16d76d8-6weox527\\.work\\build\\verification\\pcm-player.vvp"]
+
+FATAL: D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-23749dae-fefe-4d73-a5f9-490ae16d76d8-6weox527\support\tests\diablo_pcm_player_tb.sv:102: PCM queue status wrote the stale epoch across a session transition
+       Time: 1525000  Scope: diablo_pcm_player_tb

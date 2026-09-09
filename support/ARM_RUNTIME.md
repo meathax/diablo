@@ -332,12 +332,19 @@ overlap, command rendering or a direct render target. Evidence:
 `.mister/evidence/arm-engine-transport-present-profile-breakdown-build-20260907.json`
 and `.mister/evidence/arm-engine-transport-present-profile-breakdown-20260907.json`.
 
-`DIABLO_MISTER_DIRTY_COPY=1` enables a measured experimental path that caches
-one source shadow per slot, writes changed runs and falls back to whole-row
-writes for busy rows. The paired board timedemo reduced publish time from 4.413
-ms to 3.432 ms and measured 29.3 FPS versus 28.3 FPS with the option unset;
-both runs were fault-free. Keep it opt-in until broader scene and real-vblank
-qualification is complete. Evidence: `.mister/evidence/arm-dirty-copy-ab-20260907.json`.
+`DIABLO_MISTER_DIRTY_COPY=1` enables a measured path that caches one source
+shadow per slot, writes changed runs and falls back to whole-row writes for
+busy rows. The paired board timedemo reduced publish time from 4.413 ms to
+3.432 ms and measured 29.3 FPS versus 28.3 FPS with the option unset; both
+runs were fault-free. The current release launcher enables this path by
+default after a fresh 45-second candidate-bound A/B reduced average publish
+time from 7.707 ms to 5.989 ms and increased published frames from 2,497 to
+2,566, with zero backpressure drops in both runs. Set
+`DIABLO_MISTER_DIRTY_COPY=0` for a diagnostic comparison or rollback. The
+current 75-second active-candidate profile remains about 58 Hz with zero
+transport drops, so dirty copy is an optimization rather than sustained-60-FPS
+qualification. Historical evidence: `.mister/evidence/arm-dirty-copy-ab-20260907.json`;
+current evidence: `.mister/evidence/receipts/20260910T-arm-pacing-dirty-copy-active-smoke.json`.
 
 `DIABLO_MISTER_NO_CPU_PACING=1` is a diagnostic switch that removes the normal
 SDL frame-rate limiter. A same-binary board A/B reached 27.4 FPS without the

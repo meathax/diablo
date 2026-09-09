@@ -1,0 +1,26 @@
+4199
+/media/fat/.diablo-releases/098d98e6c084d52126aa30ad5806decc0fe8384b5f13b79d849551a00a3f7a01/devilutionx --diablo --data-dir /media/fat/games/Diablo --save-dir /media/fat/saves/Diablo --config-dir /media/fat/config/Diablo --lang en --verbose --log-to-file /tmp/diablo-098d98e6c084d521/engine.log -n 
+/proc/4199/task/4199
+Name:	devilutionx
+Cpus_allowed_list:	0
+/proc/4199/task/4204
+Name:	SDLAudioP2
+Cpus_allowed_list:	0
+launcher=4183
+Cpus_allowed_list:	1
+{
+  "ok": true,
+  "release": "/media/fat/.diablo-releases/098d98e6c084d52126aa30ad5806decc0fe8384b5f13b79d849551a00a3f7a01",
+  "state": {
+    "active_candidate_id": "098d98e6c084d52126aa30ad5806decc0fe8384b5f13b79d849551a00a3f7a01",
+    "active_package_manifest_sha256": "687e03b00b353bc95a26ee600db393edabcb1ae09035594395c8e5c85f769483",
+    "active_release": ".diablo-releases/098d98e6c084d52126aa30ad5806decc0fe8384b5f13b79d849551a00a3f7a01",
+    "board_profile": "de10-nano-mister-pending",
+    "previous_candidate_id": "082083dc76f53113f6fc8c6047dd1ecc74d0eb1781e25e093f4199a86d9f9113",
+    "previous_release": ".diablo-releases/082083dc76f53113f6fc8c6047dd1ecc74d0eb1781e25e093f4199a86d9f9113",
+    "schema": "diablo-install-state-v1",
+    "status": "pass",
+    "user_data_policy": "existing data, saves, and configuration are preserved outside managed releases"
+  },
+  "target": "/media/fat"
+}

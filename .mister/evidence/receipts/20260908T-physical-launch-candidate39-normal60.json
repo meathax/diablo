@@ -1,0 +1,43 @@
+{
+  "candidate": {
+    "candidate_id": "99eda696a44c55a1d2ef7c6957f96128f01c246d0e2814441476b71ada7bbabd",
+    "manifest": ".mister/evidence/candidates/fpga-candidate-20260908-39-plan-docs.json",
+    "manifest_sha256": "6bfc9ef3161f702e4ee19a1bdaba26330a96d34d41c1bdd5182fec88e7e0b8dc",
+    "source_id": "24c1bded78fe49d0706113ff884db64d0d3fdf688cd34bb2fee5c25cfc87e304"
+  },
+  "limitations": [
+    "Target screenshot remained black/stale; independent core identity is unresolved",
+    "Active PCM underrun counter increased during the run; C15 physical audio gate remains open",
+    "Run used licensed user-owned campaign data; campaign progression, controls, save/load, multiplayer, performance and lifecycle were not exercised"
+  ],
+  "results": [
+    {
+      "id": "launcher-board-normal60-candidate39",
+      "log": ".mister/evidence/runs/candidate39-physical-normal60/launch-observation.log",
+      "log_bytes": 1250,
+      "log_sha256": "57491ba9e8e62d2eba29b770b5d1e6f0752e5ed9362f1ec2f2291139f78afb2a",
+      "observations": {
+        "launcher": "pass",
+        "package_preflight": "pass",
+        "exact_rbf_process": "observed",
+        "fpga_operating": "pass",
+        "arm_transport_frames": "observed",
+        "fpga_local_queue_frames": "6352",
+        "pcm_startup_underruns": "586",
+        "pcm_active_underrun_delta": "12915",
+        "pcm_active_resync_delta": "0",
+        "pcm_drops": "0",
+        "physical_video": "not_accepted",
+        "physical_audio": "fail-active-underrun-delta",
+        "physical_input": "not_run",
+        "campaign": "not_run",
+        "performance": "not_run"
+      },
+      "status": "fail"
+    }
+  ],
+  "schema": "diablo-verification-receipt-v1",
+  "scope": "Physical MiSTer candidate39 launcher smoke with PCM active-load diagnostic; no full release acceptance",
+  "status": "fail",
+  "suite": "board"
+}

@@ -1,0 +1,25 @@
+candidate=99eda696a44c55a1d2ef7c6957f96128f01c246d0e2814441476b71ada7bbabd
+source=24c1bded78fe49d0706113ff884db64d0d3fdf688cd34bb2fee5c25cfc87e304
+manifest=.mister/evidence/candidates/fpga-candidate-20260908-39-plan-docs.json
+package=.work/package-board-candidate-39
+target_package=\\192.168.0.69\sdcard\_CodexDiabloCandidate39
+runtime=/media/fat/tmp_esc/diablo-candidate39-60
+launcher_exit=0
+fpga_operating=pass
+exact_rbf_process=/media/fat/_CodexDiabloCandidate39/Diablo.rbf
+arm_transport_frames=observed
+pcm_sample=queued=0 local_queue=2230 producer=717774 consumer=717774 underrun=586 resync=0 callbacks=322 drops=0
+pcm_sample=queued=0 local_queue=7060 producer=769043 consumer=769043 underrun=6795 resync=0 callbacks=345 drops=0
+pcm_sample=queued=2229 local_queue=6352 producer=2050785 consumer=2048556 underrun=13501 resync=0 callbacks=920 drops=0
+pcm_startup_underruns=586
+pcm_active_underrun_delta=12915
+pcm_active_resync_delta=0
+pcm_drops=0
+physical_video=not_accepted
+screenshot=.work/misterclaw-screen39/capture-01-0.png
+screenshot_sha256=ba331a9dae85f6054d4e8dced038551fc7e48a6695b6571e1e592075a3286aa3
+physical_audio=not_accepted; active underrun counter increased
+campaign=not_run
+physical_input=not_run
+performance=not_run
+status=fail

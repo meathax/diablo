@@ -1,0 +1,123 @@
+{
+  "schema": "diablo-release-refresh-v1",
+  "status": "pass_software_release_refresh_physical_acceptance_open",
+  "recorded_utc": "2026-09-09T19:08:37.746Z",
+  "candidate": {
+    "candidate_id": "0fc93acf95b3a49244545d78b3d131b7af9c10586708deaf979654c9a59864fc",
+    "source_id": "5cbdc869869e4f196f265ce8d9a9f0c86b2e94a5166a090a18706a6de072f6b3",
+    "manifest_path": ".work/build/arm-pacing-dirty-hellfire-20260910-r2/candidate.json",
+    "manifest_sha256": "e15c4fd80cd7bbe608767390023a29655d60101d09a4c635a3694921b2ad16ac"
+  },
+  "package": {
+    "path": ".work/build/arm-pacing-dirty-hellfire-20260910-r2/package",
+    "manifest_sha256": "7f4d76c7d98c41115924dcbcf10bbe75a6b1763fe5e2ac31ef2967c478b766cc",
+    "archive": ".work/build/arm-pacing-dirty-hellfire-20260910-r2/package.tar.gz",
+    "archive_bytes": 7261257,
+    "archive_sha256": "2d91734a3af83139798dba05998dee58e5e77322568f810252635b9ababf4a52",
+    "local_candidate_verify": "pass",
+    "local_package_verify": "pass",
+    "remote_package_verify": "pass"
+  },
+  "local_deployment_lifecycle": {
+    "path": ".work/build/arm-pacing-dirty-hellfire-20260910-r2/deployment-lifecycle.json",
+    "bytes": 1056,
+    "sha256": "bc193eae6fa98ab1685fe6559f400bfb505c79f40c2c42ece7e9e2207105fc12",
+    "status": "pass",
+    "checks": [
+      "clean_install",
+      "interrupted_update_preserves_activation",
+      "successful_update",
+      "rollback",
+      "save_preserved",
+      "final_manifest_verify",
+      "staging_clean"
+    ],
+    "limitations": ["No menu entry was activated", "No physical video/audio/input observer was used"]
+  },
+  "target_install": {
+    "status": "pass",
+    "active_candidate_id": "0fc93acf95b3a49244545d78b3d131b7af9c10586708deaf979654c9a59864fc",
+    "active_package_manifest_sha256": "7f4d76c7d98c41115924dcbcf10bbe75a6b1763fe5e2ac31ef2967c478b766cc",
+    "previous_candidate_id": "959c31ad1c6b13af77bff1de9efbbf0e6dd3dbb4c2e1c419b1d3504b1d044965",
+    "previous_release_retained": true,
+    "older_release_231b_retained": true,
+    "board_profile": "de10-nano-mister-pending"
+  },
+  "active_campaign_smoke": {
+    "diablo": {
+      "runtime_root": "/tmp/diablo-final-0fc",
+      "duration_seconds": 35,
+      "status": "pass",
+      "exit_code": 0,
+      "core_changed": false,
+      "stop_reason": "duration",
+      "log_bytes": 7103,
+      "log_sha256": "ccf5cc4d3e0ed11cfefa9c16b896fd2cce3b002e0df39bb5397e49e653858a3d",
+      "content_markers": ["DIABDAT found", "Aulib 22050 Hz stereo initialized"]
+    },
+    "hellfire": {
+      "runtime_root": "/tmp/hellfire-final-0fc",
+      "duration_seconds": 35,
+      "status": "pass",
+      "exit_code": 0,
+      "core_changed": false,
+      "stop_reason": "duration",
+      "log_bytes": 9606,
+      "log_sha256": "cdf1acc26634691b005adfcc037d53c2d2bfb884d3fd340b8bd2fd0309d03181",
+      "content_markers": ["Hellfire loose overrides loaded", "Aulib 22050 Hz stereo initialized"]
+    }
+  },
+  "hdmi_observer": {
+    "device": "UGREEN 25773 via Windows DirectShow",
+    "input_source": "/media/fat/linux/transport_input_injector (synthetic keyboard, mouse and joystick ARM-ring records)",
+    "diablo": {
+      "runtime_root": "/tmp/diablo-hdmi-final-0fc",
+      "engine_log_bytes": 9174,
+      "engine_log_sha256": "399a79e33df432f3ef426d0db27c9df1a334412653e7f9727efe08c0f7dc37fa",
+      "menu_frame": {"path": ".work/physical-acceptance/diablo-final-0fc-menu.png", "bytes": 170002, "sha256": "78d9f3004af1f769fe4f8f4eb761a9a68e5552b9a7ff32469f743fe756860b30"},
+      "gameplay_frame": {"path": ".work/physical-acceptance/diablo-final-0fc-gameplay.png", "bytes": 991631, "sha256": "d09bf4760b62ba77271599f236dfd1d31595ebd5e2514c5d36623153a5facfcd", "scene": "town gameplay", "overlay_fps": 58.6},
+      "audio": {"path": ".work/physical-acceptance/diablo-final-0fc-audio.wav", "bytes": 1146510, "sha256": "328b454233ef4fd346968d660e6ae5a1c8d60126f73a2cfaceba949095183351", "seconds": 5.971, "rms_dbfs": -66.5, "peak_dbfs": -26.0}
+    },
+    "hellfire": {
+      "runtime_root": "/tmp/hellfire-hdmi-final-0fc",
+      "engine_log_bytes": 12056,
+      "engine_log_sha256": "d774656e5114300616d815139388dc4471abe714746bb3745c80af83fbb27286",
+      "menu_frame": {"path": ".work/physical-acceptance/hellfire-final-0fc-menu.png", "bytes": 122310, "sha256": "d1408c684f9046f715ca023896bc30a0cf91b03699c7cf56495e67a7882442cd"},
+      "gameplay_frame": {"path": ".work/physical-acceptance/hellfire-final-0fc-gameplay.png", "bytes": 996130, "sha256": "9a9c463b033fc243f4b406462f275269a6368fd394d73fde5407063c0c035d10", "scene": "town gameplay", "overlay_fps": 58.4},
+      "audio": {"path": ".work/physical-acceptance/hellfire-final-0fc-audio.wav", "bytes": 1146894, "sha256": "ab9f8304858924c147b866cfeedf6027db6577c61b0fc55d1e68291687596a74", "seconds": 5.973, "rms_dbfs": -22.4, "peak_dbfs": -5.6}
+    }
+  },
+  "relaunch_load": {
+    "campaign": "diablo",
+    "runtime_root": "/tmp/diablo-relaunch-final-0fc-input",
+    "status": "pass",
+    "exit_code": 0,
+    "core_changed": false,
+    "stop_reason": "duration",
+    "engine_log_bytes": 9158,
+    "engine_log_sha256": "c8b946174dcbc1599abccd0966036e9ec649bc76ee07322096c29a376ba753b7",
+    "save_path": "/media/fat/saves/Diablo/physical-acceptance-final-0fc/single_0.sv",
+    "save_bytes": 75543,
+    "save_sha256": "b626c15b7594d6f1c6fce605b6184d9eb5688f40b2b82cb5ac02d149b2ebcaca",
+    "load_markers": ["Opening /media/fat/saves/Diablo/physical-acceptance-final-0fc/single_0.sv", "Load thread finished in 1938ms"],
+    "error_marker_scan": "no ERROR/FATAL/assert/underrun matches"
+  },
+  "display_state_probe": {
+    "runtime_root": "/tmp/diablo-stateprobe-0fc",
+    "engine_log_bytes": 7829,
+    "engine_log_sha256": "185921cc2fbb87eecc42cdf890fe5716f84d17bf293121d732e0f439da19b69c",
+    "samples": 8,
+    "all_samples": {"arm": 1, "fpga": 1, "fault": 0},
+    "first_sample": {"display_epoch": 757, "last_frame": 757},
+    "last_sample": {"display_epoch": 1170, "last_frame": 1170},
+    "delta_frames": 413,
+    "elapsed_sampling_seconds": 7,
+    "approx_display_rate_hz": 59.0,
+    "interpretation": "Display acknowledgement and frame publication advance together at approximately 59 Hz; the remaining shortfall is in the active presentation/scanout path, not only the CPU pacing loop."
+  },
+  "limitations": [
+    "The release refresh changes candidate/source binding and package metadata while reusing the previously verified engine, RBF, ABI, launcher and assets.",
+    "Hands-on HDMI, keyboard, mouse and controller acceptance remains open. The target currently reports two IDLE 8BitDo receivers with no gamepad event interface; pairing/activation and human observation are required.",
+    "The long pacing profile remains approximately 58 Hz with zero drops; the no-CPU-pacing A/B showed higher backpressure without improving accepted cadence."
+  ]
+}

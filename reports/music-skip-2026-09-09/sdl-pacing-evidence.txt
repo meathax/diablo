@@ -1,0 +1,135 @@
+_deps/sdl2-src/src/audio/SDL_audio.c
+701:     /* Loop, filling the audio buffers */
+702:     while (!SDL_AtomicGet(&device->shutdown)) {
+703:         /* Fill the current buffer with sound */
+704:         if (!device->stream && SDL_AtomicGet(&device->enabled)) {
+705:             data = current_audio.impl.GetDeviceBuf(device);
+706: 
+707:             if (device->stream && SDL_AtomicGet(&device->enabled)) {
+708:                 /* Oops. Audio device reset and now we suddenly use a stream, */
+709:                 /* so save this devicebuf for later, to prevent de-sync */
+710:                 if (data != NULL) {
+711:                     device_buf_keepsafe = data;
+712:                 }
+713:                 data = NULL;
+714:             }
+715:         } else {
+716:             /* if the device isn't enabled, we still write to the
+717:                work_buffer, so the app's callback will fire with
+718:                a regular frequency, in case they depend on that
+719:                for timing or progress. They can use hotplug
+720:                now to know if the device failed.
+721:                Streaming playback uses work_buffer, too. */
+722:             data = NULL;
+723:         }
+724: 
+725:         if (data == NULL) {
+726:             data = device->work_buffer;
+727:         }
+728: 
+729:         data_len = device->callbackspec.size;
+730: 
+731:         /* !!! FIXME: this should be LockDevice. */
+732:         SDL_LockMutex(device->mixer_lock);
+733:         if (SDL_AtomicGet(&device->paused)) {
+734:             SDL_memset(data, device->callbackspec.silence, data_len);
+735:         } else {
+736:             callback(udata, data, data_len);
+737:         }
+738:         SDL_UnlockMutex(device->mixer_lock);
+739: 
+740:         if (device->stream) {
+741:             /* Stream available audio to device, converting/resampling. */
+742:             /* if this fails...oh well. We'll play silence here. */
+743:             SDL_AudioStreamPut(device->stream, data, data_len);
+744: 
+745:             while (SDL_AudioStreamAvailable(device->stream) >= ((int)device->spec.size)) {
+746:                 int got;
+747:                 if (SDL_AtomicGet(&device->enabled)) {
+748:                     /* if device reset occured - a switch from direct output to streaming */
+749:                     /* use the already aquired device buffer */
+750:                     if (device_buf_keepsafe) {
+751:                         data = device_buf_keepsafe;
+752:                         device_buf_keepsafe = NULL;
+753:                     } else {
+754:                         /* else - normal flow, just acquire the device buffer here */
+755:                         data = current_audio.impl.GetDeviceBuf(device);
+756:                     }
+757:                 } else {
+758:                     data = NULL;
+759:                 }
+760:                 got = SDL_AudioStreamGet(device->stream, data ? data : device->work_buffer, device->spec.size);
+761:                 SDL_assert((got <= 0) || (got == device->spec.size));
+762: 
+763:                 if (data == NULL) { /* device is having issues... */
+764:                     const Uint32 delay = ((device->spec.samples * 1000) / device->spec.freq);
+765:                     SDL_Delay(delay); /* wait for as long as this buffer would have played. Maybe device recovers later? */
+766:                 } else {
+767:                     if (got != device->spec.size) {
+768:                         SDL_memset(data, device->spec.silence, device->spec.size);
+769:                     }
+770:                     current_audio.impl.PlayDevice(device);
+771:                     current_audio.impl.WaitDevice(device);
+772:                 }
+773:             }
+774: 
+775:             /* it seems resampling was not fast enough, device_buf_keepsafe was not released yet, so play silence here */
+776:             if (device_buf_keepsafe) {
+777:                 SDL_memset(device_buf_keepsafe, device->spec.silence, device->spec.size);
+778:                 current_audio.impl.PlayDevice(device);
+779:                 current_audio.impl.WaitDevice(device);
+780:                 device_buf_keepsafe = NULL;
+781:             }
+782:         } else if (data == device->work_buffer) {
+783:             /* nothing to do; pause like we queued a buffer to play. */
+784:             const Uint32 delay = ((device->spec.samples * 1000) / device->spec.freq);
+785:             SDL_Delay(delay);
+786:         } else { /* writing directly to the device. */
+787:             /* queue this buffer and wait for it to finish playing. */
+788:             current_audio.impl.PlayDevice(device);
+789:             current_audio.impl.WaitDevice(device);
+790:         }
+
+_deps/sdl2-src/src/audio/dummy/SDL_dummyaudio.c
+24: 
+25: /* Output audio to nowhere... */
+26: 
+27: #include "SDL_timer.h"
+28: #include "SDL_audio.h"
+29: #include "../SDL_audio_c.h"
+30: #include "SDL_dummyaudio.h"
+31: 
+32: static int DUMMYAUDIO_OpenDevice(_THIS, const char *devname)
+33: {
+34:     _this->hidden = (void *)0x1; /* just something non-NULL */
+35: 
+36:     return 0; /* always succeeds. */
+37: }
+38: 
+39: static int DUMMYAUDIO_CaptureFromDevice(_THIS, void *buffer, int buflen)
+40: {
+41:     /* Delay to make this sort of simulate real audio input. */
+42:     SDL_Delay((_this->spec.samples * 1000) / _this->spec.freq);
+43: 
+44:     /* always return a full buffer of silence. */
+45:     SDL_memset(buffer, _this->spec.silence, buflen);
+46:     return buflen;
+47: }
+48: 
+49: static SDL_bool DUMMYAUDIO_Init(SDL_AudioDriverImpl *impl)
+50: {
+51:     /* Set the function pointers */
+52:     impl->OpenDevice = DUMMYAUDIO_OpenDevice;
+53:     impl->CaptureFromDevice = DUMMYAUDIO_CaptureFromDevice;
+54: 
+55:     impl->OnlyHasDefaultOutputDevice = SDL_TRUE;
+56:     impl->OnlyHasDefaultCaptureDevice = SDL_TRUE;
+57:     impl->HasCaptureSupport = SDL_TRUE;
+58: 
+59:     return SDL_TRUE; /* this audio target is available. */
+60: }
+61: 
+62: AudioBootStrap DUMMYAUDIO_bootstrap = {
+63:     "dummy", "SDL dummy audio driver", DUMMYAUDIO_Init, SDL_TRUE
+64: };
+
