@@ -4,9 +4,11 @@
 
 namespace diablo::mister::sdl {
 
-void PublishPcmBytes(const std::uint8_t *bytes, std::size_t byte_count)
+bool ServicePcmAudio(PcmMixCallback mix, void *userdata, std::uint8_t *bytes, int byte_count)
 {
-	(void)Adapter::Instance().PublishPcmBytes(bytes, byte_count);
+	if (!Requested()) return false;
+	(void)Adapter::Instance().ServicePcmAudio(mix, userdata, bytes, byte_count);
+	return true;
 }
 
 } // namespace diablo::mister::sdl

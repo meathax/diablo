@@ -5,9 +5,11 @@
 
 namespace diablo::mister::sdl {
 
-// Called by the transport overlay's Aulib SDL callback. The callback owns the
-// buffer only for the duration of the call; the adapter copies complete S16
-// stereo frames into the bounded FPGA PCM ring without waiting.
-void PublishPcmBytes(const std::uint8_t *bytes, std::size_t byte_count);
+using PcmMixCallback = void (*)(void *, std::uint8_t *, int);
+
+// Returns false for ordinary SDL playback. In transport mode the FPGA queue,
+// not the dummy device's sleep interval, determines how much audio to mix.
+// A wakeup may mix zero or several chunks, with bounded work and no waiting.
+bool ServicePcmAudio(PcmMixCallback mix, void *userdata, std::uint8_t *bytes, int byte_count);
 
 } // namespace diablo::mister::sdl

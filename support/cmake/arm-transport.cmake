@@ -224,8 +224,9 @@ function(diablo_mister_transport)
     aulib_content "${aulib_content}")
   string(REPLACE
     [[    Aulib::Stream_priv::fSdlCallbackImpl(nullptr, out, outLen);]]
-    [[    Aulib::Stream_priv::fSdlCallbackImpl(nullptr, out, outLen);
-    ::diablo::mister::sdl::PublishPcmBytes(out, static_cast<std::size_t>(outLen));]]
+    [[    if (!::diablo::mister::sdl::ServicePcmAudio(
+            &Aulib::Stream_priv::fSdlCallbackImpl, nullptr, out, outLen))
+        Aulib::Stream_priv::fSdlCallbackImpl(nullptr, out, outLen);]]
     aulib_content "${aulib_content}")
   set(aulib_output "${_mister_overlay_dir}/aulib.cpp")
   file(CONFIGURE OUTPUT "${aulib_output}" CONTENT "${aulib_content}" @ONLY NEWLINE_STYLE UNIX)

@@ -93,6 +93,99 @@ bool IsFree(const Header &header)
 	return true;
 }
 
+struct AudioMix {
+	unsigned calls = 0;
+	static void Mix(void *userdata, std::uint8_t *bytes, int count)
+	{
+		auto &self = *static_cast<AudioMix *>(userdata);
+		++self.calls;
+		std::memset(bytes, 0x21, static_cast<std::size_t>(count));
+	}
+};
+
+void CheckAudioRefill(Adapter &adapter, Header &header)
+{
+	std::array<std::uint8_t, 4096> bytes {};
+	AudioMix mix;
+	header.pcm.consumer_sequence = header.pcm.producer_sequence;
+	header.pcm.flags = 0;
+	Check(adapter.ServicePcmAudio(AudioMix::Mix, &mix, bytes.data(), bytes.size()) == 4,
+	      "empty audio queue was not primed in bounded work");
+	const auto primed = header.pcm.producer_sequence - header.pcm.consumer_sequence;
+	Check(primed >= 8192 && primed <= 8920, "incorrect PCM startup lead");
+	Check(adapter.ServicePcmAudio(AudioMix::Mix, &mix, bytes.data(), bytes.size()) == 0,
+	      "full DDR queue advanced the mixer");
+	header.pcm.consumer_sequence = header.pcm.producer_sequence;
+	header.pcm.flags = primed;
+	Check(adapter.ServicePcmAudio(AudioMix::Mix, &mix, bytes.data(), bytes.size()) == 0,
+	      "local FPGA queue was ignored when deciding mixer demand");
+	const auto calls_before_invalid = mix.calls;
+	SetFpgaState(header, ComponentState::Fault);
+	Check(adapter.ServicePcmAudio(AudioMix::Mix, &mix, bytes.data(), bytes.size()) == 0,
+	      "faulted transport advanced the mixer");
+	SetFpgaState(header, ComponentState::Ready);
+	const auto epoch = header.pcm.epoch;
+	header.pcm.epoch ^= 1U;
+	Check(adapter.ServicePcmAudio(AudioMix::Mix, &mix, bytes.data(), bytes.size()) == 0,
+	      "stale audio epoch advanced the mixer");
+	header.pcm.epoch = epoch;
+	Check(mix.calls == calls_before_invalid, "rejected audio request mixed samples");
+
+	// Replay slow/fast dummy wakeups against an independent 48 kHz sink.
+	// Include recurring 100 ms scheduler stalls. The legacy fixed-chunk path
+	// must reproduce starvation; demand-based mixing must keep every sample.
+	for (unsigned mode = 0; mode != 3; ++mode) {
+		header.pcm.consumer_sequence = header.pcm.producer_sequence;
+		header.pcm.flags = 0;
+		(void)adapter.ServicePcmAudio(AudioMix::Mix, &mix, bytes.data(), bytes.size());
+		std::uint32_t queued = header.pcm.producer_sequence - header.pcm.consumer_sequence;
+		header.pcm.consumer_sequence = header.pcm.producer_sequence;
+		unsigned underruns = 0;
+		unsigned multiple = 0;
+		unsigned skipped = 0;
+		std::uint32_t minimum = queued;
+		const auto producer_start = header.pcm.producer_sequence;
+		const auto mix_start = mix.calls;
+		for (unsigned wakeup = 0; wakeup != 1000; ++wakeup) {
+			const unsigned interval_us = (mode == 2 ? 45000 : 46710)
+			    + ((wakeup % 137 == 136) ? 100000 : 0);
+			const unsigned consumed = interval_us * 48U / 1000U;
+			if (consumed > queued) { ++underruns; queued = 0; }
+			else queued -= consumed;
+			minimum = std::min(minimum, queued);
+			header.pcm.flags = queued;
+			unsigned chunks;
+			if (mode == 0) {
+				AudioMix::Mix(&mix, bytes.data(), bytes.size());
+				Check(adapter.PublishPcmBytes(bytes.data(), bytes.size()), "legacy publish failed");
+				chunks = 1;
+			} else {
+				chunks = adapter.ServicePcmAudio(AudioMix::Mix, &mix, bytes.data(), bytes.size());
+			}
+			Check(chunks <= 4, "audio refill work was unbounded");
+			multiple += chunks > 1;
+			skipped += chunks == 0;
+			queued += header.pcm.producer_sequence - header.pcm.consumer_sequence;
+			header.pcm.consumer_sequence = header.pcm.producer_sequence;
+			Check(queued <= 10422, "audio lead grew without bound");
+		}
+		const auto published = header.pcm.producer_sequence - producer_start;
+		const auto expected = static_cast<std::uint64_t>(mix.calls - mix_start) * 1024U * 48000U / 22050U;
+		Check(published <= expected + 2 && published + 2 >= expected,
+		      "mixed samples were dropped or repeated");
+		if (mode == 0) Check(underruns > 0, "legacy pacing did not reproduce starvation");
+		else {
+			Check(underruns == 0 && minimum > 0, "demand-driven audio starved");
+			Check(multiple > 0, "late callbacks did not catch up");
+			if (mode == 2) Check(skipped > 0, "fast clock did not stop unnecessary mixing");
+		}
+		std::printf("PCM pacing mode=%u underruns=%u minimum=%u catchups=%u skipped=%u\n",
+		            mode, underruns, minimum, multiple, skipped);
+	}
+	header.pcm.consumer_sequence = header.pcm.producer_sequence;
+	header.pcm.flags = 0;
+}
+
 } // namespace
 
 int main(int argc, char **argv)
@@ -167,6 +260,7 @@ int main(int argc, char **argv)
 		      "production audio callback publication failed while active");
 
 		if (cycle == 0) {
+			CheckAudioRefill(adapter, *shared.header);
 			std::atomic<bool> stop {false};
 			std::atomic<std::uint64_t> calls {0};
 			std::atomic<std::uint64_t> accepted {0};
@@ -181,7 +275,10 @@ int main(int argc, char **argv)
 					std::this_thread::yield();
 				}
 			});
-			std::this_thread::sleep_for(std::chrono::milliseconds(2));
+			const auto accepted_deadline = std::chrono::steady_clock::now() + std::chrono::seconds(1);
+			while (accepted.load(std::memory_order_acquire) == 0
+			       && std::chrono::steady_clock::now() < accepted_deadline)
+				std::this_thread::yield();
 			adapter.Shutdown();
 			Check(!adapter.PublishPcmBytes(audio_bytes.data(), audio_bytes.size()),
 			      "audio callback was admitted after production shutdown");

@@ -3,6 +3,7 @@
 #include "mister_command_scene.hpp"
 #include "mister_command_transport.hpp"
 #include "mister_transport_config.hpp"
+#include "mister_transport_audio.hpp"
 #include "mister_transport_lifecycle.hpp"
 #include "mister_transport_input.hpp"
 #include "mister_transport_pacing.hpp"
@@ -228,6 +229,44 @@ public:
 		return false;
 	}
 
+	// SDL's dummy backend sleeps AFTER mixing, so one chunk per wakeup slowly
+	// starves the independent FPGA clock. Refill against actual buffered frames.
+	// Hold the lifecycle reader across demand, mixing and publication so reset
+	// recovery cannot discard mixed audio between the demand check and commit.
+	[[nodiscard]] unsigned ServicePcmAudio(PcmMixCallback mix, void *userdata,
+	                                     std::uint8_t *bytes, int byte_count)
+	{
+		if (mix == nullptr || bytes == nullptr || byte_count < 4
+		 || byte_count > 8192 * 4 || (byte_count & 3) != 0)
+			return 0;
+		if (!BeginAudioCallback()) return 0;
+		AudioCallbackFinished callback_finished {lifecycle_};
+		auto runtime = Runtime();
+		if (!runtime || std::atomic_ref<std::uint32_t>(runtime->session().view().header().fpga_state)
+		        .load(std::memory_order_acquire)
+		    == static_cast<std::uint32_t>(transport::ComponentState::Fault))
+			return 0;
+		const auto health = runtime->session().view().ReadPcmHealth(runtime->session().epoch());
+		if (!health) return 0;
+		// Consumer acknowledgements and FIFO telemetry arrive separately. Use one
+		// snapshot per wakeup and add our own commits, never repeatedly refill
+		// from stale FIFO telemetry. Both queues count toward the playback lead.
+		std::uint64_t buffered = static_cast<std::uint64_t>(health->queued_frames)
+		                       + health->local_queue_frames;
+		constexpr std::uint32_t TargetFrames = 8192;
+		constexpr unsigned MaxChunks = 4;
+		unsigned chunks = 0;
+		while (buffered < TargetFrames && chunks < MaxChunks) {
+			mix(userdata, bytes, byte_count);
+			const auto before = runtime->session().view().header().pcm.producer_sequence;
+			if (!PublishPcmBytesForRuntime(runtime, bytes, static_cast<std::size_t>(byte_count)))
+				break;
+			buffered += runtime->session().view().header().pcm.producer_sequence - before;
+			++chunks;
+		}
+		return chunks;
+	}
+
 	// Aulib's SDL callback supplies interleaved little-endian S16 stereo at the
 	// efficient 22.05 kHz ARM mix rate. Resample those frames to the FPGA's
 	// fixed 48 kHz ring without waiting in the callback or allocating.
@@ -236,12 +275,22 @@ public:
 		if (bytes == nullptr || byte_count < 4 || (byte_count & 3U) != 0)
 			return false;
 		if (!BeginAudioCallback()) return false;
-		struct CallbackFinished {
-			TransportLifecycle &lifecycle;
-			~CallbackFinished() { lifecycle.EndAudioCallback(); }
-		} callback_finished {lifecycle_};
+		AudioCallbackFinished callback_finished {lifecycle_};
 		auto runtime = Runtime();
 		if (!runtime) return false;
+		return PublishPcmBytesForRuntime(runtime, bytes, byte_count);
+	}
+
+private:
+	struct AudioCallbackFinished {
+		TransportLifecycle &lifecycle;
+		~AudioCallbackFinished() { lifecycle.EndAudioCallback(); }
+	};
+
+	[[nodiscard]] bool PublishPcmBytesForRuntime(
+	    const std::shared_ptr<transport::TransportRuntime> &runtime,
+	    const std::uint8_t *bytes, std::size_t byte_count)
+	{
 		if (std::atomic_ref<std::uint32_t>(runtime->session().view().header().fpga_state)
 		        .load(std::memory_order_acquire)
 		    == static_cast<std::uint32_t>(transport::ComponentState::Fault))
@@ -270,7 +319,6 @@ public:
 		return true;
 	}
 
-private:
 #ifdef DIABLO_MISTER_INPUT_TEST
 	friend class InputAdapterTest;
 	friend class TransportProfileTest;
