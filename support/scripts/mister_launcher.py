@@ -335,11 +335,11 @@ def _start_frontend(rbf: Path) -> subprocess.Popen:
                             stderr=subprocess.DEVNULL, start_new_session=True)
 
 
-def _load_core(command_path: Path, rbf: Path, timeout: float) -> None:
+def _load_core(command_path: Path, rbf: Path, timeout: float, already_loaded: bool = False) -> None:
     if command_path.is_symlink() or not command_path.exists():
         raise LaunchError(f"MiSTer command FIFO is missing: {command_path}")
     frontend: subprocess.Popen | None = None
-    if not _core_process_matches(rbf):
+    if not already_loaded and not _core_process_matches(rbf):
         if _frontend_process_present():
             try:
                 accepted = _request_core_load(command_path, rbf)
@@ -353,8 +353,8 @@ def _load_core(command_path: Path, rbf: Path, timeout: float) -> None:
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         try:
-            if (state.read_text(encoding="ascii").strip().lower() == "operating"
-                    and _core_process_matches(rbf)):
+            operating = state.read_text(encoding="ascii").strip().lower() == "operating"
+            if operating and (already_loaded or _core_process_matches(rbf)):
                 return
         except OSError:
             pass
@@ -431,36 +431,50 @@ def _force_frame_pacing(engine_args: list[str]) -> bool:
     return True
 
 
-def _stop_engine(process: subprocess.Popen) -> int:
-    """Stop only our engine process group, never the replacement MiSTer core."""
+def _stop_engine(process: subprocess.Popen, owns_process_group: bool = True) -> int:
+    """Stop our engine without ever signalling the replacement MiSTer core."""
     if process.poll() is not None:
         return process.wait()
     try:
-        os.killpg(process.pid, signal.SIGTERM)
+        if owns_process_group:
+            os.killpg(process.pid, signal.SIGTERM)
+        else:
+            process.terminate()
     except ProcessLookupError:
         return process.wait()
     try:
         return process.wait(timeout=10)
     except subprocess.TimeoutExpired:
         try:
-            os.killpg(process.pid, signal.SIGKILL)
+            if owns_process_group:
+                os.killpg(process.pid, signal.SIGKILL)
+            else:
+                process.kill()
         except ProcessLookupError:
             pass
         return process.wait(timeout=5)
 
 
-def _wait_for_engine(process: subprocess.Popen, rbf: Path, duration: float) -> tuple[int, bool, bool]:
+def _wait_for_engine(process: subprocess.Popen, rbf: Path, duration: float,
+                     already_loaded: bool = False) -> tuple[int, bool, bool]:
     """Invalidate this run if its core disappears, including unlimited sessions."""
     deadline = time.monotonic() + duration if duration > 0 else None
     while True:
         exit_code = process.poll()
         if exit_code is not None:
             return exit_code, False, False
-        if not _core_process_matches(rbf):
-            return _stop_engine(process), False, True
+        if already_loaded:
+            try:
+                core_changed = Path("/sys/class/fpga_manager/fpga0/state").read_text(encoding="ascii").strip().lower() != "operating"
+            except OSError:
+                core_changed = True
+        else:
+            core_changed = not _core_process_matches(rbf)
+        if core_changed:
+            return _stop_engine(process, not already_loaded), False, True
         remaining = deadline - time.monotonic() if deadline is not None else None
         if remaining is not None and remaining <= 0:
-            return _stop_engine(process), True, False
+            return _stop_engine(process, not already_loaded), True, False
         try:
             return process.wait(timeout=min(0.25, remaining) if remaining is not None else 0.25), False, False
         except subprocess.TimeoutExpired:
@@ -518,7 +532,7 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
         lock_handle.write((json.dumps({"schema": "diablo-transport-lock-v1", "boot_id": boot_id,
                                        "candidate_id": candidate_id, "pid": os.getpid()}, sort_keys=True) + "\n").encode())
         lock_handle.flush()
-        _load_core(args.command_path, package / "Diablo.rbf", args.loader_timeout)
+        _load_core(args.command_path, package / "Diablo.rbf", args.loader_timeout, args.core_already_loaded)
         _admission(admission_path, boot_id, physical_base, candidate_id)
         ready_path.write_text(json.dumps({"schema": "diablo-mister-ready-v1", "candidate_id": candidate_id,
                                           "boot_id": boot_id, "physical_base": physical_base,
@@ -539,9 +553,11 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
         command = _engine_args(args, package, save_root, config_root, log_path)
         with log_path.open("ab") as output:
             process = _start_engine(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,
-                                       start_new_session=True, pass_fds=(lock_handle.fileno(),))
+                                    start_new_session=not args.core_already_loaded,
+                                    pass_fds=(lock_handle.fileno(),))
             started = dt.datetime.now(dt.timezone.utc).isoformat()
-            exit_code, timed_out, core_changed = _wait_for_engine(process, package / "Diablo.rbf", args.duration)
+            exit_code, timed_out, core_changed = _wait_for_engine(process, package / "Diablo.rbf", args.duration,
+                                                                   args.core_already_loaded)
         return {"status": ("fail" if core_changed else
                            "pass" if timed_out and args.duration > 0 else ("pass" if exit_code == 0 else "fail")),
                  "timed_out": timed_out,
@@ -573,6 +589,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--physical-base", default="0x3fe00000")
     parser.add_argument("--boot-id-file", type=Path, default=Path("/proc/sys/kernel/random/boot_id"))
     parser.add_argument("--command-path", type=Path, default=Path("/dev/MiSTer_cmd"))
+    parser.add_argument("--core-already-loaded", action="store_true",
+                        help="run beneath the Diablo main= frontend without requesting another RBF load")
     parser.add_argument("--loader-timeout", type=float, default=45.0)
     parser.add_argument("--duration", type=float, default=0.0,
                         help="seconds to run before clean termination; zero waits for the game")

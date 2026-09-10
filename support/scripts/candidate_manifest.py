@@ -25,6 +25,7 @@ SOURCE_INPUTS = (
     "build_id.v",
     ".mister/source-lock.json",
     "support/host-reference.json",
+    "support/mister",
     "support/transport",
     "sys",
     "rtl",
@@ -41,7 +42,7 @@ SOURCE_INPUTS = (
     "LICENSE.fpga",
 )
 DIRECTORY_INPUTS = frozenset({
-    "rtl", "support/cmake", "support/patches", "support/reference", "support/scripts", "support/qualification",
+    "rtl", "support/cmake", "support/mister", "support/patches", "support/reference", "support/scripts", "support/qualification",
     "support/tests", "support/transport", "support/licenses", "sys", "scripts",
 })
 IGNORED_SOURCE_DIRECTORY_PARTS = frozenset({"__pycache__", ".pytest_cache"})
@@ -124,7 +125,7 @@ def files_for_inputs(root: Path, inputs: Iterable[str] = SOURCE_INPUTS) -> list[
     return sorted(records, key=lambda record: str(record["path"]))
 
 
-def git_identity(root: Path, source_paths: Iterable[str]) -> dict[str, object]:
+def git_identity(root: Path, source_paths: Iterable[str], status_paths: Iterable[str] = SOURCE_INPUTS) -> dict[str, object]:
     def run(*args: str) -> str | None:
         result = subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, timeout=20)
         # Preserve the leading porcelain status column.  ``str.strip()`` would
@@ -140,7 +141,10 @@ def git_identity(root: Path, source_paths: Iterable[str]) -> dict[str, object]:
         return value.rstrip("\r\n")
 
     tracked_paths = set(source_paths)
-    status = run("status", "--porcelain=v1", "--untracked-files=all")
+    # The checkout intentionally keeps large ignored build/package trees.  Ask
+    # Git only about manifest inputs so obtaining a candidate identity never
+    # walks those unrelated directories (or times out while doing so).
+    status = run("status", "--porcelain=v1", "--untracked-files=all", "--", *status_paths)
     relevant_status = None
     if status is not None:
         relevant_lines = []
