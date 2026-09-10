@@ -6,7 +6,8 @@ set -euo pipefail
 
 root="$(cd "$(dirname "$0")/../.." && pwd)"
 donor="${VOIDSW_WRAPPER_SOURCE:-$root/../VoidSW/platform/mister/wrapper}"
-stage="$(mktemp -d "$root/.work/diablo-main-wrapper.XXXXXX")"
+mkdir -p "$root/.work"
+stage="$(mktemp -d "${TMPDIR:-/tmp}/diablo-main-wrapper.XXXXXX")"
 cross="${CROSS:-arm-buildroot-linux-gnueabihf-}"
 
 [ -f "$donor/Makefile" ] && [ -f "$donor/main.cpp" ] || {
@@ -55,6 +56,14 @@ text = re.sub(
     r"\n\$\(BUILDDIR\)/(?:frontier_transport|mister_video|mister_audio|mister_input)\\.c\\.(?:o|d):.*?(?=\n\$\(BUILDDIR\)/|\nifneq|\Z)",
     "\n", text, flags=re.S)
 path.write_text(text)
+# Return through stock MiSTer so its core-specific main= selection is rerun.
+fpga = path.parent / "fpga_io.cpp"
+text = fpga.read_text()
+anchor = 'if (!strcasecmp(base, "Mister_VoidSW")'
+if text.count(anchor) != 1:
+    raise SystemExit("unsupported donor restart implementation")
+text = text.replace(anchor, 'if (!strcasecmp(base, "Diablo") || !strcasecmp(base, "Mister_VoidSW")')
+fpga.write_text(text)
 PY
 
 # Match VoidSW's Docker path exactly.  Its image deliberately carries a newer

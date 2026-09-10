@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Resident MiSTer-Main derivative for the Diablo RBF handoff.
 // Selected by MiSTer.ini's [Diablo] main=Diablo entry after either visible
-// Diablo RBF is selected from _Others.  The process remains the normal HPS
+// Diablo RBF is selected from _Other.  The process remains the normal HPS
 // I/O/OSD owner while its child starts the packaged DevilutionX runtime.
 #include <cerrno>
 #include <cstdint>
@@ -66,7 +66,10 @@ static void launch_runtime(const char *rbf_path)
         runtime_pid = -1;
         return;
     }
-    if (runtime_pid != 0) return;
+    if (runtime_pid != 0) {
+        setpgid(runtime_pid, runtime_pid);
+        return;
+    }
 
     // Keep the Python supervisor and its DevilutionX child in a dedicated
     // group.  A newly selected core then tears down the entire game session,
@@ -90,7 +93,15 @@ static void stop_runtime()
 {
     if (runtime_pid <= 0) return;
     kill(-runtime_pid, SIGTERM);
-    waitpid(runtime_pid, nullptr, 0);
+    for (int attempt = 0; attempt < 200; ++attempt) {
+        if (waitpid(runtime_pid, nullptr, WNOHANG) == runtime_pid) {
+            runtime_pid = -1;
+            return;
+        }
+        usleep(50000);
+    }
+    kill(-runtime_pid, SIGKILL);
+    while (waitpid(runtime_pid, nullptr, 0) < 0 && errno == EINTR) {}
     runtime_pid = -1;
 }
 
@@ -104,6 +115,7 @@ int main(int argc, char *argv[])
     const char *rbf_path = argc > 1 ? argv[1] : "/media/fat/_Other/Diablo.rbf";
     offload_start();
     fpga_io_init();
+    fpga_set_transition_hook(stop_runtime);
     DISKLED_OFF;
     if (!is_fpga_ready(1)) return EXIT_FAILURE;
 

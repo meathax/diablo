@@ -1,0 +1,42 @@
+[
+  {
+    "path": "games/Diablo/DIABDAT.MPQ",
+    "url": "https://archive.org/download/diablohellfire/Diablo.iso/DIABDAT.MPQ",
+    "http_status": 200,
+    "bytes": 517501282,
+    "md5": "011bc6518e6166206231080a4440b373",
+    "passed": true
+  },
+  {
+    "path": "games/Diablo/hellfire.mpq",
+    "url": "https://archive.org/download/diablohellfire/Hellfire.iso/hellfire.mpq",
+    "http_status": 200,
+    "bytes": 65502336,
+    "md5": "c996bd970df13ea7aa5e2417f8e78b9f",
+    "passed": true
+  },
+  {
+    "path": "games/Diablo/hfmonk.mpq",
+    "url": "https://archive.org/download/diablohellfire/Hellfire.iso/hfmonk.mpq",
+    "http_status": 200,
+    "bytes": 37658368,
+    "md5": "5a6b8f1ef6d505d469c31aef6e48e89d",
+    "passed": true
+  },
+  {
+    "path": "games/Diablo/hfmusic.mpq",
+    "url": "https://archive.org/download/diablohellfire/Hellfire.iso/hfmusic.mpq",
+    "http_status": 200,
+    "bytes": 34379360,
+    "md5": "5f79b271b4a291fc8968df7e8aa80d52",
+    "passed": true
+  },
+  {
+    "path": "games/Diablo/hfvoice.mpq",
+    "url": "https://archive.org/download/diablohellfire/Hellfire.iso/hfvoice.mpq",
+    "http_status": 200,
+    "bytes": 37743520,
+    "md5": "6ae6ce3e89ece92c1e3e912a91d0b186",
+    "passed": true
+  }
+]

@@ -1,0 +1,8 @@
+Copy the contents of ready to the MiSTer SD root.
+Select _Other/Diablo.rbf or _Other/Diablo Hellfire.rbf.
+update_all integration must supply [Diablo] main=Diablo in MiSTer.ini.
+No MiSTer.ini is included: do not overwrite the user configuration.
+Game data belongs in games/Diablo; saves remain in games/Diablo/Saves.
+The inner package Scripts entries describe the optional transactional installer;
+they are not required for RBF launching. Python 3 is required on MiSTer.
+Frontend source: https://github.com/meathax/diablo (support/mister and build_diablo_main.sh).

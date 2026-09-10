@@ -124,6 +124,8 @@ def build_database(data: dict[str, object]) -> dict[str, object]:
         "db_id": data["database_id"],
         "timestamp": data["timestamp"],
         "files": files,
+        "folders": {"games/": {"tags": ["diablo"]},
+                    "games/Diablo/": {"tags": ["diablo"]}},
     }
 
 

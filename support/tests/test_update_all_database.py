@@ -24,6 +24,7 @@ class UpdateAllDatabaseTests(unittest.TestCase):
 
         database = generate_update_all.build_database(inventory)
         self.assertEqual(database["db_id"], "diablo_mister")
+        self.assertEqual(set(database["folders"]), {"games/", "games/Diablo/"})
         self.assertEqual(set(database["files"]), {f"games/Diablo/{name}" for name in expected})
         for name, entry in database["files"].items():
             self.assertTrue(entry["url"].startswith("https://archive.org/download/diablohellfire/"))

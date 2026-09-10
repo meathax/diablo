@@ -47,6 +47,18 @@
       "url": "https://archive.org/download/diablohellfire/Hellfire.iso/hfvoice.mpq"
     }
   },
+  "folders": {
+    "games/": {
+      "tags": [
+        "diablo"
+      ]
+    },
+    "games/Diablo/": {
+      "tags": [
+        "diablo"
+      ]
+    }
+  },
   "timestamp": 1788912000,
   "v": 1
 }

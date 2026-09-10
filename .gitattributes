@@ -1,3 +1,4 @@
 PLAN.md text eol=lf
+ready/** -text
 PROGRESS.md text eol=lf
 reports/audit-2026-09-07/archive/HISTORICAL_COMPLETION_GUIDE.md text eol=lf
