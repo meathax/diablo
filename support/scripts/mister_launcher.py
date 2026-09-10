@@ -426,6 +426,71 @@ def _engine_args(args: argparse.Namespace, package: Path, save_root: Path, confi
     return command
 
 
+def _read_netplay_command(path: Path) -> tuple[str, str]:
+    """Read the frontend's atomic OSD command, defaulting to single-player."""
+    try:
+        text = path.read_text(encoding="ascii")
+    except FileNotFoundError:
+        return ("off", "")
+    except OSError as error:
+        raise LaunchError(f"cannot read netplay command: {error}") from error
+    fields: dict[str, str] = {}
+    for line in text.splitlines():
+        if not line or "=" not in line:
+            raise LaunchError("malformed netplay command")
+        key, value = line.split("=", 1)
+        if key in fields or key not in {"schema", "mode", "code"}:
+            raise LaunchError("malformed netplay command fields")
+        fields[key] = value
+    if fields.get("schema") != "diablo-netplay-v1":
+        raise LaunchError("unsupported netplay command schema")
+    mode = fields.get("mode", "")
+    code = fields.get("code", "")
+    if mode not in {"off", "host", "join"}:
+        raise LaunchError("unsupported netplay mode")
+    if mode == "off":
+        return ("off", "")
+    if len(code) != 5 or not re.fullmatch(r"[A-Za-z0-9]{5}", code):
+        raise LaunchError("netplay code must contain exactly five letters or digits")
+    return (mode, code.lower())
+
+
+def _netplay_environment(environment: dict[str, str], command: tuple[str, str]) -> None:
+    mode, code = command
+    environment["DIABLO_MISTER_NETPLAY_MODE"] = mode
+    environment["DIABLO_MISTER_NETPLAY_CODE"] = code
+
+
+def _wait_for_engine_or_netplay(process: subprocess.Popen, rbf: Path, duration: float,
+                                command_path: Path, expected_command: tuple[str, str],
+                                already_loaded: bool = False) -> tuple[int, bool, bool, tuple[str, str] | None]:
+    """Wait for the engine, stopping it when the OSD requests a new mode."""
+    deadline = time.monotonic() + duration if duration > 0 else None
+    while True:
+        exit_code = process.poll()
+        if exit_code is not None:
+            return exit_code, False, False, None
+        requested = _read_netplay_command(command_path)
+        if requested != expected_command:
+            return _stop_engine(process, not already_loaded), False, False, requested
+        if already_loaded:
+            try:
+                core_changed = Path("/sys/class/fpga_manager/fpga0/state").read_text(encoding="ascii").strip().lower() != "operating"
+            except OSError:
+                core_changed = True
+        else:
+            core_changed = not _core_process_matches(rbf)
+        if core_changed:
+            return _stop_engine(process, not already_loaded), False, True, None
+        remaining = deadline - time.monotonic() if deadline is not None else None
+        if remaining is not None and remaining <= 0:
+            return _stop_engine(process, not already_loaded), True, False, None
+        try:
+            return process.wait(timeout=min(0.25, remaining) if remaining is not None else 0.25), False, False, None
+        except subprocess.TimeoutExpired:
+            pass
+
+
 def _force_frame_pacing(engine_args: list[str]) -> bool:
     # The FPGA output is 60 Hz in normal gameplay as well as timedemos.
     return True
@@ -541,30 +606,38 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
         ready_path.write_text(json.dumps({"schema": "diablo-mister-ready-v1", "candidate_id": candidate_id,
                                           "boot_id": boot_id, "physical_base": physical_base,
                                           "linux_runtime": linux_runtime}) + "\n", encoding="utf-8")
-        env = dict(os.environ)
-        env.update({"DIABLO_MISTER_TRANSPORT": "1", "DIABLO_MISTER_SHARED_PHYS": f"0x{physical_base:x}",
-                    "DIABLO_MISTER_CANDIDATE_ID": candidate_id, "DIABLO_MISTER_ADMISSION_FILE": str(admission_path),
-                    "DIABLO_MISTER_TRANSPORT_LOCK": str(lock_path), "DIABLO_MISTER_TRANSPORT_LOCK_FD": str(lock_handle.fileno()),
-                    "DIABLO_MISTER_SESSION_EPOCH": f"0x{secrets.randbits(32) or 1:08x}",
-                    "DIABLO_DATA_DIR": str(data_root), "DIABLO_SAVE_DIR": str(save_root),
-                    "DIABLO_CAMPAIGN": args.campaign, "SDL_VIDEODRIVER": "dummy",
-                    "SDL_AUDIODRIVER": "dummy", "SDL_RENDER_DRIVER": "software",
-                    "DIABLO_MISTER_FORCE_FRAME_PACING": "1" if _force_frame_pacing(args.engine_arg) else "0",
-                    # Dirty-region copies are the measured lower-cost path for
-                    # the shared-DDR indexed framebuffer. Preserve an explicit
-                    # environment override for diagnostics and rollback.
-                    "DIABLO_MISTER_DIRTY_COPY": os.environ.get("DIABLO_MISTER_DIRTY_COPY", "1")})
-        command = _engine_args(args, package, save_root, config_root, log_path)
+        netplay_command = _read_netplay_command(args.netplay_command_path)
+        command = []
+        started = dt.datetime.now(dt.timezone.utc).isoformat()
         with log_path.open("ab") as output:
-            process = _start_engine(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,
-                                    start_new_session=not args.core_already_loaded,
-                                    pass_fds=(lock_handle.fileno(),))
-            started = dt.datetime.now(dt.timezone.utc).isoformat()
-            try:
-                exit_code, timed_out, core_changed = _wait_for_engine(process, package / "Diablo.rbf", args.duration,
-                                                                       args.core_already_loaded)
-            finally:
-                _stop_engine(process, not args.core_already_loaded)
+            while True:
+                env = dict(os.environ)
+                env.update({"DIABLO_MISTER_TRANSPORT": "1", "DIABLO_MISTER_SHARED_PHYS": f"0x{physical_base:x}",
+                            "DIABLO_MISTER_CANDIDATE_ID": candidate_id, "DIABLO_MISTER_ADMISSION_FILE": str(admission_path),
+                            "DIABLO_MISTER_TRANSPORT_LOCK": str(lock_path), "DIABLO_MISTER_TRANSPORT_LOCK_FD": str(lock_handle.fileno()),
+                            "DIABLO_MISTER_SESSION_EPOCH": f"0x{secrets.randbits(32) or 1:08x}",
+                            "DIABLO_DATA_DIR": str(data_root), "DIABLO_SAVE_DIR": str(save_root),
+                            "DIABLO_CAMPAIGN": args.campaign, "SDL_VIDEODRIVER": "dummy",
+                            "SDL_AUDIODRIVER": "dummy", "SDL_RENDER_DRIVER": "software",
+                            "DIABLO_MISTER_FORCE_FRAME_PACING": "1" if _force_frame_pacing(args.engine_arg) else "0",
+                            # Dirty-region copies are the measured lower-cost path for
+                            # the shared-DDR indexed framebuffer. Preserve an explicit
+                            # environment override for diagnostics and rollback.
+                            "DIABLO_MISTER_DIRTY_COPY": os.environ.get("DIABLO_MISTER_DIRTY_COPY", "1")})
+                _netplay_environment(env, netplay_command)
+                command = _engine_args(args, package, save_root, config_root, log_path)
+                process = _start_engine(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,
+                                        start_new_session=not args.core_already_loaded,
+                                        pass_fds=(lock_handle.fileno(),))
+                try:
+                    exit_code, timed_out, core_changed, requested = _wait_for_engine_or_netplay(
+                        process, package / "Diablo.rbf", args.duration, args.netplay_command_path,
+                        netplay_command, args.core_already_loaded)
+                finally:
+                    _stop_engine(process, not args.core_already_loaded)
+                if requested is None or timed_out or core_changed:
+                    break
+                netplay_command = requested
         return {"status": ("fail" if core_changed else
                            "pass" if timed_out and args.duration > 0 else ("pass" if exit_code == 0 else "fail")),
                  "timed_out": timed_out,
@@ -574,7 +647,8 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
                 "linux_runtime": linux_runtime,
                 "command": command, "exit_code": exit_code, "started_utc": started,
                 "log": str(log_path), "admission": str(admission_path), "ready": str(ready_path),
-                "forced_frame_pacing": _force_frame_pacing(args.engine_arg)}
+                "forced_frame_pacing": _force_frame_pacing(args.engine_arg),
+                "netplay": netplay_command}
     finally:
         for path in (admission_path, ready_path):
             try:
@@ -596,6 +670,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--physical-base", default="0x3fe00000")
     parser.add_argument("--boot-id-file", type=Path, default=Path("/proc/sys/kernel/random/boot_id"))
     parser.add_argument("--command-path", type=Path, default=Path("/dev/MiSTer_cmd"))
+    parser.add_argument("--netplay-command-path", type=Path, default=Path("/tmp/diablo-netplay.command"))
     parser.add_argument("--core-already-loaded", action="store_true",
                         help="run beneath the Diablo main= frontend without requesting another RBF load")
     parser.add_argument("--loader-timeout", type=float, default=45.0)

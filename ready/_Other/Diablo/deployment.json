@@ -1,12 +1,12 @@
 {
   "schema": "diablo-deployment-manifest-v2",
   "status": "pass",
-  "candidate_id": "855baf91909f3d8dfa1ae0ab6d97670ec66967b67049f80306b6e16c3ed1bfb2",
-  "source_id": "f122e618da101032c7e72c82e7db2c3ea62868bb907fe82ef5b2dbdfb5a0813d",
+  "candidate_id": "9165b2011cb86c4184ee17e5f9ed6c9cb52ce079c09ee889571431b6045b93ca",
+  "source_id": "4a2466518e7e817177ea7b0599401e9b8cb28be194f95474674fec507a983dec",
   "abi_digest": "aefc42fc0a1969800ef9ed8cbddb5d76155b7433ecaa1b6dc1a04a507e1737cd",
   "board_profile": "de10-nano-mister",
   "private_data_excluded": true,
-  "created_utc": "2026-09-10T02:10:31+00:00",
+  "created_utc": "2026-09-10T16:33:23+00:00",
   "artifacts": [
     {
       "role": "abi",
@@ -17,20 +17,20 @@
     {
       "role": "engine",
       "path": "devilutionx",
-      "bytes": 6559252,
-      "sha256": "618e44161375a6700681d95f20366514cac2f2d326830cc1ef24ade90eb7cedd"
+      "bytes": 8731544,
+      "sha256": "54f773d03ad2020a15985171ac8d35bcbdd146115c95a9487179b997607b9d80"
     },
     {
       "role": "launcher",
       "path": "diablo_launcher.py",
-      "bytes": 29969,
-      "sha256": "4fd9ef24b51c1fe97c0e58e7f23d6e3a2f0519520cbc997f7fe292aed2654a1d"
+      "bytes": 33657,
+      "sha256": "ae1b343373ca0a3ad39f41bca13885a52f0409533edd6fc9699dd03f20e6bb68"
     },
     {
       "role": "rbf",
       "path": "Diablo.rbf",
-      "bytes": 2754800,
-      "sha256": "10cdd5e116cfdbe9e26419b1c67934c7844e830c955cedb6d8a4284f9c328b5e"
+      "bytes": 2765388,
+      "sha256": "bdd15e2c2e3a7baa76a1c4c82830712ea34087b3d1a1c26b7d46022680dd5881"
     }
   ],
   "runtime_assets": {

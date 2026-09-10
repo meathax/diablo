@@ -5,10 +5,11 @@ if(NOT CMAKE_SYSTEM_PROCESSOR STREQUAL "armv7")
   message(FATAL_ERROR "MiSTer transport overlay requires the ARMv7 toolchain")
 endif()
 
-# The MiSTer release supports single-player Diablo and Hellfire only.
-set(NONET ON CACHE BOOL "Disable network support for MiSTer" FORCE)
-set(DISABLE_TCP ON CACHE BOOL "Disable TCP multiplayer for MiSTer" FORCE)
-set(DISABLE_ZERO_TIER ON CACHE BOOL "Disable ZeroTier multiplayer for MiSTer" FORCE)
+# The MiSTer release supports Diablo/Hellfire plus the native DevilutionX
+# multiplayer transports.
+set(NONET OFF CACHE BOOL "Disable network support for MiSTer" FORCE)
+set(DISABLE_TCP OFF CACHE BOOL "Disable TCP multiplayer for MiSTer" FORCE)
+set(DISABLE_ZERO_TIER OFF CACHE BOOL "Disable ZeroTier multiplayer for MiSTer" FORCE)
 
 set(_mister_reference_dir "${CMAKE_CURRENT_LIST_DIR}/../reference")
 set(_mister_overlay_dir "${CMAKE_BINARY_DIR}/mister-engine-overlay")
@@ -19,6 +20,10 @@ function(diablo_mister_transport)
   file(WRITE "${CMAKE_BINARY_DIR}/mister-transport-fixes.txt"
     "MiSTer transport overlays; original checkout unchanged.\n")
 
+  target_sources(libdevilutionx PRIVATE
+    "${_mister_reference_dir}/mister_netplay.cpp")
+  target_include_directories(libdevilutionx PRIVATE "${_mister_reference_dir}")
+
   # NONET disables networking but upstream still exposes the multiplayer menu.
   set(menu_source "${PROJECT_SOURCE_DIR}/Source/DiabloUI/mainmenu.cpp")
   file(READ "${menu_source}" menu_content)
@@ -27,7 +32,9 @@ function(diablo_mister_transport)
   if(multiplayer_position EQUAL -1)
     message(FATAL_ERROR "Unexpected mainmenu.cpp: multiplayer item not found")
   endif()
-  string(REPLACE "${multiplayer_item}" "// Multiplayer is disabled in the MiSTer release." menu_content "${menu_content}")
+  if(NONET)
+    string(REPLACE "${multiplayer_item}" "// Multiplayer is disabled in the MiSTer release." menu_content "${menu_content}")
+  endif()
   set(menu_output "${_mister_overlay_dir}/mainmenu.cpp")
   file(CONFIGURE OUTPUT "${menu_output}" CONTENT "${menu_content}" @ONLY NEWLINE_STYLE UNIX)
   file(SHA256 "${menu_source}" menu_observed)
@@ -255,6 +262,43 @@ function(diablo_mister_transport)
   list(APPEND binary_sources "${main_output}")
   set_property(TARGET devilutionx PROPERTY SOURCES "${binary_sources}")
   target_include_directories(devilutionx PRIVATE "${_mister_reference_dir}")
+
+  set(multi_source "${PROJECT_SOURCE_DIR}/Source/multi.cpp")
+  file(READ "${multi_source}" multi_content)
+  string(REPLACE "#include \"diablo.h\"" "#include \"diablo.h\"\n#include \"mister_netplay.hpp\"" multi_content "${multi_content}")
+  string(REPLACE "\tint playerId;\n\n\twhile (true) {" "\tint playerId;\n\tconst auto mister_request = ::devilution::mister_netplay::read_request();\n\tif (mister_request.mode != ::devilution::mister_netplay::Mode::None) {\n\t\tprovider = mister_request.provider;\n\t\tgbSelectProvider = false;\n\t}\n\n\twhile (true) {" multi_content "${multi_content}")
+  string(REPLACE "\t\tif (gbSelectProvider && !UiSelectProvider(gameData)) {\n\t\t\treturn false;\n\t\t}\n\n\t\tRegisterNetEventHandlers();" "\t\tif (gbSelectProvider) {\n\t\t\tif (!UiSelectProvider(gameData)) return false;\n\t\t} else if (mister_request.mode != ::devilution::mister_netplay::Mode::None &&\n\t\t           !SNetInitializeProvider(provider, gameData)) {\n\t\t\treturn false;\n\t\t}\n\n\t\tRegisterNetEventHandlers();" multi_content "${multi_content}")
+  string(REPLACE "\t\tgbSelectProvider = true;\n\t}\n\n\tif (static_cast<size_t>(playerId) >= Players.size()) {" "\t\tif (mister_request.mode != ::devilution::mister_netplay::Mode::None)\n\t\t\treturn false;\n\t\tgbSelectProvider = true;\n\t}\n\n\tif (static_cast<size_t>(playerId) >= Players.size()) {" multi_content "${multi_content}")
+  set(multi_output "${_mister_overlay_dir}/multi.cpp")
+  file(CONFIGURE OUTPUT "${multi_output}" CONTENT "${multi_content}" @ONLY NEWLINE_STYLE UNIX)
+  file(SHA256 "${multi_source}" multi_observed)
+  file(SHA256 "${multi_output}" multi_patched)
+  file(APPEND "${CMAKE_BINARY_DIR}/mister-transport-fixes.txt" "multi.cpp ${multi_observed} ${multi_patched}\n")
+  # multi.cpp is owned by the multiplayer object library, not the monolithic
+  # library. Replace it there or the overlay would be linked twice.
+  if(NOT TARGET libdevilutionx_multiplayer)
+    message(FATAL_ERROR "libdevilutionx_multiplayer target is required for netplay overlay")
+  endif()
+  get_target_property(multi_sources libdevilutionx_multiplayer SOURCES)
+  list(REMOVE_ITEM multi_sources multi.cpp "${multi_source}")
+  list(APPEND multi_sources "${multi_output}")
+  set_property(TARGET libdevilutionx_multiplayer PROPERTY SOURCES "${multi_sources}")
+  set_property(SOURCE "${multi_output}" DIRECTORY "${PROJECT_SOURCE_DIR}/Source" APPEND PROPERTY INCLUDE_DIRECTORIES "${_mister_reference_dir}")
+
+  set(selgame_source "${PROJECT_SOURCE_DIR}/Source/DiabloUI/multi/selgame.cpp")
+  file(READ "${selgame_source}" selgame_content)
+  string(REPLACE "#include \"diablo.h\"" "#include \"diablo.h\"\n#include \"mister_netplay.hpp\"\n#include <algorithm>" selgame_content "${selgame_content}")
+  string(REPLACE "\tm_game_data = gameData;\n\tselgame_Init();" "\tm_game_data = gameData;\n\tconst auto mister_request = ::devilution::mister_netplay::read_request();\n\tif (mister_request.mode != ::devilution::mister_netplay::Mode::None) {\n\t\tDvlNet_ClearPassword();\n\t\tchar code[6] = {};\n\t\tstd::copy(mister_request.code.begin(), mister_request.code.end(), code);\n\t\tif (mister_request.mode == ::devilution::mister_netplay::Mode::Host) {\n\t\t\tnDifficulty = DIFF_NORMAL;\n\t\t\tnTickRate = 20;\n\t\t\tm_game_data->nDifficulty = nDifficulty;\n\t\t\tm_game_data->nTickRate = nTickRate;\n\t\t\tm_game_data->bRunInTown = *GetOptions().Gameplay.runInTown ? 1 : 0;\n\t\t\tm_game_data->bTheoQuest = *GetOptions().Gameplay.theoQuest ? 1 : 0;\n\t\t\tm_game_data->bCowQuest = *GetOptions().Gameplay.cowQuest ? 1 : 0;\n\t\t\tGameData gameInitInfo = *m_game_data;\n\t\t\tSwapGameDataLE(gameInitInfo);\n\t\t\tif (!SNetCreateGame(code, nullptr, reinterpret_cast<char *>(&gameInitInfo), sizeof(gameInitInfo), playerId))\n\t\t\t\treturn false;\n\t\t} else if (!SNetJoinGame(code, nullptr, playerId)) {\n\t\t\treturn false;\n\t\t} else {\n\t\t\tInitGameInfo();\n\t\t}\n\t\tselgame_enteringGame = true;\n\t\treturn true;\n\t}\n\tselgame_Init();" selgame_content "${selgame_content}")
+  set(selgame_output "${_mister_overlay_dir}/selgame.cpp")
+  file(CONFIGURE OUTPUT "${selgame_output}" CONTENT "${selgame_content}" @ONLY NEWLINE_STYLE UNIX)
+  file(SHA256 "${selgame_source}" selgame_observed)
+  file(SHA256 "${selgame_output}" selgame_patched)
+  file(APPEND "${CMAKE_BINARY_DIR}/mister-transport-fixes.txt" "DiabloUI/multi/selgame.cpp ${selgame_observed} ${selgame_patched}\n")
+  get_target_property(selgame_sources libdevilutionx SOURCES)
+  list(REMOVE_ITEM selgame_sources DiabloUI/multi/selgame.cpp "${selgame_source}")
+  list(APPEND selgame_sources "${selgame_output}")
+  set_property(TARGET libdevilutionx PROPERTY SOURCES "${selgame_sources}")
+  set_property(SOURCE "${selgame_output}" DIRECTORY "${PROJECT_SOURCE_DIR}/Source" APPEND PROPERTY INCLUDE_DIRECTORIES "${_mister_reference_dir}")
   # Transport controllers are registered SDL game controllers. Do not enable
   # keyboard-controller emulation: physical arrows/modifiers must remain keys.
   target_compile_definitions(devilutionx PRIVATE

@@ -17,6 +17,7 @@
 #include <fcntl.h>
 #include <sched.h>
 #include <signal.h>
+#include <sys/stat.h>
 
 #include "menu.h"
 #include "user_io.h"
@@ -29,6 +30,44 @@
 const char *version = "$VER:" VDATE;
 
 static pid_t runtime_pid = -1;
+
+static constexpr const char *NETPLAY_COMMAND = "/tmp/diablo-netplay.command";
+static std::string last_netplay_command;
+
+static void write_netplay_command()
+{
+    const uint32_t action = user_io_status_get("[8:7]");
+    const char *mode = action == 1 ? "host" : action == 2 ? "join" : "off";
+    static constexpr const char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    std::string code;
+    bool complete = action == 1 || action == 2;
+    const char *fields[] = {"[14:10]", "[19:15]", "[24:20]", "[29:25]", "[34:30]"};
+    for (const char *field : fields) {
+        const uint32_t value = user_io_status_get(field);
+        if (value == 0 || value > 26) {
+            complete = false;
+            code.push_back('_');
+        } else {
+            code.push_back(alphabet[value - 1]);
+        }
+    }
+    if (!complete) mode = "off";
+
+    std::string command = std::string("schema=diablo-netplay-v1\nmode=") + mode +
+        "\ncode=" + code + "\n";
+    if (command == last_netplay_command) return;
+
+    const std::string temporary = std::string(NETPLAY_COMMAND) + ".tmp";
+    int descriptor = open(temporary.c_str(), O_WRONLY | O_CREAT | O_TRUNC | O_CLOEXEC, 0600);
+    if (descriptor < 0) return;
+    const ssize_t written = write(descriptor, command.data(), command.size());
+    if (written == static_cast<ssize_t>(command.size())) fsync(descriptor);
+    close(descriptor);
+    if (written == static_cast<ssize_t>(command.size()) && rename(temporary.c_str(), NETPLAY_COMMAND) == 0)
+        last_netplay_command = command;
+    else
+        unlink(temporary.c_str());
+}
 
 static bool hellfire_selected(const char *rbf_path)
 {
@@ -121,6 +160,13 @@ int main(int argc, char *argv[])
 
     FindStorage();
     user_io_init(rbf_path, argc > 2 ? argv[2] : nullptr);
+    // Netplay is opt-in per boot. Code fields may be retained by MiSTer's
+    // status configuration, but a stale HOST/JOIN action must never relaunch
+    // a network session without an explicit selection in this boot.
+    user_io_status_set("[8:7]", 0);
+    unlink(NETPLAY_COMMAND);
+    unlink("/tmp/diablo-netplay.command.tmp");
+    write_netplay_command();
     release_core_reset();
     sleep(1);
     launch_runtime(rbf_path);
@@ -137,5 +183,6 @@ int main(int argc, char *argv[])
         input_poll(0);
         HandleUI();
         OsdUpdate();
+        write_netplay_command();
     }
 }

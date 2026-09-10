@@ -1,7 +1,7 @@
 {
   "v": 1,
   "db_id": "diablo_runtime",
-  "timestamp": 1789006236,
+  "timestamp": 1789058007,
   "files": {
     "_Other/Diablo/assets/arena/church.dun": {
       "hash": "89910e53b8b0bfd4294e7c44d00cddd2",
@@ -1668,7 +1668,7 @@
       ]
     },
     "_Other/Diablo/deployment.json": {
-      "hash": "b882c34b0c48bc7c277a4e501ce6f076",
+      "hash": "f0590c43d0bc7cfb0d5fce0ae7a06a44",
       "size": 37542,
       "url": "https://raw.githubusercontent.com/meathax/diablo/main/ready/_Other/Diablo/deployment.json",
       "tags": [
@@ -1676,16 +1676,16 @@
       ]
     },
     "_Other/Diablo/devilutionx": {
-      "hash": "3734ec9a2d7b69f43dcc81c6155054ac",
-      "size": 6559252,
+      "hash": "d51210ec2dd1ddde29a573a8d37cd8c9",
+      "size": 8731544,
       "url": "https://raw.githubusercontent.com/meathax/diablo/main/ready/_Other/Diablo/devilutionx",
       "tags": [
         "diablo"
       ]
     },
     "_Other/Diablo/Diablo.rbf": {
-      "hash": "76c212da1e986a2b863cedea82ffec34",
-      "size": 2754800,
+      "hash": "0ccede234381a83bdd65102d1e3578bc",
+      "size": 2765388,
       "url": "https://raw.githubusercontent.com/meathax/diablo/main/ready/_Other/Diablo/Diablo.rbf",
       "tags": [
         "diablo"
@@ -1700,8 +1700,8 @@
       ]
     },
     "_Other/Diablo/diablo_launcher.py": {
-      "hash": "1ca248d9fa76fdb95aae6f069c8e9bbd",
-      "size": 29969,
+      "hash": "8e956c3ec48413e6a3204614ea6f206b",
+      "size": 33657,
       "url": "https://raw.githubusercontent.com/meathax/diablo/main/ready/_Other/Diablo/diablo_launcher.py",
       "tags": [
         "diablo"
@@ -2004,7 +2004,7 @@
       ]
     },
     "_Other/Diablo/package-manifest.json": {
-      "hash": "6f673fee468b6e2a051162487cf96fb1",
+      "hash": "388f44f0095cb6e0d723782fbc687071",
       "size": 49586,
       "url": "https://raw.githubusercontent.com/meathax/diablo/main/ready/_Other/Diablo/package-manifest.json",
       "tags": [
@@ -2028,24 +2028,24 @@
       ]
     },
     "_Other/Diablo Hellfire.rbf": {
-      "hash": "76c212da1e986a2b863cedea82ffec34",
-      "size": 2754800,
+      "hash": "0ccede234381a83bdd65102d1e3578bc",
+      "size": 2765388,
       "url": "https://raw.githubusercontent.com/meathax/diablo/main/ready/_Other/Diablo%20Hellfire.rbf",
       "tags": [
         "diablo"
       ]
     },
     "_Other/Diablo.rbf": {
-      "hash": "76c212da1e986a2b863cedea82ffec34",
-      "size": 2754800,
+      "hash": "0ccede234381a83bdd65102d1e3578bc",
+      "size": 2765388,
       "url": "https://raw.githubusercontent.com/meathax/diablo/main/ready/_Other/Diablo.rbf",
       "tags": [
         "diablo"
       ]
     },
     "Diablo": {
-      "hash": "7b0806050b7e4519323d0f41a3ffa869",
-      "size": 1937756,
+      "hash": "390faa061171bb180fad8188dce78d41",
+      "size": 1937780,
       "url": "https://raw.githubusercontent.com/meathax/diablo/main/ready/Diablo",
       "tags": [
         "diablo"

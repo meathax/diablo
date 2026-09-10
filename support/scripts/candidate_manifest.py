@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = "diablo-candidate-manifest-v1"
 SOURCE_INPUTS = (
     ".gitignore",
+    "netplay.md",
     "Diablo.qpf",
     "Diablo.qsf",
     "Diablo.sdc",
