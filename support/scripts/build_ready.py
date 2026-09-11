@@ -1,16 +1,40 @@
-"""Assemble a verified, game-data-free SD root and matching runtime database."""
+"""Assemble a complete verified MiSTer SD-root staging tree and runtime database."""
 import argparse
 import hashlib
 import json
 from pathlib import Path
 import shutil
 import sys
-import time
-from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[2]
+GAME_DATA_SOURCE = ROOT / 'game/Diablo'
 sys.path.insert(0, str(ROOT))
 from support.scripts import candidate_manifest as candidate, package_release as package
+from scripts import generate_update_all as update_all
+
+
+def md5_file(path):
+    digest = hashlib.md5()
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def stage_game_data(output):
+    """Copy only the externally-audited local game archives into the SD root."""
+    for entry in update_all.load_external_files():
+        destination = output / entry['path']
+        source = GAME_DATA_SOURCE / destination.name
+        if not source.is_file():
+            raise ValueError(f'missing required local game archive: {source}')
+        if source.stat().st_size != entry['size']:
+            raise ValueError(f'game archive size mismatch: {source}')
+        if md5_file(source) != entry['md5']:
+            raise ValueError(f'game archive MD5 mismatch: {source}')
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+
 
 def build(engine, base_package, output, base_url):
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
@@ -38,40 +62,22 @@ def build(engine, base_package, output, base_url):
     shutil.copyfile(frontend, output / 'Diablo')
     for name in ('Diablo.rbf', 'Diablo Hellfire.rbf'):
         shutil.copyfile(paths['rbf'], output / '_Other' / name)
-    # Main_MiSTer is a separate GPL program. Preserve its license alongside it.
-    docs = output / 'docs/Diablo'
-    docs.mkdir(parents=True)
-    shutil.copyfile(ROOT.parent / 'VoidSW/platform/mister/wrapper/LICENSE', docs / 'LICENSE.frontend')
-    (docs / 'INSTALL.txt').write_text(
-        'Copy the contents of ready to the MiSTer SD root.\n'
-        'Select _Other/Diablo.rbf or _Other/Diablo Hellfire.rbf.\n'
-        'update_all integration must supply [Diablo] main=Diablo in MiSTer.ini.\n'
-        'No MiSTer.ini is included: do not overwrite the user configuration.\n'
-        'Game data belongs in games/Diablo; saves remain in games/Diablo/Saves.\n'
-        'The inner package Scripts entries describe the optional transactional installer;\n'
-        'they are not required for RBF launching. Python 3 is required on MiSTer.\n'
-        'Frontend source: https://github.com/meathax/diablo (support/mister and build_diablo_main.sh).\n')
     for executable in (output / 'Diablo', runtime / 'devilutionx', runtime / 'diablo_launcher.py'):
         executable.chmod(0o755)
-    files = {}
-    folders = {}
+    # The runtime archive intentionally excludes licensed game data. Stage it only
+    # after creating the archive so ready remains a complete local SD-root payload.
+    update_all.write_game_artifacts()
+    update_all.write_runtime_artifacts(output, base_files_url=base_url)
+    stage_game_data(output)
     hashes = {}
     for path in sorted(output.rglob('*')):
         rel = path.relative_to(output).as_posix()
         if path.is_dir():
-            folders[rel + '/'] = {'tags': ['diablo']}
             continue
-        if path.suffix.lower() in ('.mpq', '.sv', '.sav', '.sve'):
-            raise ValueError(f"private game content in output: {rel}")
         body = path.read_bytes()
         hashes[rel] = hashlib.sha256(body).hexdigest()
-        files[rel] = {'hash': hashlib.md5(body).hexdigest(), 'size': len(body),
-                      'url': base_url.rstrip('/') + '/' + quote(rel, safe='/'), 'tags': ['diablo']}
-    database = {'v': 1, 'db_id': 'diablo_runtime', 'timestamp': int(time.time()),
-                'files': files, 'folders': folders}
-    (ROOT / 'distribution/diablo_runtime.json').write_text(json.dumps(database, indent=2) + '\n')
     (ROOT / 'reports/ready-sha256.json').write_text(json.dumps(hashes, indent=2) + '\n')
-    print(json.dumps({'ready': str(output), 'files': len(files), 'candidate': manifest['candidate_id'],
+    print(json.dumps({'ready': str(output), 'files': len(hashes), 'candidate': manifest['candidate_id'],
                       'package_errors': package.verify_package(runtime)}))
 
 if __name__ == '__main__':

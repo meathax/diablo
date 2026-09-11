@@ -1,5 +1,6 @@
 # Private commercial data and local upstream checkouts must never be published.
 /game/
+/ready/games/
 /.work/
 /.mister/evidence/private/
 /db/

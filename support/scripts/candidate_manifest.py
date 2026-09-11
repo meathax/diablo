@@ -38,8 +38,10 @@ SOURCE_INPUTS = (
     "support/tests",
     "support/licenses",
     "scripts",
+    "external_files.csv",
     "distribution/game_files.json",
     "distribution/diablo_mister.json",
+    "distribution/downloader_meathax_diablo.ini",
     "LICENSE.fpga",
 )
 DIRECTORY_INPUTS = frozenset({
