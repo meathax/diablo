@@ -89,51 +89,6 @@ class CoreLoadRequestTest(unittest.TestCase):
         start.assert_called_once_with(Path("/package/Diablo.rbf"))
 
 
-class NetplayCommandTest(unittest.TestCase):
-    def test_missing_command_defaults_to_offline(self):
-        self.assertEqual(
-            ("off", ""),
-            mister_launcher._read_netplay_command(Path("/does/not/exist/diablo-netplay.command")),
-        )
-
-    def test_valid_host_command_is_normalized(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            command = Path(temporary) / "command"
-            command.write_text("schema=diablo-netplay-v1\nmode=host\ncode=Ab3dE\n", encoding="ascii")
-            self.assertEqual(("host", "ab3de"), mister_launcher._read_netplay_command(command))
-
-    def test_offline_command_does_not_require_a_code(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            command = Path(temporary) / "command"
-            command.write_text("schema=diablo-netplay-v1\nmode=off\ncode=_____\n", encoding="ascii")
-            self.assertEqual(("off", ""), mister_launcher._read_netplay_command(command))
-
-    def test_invalid_commands_are_rejected(self):
-        cases = (
-            "schema=old\nmode=host\ncode=abcde\n",
-            "schema=diablo-netplay-v1\nmode=launch\ncode=abcde\n",
-            "schema=diablo-netplay-v1\nmode=join\ncode=abcd\n",
-            "schema=diablo-netplay-v1\nmode=join\ncode=abc_d\n",
-            "schema=diablo-netplay-v1\nmode=join\ncode=abcde\nextra=x\n",
-        )
-        with tempfile.TemporaryDirectory() as temporary:
-            command = Path(temporary) / "command"
-            for text in cases:
-                with self.subTest(text=text):
-                    command.write_text(text, encoding="ascii")
-                    with self.assertRaises(mister_launcher.LaunchError):
-                        mister_launcher._read_netplay_command(command)
-
-    def test_environment_contains_only_the_validated_request(self):
-        environment = {"PATH": "/usr/bin"}
-        mister_launcher._netplay_environment(environment, ("join", "abcde"))
-        self.assertEqual(
-            {"PATH": "/usr/bin", "DIABLO_MISTER_NETPLAY_MODE": "join",
-             "DIABLO_MISTER_NETPLAY_CODE": "abcde"},
-            environment,
-        )
-
-
 @unittest.skipUnless(hasattr(os, "killpg"), "MiSTer process groups require POSIX")
 class EngineOwnershipTest(unittest.TestCase):
     def setUp(self):

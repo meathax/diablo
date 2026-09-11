@@ -49,16 +49,11 @@ module native_test_pattern (
         green = 0;
         blue = 0;
         if (de) begin
-            if (!diagnostic_enable && startup_error) begin
-                // A deterministic dark-red checker is a visible startup/
-                // transport-fault state.  It cannot be mistaken for a valid
-                // gameplay frame and remains independent of the selected test
-                // pattern mode.
-                {red, green, blue} = (x[4] ^ y[4]) ? 24'h600000 : 24'h180000;
-            end else if (!diagnostic_enable) begin
-                // Normal gameplay is supplied through the framebuffer/scaler
-                // path.  Keep the direct RGB bus black so a missing scaler
-                // selection cannot expose a diagnostic pattern as gameplay.
+            if (!diagnostic_enable) begin
+                // Keep the direct RGB bus completely black until the
+                // framebuffer/scaler has a valid gameplay frame.  Startup
+                // faults are reported through the transport diagnostics, not
+                // by drawing a debug pattern over the boot screen.
                 {red, green, blue} = 24'h000000;
             end else begin
                 case (selected)
@@ -83,14 +78,13 @@ module native_test_pattern (
                     end
                 endcase
             end
-            // Board-visible DDR preflight marker: green=pass, red=fault. The
-            // marker is useful only on an explicitly selected diagnostic or
-            // startup screen; normal gameplay is selected through the scaler.
-            if ((diagnostic_enable || startup_error) && x < 128 && y < 24) begin
+            // Board-visible DDR preflight marker is available only on an
+            // explicitly selected diagnostic screen.
+            if (diagnostic_enable && x < 128 && y < 24) begin
                 if (ddr_probe_pass) {red, green, blue} = 24'h00ff00;
                 else if (ddr_probe_fault) {red, green, blue} = 24'hff0000;
             end
-            if (border) {red, green, blue} = 24'hffffff;
+            if (diagnostic_enable && border) {red, green, blue} = 24'hffffff;
         end
     end
 endmodule

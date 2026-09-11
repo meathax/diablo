@@ -11,8 +11,9 @@
     updates and rollback, and run the package launcher with Python 3.
     Default game data: `/media/fat/games/Diablo`; saves: `/media/fat/saves/Diablo`;
     configuration: `/media/fat/config/Diablo`. The launcher separates campaigns.
-    Complete packages include the redistributable Hellfire `hf` mod in the
-    asset tree; the launcher stages it into the save root for Hellfire.
+    Complete packages include the redistributable Hellfire `hf.mpq` mod in the
+    asset tree; the launcher stages the archive into the save root. Matching
+    legacy loose mod files are backed up beside the save directory.
    For another layout, export DIABLO_INSTALL_ROOT, DIABLO_DATA_ROOT,
    DIABLO_SAVE_ROOT or DIABLO_CONFIG_ROOT before invoking the script.
    Keep MPQs outside managed releases. Python 3 must be available on PATH.

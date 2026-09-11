@@ -69,6 +69,13 @@ class UpdateAllDatabaseTests(unittest.TestCase):
                     with self.assertRaises(generate_update_all.InventoryError):
                         generate_update_all.load_external_files(csv_path)
 
+    def test_runtime_inventory_excludes_local_sd_exports(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            ready = Path(directory)
+            (ready / "Diablo").write_bytes(b"runtime")
+            (ready / "Diablo Test.zip").write_bytes(b"local game-data export")
+            self.assertEqual([ready / "Diablo"], generate_update_all._runtime_files(ready))
+
     def test_runtime_archive_matches_ready_tree_and_official_schema(self) -> None:
         database_path = ROOT / "distribution/diablo_runtime.json"
         archive_path = ROOT / "distribution/diablo_runtime.zip"
@@ -96,7 +103,8 @@ class UpdateAllDatabaseTests(unittest.TestCase):
         )
         ready_files = {path.relative_to(ROOT / "ready").as_posix()
                        for path in (ROOT / "ready").rglob("*") if path.is_file()
-                       and not path.relative_to(ROOT / "ready").as_posix().startswith("games/")}
+                       and not path.relative_to(ROOT / "ready").as_posix().startswith("games/")
+                       and not (path.parent == ROOT / "ready" and path.suffix.lower() == ".zip")}
         staged_game_files = {path.relative_to(ROOT / "ready").as_posix()
                              for path in (ROOT / "ready/games").rglob("*") if path.is_file()}
         self.assertEqual(staged_game_files,

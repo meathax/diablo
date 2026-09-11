@@ -271,7 +271,10 @@ def _ready_files(ready_root: Path) -> list[Path]:
 def _runtime_files(ready_root: Path) -> list[Path]:
     """Return only redistributable runtime files, never games or user saves."""
     return [path for path in _ready_files(ready_root)
-            if not path.relative_to(ready_root).as_posix().startswith("games/")]
+            if not path.relative_to(ready_root).as_posix().startswith("games/")
+            # Local SD-card exports can themselves contain game data. They are
+            # deliverables, not runtime inputs, and must not be nested here.
+            and not (path.parent == ready_root and path.suffix.lower() == ".zip")]
 
 
 def write_runtime_artifacts(ready_root: Path = READY_ROOT,

@@ -202,46 +202,41 @@ def _writable(path: Path, label: str) -> Path:
 
 
 def _stage_hellfire_mod(package: Path, save_root: Path) -> None:
-    """Stage the packaged Hellfire mod into the campaign preference tree."""
-    source = package / "assets" / "mods" / "hf"
-    if source.is_symlink() or not source.is_dir():
-        raise LaunchError("package is missing the bundled Hellfire mod")
-    source_files = []
-    for path in sorted(source.rglob("*")):
-        if path.is_symlink():
-            raise LaunchError(f"bundled Hellfire mod contains a symlink: {path.relative_to(source)}")
-        if path.is_file():
-            source_files.append(path)
-        elif not path.is_dir():
-            raise LaunchError(f"bundled Hellfire mod contains an unsupported entry: {path.relative_to(source)}")
-    if not source_files:
-        raise LaunchError("bundled Hellfire mod is empty")
-
-    destination = save_root / "mods" / "hf"
-    for source_path in source_files:
-        relative = source_path.relative_to(source)
-        current = save_root
-        for part in (Path("mods") / "hf" / relative.parent).parts:
-            current /= part
-            if current.is_symlink() or (current.exists() and not current.is_dir()):
-                raise LaunchError(f"Hellfire mod staging path is not a real directory: {current}")
-            current.mkdir(exist_ok=True)
-            if current.is_symlink():
-                raise LaunchError(f"Hellfire mod staging path is a symlink: {current}")
-        target = destination / relative
-        if target.is_symlink() or target.exists():
-            if target.is_symlink() or not target.is_file():
-                raise LaunchError(f"existing Hellfire mod file is not a real file: {target}")
-            if sha256_file(target) != sha256_file(source_path):
-                raise LaunchError(f"existing Hellfire mod differs from package: {target}")
-
-    for source_path in source_files:
-        relative = source_path.relative_to(source)
-        target = destination / relative
-        if not target.exists():
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source_path, target)
-
+    """Use a packed, identifiable mod and preserve old loose files outside saves."""
+    source = package / "assets" / "mods" / "hf.mpq"
+    if source.is_symlink() or not source.is_file():
+        raise LaunchError("package is missing the packed Hellfire mod")
+    mods = save_root / "mods"
+    if mods.is_symlink() or (mods.exists() and not mods.is_dir()):
+        raise LaunchError(f"Hellfire mod staging path is not a real directory: {mods}")
+    mods.mkdir(parents=True, exist_ok=True)
+    destination = mods / "hf.mpq"
+    if destination.is_symlink() or (destination.exists() and
+            (not destination.is_file() or sha256_file(destination) != sha256_file(source))):
+        raise LaunchError(f"existing Hellfire mod differs from package: {destination}")
+    legacy = mods / "hf"
+    backup = save_root.parent / (save_root.name + ".legacy-hf")
+    if legacy.is_symlink() or (legacy.exists() and not legacy.is_dir()):
+        raise LaunchError(f"legacy Hellfire mod is not a real directory: {legacy}")
+    if legacy.exists():
+        if backup.exists() or backup.is_symlink():
+            raise LaunchError(f"legacy Hellfire backup already exists: {backup}")
+        bundled = package / "assets" / "mods" / "hf"
+        for path in legacy.rglob("*"):
+            expected = bundled / path.relative_to(legacy)
+            if path.is_symlink() or (not path.is_file() and not path.is_dir()):
+                raise LaunchError(f"unsupported legacy Hellfire entry: {path}")
+            if path.is_file() and (not expected.is_file() or
+                    sha256_file(path) != sha256_file(expected)):
+                raise LaunchError(f"existing Hellfire mod differs from package: {path}")
+    if not destination.exists():
+        temporary = mods / "hf.mpq.tmp"
+        if temporary.exists() or temporary.is_symlink():
+            raise LaunchError(f"Hellfire staging file already exists: {temporary}")
+        shutil.copyfile(source, temporary)
+        temporary.replace(destination)
+    if legacy.exists():
+        legacy.rename(backup)
 
 def _boot_id(path: Path) -> str:
     try:
@@ -426,71 +421,6 @@ def _engine_args(args: argparse.Namespace, package: Path, save_root: Path, confi
     return command
 
 
-def _read_netplay_command(path: Path) -> tuple[str, str]:
-    """Read the frontend's atomic OSD command, defaulting to single-player."""
-    try:
-        text = path.read_text(encoding="ascii")
-    except FileNotFoundError:
-        return ("off", "")
-    except OSError as error:
-        raise LaunchError(f"cannot read netplay command: {error}") from error
-    fields: dict[str, str] = {}
-    for line in text.splitlines():
-        if not line or "=" not in line:
-            raise LaunchError("malformed netplay command")
-        key, value = line.split("=", 1)
-        if key in fields or key not in {"schema", "mode", "code"}:
-            raise LaunchError("malformed netplay command fields")
-        fields[key] = value
-    if fields.get("schema") != "diablo-netplay-v1":
-        raise LaunchError("unsupported netplay command schema")
-    mode = fields.get("mode", "")
-    code = fields.get("code", "")
-    if mode not in {"off", "host", "join"}:
-        raise LaunchError("unsupported netplay mode")
-    if mode == "off":
-        return ("off", "")
-    if len(code) != 5 or not re.fullmatch(r"[A-Za-z0-9]{5}", code):
-        raise LaunchError("netplay code must contain exactly five letters or digits")
-    return (mode, code.lower())
-
-
-def _netplay_environment(environment: dict[str, str], command: tuple[str, str]) -> None:
-    mode, code = command
-    environment["DIABLO_MISTER_NETPLAY_MODE"] = mode
-    environment["DIABLO_MISTER_NETPLAY_CODE"] = code
-
-
-def _wait_for_engine_or_netplay(process: subprocess.Popen, rbf: Path, duration: float,
-                                command_path: Path, expected_command: tuple[str, str],
-                                already_loaded: bool = False) -> tuple[int, bool, bool, tuple[str, str] | None]:
-    """Wait for the engine, stopping it when the OSD requests a new mode."""
-    deadline = time.monotonic() + duration if duration > 0 else None
-    while True:
-        exit_code = process.poll()
-        if exit_code is not None:
-            return exit_code, False, False, None
-        requested = _read_netplay_command(command_path)
-        if requested != expected_command:
-            return _stop_engine(process, not already_loaded), False, False, requested
-        if already_loaded:
-            try:
-                core_changed = Path("/sys/class/fpga_manager/fpga0/state").read_text(encoding="ascii").strip().lower() != "operating"
-            except OSError:
-                core_changed = True
-        else:
-            core_changed = not _core_process_matches(rbf)
-        if core_changed:
-            return _stop_engine(process, not already_loaded), False, True, None
-        remaining = deadline - time.monotonic() if deadline is not None else None
-        if remaining is not None and remaining <= 0:
-            return _stop_engine(process, not already_loaded), True, False, None
-        try:
-            return process.wait(timeout=min(0.25, remaining) if remaining is not None else 0.25), False, False, None
-        except subprocess.TimeoutExpired:
-            pass
-
-
 def _force_frame_pacing(engine_args: list[str]) -> bool:
     # The FPGA output is 60 Hz in normal gameplay as well as timedemos.
     return True
@@ -568,8 +498,7 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
     data_root = args.data_root.resolve()
     _require_campaign_data(data_root, args.campaign)
     save_root = _writable(args.save_root.resolve(), "save root")
-    if args.campaign == "hellfire":
-        _stage_hellfire_mod(package, save_root)
+    _stage_hellfire_mod(package, save_root)
     config_root = _writable((args.config_root or (save_root / "config")).resolve(), "config root")
     runtime_root = _writable((args.runtime_root or (Path("/tmp") / ("diablo-" + candidate_id[:16]))).resolve(), "runtime root")
     boot_id = _boot_id(args.boot_id_file)
@@ -606,38 +535,31 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
         ready_path.write_text(json.dumps({"schema": "diablo-mister-ready-v1", "candidate_id": candidate_id,
                                           "boot_id": boot_id, "physical_base": physical_base,
                                           "linux_runtime": linux_runtime}) + "\n", encoding="utf-8")
-        netplay_command = _read_netplay_command(args.netplay_command_path)
         command = []
         started = dt.datetime.now(dt.timezone.utc).isoformat()
         with log_path.open("ab") as output:
-            while True:
-                env = dict(os.environ)
-                env.update({"DIABLO_MISTER_TRANSPORT": "1", "DIABLO_MISTER_SHARED_PHYS": f"0x{physical_base:x}",
-                            "DIABLO_MISTER_CANDIDATE_ID": candidate_id, "DIABLO_MISTER_ADMISSION_FILE": str(admission_path),
-                            "DIABLO_MISTER_TRANSPORT_LOCK": str(lock_path), "DIABLO_MISTER_TRANSPORT_LOCK_FD": str(lock_handle.fileno()),
-                            "DIABLO_MISTER_SESSION_EPOCH": f"0x{secrets.randbits(32) or 1:08x}",
-                            "DIABLO_DATA_DIR": str(data_root), "DIABLO_SAVE_DIR": str(save_root),
-                            "DIABLO_CAMPAIGN": args.campaign, "SDL_VIDEODRIVER": "dummy",
-                            "SDL_AUDIODRIVER": "dummy", "SDL_RENDER_DRIVER": "software",
-                            "DIABLO_MISTER_FORCE_FRAME_PACING": "1" if _force_frame_pacing(args.engine_arg) else "0",
-                            # Dirty-region copies are the measured lower-cost path for
-                            # the shared-DDR indexed framebuffer. Preserve an explicit
-                            # environment override for diagnostics and rollback.
-                            "DIABLO_MISTER_DIRTY_COPY": os.environ.get("DIABLO_MISTER_DIRTY_COPY", "1")})
-                _netplay_environment(env, netplay_command)
-                command = _engine_args(args, package, save_root, config_root, log_path)
-                process = _start_engine(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,
-                                        start_new_session=not args.core_already_loaded,
-                                        pass_fds=(lock_handle.fileno(),))
-                try:
-                    exit_code, timed_out, core_changed, requested = _wait_for_engine_or_netplay(
-                        process, package / "Diablo.rbf", args.duration, args.netplay_command_path,
-                        netplay_command, args.core_already_loaded)
-                finally:
-                    _stop_engine(process, not args.core_already_loaded)
-                if requested is None or timed_out or core_changed:
-                    break
-                netplay_command = requested
+            env = dict(os.environ)
+            env.update({"DIABLO_MISTER_TRANSPORT": "1", "DIABLO_MISTER_SHARED_PHYS": f"0x{physical_base:x}",
+                        "DIABLO_MISTER_CANDIDATE_ID": candidate_id, "DIABLO_MISTER_ADMISSION_FILE": str(admission_path),
+                        "DIABLO_MISTER_TRANSPORT_LOCK": str(lock_path), "DIABLO_MISTER_TRANSPORT_LOCK_FD": str(lock_handle.fileno()),
+                        "DIABLO_MISTER_SESSION_EPOCH": f"0x{secrets.randbits(32) or 1:08x}",
+                        "DIABLO_DATA_DIR": str(data_root), "DIABLO_SAVE_DIR": str(save_root),
+                        "DIABLO_CAMPAIGN": args.campaign, "SDL_VIDEODRIVER": "dummy",
+                        "SDL_AUDIODRIVER": "dummy", "SDL_RENDER_DRIVER": "software",
+                        "DIABLO_MISTER_FORCE_FRAME_PACING": "1" if _force_frame_pacing(args.engine_arg) else "0",
+                        # Dirty-region copies are the measured lower-cost path for
+                        # the shared-DDR indexed framebuffer. Preserve an explicit
+                        # environment override for diagnostics and rollback.
+                        "DIABLO_MISTER_DIRTY_COPY": os.environ.get("DIABLO_MISTER_DIRTY_COPY", "1")})
+            command = _engine_args(args, package, save_root, config_root, log_path)
+            process = _start_engine(command, cwd=package, env=env, stdout=output, stderr=subprocess.STDOUT,
+                                    start_new_session=not args.core_already_loaded,
+                                    pass_fds=(lock_handle.fileno(),))
+            try:
+                exit_code, timed_out, core_changed = _wait_for_engine(
+                    process, package / "Diablo.rbf", args.duration, args.core_already_loaded)
+            finally:
+                _stop_engine(process, not args.core_already_loaded)
         return {"status": ("fail" if core_changed else
                            "pass" if timed_out and args.duration > 0 else ("pass" if exit_code == 0 else "fail")),
                  "timed_out": timed_out,
@@ -647,8 +569,7 @@ def launch(args: argparse.Namespace) -> dict[str, Any]:
                 "linux_runtime": linux_runtime,
                 "command": command, "exit_code": exit_code, "started_utc": started,
                 "log": str(log_path), "admission": str(admission_path), "ready": str(ready_path),
-                "forced_frame_pacing": _force_frame_pacing(args.engine_arg),
-                "netplay": netplay_command}
+                "forced_frame_pacing": _force_frame_pacing(args.engine_arg)}
     finally:
         for path in (admission_path, ready_path):
             try:
@@ -670,7 +591,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--physical-base", default="0x3fe00000")
     parser.add_argument("--boot-id-file", type=Path, default=Path("/proc/sys/kernel/random/boot_id"))
     parser.add_argument("--command-path", type=Path, default=Path("/dev/MiSTer_cmd"))
-    parser.add_argument("--netplay-command-path", type=Path, default=Path("/tmp/diablo-netplay.command"))
     parser.add_argument("--core-already-loaded", action="store_true",
                         help="run beneath the Diablo main= frontend without requesting another RBF load")
     parser.add_argument("--loader-timeout", type=float, default=45.0)

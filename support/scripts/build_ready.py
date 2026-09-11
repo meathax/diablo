@@ -4,7 +4,9 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import sys
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 GAME_DATA_SOURCE = ROOT / 'game/Diablo'
@@ -50,7 +52,20 @@ def build(engine, base_package, output, base_url):
         header = binary.read_bytes()[:20]
         if header[:5] != b"\x7fELF\x01" or header[18:20] != b"\x28\x00":
             raise ValueError(f"not an ELF32 ARM binary: {binary}")
-    assets = base_package / "assets"
+    assets = Path(tempfile.mkdtemp(prefix="packed-assets-", dir=ROOT / ".work"))
+    shutil.copytree(base_package / "assets", assets, dirs_exist_ok=True)
+    packed_mod = assets / "mods" / "hf.mpq"
+    if not packed_mod.exists():
+        packer = ROOT / "support/scripts/pack_hellfire_mod.py"
+        if sys.platform == "win32":
+            def wsl_path(path):
+                return "/mnt/" + path.drive[0].lower() + path.as_posix()[2:]
+            subprocess.run(["wsl.exe", "-d", "Ubuntu", "--exec", "python3",
+                            wsl_path(packer), wsl_path(assets / "mods/hf"),
+                            wsl_path(packed_mod)], check=True)
+        else:
+            subprocess.run([sys.executable, str(packer), str(assets / "mods/hf"),
+                            str(packed_mod)], check=True)
     artifacts = list(paths.values()) + [frontend] + sorted(p for p in assets.rglob('*') if p.is_file())
     manifest = candidate.make_manifest(ROOT, artifacts)
     identity = ROOT / '.work/candidates' / (manifest['candidate_id'] + '.json')

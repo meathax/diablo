@@ -71,7 +71,9 @@ def _asset_paths(root: Path, value: str) -> tuple[Path, list[Path]]:
     for entry in sorted(resolved.rglob("*")):
         relative = entry.relative_to(resolved).as_posix()
         lowered = relative.lower()
-        if any(marker in lowered for marker in PRIVATE_MARKERS):
+        # Only this generated, redistributable mod archive belongs in assets.
+        # Original game MPQs and arbitrary archives remain excluded.
+        if lowered != "mods/hf.mpq" and any(marker in lowered for marker in PRIVATE_MARKERS):
             raise ValueError(f"assets directory contains private-looking file: {relative}")
         if entry.is_symlink():
             raise ValueError(f"assets directory must not contain symlinks: {relative}")

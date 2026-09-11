@@ -380,6 +380,22 @@ public:
 	Check(Events().size() == 1, "key release after recovered text was not delivered");
 	SDL_StopTextInput();
 
+	// The MiSTer dummy video driver may report SDL text input as inactive while
+	// the UiEdit field is active. The UI overlay advertises that state through a
+	// hint, which must preserve the paired text event without affecting gameplay.
+	adapter.input_.ResetInputState();
+	ClearEvents();
+	SDL_SetHint("DIABLO_MISTER_TEXT_INPUT_ACTIVE", "1");
+	SDL_StopTextInput();
+	adapter.input_.PushKeyboard(Keyboard(0x1c, true)); // A
+	events = Events();
+	Check(events.size() == 2 && events[0].type == SDL_KEYDOWN && events[1].type == SDL_TEXTINPUT
+	          && std::strcmp(events[1].text.text, "a") == 0,
+	      "hinted text input was not delivered when SDL reported it inactive");
+	adapter.input_.PushKeyboard(Keyboard(0x1c, false));
+	Check(Events().size() == 1, "key release after hinted text input was not delivered");
+	SDL_SetHint("DIABLO_MISTER_TEXT_INPUT_ACTIVE", nullptr);
+
 	// Independent owners must not share desired/delivered state. Repeated
 	// reset cycles must still deliver exactly one press and release each.
 	InputReconciler first;

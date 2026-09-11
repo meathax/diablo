@@ -35,8 +35,10 @@ assign VGA_F1 = 0;
 // A valid indexed gameplay frame is consumed through the framework
 // framebuffer/scaler path.  Force that path for analog/direct output as well;
 // otherwise the core's direct RGB bus would expose the diagnostic generator.
-// The diagnostic OSD option deliberately leaves the native pattern selected.
-wire diagnostic_video = status[6];
+// Release boot must never expose a retained diagnostic status bit from an
+// older core configuration. The direct bus stays black until the first valid
+// indexed gameplay frame is available.
+wire diagnostic_video = 1'b0;
 wire gameplay_video_valid;
 wire video_startup_error;
 wire video_direct_diagnostic;
@@ -80,12 +82,6 @@ localparam CONF_STR = {
     "Diablo;;",
     "O[122:121],Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
     "O[1],DOS framerate,OFF,ON;",
-    "O[8:7],Netplay,OFF,HOST,JOIN,LEAVE;",
-    "O[14:10],Code 1,_,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;",
-    "O[19:15],Code 2,_,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;",
-    "O[24:20],Code 3,_,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;",
-    "O[29:25],Code 4,_,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;",
-    "O[34:30],Code 5,_,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;",
     "P1,Show controls;",
     "P1-,A: Attack/talk/lift/confirm;",
     "P1-,X: Cast/belt equip/hold drop;",

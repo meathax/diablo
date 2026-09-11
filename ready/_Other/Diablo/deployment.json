@@ -1,12 +1,12 @@
 {
   "schema": "diablo-deployment-manifest-v2",
   "status": "pass",
-  "candidate_id": "9165b2011cb86c4184ee17e5f9ed6c9cb52ce079c09ee889571431b6045b93ca",
-  "source_id": "4a2466518e7e817177ea7b0599401e9b8cb28be194f95474674fec507a983dec",
+  "candidate_id": "49f372d69cfc73c97bcb1d271f044fe3093973413ad620ca6abcef919a98363b",
+  "source_id": "8a0637e62f7300dca9020c5d161316ed7ebd8fce4ba3c3642c0f6ba814a409fb",
   "abi_digest": "aefc42fc0a1969800ef9ed8cbddb5d76155b7433ecaa1b6dc1a04a507e1737cd",
   "board_profile": "de10-nano-mister",
   "private_data_excluded": true,
-  "created_utc": "2026-09-10T16:33:23+00:00",
+  "created_utc": "2026-09-11T06:22:37+00:00",
   "artifacts": [
     {
       "role": "abi",
@@ -17,26 +17,26 @@
     {
       "role": "engine",
       "path": "devilutionx",
-      "bytes": 8731544,
-      "sha256": "54f773d03ad2020a15985171ac8d35bcbdd146115c95a9487179b997607b9d80"
+      "bytes": 8731536,
+      "sha256": "2ab9d6b4f7ef4c43358c3ae2c66d563917bd724ab3ce64d13f676b6e7fb11ebb"
     },
     {
       "role": "launcher",
       "path": "diablo_launcher.py",
-      "bytes": 33657,
-      "sha256": "ae1b343373ca0a3ad39f41bca13885a52f0409533edd6fc9699dd03f20e6bb68"
+      "bytes": 29979,
+      "sha256": "51a5501d8c18319cb89fa8cf30aec4fb43992a7cc401a7defc571bf7467f4af8"
     },
     {
       "role": "rbf",
       "path": "Diablo.rbf",
-      "bytes": 2765388,
-      "sha256": "bdd15e2c2e3a7baa76a1c4c82830712ea34087b3d1a1c26b7d46022680dd5881"
+      "bytes": 2738600,
+      "sha256": "e8b38f5ab1a1c1589bed2e308c46f5bc70ebca7ab03b32fe840a657ec51d19ba"
     }
   ],
   "runtime_assets": {
     "path": "assets",
-    "bytes": 6247238,
-    "sha256": "98745649e013cc5f501d2f2917d6338f6f035c634ed2cdf554d66416a10bacee",
+    "bytes": 6805146,
+    "sha256": "a687f2fd5ca725b7815adb8db1b6cdfa2d26869dfee450a39c0122228877acc0",
     "files": [
       {
         "path": "ASSETS_VERSION",
@@ -657,6 +657,11 @@
         "path": "lua_internal/get_lua_function_signature.lua",
         "bytes": 1050,
         "sha256": "5baa6aadf16817e48dbaa9dbb9b22672602ca0ed5bccbab757ed58c6df227dd6"
+      },
+      {
+        "path": "mods/hf.mpq",
+        "bytes": 557908,
+        "sha256": "4f06877b4f6dbfd9c96c9c6b0bb32b22f4a4f8ff25fd0243803b909a3299dad1"
       },
       {
         "path": "mods/hf/data/inv/objcurs2-widths.txt",

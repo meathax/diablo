@@ -1,26 +1,26 @@
 {
   "schema": "diablo-package-manifest-v2",
   "status": "pass",
-  "candidate_id": "9165b2011cb86c4184ee17e5f9ed6c9cb52ce079c09ee889571431b6045b93ca",
-  "source_id": "4a2466518e7e817177ea7b0599401e9b8cb28be194f95474674fec507a983dec",
+  "candidate_id": "49f372d69cfc73c97bcb1d271f044fe3093973413ad620ca6abcef919a98363b",
+  "source_id": "8a0637e62f7300dca9020c5d161316ed7ebd8fce4ba3c3642c0f6ba814a409fb",
   "board_profile": "de10-nano-mister",
   "private_data_excluded": true,
   "deployment_manifest": {
     "path": "deployment.json",
-    "sha256": "692f1c6f062ffb8d36cbea65903460eb9dcd4b68410435b53b3d0d2e2707c454"
+    "sha256": "72c7d84831123c34079a19aa023530c2a77486d84f3f9820ac2424965a7d77ff"
   },
   "files": [
     {
       "role": "runtime",
       "path": "devilutionx",
-      "bytes": 8731544,
-      "sha256": "54f773d03ad2020a15985171ac8d35bcbdd146115c95a9487179b997607b9d80"
+      "bytes": 8731536,
+      "sha256": "2ab9d6b4f7ef4c43358c3ae2c66d563917bd724ab3ce64d13f676b6e7fb11ebb"
     },
     {
       "role": "runtime",
       "path": "Diablo.rbf",
-      "bytes": 2765388,
-      "sha256": "bdd15e2c2e3a7baa76a1c4c82830712ea34087b3d1a1c26b7d46022680dd5881"
+      "bytes": 2738600,
+      "sha256": "e8b38f5ab1a1c1589bed2e308c46f5bc70ebca7ab03b32fe840a657ec51d19ba"
     },
     {
       "role": "runtime",
@@ -31,14 +31,14 @@
     {
       "role": "runtime",
       "path": "diablo_launcher.py",
-      "bytes": 33657,
-      "sha256": "ae1b343373ca0a3ad39f41bca13885a52f0409533edd6fc9699dd03f20e6bb68"
+      "bytes": 29979,
+      "sha256": "51a5501d8c18319cb89fa8cf30aec4fb43992a7cc401a7defc571bf7467f4af8"
     },
     {
       "role": "deployment-manifest",
       "path": "deployment.json",
-      "bytes": 37542,
-      "sha256": "692f1c6f062ffb8d36cbea65903460eb9dcd4b68410435b53b3d0d2e2707c454"
+      "bytes": 37705,
+      "sha256": "72c7d84831123c34079a19aa023530c2a77486d84f3f9820ac2424965a7d77ff"
     },
     {
       "role": "release-document",
@@ -49,8 +49,8 @@
     {
       "role": "release-document",
       "path": "SETUP.md",
-      "bytes": 1664,
-      "sha256": "ee1573b816bcf37c2f3f4fc8af91bd4de92692ece12bdfb858d11180724cc245"
+      "bytes": 1742,
+      "sha256": "737df2dde76b0e10abfec7d14db144682b1fd517c1f612b983b19a59c52e526d"
     },
     {
       "role": "menu-entry",
@@ -1161,6 +1161,12 @@
       "path": "assets/mods/hf/ui_art/supportw.clx",
       "bytes": 237573,
       "sha256": "f12980a91c94931342bd111da00b4adabe8061264cb8ecbdb7fb3a82895c1514"
+    },
+    {
+      "role": "asset",
+      "path": "assets/mods/hf.mpq",
+      "bytes": 557908,
+      "sha256": "4f06877b4f6dbfd9c96c9c6b0bb32b22f4a4f8ff25fd0243803b909a3299dad1"
     },
     {
       "role": "asset",

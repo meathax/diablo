@@ -75,8 +75,9 @@ SETUP_TEXT = """# Diablo MiSTer package setup
     updates and rollback, and run the package launcher with Python 3.
     Default game data: `/media/fat/games/Diablo`; saves: `/media/fat/saves/Diablo`;
     configuration: `/media/fat/config/Diablo`. The launcher separates campaigns.
-    Complete packages include the redistributable Hellfire `hf` mod in the
-    asset tree; the launcher stages it into the save root for Hellfire.
+    Complete packages include the redistributable Hellfire `hf.mpq` mod in the
+    asset tree; the launcher stages the archive into the save root. Matching
+    legacy loose mod files are backed up beside the save directory.
    For another layout, export DIABLO_INSTALL_ROOT, DIABLO_DATA_ROOT,
    DIABLO_SAVE_ROOT or DIABLO_CONFIG_ROOT before invoking the script.
    Keep MPQs outside managed releases. Python 3 must be available on PATH.
@@ -186,7 +187,7 @@ def _safe_tree_source(root: Path, value: str, label: str) -> Path:
         raise ValueError(f"{label} must contain at least one file")
     for entry in files:
         relative = entry.relative_to(resolved).as_posix().lower()
-        if any(marker in relative for marker in PRIVATE_MARKERS):
+        if relative != "mods/hf.mpq" and any(marker in relative for marker in PRIVATE_MARKERS):
             raise ValueError(f"{label} contains private-looking path: {relative}")
         if entry.is_symlink():
             raise ValueError(f"{label} must not contain symlinks: {entry}")
@@ -228,7 +229,7 @@ def _asset_records(root: Path) -> list[dict[str, object]]:
     for path in sorted(assets.rglob("*")):
         relative = path.relative_to(root).as_posix()
         lowered = relative.lower()
-        if any(marker in lowered for marker in PRIVATE_MARKERS):
+        if lowered != "assets/mods/hf.mpq" and any(marker in lowered for marker in PRIVATE_MARKERS):
             raise ValueError(f"package contains private-data-looking file: {relative}")
         if path.is_symlink():
             raise ValueError(f"package contains symlink: {relative}")
@@ -407,7 +408,7 @@ def verify_package(package: Path, expected_board_profile: str | None = None) -> 
         problems.append("package contains symlinks")
     for name in files:
         lowered = name.lower()
-        if any(marker in lowered for marker in PRIVATE_MARKERS):
+        if lowered != "assets/mods/hf.mpq" and any(marker in lowered for marker in PRIVATE_MARKERS):
             problems.append(f"package contains private-data-looking file: {name}")
     menu_paths = set(MENU_FILES) & set(files)
     if menu_paths and menu_paths != set(MENU_FILES):

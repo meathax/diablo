@@ -228,13 +228,24 @@ private:
 		}
 	}
 
+	[[nodiscard]] static bool TextInputActive()
+	{
+		if (SDL_IsTextInputActive() == SDL_TRUE) return true;
+		// SDL's dummy video driver can leave its native text-input state clear
+		// even though the MiSTer UI has an active UiEdit field. The UI overlay
+		// mirrors that state through this hint so physical PS/2 keys still reach
+		// SDL_TEXTINPUT without producing text events during gameplay.
+		const char *hint = SDL_GetHint("DIABLO_MISTER_TEXT_INPUT_ACTIVE");
+		return hint != nullptr && std::strcmp(hint, "1") == 0;
+	}
+
 	[[nodiscard]] bool PushText(SDL_Scancode scancode)
 	{
 		// A text event is only meaningful while the gameplay window owns focus
 		// and SDL text input is active. Treat an inactive/non-character key as
 		// consumed so it does not remain pending forever; retain a failed or
 		// filtered event for the next bounded reconciliation pass.
-		if (!requested_focus_ || !delivered_focus_ || SDL_IsTextInputActive() != SDL_TRUE) return true;
+		if (!requested_focus_ || !delivered_focus_ || !TextInputActive()) return true;
 		const auto character = TextCharacter(scancode, ModifierMask());
 		if (!character.has_value()) return true;
 		SDL_Event event {};

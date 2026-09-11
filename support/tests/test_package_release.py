@@ -83,6 +83,11 @@ class PackageReleaseTest(unittest.TestCase):
         (mod / "manifest.ini").write_text("[mod]\nname=Hellfire\n", encoding="utf-8")
         (mod / "lua/mods/hf/init.lua").write_text("hellfire.enable()\n", encoding="utf-8")
         candidate = json.loads(self.candidate.read_text(encoding="utf-8"))
+        packed = self.root / "assets/mods/hf.mpq"
+        packed.parent.mkdir(parents=True)
+        packed.write_bytes(b"packed-hf-fixture")
+        candidate["artifacts"].append({"path": "assets/mods/hf.mpq",
+                                       "sha256": hashlib.sha256(packed.read_bytes()).hexdigest()})
         for path in sorted(mod.rglob("*")):
             if path.is_file():
                 candidate["artifacts"].append({
@@ -96,12 +101,48 @@ class PackageReleaseTest(unittest.TestCase):
         self.assertTrue((package / "assets/mods/hf/manifest.ini").is_file())
         save_root = self.root / "save-root"
         save_root.mkdir()
+        legacy = save_root / "mods/hf/lua/mods/hf/init.lua"
+        legacy.parent.mkdir(parents=True)
+        legacy.write_text("hellfire.enable()\n", encoding="utf-8")
+        hero = save_root / "single_0.sv"
+        hero.write_bytes(b"existing hero")
         mister_launcher._stage_hellfire_mod(package, save_root)
-        staged = save_root / "mods/hf/lua/mods/hf/init.lua"
-        self.assertEqual("hellfire.enable()\n", staged.read_text(encoding="utf-8"))
-        staged.write_text("user change\n", encoding="utf-8")
+        staged = save_root / "mods/hf.mpq"
+        self.assertEqual(b"packed-hf-fixture", staged.read_bytes())
+        self.assertFalse((save_root / "mods/hf").exists())
+        backup = save_root.parent / "save-root.legacy-hf/lua/mods/hf/init.lua"
+        self.assertEqual("hellfire.enable()\n", backup.read_text(encoding="utf-8"))
+        self.assertEqual(b"existing hero", hero.read_bytes())
+        mister_launcher._stage_hellfire_mod(package, save_root)
+        staged.write_bytes(b"user change")
         with self.assertRaisesRegex(mister_launcher.LaunchError, "differs from package"):
             mister_launcher._stage_hellfire_mod(package, save_root)
+
+    def test_changed_legacy_mod_is_preserved_and_migration_stops(self) -> None:
+        package = self.root / "mod-package"
+        bundled = package / "assets/mods/hf/lua/mods/hf/init.lua"
+        bundled.parent.mkdir(parents=True)
+        bundled.write_bytes(b"original")
+        (package / "assets/mods/hf.mpq").write_bytes(b"packed")
+        save_root = self.root / "save-root"
+        legacy = save_root / "mods/hf/lua/mods/hf/init.lua"
+        legacy.parent.mkdir(parents=True)
+        legacy.write_bytes(b"user modification")
+        with self.assertRaisesRegex(mister_launcher.LaunchError, "differs from package"):
+            mister_launcher._stage_hellfire_mod(package, save_root)
+        self.assertEqual(b"user modification", legacy.read_bytes())
+        self.assertFalse((save_root / "mods/hf.mpq").exists())
+        self.assertFalse((save_root.parent / "save-root.legacy-hf").exists())
+
+    def test_packed_mod_exception_does_not_admit_game_archives(self) -> None:
+        for name in ("DIABDAT.MPQ", "mods/other.mpq", "mods/hf.mpq/secret.mpq"):
+            with self.subTest(name=name):
+                source = self.root / "assets" / name
+                source.parent.mkdir(parents=True, exist_ok=True)
+                source.write_bytes(b"must not ship")
+                with self.assertRaisesRegex(ValueError, "private-looking"):
+                    package_release._safe_asset_source(self.root, "assets")
+                source.unlink()
 
     def run_menu(self, package: Path, campaign: str, target: Path, arguments: tuple[str, ...] = ()) -> list[str]:
         entry = package / ("Diablo.sh" if campaign == "diablo" else "Hellfire.sh")

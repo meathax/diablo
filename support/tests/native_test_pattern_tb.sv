@@ -15,7 +15,7 @@ module native_test_pattern_tb;
     );
     integer pixels = 0, active = 0, low_hs = 0, low_vs = 0;
     integer x, y, frame, ramp, last_ce = 0;
-    integer i, saw_startup_error, saw_guard_black;
+    integer i, saw_guard_black;
     reg [23:0] expected;
     reg [23:0] bars [0:7];
     initial begin
@@ -72,21 +72,21 @@ module native_test_pattern_tb;
         ready=0;
         repeat (4) @(negedge clk);
         if (ce !== 0 || de !== 0) $fatal(1, "PLL unlock must suppress video");
-        // The source guard is an explicit contract: startup/fault is visibly
-        // red, while the normal gameplay direct bus is black because the
-        // framework framebuffer/scaler is selected by the top level.
+        // The source guard is an explicit contract: startup/fault remains
+        // black until the framework framebuffer/scaler has a valid frame.
         diagnostic_enable = 0;
         startup_error = 1;
         ready = 1;
-        saw_startup_error = 0;
+        saw_guard_black = 0;
         for (i = 0; i < 5000; i = i + 1) begin
             @(negedge clk);
-            if (ce && de && ((r == 8'h18) || (r == 8'h60)) && g == 0 && b == 0)
-                saw_startup_error = 1;
+            if (ce && de && {r,g,b} != 24'h000000)
+                $fatal(1, "startup guard must remain black, got %h", {r,g,b});
+            if (ce && de && {r,g,b} == 24'h000000)
+                saw_guard_black = 1;
         end
-        if (!saw_startup_error) $fatal(1, "startup error screen was not visible on direct bus");
+        if (!saw_guard_black) $fatal(1, "startup guard did not blank direct bus");
         startup_error = 0;
-        saw_guard_black = 0;
         for (i = 0; i < 5000; i = i + 1) begin
             @(negedge clk);
             if (ce && de && {r,g,b} == 24'h000000) saw_guard_black = 1;

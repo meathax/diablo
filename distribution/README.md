@@ -4,7 +4,7 @@ This directory contains the two custom databases needed by Downloader_MiSTer,
 which Update All invokes:
 
 - `diablo_runtime.json.zip` installs the core frontend, both visible RBFs, the
-  engine, launcher, assets, ABI metadata, and notices. The 258 runtime files are
+  engine, launcher, assets, ABI metadata, and notices. The 257 runtime files are
   transported in one `diablo_runtime.zip` and described by a selective archive
   summary using `arc_id` and `arc_at`.
 - `diablo_mister.json.zip` installs the five required game-data files into
