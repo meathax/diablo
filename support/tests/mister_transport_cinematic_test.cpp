@@ -162,8 +162,42 @@ Surface MakeGeometrySurface(int width, int height, std::uint8_t pixel,
 	return result;
 }
 
+void RunMovieCoordinateCacheChecks()
+{
+	IndexedFrameAdapter adapter;
+	// Reuse the adapter across repeats and geometry changes (including equal-aspect changes).
+	const std::array<std::array<int, 2>, 10> sizes {{{320, 156}, {320, 156},
+		{160, 78}, {321, 157}, {157, 321}, {1, 1}, {853, 481}, {640, 480}, {319, 239}, {320, 156}}};
+	for (const auto &size : sizes) {
+		Surface source = MakeGeometrySurface(size[0], size[1], 0U, 7U, true);
+		for (int y = 0; y < source.value->h; ++y) {
+			auto *row = static_cast<std::uint8_t *>(source.value->pixels) + y * source.value->pitch;
+			for (int x = 0; x < source.value->w; ++x)
+				row[x] = static_cast<std::uint8_t>((x * 37 + y * 73 + x * y) % 256);
+		}
+		const auto prepared = adapter.Prepare(source.value);
+		Check(prepared.error == PrepareError::None && prepared.surface != nullptr,
+			"coordinate-cache preparation failed");
+		const auto &rect = prepared.destination;
+		for (int y = 0; y < 480; ++y) {
+			for (int x = 0; x < 640; ++x) {
+				std::uint8_t expected = 7;
+				if (x >= rect.x && x < rect.x + rect.w && y >= rect.y && y < rect.y + rect.h) {
+					// Original center-of-pixel nearest-neighbor formula: independent oracle.
+					const int sx = static_cast<int>((2ULL * (x - rect.x) + 1) * size[0] / (2ULL * rect.w));
+					const int sy = static_cast<int>((2ULL * (y - rect.y) + 1) * size[1] / (2ULL * rect.h));
+					expected = PixelAt(source.value, sx, sy);
+				}
+				Check(PixelAt(prepared.surface, x, y) == expected,
+					"cached scaling differs from original pixel mapping");
+			}
+		}
+	}
+}
+
 void RunMovieFrameGeometryChecks()
 {
+	RunMovieCoordinateCacheChecks();
 	const SDL_Rect expected_destination = {0, 84, 640, 312};
 	const auto destination = diablo::mister::movie::ComputeDestinationRect(320, 156);
 	Check(destination.x == expected_destination.x && destination.y == expected_destination.y

@@ -1,0 +1,53 @@
+{
+  "schema": "diablo-transport-cinematic-test-v1",
+  "run_id": "1c12dd8bb2a64405b26a1a6e276de622",
+  "status": "pass",
+  "finished_utc": "2026-09-12T14:04:19.930828+00:00",
+  "distribution": "Ubuntu",
+  "source": {
+    "path": "support/tests/mister_transport_cinematic_test.cpp",
+    "sha256": "753b10d63f7910cc72552ae5e61fff40dc350a958f770c9b0439cf3679602c72"
+  },
+  "inputs": {
+    "adapter_header": "82f23fb72726e0973dede7114eab81bd8f75301010a86b99574bb7b845be1dfb",
+    "abi_header": "506e9823eac55b6d527966fee84279fb870e2900691bdd237c61b57507e3857e",
+    "overlay_cmake": "c64c04f98cb3db0e92096e12a0370d8b7a500fc12b58f150a8635bade18dfcaa"
+  },
+  "generated_hook": {
+    "status": "pass",
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\meath\\.cache\\diablo-arm-engine-transport\\mister-engine-overlay\\storm_svid.cpp",
+    "sha256": "a3f64b8f0e7216e611be6df7f8f9955f0cc2dcc9a9bebf0023b191014125fd4e",
+    "checks": {
+      "active_present_before_generic_render": true,
+      "return_true_before_generic_render": true,
+      "no_present_condition_fallthrough": true,
+      "no_direct_native_surface_present": true,
+      "geometry_tokens": {
+        "target_width": false,
+        "target_height": false,
+        "palette_mapping": true,
+        "letterbox": true
+      }
+    }
+  },
+  "compile_status": "pass",
+  "run_status": "pass",
+  "outputs": {
+    "compile_log": ".work/build/transport-cinematic/1c12dd8bb2a64405b26a1a6e276de622/compile.log",
+    "run_log": ".work/build/transport-cinematic/1c12dd8bb2a64405b26a1a6e276de622/run.log",
+    "compile_log_sha256": "06fbf1242eb34d7bbef2e5aa53c924ee727c17136f9aaabf6fc352af2ebabb86",
+    "run_log_sha256": "ffac1a4a2b4dffc8d669b80d75e5f8102eb7a3f87bebad5e48107735397d3b6d",
+    "shared_file": ".work/build/transport-cinematic/1c12dd8bb2a64405b26a1a6e276de622/transport-runtime-memory.bin",
+    "lock_file": ".work/build/transport-cinematic/1c12dd8bb2a64405b26a1a6e276de622/transport-runtime.lock",
+    "wsl_binary": "/tmp/diablo-transport-cinematic-1c12dd8bb2a64405b26a1a6e276de622/transport-cinematic"
+  },
+  "checks": [
+    "native indexed 640x480 title and two changing cinematic frames preserve pixels and palette",
+    "full frame pipeline backpressure leaves only retained title frames and no movie publication",
+    "movie publication resumes after retirement and return-to-title publishes the title source",
+    "disabled transport follows the normal inactive initialization path",
+    "generated active movie hook returns before generic RenderPresent and stages non-native geometry"
+  ],
+  "scope": "Focused host adapter and generated cinematic-hook regression; no FPGA, board, input, audio or physical acceptance.",
+  "exit_code": 0
+}

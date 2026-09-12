@@ -1,0 +1,50 @@
+{
+  "scope": "ARM CPU-time microbenchmark of movie scaling only; not end-to-end FPS",
+  "source_geometry": [
+    320,
+    156
+  ],
+  "output_geometry": [
+    640,
+    480
+  ],
+  "pairs": [
+    {
+      "width": 320,
+      "height": 156,
+      "round": 0,
+      "baseline_cpu_ms": 49.43186,
+      "cached_cpu_ms": 3.639985,
+      "cold_ms": 11.37251,
+      "equal": true
+    },
+    {
+      "width": 320,
+      "height": 156,
+      "round": 1,
+      "baseline_cpu_ms": 50.282539,
+      "cached_cpu_ms": 3.600014,
+      "cold_ms": 11.37251,
+      "equal": true
+    },
+    {
+      "width": 320,
+      "height": 156,
+      "round": 2,
+      "baseline_cpu_ms": 48.897226,
+      "cached_cpu_ms": 3.670398,
+      "cold_ms": 11.37251,
+      "equal": true
+    }
+  ],
+  "iterations_per_arm": 60,
+  "baseline_mean_cpu_ms": 49.53720833333333,
+  "cached_mean_cpu_ms": 3.636799,
+  "speedup": 13.621101505288946,
+  "reduction_percent": 92.65844983526692,
+  "pixel_equality": true,
+  "game_binary": ".work/build/movie-coordinate-cache/devilutionx",
+  "game_binary_sha256": "cc7476938e7386e74025e47b90a3ebbe50948b3e70f9019aa7986b718dfbc3e2",
+  "deployed": false,
+  "regression_receipt": ".mister/evidence/receipts/20260912T140419Z-transport-cinematic-1c12dd8bb2a64405b26a1a6e276de622.json"
+}

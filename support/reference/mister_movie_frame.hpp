@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 
+#include <array>
 #include <cstdint>
 
 namespace diablo::mister::movie {
@@ -57,8 +58,39 @@ enum class CopyResult {
 	Lock,
 };
 
+// Fixed-size coordinate cache: no allocation and no division in the pixel loop.
+// Oversized direct callers retain the original scalar mapping below.
+struct NearestIndexedCoordinates {
+	std::array<int, kFrameWidth> x;
+	std::array<int, kFrameHeight> y;
+	int source_width = 0, source_height = 0;
+	int destination_width = 0, destination_height = 0;
+
+	bool Prepare(int sw, int sh, int dw, int dh) noexcept
+	{
+		if (dw > kFrameWidth || dh > kFrameHeight) return false;
+		if (sw == source_width && sh == source_height
+			&& dw == destination_width && dh == destination_height) return true;
+		auto fill = [](auto &coordinates, int source_size, int destination_size) {
+			for (int i = 0; i < destination_size; ++i) {
+				const auto numerator = (std::uint64_t {2} * i + 1) * source_size;
+				const int index = static_cast<int>(numerator / (std::uint64_t {2} * destination_size));
+				coordinates[i] = index < source_size ? index : source_size - 1;
+			}
+		};
+		fill(x, sw, dw);
+		fill(y, sh, dh);
+		source_width = sw;
+		source_height = sh;
+		destination_width = dw;
+		destination_height = dh;
+		return true;
+	}
+};
+
 inline CopyResult CopyNearestIndexed(SDL_Surface *source, SDL_Surface *destination,
-	const SDL_Rect &destination_rect, std::uint8_t border_index) noexcept
+	const SDL_Rect &destination_rect, std::uint8_t border_index,
+	NearestIndexedCoordinates *cached_coordinates = nullptr) noexcept
 {
 	if (source == nullptr || destination == nullptr || source->pixels == nullptr
 		|| destination->pixels == nullptr || destination_rect.x < 0 || destination_rect.y < 0
@@ -82,7 +114,18 @@ inline CopyResult CopyNearestIndexed(SDL_Surface *source, SDL_Surface *destinati
 		auto *destination_row = destination_pixels + y * destination->pitch;
 		for (int x = 0; x < destination->w; ++x) destination_row[x] = border_index;
 	}
+	NearestIndexedCoordinates local_coordinates;
+	auto &coordinates = cached_coordinates != nullptr ? *cached_coordinates : local_coordinates;
+	const bool mapped = coordinates.Prepare(source->w, source->h, destination_rect.w, destination_rect.h);
 	for (int y = 0; y < destination_rect.h; ++y) {
+		if (mapped) {
+			const auto *source_row = source_pixels + coordinates.y[y] * source->pitch;
+			auto *destination_row = destination_pixels
+				+ (destination_rect.y + y) * destination->pitch + destination_rect.x;
+			for (int x = 0; x < destination_rect.w; ++x)
+				destination_row[x] = source_row[coordinates.x[x]];
+			continue;
+		}
 		const auto source_y_numerator
 			= (static_cast<std::uint64_t>(2) * static_cast<std::uint64_t>(y) + 1)
 			* static_cast<std::uint64_t>(source->h);
@@ -163,7 +206,7 @@ public:
 			prepared.error = PrepareError::Scale;
 			return prepared;
 		}
-		const auto copy_result = CopyNearestIndexed(source, scratch_, prepared.destination, border_index);
+		const auto copy_result = CopyNearestIndexed(source, scratch_, prepared.destination, border_index, &coordinates_);
 		if (copy_result != CopyResult::Success) {
 			prepared.error = copy_result == CopyResult::Lock ? PrepareError::Lock : PrepareError::Scale;
 			return prepared;
@@ -188,6 +231,7 @@ public:
 	}
 
 private:
+	NearestIndexedCoordinates coordinates_;
 	SDL_Surface *scratch_ = nullptr;
 	bool approximate_border_reported_ = false;
 	bool error_reported_ = false;
