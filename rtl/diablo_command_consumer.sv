@@ -2,13 +2,18 @@
 // Bounded FPGA consumer for the ARM command stream.
 //
 // The consumer executes FillRect rows as aligned 64-bit byte-enable writes and
-// groups up to eight full words into one bounded DDR burst. CopyRect remains
+// groups up to 32 full words into one bounded DDR burst. CopyRect remains
 // byte-granular because overlap-safe reads and writes need the source byte
 // value, while constant-color fills can safely use every lane in a DDR word.
 // This keeps command execution bounded without changing ownership or clipping
 // semantics, and leaves short unaligned edges as single-word transactions.
 module diablo_command_consumer #(
-    parameter integer POLL_INTERVAL_CYCLES = 50400
+    parameter integer POLL_INTERVAL_CYCLES = 50400,
+    // Keep command bursts bounded so audio/input/frame metadata can regain
+    // the shared DDR port between chunks.  Thirty-two words amortizes the
+    // command-side request/arbiter overhead across a full interior scanline
+    // while keeping the longest lock to one 256-byte cache-line group.
+    parameter integer MAX_FILL_BURST_WORDS = 32
 ) (
     input wire clk,
     input wire reset,
@@ -107,8 +112,8 @@ module diablo_command_consumer #(
     reg [31:0] render_column = 0;
     reg [31:0] render_row = 0;
     reg [7:0] render_color = 0;
-    reg [3:0] fill_burst_length = 1;
-    reg [3:0] fill_burst_remaining = 1;
+    reg [5:0] fill_burst_length = 1;
+    reg [5:0] fill_burst_remaining = 1;
     reg [31:0] fill_burst_byte_offset = 0;
     reg [7:0] fill_burst_mask = 8'h01;
     reg [1:0] target_slot = 0;
@@ -158,8 +163,15 @@ module diablo_command_consumer #(
     // words. Keeping this arithmetic narrow avoids a wide compare on the
     // timing-sensitive DDR request path.
     wire [6:0] fill_full_words = fill_remaining[9:3];
-    wire [3:0] fill_burst_words = (fill_full_words > 7'd8)
-                                ? 4'd8 : fill_full_words[3:0];
+    // Clamp the tunable limit to a representable, nonzero value.  The
+    // default 32-word burst is four times the former 8-word chunk while the
+    // arbiter still releases ownership at least three times per 640-pixel
+    // interior row.
+    localparam integer FILL_BURST_LIMIT =
+        (MAX_FILL_BURST_WORDS <= 0) ? 1
+        : (MAX_FILL_BURST_WORDS > 32) ? 32 : MAX_FILL_BURST_WORDS;
+    wire [5:0] fill_burst_words = (fill_full_words > FILL_BURST_LIMIT)
+                                ? FILL_BURST_LIMIT[5:0] : fill_full_words[5:0];
     wire [3:0] fill_chunk = (fill_remaining < (32'd8 - {29'd0, fill_byte_offset[2:0]}))
                           ? fill_remaining[3:0]
                           : (4'd8 - {1'b0, fill_byte_offset[2:0]});
@@ -202,7 +214,7 @@ module diablo_command_consumer #(
         end
     endfunction
 
-    assign ddram_burstcnt = (state == FILL_WRITE) ? {4'd0, fill_burst_length} : 8'd1;
+    assign ddram_burstcnt = (state == FILL_WRITE) ? {2'd0, fill_burst_length} : 8'd1;
     assign ddram_rd = (state == VERIFY_REQUEST) || (state == POLL_RECORD_REQUEST)
                     || (state == POLL_PAYLOAD_REQUEST) || (state == RECORD_REQUEST)
                     || (state == COPY_READ_REQUEST);
@@ -533,7 +545,7 @@ module diablo_command_consumer #(
 
                 FILL_ARM: begin
                     // Keep edge words isolated so their byte enables may differ.
-                    // Aligned interior words are grouped into at most eight beats
+                    // Aligned interior words are grouped into at most 32 beats
                     // to bound DDR occupancy and preserve audio/input priority.
                     fill_burst_byte_offset <= fill_byte_offset;
                     fill_burst_mask <= fill_mask;

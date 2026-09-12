@@ -1,8 +1,16 @@
-# Staged lighting optimization; leave OFF until its differential suite is run.
-option(DIABLO_MISTER_LIGHTING_OPTIMIZATIONS "Enable verified MiSTer lighting fast paths" OFF)
+# The transport recipe includes this overlay; enable the verified lighting
+# fast paths for that build by default. Override with -D...=OFF when needed.
+option(DIABLO_MISTER_LIGHTING_OPTIMIZATIONS "Enable verified MiSTer lighting fast paths" ON)
 if(NOT DIABLO_MISTER_LIGHTING_OPTIMIZATIONS)
   return()
 endif()
+
+foreach(_mister_lighting_input IN ITEMS light_render.hpp light_render.cpp blit_impl.hpp)
+  if(NOT EXISTS "${PROJECT_SOURCE_DIR}/Source/engine/render/${_mister_lighting_input}")
+    message(STATUS "MiSTer lighting optimizations disabled: pinned renderer lacks Source/engine/render/${_mister_lighting_input}")
+    return()
+  endif()
+endforeach()
 
 set(_mister_lighting_dir "${CMAKE_CURRENT_LIST_DIR}/../reference/lighting")
 function(diablo_mister_lighting)

@@ -7,6 +7,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <cstdlib>
 #include <expected>
 #include <limits>
 #include <memory>
@@ -52,6 +53,7 @@ public:
 		if (slot >= FRAME_SLOTS) return false;
 		palette_valid_[slot] = false;
 		shadow_valid_[slot] = false;
+		crc_valid_[slot] = false;
 		return true;
 	}
 
@@ -87,58 +89,36 @@ public:
 		const FrameSlot &descriptor = view_.header().frames[slot];
 		auto destination = view_.memory().subspan(descriptor.pixel_offset, descriptor.pixel_bytes);
 		const bool dirty_copy = DirtyCopyEnabled();
+		bool pixels_changed = false;
 		if (!dirty_copy) {
-			if (pitch == FRAME_WIDTH) {
-				std::memcpy(destination.data(), pixels.data(), FRAME_PIXEL_BYTES);
-			} else {
-				for (std::uint32_t row = 0; row < FRAME_HEIGHT; ++row) {
-					std::memcpy(destination.data() + row * FRAME_WIDTH,
-					            pixels.data() + static_cast<std::size_t>(row) * pitch,
-					            FRAME_WIDTH);
-				}
-			}
+			CopyIndexedRows(destination.data(), pixels.data(), pitch);
+			pixels_changed = true;
 		} else if (!shadow_valid_[slot]) {
-			for (std::uint32_t row = 0; row < FRAME_HEIGHT; ++row) {
-				const auto *source_row = pixels.data() + static_cast<std::size_t>(row) * pitch;
-				std::memcpy(destination.data() + row * FRAME_WIDTH, source_row, FRAME_WIDTH);
-				std::memcpy(pixel_shadows_[slot].data() + row * FRAME_WIDTH,
-				            source_row, FRAME_WIDTH);
-			}
+			CopyIndexedRows(destination.data(), pixels.data(), pitch);
+			CopyIndexedRows(pixel_shadows_[slot].data(), pixels.data(), pitch);
 			shadow_valid_[slot] = true;
+			pixels_changed = true;
 		} else {
-			// Shared DDR is the measured bottleneck. Compare against this slot's
-			// cached source image and write only changed contiguous runs, while
-			// keeping the complete shadow current for the next reuse.
-			for (std::uint32_t row = 0; row < FRAME_HEIGHT; ++row) {
-				const auto *source_row = pixels.data() + static_cast<std::size_t>(row) * pitch;
-				auto *shadow_row = pixel_shadows_[slot].data() + row * FRAME_WIDTH;
-				if (std::memcmp(source_row, shadow_row, FRAME_WIDTH) == 0) continue;
-				std::size_t column = 0;
-				std::size_t changed = 0;
-				while (column < FRAME_WIDTH) {
-					while (column < FRAME_WIDTH && source_row[column] == shadow_row[column]) ++column;
-					const std::size_t start = column;
-					while (column < FRAME_WIDTH && source_row[column] != shadow_row[column]) {
-						shadow_row[column] = source_row[column];
-						++column;
-						if (++changed > 64) break;
-					}
-					if (changed > 64) {
-						std::memcpy(destination.data() + row * FRAME_WIDTH, source_row, FRAME_WIDTH);
-						std::memcpy(shadow_row, source_row, FRAME_WIDTH);
-						break;
-					}
-					if (column != start)
-						std::memcpy(destination.data() + row * FRAME_WIDTH + start,
-						            source_row + start, column - start);
-				}
+			// Shared DDR is the measured bottleneck. First build a bounded change
+			// summary without touching the destination. This lets a scrolling or
+			// otherwise busy frame take one bulk copy before thousands of small
+			// uncached writes have already been issued. Sparse frames are replayed
+			// as coalesced runs, and every copied range also updates the shadow.
+			pixels_changed = SummarizeDirtyFrame(slot, pixels, pitch);
+			if (dirty_frame_requires_full_copy_) {
+				CopyIndexedRows(destination.data(), pixels.data(), pitch);
+				CopyIndexedRows(pixel_shadows_[slot].data(), pixels.data(), pitch);
+			} else {
+				CopyDirtySummary(destination.data(), pixel_shadows_[slot].data(),
+				                pixels, pitch);
 			}
 		}
 		// Each slot owns its palette. Cache the last palette written to this slot
 		// so unchanged palettes do not generate another uncached 768-byte write;
 		// reset/rebind invalidates every slot below.
-		if (!palette_valid_[slot]
-		    || std::memcmp(last_palettes_[slot].data(), palette_rgb.data(), PALETTE_BYTES) != 0) {
+		const bool palette_changed = !palette_valid_[slot]
+		                             || std::memcmp(last_palettes_[slot].data(), palette_rgb.data(), PALETTE_BYTES) != 0;
+		if (palette_changed) {
 			std::memcpy(view_.memory().data() + descriptor.palette_offset,
 			            palette_rgb.data(), PALETTE_BYTES);
 			std::memcpy(last_palettes_[slot].data(), palette_rgb.data(), PALETTE_BYTES);
@@ -150,13 +130,23 @@ public:
 		// Reading the just-written /dev/mem slot back on every frame is much
 		// slower than the copy itself and provides no ordering guarantee.
 		const bool full_crc = FullCrcEnabled();
-		const std::uint32_t crc = Crc32(pixels, pitch, palette_rgb);
+		const bool can_reuse_crc = dirty_copy && crc_valid_[slot]
+		                           && !pixels_changed && !palette_changed;
+		const std::uint32_t crc = can_reuse_crc
+		                             ? last_crcs_[slot]
+		                             : Crc32(pixels, pitch, palette_rgb, full_crc);
+		last_crcs_[slot] = crc;
+		crc_valid_[slot] = true;
 		if (!view_.ArmPublishFrameFast(slot, epoch_, frame_id, logic_tick,
 	                               frame_id, crc,
 	                               full_crc ? FRAME_CHECKSUM_FULL_CRC32 : FRAME_CHECKSUM_SAMPLED_CRC32)) {
-			// Reinitialize the slot only through the ABI state machine. A failed
-			// publication is a transport fault; leave ownership visible to the
-			// caller instead of silently writing another slot.
+			// The slot may still be ARM_WRITING, or an external reset/owner may
+			// have changed it while publication was in progress. Do not let a
+			// later reuse trust shadow, palette, or CRC state from this failed
+			// ownership transition. Reinitialize the slot only through the ABI
+			// state machine; leave ownership visible to the caller instead of
+			// silently writing another slot.
+			(void)InvalidateSlotContentCache(slot);
 			return std::unexpected(PublishError::BadLayout);
 		}
 		return frame_id;
@@ -177,6 +167,147 @@ public:
 private:
 	friend class TransportRuntime;
 
+	struct DirtyRowSummary {
+		std::uint16_t run_begin = 0;
+		std::uint16_t copied_bytes = 0;
+		std::uint16_t segments = 0;
+		bool changed = false;
+		bool whole_row = false;
+	};
+
+	struct DirtyRun {
+		std::uint16_t start = 0;
+		std::uint16_t end = 0;
+	};
+
+	static constexpr std::size_t DIRTY_ROW_CHANGE_LIMIT = 64U;
+	static constexpr std::size_t DIRTY_COALESCE_GAP = 8U;
+	static constexpr std::size_t DIRTY_FULL_FRAME_BYTES = FRAME_PIXEL_BYTES / 2U;
+	static constexpr std::size_t DIRTY_FULL_FRAME_SEGMENTS = 2048U;
+
+	// Keep the source-pitch handling in one helper so the bulk and shadow
+	// copies take the same path. The shared destination is intentionally only
+	// written here after the caller has acquired the slot.
+	static void CopyIndexedRows(void *destination_raw, const std::uint8_t *pixels,
+	                           std::size_t pitch)
+	{
+		auto *destination = static_cast<std::uint8_t *>(destination_raw);
+		if (pitch == FRAME_WIDTH) {
+			std::memcpy(destination, pixels, FRAME_PIXEL_BYTES);
+			return;
+		}
+		for (std::uint32_t row = 0; row < FRAME_HEIGHT; ++row) {
+			std::memcpy(destination + static_cast<std::size_t>(row) * FRAME_WIDTH,
+			            pixels + static_cast<std::size_t>(row) * pitch,
+			            FRAME_WIDTH);
+		}
+	}
+
+	// Summarize first, then copy. A summary avoids issuing a long prefix of
+	// sparse writes before discovering that a scroll changed most of the
+	// frame. It also gives the adaptive choice a meaningful byte and transaction
+	// estimate without reading back the uncached shared destination.
+	[[nodiscard]] bool SummarizeDirtyFrame(std::uint32_t slot,
+	                                       std::span<const std::uint8_t> pixels,
+	                                       std::size_t pitch)
+	{
+		dirty_frame_requires_full_copy_ = false;
+		dirty_run_count_ = 0;
+		std::uint32_t transfer_bytes = 0;
+		const auto *shadow = pixel_shadows_[slot].data();
+		for (std::uint32_t row = 0; row < FRAME_HEIGHT; ++row) {
+			auto &summary = dirty_rows_[row];
+			summary = {};
+			summary.run_begin = dirty_run_count_;
+			const auto *source_row = pixels.data() + static_cast<std::size_t>(row) * pitch;
+			const auto *shadow_row = shadow + static_cast<std::size_t>(row) * FRAME_WIDTH;
+			if (std::memcmp(source_row, shadow_row, FRAME_WIDTH) == 0) continue;
+			summary.changed = true;
+			const auto append_run = [&](std::size_t start, std::size_t end) {
+				if (dirty_run_count_ >= DIRTY_FULL_FRAME_SEGMENTS) return false;
+				dirty_runs_[dirty_run_count_++] = {
+				    static_cast<std::uint16_t>(start), static_cast<std::uint16_t>(end)};
+				++summary.segments;
+				summary.copied_bytes = static_cast<std::uint16_t>(
+				    summary.copied_bytes + end - start);
+				transfer_bytes += static_cast<std::uint32_t>(end - start);
+				return transfer_bytes < DIRTY_FULL_FRAME_BYTES
+				       && dirty_run_count_ < DIRTY_FULL_FRAME_SEGMENTS;
+			};
+
+			std::size_t column = 0;
+			std::size_t pending_start = FRAME_WIDTH;
+			std::size_t pending_end = FRAME_WIDTH;
+			std::size_t changed = 0;
+			while (column < FRAME_WIDTH) {
+				while (column < FRAME_WIDTH && source_row[column] == shadow_row[column]) ++column;
+				if (column == FRAME_WIDTH) break;
+				const std::size_t diff_start = column;
+				while (column < FRAME_WIDTH && source_row[column] != shadow_row[column]) {
+					++column;
+					if (++changed > DIRTY_ROW_CHANGE_LIMIT) {
+						summary.whole_row = true;
+						break;
+					}
+				}
+				if (summary.whole_row) break;
+				const std::size_t diff_end = column;
+				if (pending_start == FRAME_WIDTH) {
+					pending_start = diff_start;
+					pending_end = diff_end;
+				} else if (diff_start - pending_end <= DIRTY_COALESCE_GAP) {
+					pending_end = diff_end;
+				} else {
+					if (!append_run(pending_start, pending_end)) {
+						dirty_frame_requires_full_copy_ = true;
+						return true;
+					}
+					pending_start = diff_start;
+					pending_end = diff_end;
+				}
+			}
+			if (summary.whole_row) {
+				// Runs already emitted for this row belong to the now-full row.
+				// Roll them back before recording one replacement run.
+				dirty_run_count_ = summary.run_begin;
+				transfer_bytes -= summary.copied_bytes;
+				summary.segments = 0;
+				summary.copied_bytes = 0;
+				if (!append_run(0, FRAME_WIDTH)) {
+					dirty_frame_requires_full_copy_ = true;
+					return true;
+				}
+			} else if (pending_start != FRAME_WIDTH) {
+				if (!append_run(pending_start, pending_end)) {
+					dirty_frame_requires_full_copy_ = true;
+					return true;
+				}
+			}
+		}
+		return dirty_run_count_ != 0;
+	}
+
+	void CopyDirtySummary(void *destination_raw, std::uint8_t *shadow,
+	                      std::span<const std::uint8_t> pixels, std::size_t pitch)
+	{
+		auto *destination = static_cast<std::uint8_t *>(destination_raw);
+		for (std::uint32_t row = 0; row < FRAME_HEIGHT; ++row) {
+			const auto &summary = dirty_rows_[row];
+			if (!summary.changed) continue;
+			const auto *source_row = pixels.data() + static_cast<std::size_t>(row) * pitch;
+			auto *destination_row = destination + static_cast<std::size_t>(row) * FRAME_WIDTH;
+			auto *shadow_row = shadow + static_cast<std::size_t>(row) * FRAME_WIDTH;
+			const auto run_end = static_cast<std::size_t>(summary.run_begin) + summary.segments;
+			for (std::size_t run = summary.run_begin; run < run_end; ++run) {
+				const auto dirty = dirty_runs_[run];
+				const auto start = static_cast<std::size_t>(dirty.start);
+				const auto bytes = static_cast<std::size_t>(dirty.end - dirty.start);
+				std::memcpy(destination_row + start, source_row + start, bytes);
+				std::memcpy(shadow_row + start, source_row + start, bytes);
+			}
+		}
+	}
+
 	// A MiSTer core reset can invalidate in-flight frame descriptors while the
 	// ARM process remains alive. Rebinding the same mapping to a fresh epoch
 	// gives the FPGA control reader a clean ownership slate without reopening
@@ -189,6 +320,8 @@ private:
 		next_frame_id_ = 1;
 		palette_valid_.fill(false);
 		shadow_valid_.fill(false);
+		crc_valid_.fill(false);
+		dirty_frame_requires_full_copy_ = false;
 	}
 
 	TransportSession(AbiView view, std::uint32_t epoch)
@@ -196,7 +329,9 @@ private:
 		, epoch_(epoch)
 		, input_(view, epoch)
 	{
+		palette_valid_.fill(false);
 		shadow_valid_.fill(false);
+		crc_valid_.fill(false);
 	}
 
 	static constexpr std::array<std::uint32_t, 256> MakeCrcTable()
@@ -213,18 +348,21 @@ private:
 	}
 
 	static std::uint32_t Crc32(std::span<const std::uint8_t> pixels, std::size_t pitch,
-	                           std::span<const std::uint8_t> palette)
+	                           std::span<const std::uint8_t> palette, bool full_crc)
 	{
 		static constexpr auto table = MakeCrcTable();
-		const bool full_crc = FullCrcEnabled();
 		std::uint32_t crc = 0xFFFFFFFFU;
 		const auto update = [&crc](std::uint8_t value) {
 			crc = table[(crc ^ value) & 0xFFU] ^ (crc >> 8U);
 		};
 		for (std::uint32_t row = 0; row < FRAME_HEIGHT; ++row) {
-			for (std::uint32_t column = 0; column < FRAME_WIDTH; ++column) {
-				if (full_crc || ((column & 15U) == 0U))
-					update(pixels[static_cast<std::size_t>(row) * pitch + column]);
+			const auto *source_row = pixels.data() + static_cast<std::size_t>(row) * pitch;
+			if (full_crc) {
+				for (std::uint32_t column = 0; column < FRAME_WIDTH; ++column)
+					update(source_row[column]);
+			} else {
+				for (std::uint32_t column = 0; column < FRAME_WIDTH; column += 16U)
+					update(source_row[column]);
 			}
 		}
 		for (const std::uint8_t value : palette)
@@ -259,9 +397,15 @@ private:
 	std::uint64_t next_frame_id_ = 1;
 	std::array<std::array<std::uint8_t, PALETTE_BYTES>, FRAME_SLOTS> last_palettes_ {};
 	std::array<bool, FRAME_SLOTS> palette_valid_ {};
+	std::array<std::uint32_t, FRAME_SLOTS> last_crcs_ {};
+	std::array<bool, FRAME_SLOTS> crc_valid_ {};
 	std::shared_ptr<std::array<std::uint8_t, FRAME_PIXEL_BYTES>[]> pixel_shadows_ =
 	    std::make_shared<std::array<std::uint8_t, FRAME_PIXEL_BYTES>[]>(FRAME_SLOTS);
 	std::array<bool, FRAME_SLOTS> shadow_valid_ {};
+	std::array<DirtyRowSummary, FRAME_HEIGHT> dirty_rows_ {};
+	std::array<DirtyRun, DIRTY_FULL_FRAME_SEGMENTS> dirty_runs_ {};
+	std::uint16_t dirty_run_count_ = 0;
+	bool dirty_frame_requires_full_copy_ = false;
 };
 
 } // namespace diablo::mister::transport

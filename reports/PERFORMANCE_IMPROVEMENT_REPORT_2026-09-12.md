@@ -180,3 +180,17 @@ These are arithmetic examples using the historical 43 FPS case, not predictions:
 Use net time saved after command building, cache maintenance, synchronization and fallback. Gains cannot be summed when they remove the same work or move the bottleneck.
 
 Acceptance should include warmed stationary town, continuous scrolling, a dark dungeon with moving lights, dense combat/effects, and both campaigns. Record CPU stage times and p95/p99 frame intervals alongside unique displayed frames, repeat/stall counts, input latency and PCM health. Compare exact indexed output/palettes for visual-preserving changes. Repeat matched runs rather than treating a title screen, a short FPS overlay or a transport-accepted frame count as final proof.
+
+## Implementation status (2026-09-12)
+
+The highest-value bounded changes from this report are implemented in the working tree:
+
+| Rank | Implemented change | Result and limit |
+|---:|---|---|
+| 1 | FPGA command-consumer FillRect bursts | Aligned interior writes now issue up to 32 DDR words per burst (clamped and parameterized), reducing command/arbitration overhead while preserving edge masks, fences and ownership. The fresh Cyclone V build fits at 27% ALMs, 16% block-memory bits and 33% DSP; all reported setup and hold slacks remain positive (worst setup 0.188 ns). |
+| 2 | Adaptive shared-DDR frame transfer | ARM publication now summarizes changes against per-slot shadows, coalesces nearby dirty runs, falls back to a full copy for busy frames, caches unchanged palettes and reuses unchanged sampled CRCs. The full CRC remains an opt-in diagnostic mode. |
+| 3 | Lighting fast paths | The compatible newer renderer overlay is enabled by default and keeps an identity-light direct blend path. The pinned 1.5.5 source has a different renderer layout, so the CMake guard cleanly retains its existing stock light-type dispatch until that source revision is upgraded. |
+
+Validation completed after these edits: the ARM `devilutionx` target built successfully; command renderer, command transport, transport configuration and ABI tests passed; dirty-copy and full-CRC ABI variants passed; lighting differential and ASan tests passed; and the command-consumer, transport-control, scanout, PCM, DDR-arbiter, input-capture and video-source RTL checks passed. Quartus produced `.work/build/fpga-perf-20260912/output_files/Diablo.rbf` (SHA-256 `75900db7251bbb336ae19d6206495ee2ff3776aa6e3864471fe3260e2e87114c`).
+
+The remaining items in the ranked plan—moving the complete tile/sprite renderer into FPGA logic, profile-guided compiler tuning, and a second-core worker—remain deliberately gated on representative MiSTer gameplay traces. They are larger architectural changes and cannot be claimed from a compile-only result.

@@ -349,5 +349,6 @@ endfunction()
 
 cmake_language(DEFER CALL diablo_mister_transport)
 
-# Opt-in only; independent audio builds retain the existing renderer.
+# Optional and independently guarded; incompatible or audio-only builds retain
+# their existing renderer.
 include("${CMAKE_CURRENT_LIST_DIR}/mister-lighting.cmake")

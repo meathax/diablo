@@ -254,8 +254,8 @@ module diablo_command_consumer_tb;
             || last_fence !== 64'h1122334455667788)
             $fatal(1, "command consumer status fault=%b rejected=%0d record_consumer=%0d payload_consumer=%0d fence=%h/%h",
                    fault, commands_rejected, record_consumer, payload_consumer, observed_fence, last_fence);
-        if (max_observed_burst < 5)
-            $fatal(1, "aligned fill did not issue a multiword burst max=%0d", max_observed_burst);
+        if (max_observed_burst < 32)
+            $fatal(1, "aligned fill did not issue the configured 32-word burst max=%0d", max_observed_burst);
         mismatches = 0;
         for (i = 0; i < 640 * 40; i = i + 1)
             if (pixels[i] !== expected[i]) begin

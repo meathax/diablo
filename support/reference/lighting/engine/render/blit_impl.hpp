@@ -123,6 +123,17 @@ DVL_ALWAYS_INLINE DVL_ATTRIBUTE_HOT void BlitPixelsBlended(uint8_t *DVL_RESTRICT
 	});
 }
 
+// The lightmapped blend path uses destination/source ordering. Keep the
+// identity-light fast path in that ordering instead of reusing BlitPixelsBlended,
+// whose historical source/destination ordering is different.
+DVL_ALWAYS_INLINE DVL_ATTRIBUTE_HOT void BlitPixelsBlendedWithIdentityLight(uint8_t *DVL_RESTRICT dst, const uint8_t *DVL_RESTRICT src, unsigned length)
+{
+	DVL_ASSUME(length != 0);
+	std::transform(DEVILUTIONX_BLIT_EXECUTION_POLICY src, src + length, dst, dst, [pal = paletteTransparencyLookup](uint8_t srcColor, uint8_t dstColor) {
+		return pal[dstColor][srcColor];
+	});
+}
+
 struct BlitBlended {
 	DVL_ALWAYS_INLINE DVL_ATTRIBUTE_HOT void operator()(unsigned length, uint8_t *DVL_RESTRICT dst, const uint8_t *DVL_RESTRICT src) const
 	{
@@ -174,7 +185,10 @@ DVL_ALWAYS_INLINE DVL_ATTRIBUTE_HOT void BlitPixelsBlendedWithLightmap(uint8_t *
 	DVL_ASSUME(length != 0);
 	if (const auto *table = lightmap.uniformLightTable(); table != nullptr) {
 		// Preserve the original destination/source blend-table ordering.
-		BlitPixelsBlendedWithMap(dst, src, length, table);
+		if (lightmap.uniformLightIsIdentity())
+			BlitPixelsBlendedWithIdentityLight(dst, src, length);
+		else
+			BlitPixelsBlendedWithMap(dst, src, length, table);
 		return;
 	}
 	const uint8_t *light = lightmap.getLightingAt(dst);

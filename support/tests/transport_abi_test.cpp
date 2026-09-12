@@ -223,9 +223,14 @@ int main(int argc, char **argv)
 	Require(recycled.has_value() && *recycled == 4,
 	        "freed frame slot was not recycled with a monotonic frame id");
 	const auto &published = session.view().header().frames[0];
+	const char *full_crc_env = std::getenv("DIABLO_MISTER_FULL_CRC");
+	const bool full_crc = full_crc_env != nullptr
+	                      && (std::strcmp(full_crc_env, "1") == 0
+	                          || std::strcmp(full_crc_env, "true") == 0);
 	Require(published.frame_id == 4 && published.logic_tick == 14
 	            && published.crc32 != 0
-	            && published.flags == FRAME_CHECKSUM_SAMPLED_CRC32,
+	            && published.flags == (full_crc ? diablo::mister::transport::FRAME_CHECKSUM_FULL_CRC32
+                                             : FRAME_CHECKSUM_SAMPLED_CRC32),
 	        "session frame metadata was not published");
 	const auto frame_bytes = session.view().memory().subspan(published.pixel_offset, FRAME_PIXEL_BYTES);
 	Require(std::to_integer<std::uint8_t>(frame_bytes[0]) == pixels[0]
