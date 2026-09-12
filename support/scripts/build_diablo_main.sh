@@ -25,10 +25,23 @@ command -v "${cross}gcc" >/dev/null || {
 # bin directory.
 (cd "$donor" && tar --exclude='./bin' --exclude='./bin-*' -cf - .) | (cd "$stage" && tar -xf -)
 cp "$root/support/mister/diablo_main.cpp" "$stage/main.cpp"
+# The donor's optional GZDoom bridge includes this protocol header from the
+# parent of the wrapper directory. Preserve that relative include in the
+# isolated staging tree instead of depending on an untracked build directory.
+for header in gzdoom_accel_protocol.h gzdoom_accel_reference.h frontier_memmap.h; do
+  if [ -f "$donor/../$header" ]; then
+    cp "$donor/../$header" "$(dirname "$stage")/$header"
+  fi
+done
 # VoidSW's menu adds a hook for its campaign selector. Diablo has no selector
 # at this level (the selected RBF supplies the campaign), so retain the donor
 # menu unchanged and provide the inert hook it requires.
-cat > "$stage/diablo_menu_compat.cpp" <<'EOF'
+  cat > "$stage/diablo_menu_compat.cpp" <<'EOF'
+bool voidsw_launcher_input_active()
+{
+  return false;
+}
+
 bool voidsw_selector_key(unsigned int)
 {
   return false;
@@ -48,7 +61,7 @@ end = text.index("CPP_SRC =", start)
 text = text[:start] + text[end:]
 text = text.replace(
     "CPP_SRC = $(filter-out main.cpp,$(wildcard *.cpp)) ",
-    "CPP_SRC = $(filter-out voidsw_main.cpp voidsw_wrapper.cpp misterdos_frontend.cpp misterdos_doom_adapter.cpp gzdoom_frame_bridge.cpp gzdoom_io_bridge.cpp nukem_netplay.cpp,$(wildcard *.cpp)) ")
+    "CPP_SRC = $(filter-out voidsw_main.cpp voidsw_wrapper.cpp misterdos_frontend.cpp misterdos_doom_adapter.cpp gzdoom_accel_bridge.cpp gzdoom_frame_bridge.cpp gzdoom_io_bridge.cpp nukem_netplay.cpp,$(wildcard *.cpp)) ")
 text = text.replace(" $(MISTERDOS_C_OBJ)", "")
 text = text.replace(" $(MISTERDOS_C_DEP)", "")
 text = text.replace(" -DMISTER_VOIDSW_FULL_WRAPPER -DMISTERDOS_NATIVE_FRONTEND", "")

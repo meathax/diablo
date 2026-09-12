@@ -107,6 +107,15 @@ static void stop_runtime()
     runtime_pid = -1;
 }
 
+static void return_to_mister_menu()
+{
+    // A clean DevilutionX exit must not leave this resident main= handler
+    // holding the video path with its OSD disabled.  Restart through the stock
+    // MiSTer executable so menu.rbf is loaded and the normal menu is restored.
+    app_restart("menu.rbf", nullptr, "/media/fat/MiSTer");
+    _exit(EXIT_FAILURE);
+}
+
 int main(int argc, char *argv[])
 {
     cpu_set_t set;
@@ -139,8 +148,10 @@ int main(int argc, char *argv[])
             stop_runtime();
             fpga_wait_to_reset();
         }
-        if (runtime_pid > 0 && waitpid(runtime_pid, nullptr, WNOHANG) == runtime_pid)
+        if (runtime_pid > 0 && waitpid(runtime_pid, nullptr, WNOHANG) == runtime_pid) {
             runtime_pid = -1;
+            return_to_mister_menu();
+        }
         user_io_poll();
         frame_timer();
         input_poll(0);

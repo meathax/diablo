@@ -34,6 +34,7 @@ HEX64 = re.compile(r"^[0-9a-f]{64}$")
 BOOT_ID = re.compile(r"^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$")
 PRIVATE_MARKERS = (".mpq", ".sav", ".sve", "private", "secret", "password", "token")
 SHARED_BYTES = 2 * 1024 * 1024
+MISTER_INSTALL_STATE = Path("/media/fat/.diablo-install.json")
 CAMPAIGN_FILES = {
     "diablo": ("diabdat.mpq",),
     "hellfire": ("diabdat.mpq", "hellfire.mpq", "hfmonk.mpq", "hfmusic.mpq", "hfvoice.mpq"),
@@ -179,7 +180,7 @@ def verify_package(root: Path) -> dict[str, Any]:
     assets_root = _real_file(root, "assets", "assets directory") if (root / "assets").is_file() else root / "assets"
     if not assets_root.is_dir() or assets_root.is_symlink():
         raise LaunchError("assets directory is missing")
-    for path in sorted(assets_root.rglob("*")):
+    for path in sorted(assets_root.rglob("*"), key=lambda item: item.relative_to(assets_root).as_posix()):
         if path.is_symlink():
             raise LaunchError(f"assets tree contains a symlink: {path}")
         if path.is_file():
@@ -193,6 +194,102 @@ def verify_package(root: Path) -> dict[str, Any]:
         raise LaunchError("deployment asset tree digest mismatch")
     return {"candidate_id": package["candidate_id"], "source_id": package["source_id"],
             "board_profile": package.get("board_profile"), "deployment": deployment}
+
+
+def _managed_package_identity(root: Path) -> dict[str, Any] | None:
+    """Use the install receipt for a fast, stat-only check of managed releases.
+
+    Deployment already performs the complete content-hash verification before
+    publishing a release.  On the target, re-hashing the 17 MiB package on
+    every RBF selection delays the first video by several seconds.  The fast
+    path remains strict about the signed package/deployment identities,
+    release location, file set, symlinks, and recorded sizes; an unmanaged or
+    changed package falls back to the complete verifier below.
+    """
+    try:
+        state = _read_json(MISTER_INSTALL_STATE, "MiSTer install state")
+        root = root.resolve()
+        release = state.get("active_release")
+        expected_root = (MISTER_INSTALL_STATE.parent / release).resolve() if isinstance(release, str) else None
+        legacy_root = (MISTER_INSTALL_STATE.parent / "_Other" / "Diablo").resolve()
+        if (state.get("status") != "pass" or state.get("board_profile") != "de10-nano-mister"
+                or root not in {expected_root, legacy_root}):
+            return None
+
+        package_path = _real_file(root, "package-manifest.json", "package manifest")
+        package = _read_json(package_path, "package manifest")
+        if (package.get("schema") != PACKAGE_SCHEMA or package.get("status") != "pass"
+                or package.get("private_data_excluded") is not True):
+            return None
+        candidate_id = str(package.get("candidate_id", ""))
+        source_id = str(package.get("source_id", ""))
+        if (not HEX64.fullmatch(candidate_id) or not HEX64.fullmatch(source_id)
+                or state.get("active_candidate_id") != candidate_id
+                or state.get("active_package_manifest_sha256") != sha256_file(package_path)):
+            return None
+
+        deployment_record = package.get("deployment_manifest")
+        deployment_path = _real_file(root, "deployment.json", "deployment manifest")
+        if (not isinstance(deployment_record, dict)
+                or deployment_record.get("path") != "deployment.json"
+                or deployment_record.get("sha256") != sha256_file(deployment_path)):
+            return None
+        deployment = _read_json(deployment_path, "deployment manifest")
+        if (deployment.get("schema") != DEPLOYMENT_SCHEMA or deployment.get("status") != "pass"
+                or deployment.get("private_data_excluded") is not True
+                or deployment.get("candidate_id") != candidate_id
+                or deployment.get("source_id") != source_id):
+            return None
+
+        expected_roles = {"engine": "devilutionx", "rbf": "Diablo.rbf",
+                          "abi": "transport_abi.hex", "launcher": "diablo_launcher.py"}
+        artifacts = deployment.get("artifacts")
+        if not isinstance(artifacts, list) or {item.get("role") for item in artifacts if isinstance(item, dict)} != set(expected_roles):
+            return None
+        for item in artifacts:
+            if not isinstance(item, dict) or item.get("role") not in expected_roles:
+                return None
+            if item.get("path") != expected_roles[item["role"]]:
+                return None
+            artifact = _real_file(root, item["path"], "deployment artifact")
+            if item.get("bytes") != artifact.stat().st_size:
+                return None
+
+        records = package.get("files")
+        if not isinstance(records, list):
+            return None
+        files = _file_records(root)
+        listed: set[str] = set()
+        for item in records:
+            if not isinstance(item, dict) or not isinstance(item.get("path"), str):
+                return None
+            relative = _relative(root, item["path"], "package file").as_posix()
+            if relative in listed:
+                return None
+            listed.add(relative)
+            path = files.get(relative)
+            if path is None or item.get("bytes") != path.stat().st_size:
+                return None
+        if listed != set(files) - {"package-manifest.json"}:
+            return None
+
+        assets = deployment.get("runtime_assets")
+        if not isinstance(assets, dict) or assets.get("path") != "assets" or not isinstance(assets.get("files"), list):
+            return None
+        assets_root = root / "assets"
+        if not assets_root.is_dir() or assets_root.is_symlink():
+            return None
+        current_assets = [{"path": path.relative_to(assets_root).as_posix(), "bytes": path.stat().st_size}
+                          for path in sorted(assets_root.rglob("*"), key=lambda item: item.relative_to(assets_root).as_posix())
+                          if path.is_file()]
+        listed_assets = [{"path": item.get("path"), "bytes": item.get("bytes")}
+                         for item in assets["files"] if isinstance(item, dict)]
+        if (listed_assets != current_assets or assets.get("bytes") != sum(item["bytes"] for item in current_assets)):
+            return None
+        return {"candidate_id": candidate_id, "source_id": source_id,
+                "board_profile": package.get("board_profile"), "deployment": deployment}
+    except (OSError, TypeError, ValueError, LaunchError):
+        return None
 
 
 def _writable(path: Path, label: str) -> Path:
@@ -289,6 +386,9 @@ def _require_campaign_data(data_root: Path, campaign: str) -> None:
         raise LaunchError("missing campaign data: " + ", ".join(missing))
 
 
+MISTER_CORE_PROCESS_NAMES = {"mister", "mister_build", "misterdos", "diablo"}
+
+
 def _core_process_matches(rbf: Path) -> bool:
     expected = str(rbf)
     for entry in Path("/proc").glob("[0-9]*"):
@@ -297,9 +397,16 @@ def _core_process_matches(rbf: Path) -> bool:
             argv = [value.decode("utf-8", "replace") for value in values if value]
         except OSError:
             continue
-        if argv and Path(argv[0]).name.casefold() in {"mister", "mister_build"} and expected in argv[1:]:
+        if argv and Path(argv[0]).name.casefold() in MISTER_CORE_PROCESS_NAMES and expected in argv[1:]:
             return True
     return False
+
+
+def _fpga_is_operating() -> bool:
+    try:
+        return Path("/sys/class/fpga_manager/fpga0/state").read_text(encoding="ascii").strip().lower() == "operating"
+    except OSError:
+        return False
 
 
 MISTER_FRONTEND_PATH = Path("/media/fat/MiSTer")
@@ -312,7 +419,7 @@ def _frontend_process_present() -> bool:
             argv = [value.decode("utf-8", "replace") for value in values if value]
         except OSError:
             continue
-        if argv and Path(argv[0]).name.casefold() in {"mister", "mister_build"}:
+        if argv and Path(argv[0]).name.casefold() in MISTER_CORE_PROCESS_NAMES:
             return True
     return False
 
@@ -429,7 +536,7 @@ def _engine_args(args: argparse.Namespace, package: Path, save_root: Path, confi
     command = [str(package / "devilutionx"), "--" + args.campaign,
                "--data-dir", str(args.data_root), "--save-dir", str(save_root),
                "--config-dir", str(config_root), "--lang", args.lang,
-               "--verbose", "--log-to-file", str(log_path), "-n"]
+               "--verbose"]
     command.extend(args.engine_arg)
     return command
 
@@ -472,12 +579,11 @@ def _wait_for_engine(process: subprocess.Popen, rbf: Path, duration: float,
         if exit_code is not None:
             return exit_code, False, False
         if already_loaded:
-            try:
-                core_changed = Path("/sys/class/fpga_manager/fpga0/state").read_text(encoding="ascii").strip().lower() != "operating"
-            except OSError:
-                core_changed = True
+            core_changed = not _fpga_is_operating()
         else:
-            core_changed = not _core_process_matches(rbf)
+            # MiSTer’s one-shot RBF loader exits after programming the FPGA;
+            # the loaded core is then represented by fpga_manager state.
+            core_changed = not (_core_process_matches(rbf) or _fpga_is_operating())
         if core_changed:
             return _stop_engine(process, not already_loaded), False, True
         remaining = deadline - time.monotonic() if deadline is not None else None
@@ -506,7 +612,7 @@ def _start_engine(command: list[str], **kwargs: Any) -> subprocess.Popen:
 
 def launch(args: argparse.Namespace) -> dict[str, Any]:
     package = args.package_root.resolve()
-    identity = verify_package(package)
+    identity = _managed_package_identity(package) or verify_package(package)
     candidate_id = str(identity["candidate_id"])
     data_root = args.data_root.resolve()
     _require_campaign_data(data_root, args.campaign)

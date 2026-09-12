@@ -2,8 +2,8 @@
   "archives": {
     "diablo_runtime_bundle": {
       "archive_file": {
-        "hash": "1f9868588f7119970d25d8b7276c519d",
-        "size": 10948413,
+        "hash": "459f4849778179988a79c8e4d4c11830",
+        "size": 11355590,
         "url": "https://raw.githubusercontent.com/meathax/diablo/main/distribution/diablo_runtime.zip"
       },
       "base_files_url": "https://raw.githubusercontent.com/meathax/diablo/main/ready",
@@ -15,9 +15,9 @@
           "Diablo": {
             "arc_at": "Diablo",
             "arc_id": "diablo_runtime_bundle",
-            "hash": "4bac02df936f75a45d2c514910bec2b1",
+            "hash": "da3b5c92ae901d6e438cd2cb1be76606",
             "overwrite": true,
-            "size": 2081392,
+            "size": 1736776,
             "tags": [
               "diablo"
             ]
@@ -2205,7 +2205,7 @@
           "_Other/Diablo/deployment.json": {
             "arc_at": "_Other/Diablo/deployment.json",
             "arc_id": "diablo_runtime_bundle",
-            "hash": "2e33e48b59d451094595e1bae0eebeac",
+            "hash": "cfbb0cea9416f07215f2222f5327063d",
             "overwrite": true,
             "size": 37705,
             "tags": [
@@ -2215,9 +2215,9 @@
           "_Other/Diablo/devilutionx": {
             "arc_at": "_Other/Diablo/devilutionx",
             "arc_id": "diablo_runtime_bundle",
-            "hash": "eeee7d88c3e87d07bce56766f690e877",
+            "hash": "001a0a9c453fdaeb5c822b68d0b6136b",
             "overwrite": true,
-            "size": 7348632,
+            "size": 8731536,
             "tags": [
               "diablo"
             ]
@@ -2225,9 +2225,9 @@
           "_Other/Diablo/diablo_launcher.py": {
             "arc_at": "_Other/Diablo/diablo_launcher.py",
             "arc_id": "diablo_runtime_bundle",
-            "hash": "2c9ecd40b692043e0f6f9ddafe14af56",
+            "hash": "4a94976c0485673df03e0cc240e31a16",
             "overwrite": true,
-            "size": 30566,
+            "size": 36233,
             "tags": [
               "diablo"
             ]
@@ -2565,7 +2565,7 @@
           "_Other/Diablo/package-manifest.json": {
             "arc_at": "_Other/Diablo/package-manifest.json",
             "arc_id": "diablo_runtime_bundle",
-            "hash": "3f42489510f77cc19d92eda348af9fa7",
+            "hash": "1f1c281a47114fbb9ce047708de7ffc8",
             "overwrite": true,
             "size": 49770,
             "tags": [
@@ -2963,6 +2963,6 @@
   "db_id": "diablo_runtime",
   "files": {},
   "folders": {},
-  "timestamp": 1789189113,
+  "timestamp": 1789202885,
   "v": 1
 }

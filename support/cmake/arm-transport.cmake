@@ -10,6 +10,10 @@ endif()
 set(NONET OFF CACHE BOOL "Disable network support for MiSTer" FORCE)
 set(DISABLE_TCP OFF CACHE BOOL "Disable TCP multiplayer for MiSTer" FORCE)
 set(DISABLE_ZERO_TIER OFF CACHE BOOL "Disable ZeroTier multiplayer for MiSTer" FORCE)
+# MiSTer must keep DevilutionX alive when the in-game Quit Game action is
+# selected so it can return to the title menu instead of leaving the resident
+# handler on a black frame after the SDL process exits.
+set(NOEXIT ON CACHE BOOL "Return to the title menu instead of exiting" FORCE)
 
 set(_mister_reference_dir "${CMAKE_CURRENT_LIST_DIR}/../reference")
 set(_mister_overlay_dir "${CMAKE_BINARY_DIR}/mister-engine-overlay")
