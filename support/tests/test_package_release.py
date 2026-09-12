@@ -42,7 +42,7 @@ class PackageReleaseTest(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
-    def create(self, name: str = "package", **kwargs: str) -> Path:
+    def create(self, name: str = "package", board: str = "de10-nano-test", **kwargs: str) -> Path:
         output = self.root / name
         with mock.patch.object(package_release.candidate_manifest, "verify_manifest", return_value=[]):
             result = package_release.create_package(
@@ -50,7 +50,7 @@ class PackageReleaseTest(unittest.TestCase):
                 self.candidate,
                 (("engine", "source/engine.bin"), ("rbf", "source/core.rbf"), ("abi", "source/abi.hex"),
                  ("launcher", "source/launcher.py")),
-                "de10-nano-test",
+                board,
                 output,
                 "assets",
                 **kwargs,
@@ -84,6 +84,30 @@ class PackageReleaseTest(unittest.TestCase):
                                wraps=mister_launcher.sha256_file) as hash_file:
             mister_launcher.verify_package(package)
         self.assertEqual(expected, hash_file.call_count)
+
+    def test_managed_launch_checks_entrypoints_without_walking_assets(self) -> None:
+        package = self.create(board="de10-nano-mister")
+        target = self.root / "target"
+        state = deploy_package.install_package(package, target, "de10-nano-mister")
+        release = target / state["active_release"]
+        with mock.patch.object(mister_launcher, "MISTER_INSTALL_STATE", target / ".diablo-install.json"):
+            with mock.patch.object(Path, "rglob", side_effect=AssertionError("repeated tree walk")):
+                identity = mister_launcher._managed_package_identity(release)
+                self.assertIsNotNone(identity)
+                self.assertEqual(identity["candidate_id"], state["active_candidate_id"])
+            with mock.patch.dict(os.environ, {"DIABLO_MISTER_VERIFY_FULL": "1"}):
+                self.assertIsNone(mister_launcher._managed_package_identity(release))
+            (release / "devilutionx").write_bytes(b"wrong size")
+            self.assertIsNone(mister_launcher._managed_package_identity(release))
+
+    def test_full_verification_rejects_directory_symlinks(self) -> None:
+        package = self.create()
+        try:
+            (package / "linked").symlink_to(self.root / "assets", target_is_directory=True)
+        except OSError:
+            self.skipTest("symlinks unavailable")
+        with self.assertRaisesRegex(mister_launcher.LaunchError, "symlink"):
+            mister_launcher.verify_package(package)
 
     def test_bundled_hellfire_mod_is_packaged_and_staged(self) -> None:
         mod = self.root / "source" / "hf"
