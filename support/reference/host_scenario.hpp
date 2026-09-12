@@ -6,16 +6,10 @@
 #include "diablo.h"
 #include "engine/demomode.h"
 #include "engine/random.hpp"
-#include "game_mode.hpp"
-#include "headless_mode.hpp"
 #include "menu.h"
 #include "pfile.h"
 #include "player.h"
 #include "utils/log.hpp"
-
-namespace devilution {
-extern xoshiro128plusplus seedGenerator;
-}
 
 namespace diablo_reference {
 inline bool NativeScenarioEnabled()
@@ -31,7 +25,7 @@ inline bool NativeDungeonScenarioEnabled()
     return value != nullptr && std::strcmp(value, "dungeon-v1") == 0;
 }
 
-inline void BeginNativeScenario(devilution::GameData *gameData)
+inline void BeginNativeScenario()
 {
     using namespace devilution;
     if (!NativeScenarioEnabled()) return;
@@ -39,9 +33,7 @@ inline void BeginNativeScenario(devilution::GameData *gameData)
     if (!demo::IsRunning() || HeadlessMode || gbIsSpawn || gbIsMultiplayer
         || pfile_ui_get_first_unused_save_num() != 0)
         std::abort();
-    seedGenerator = xoshiro128plusplus(42U);
-    xoshiro128plusplus fixedGame(42U);
-    fixedGame.save(gameData->gameSeed);
+    SetRndSeed(42U);
     _uiheroinfo hero {};
     hero.heroclass = HeroClass::Warrior;
     std::strcpy(hero.name, "Reference");

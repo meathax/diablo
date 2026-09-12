@@ -7,6 +7,9 @@ if(WIN32 AND MINGW)
       message(FATAL_ERROR "Unexpected engine input for host patch: ${relative}")
     endif()
     file(READ "${original}" content)
+    # Git checkout settings may give the pinned source CRLF line endings on
+    # Windows; normalize before matching multi-line compatibility hooks.
+    string(REPLACE "\r\n" "\n" content "${content}")
     string(REPLACE "${before}" "${after}" content "${content}")
     file(CONFIGURE OUTPUT "${output}" CONTENT "${content}" @ONLY NEWLINE_STYLE UNIX)
     file(SHA256 "${output}" patched)
@@ -19,20 +22,44 @@ if(WIN32 AND MINGW)
     file(WRITE "${CMAKE_BINARY_DIR}/host-engine-fixes.txt" "Original and generated SHA256; pinned checkout remains unchanged.\n")
     # Windows absolute drive and UNC paths must bypass archive/asset prefixes.
     diablo_host_patch_file(engine/assets.cpp
-      aa1e0838afd94fa634a722146cee503f227c5bd4bbbdfc586e07e6086e54a5db
+      896079961ad6a89beddcf621cfbd8b83d57990146c23c0fff47b64f982ef11c8
       [[if (relativePath[0] == '/')]]
       [[if (relativePath[0] == '/' || relativePath[0] == '\\'
-        || (filename.size() >= 3
+        || (relativePath.size() >= 3
             && ((relativePath[0] >= 'A' && relativePath[0] <= 'Z')
                 || (relativePath[0] >= 'a' && relativePath[0] <= 'z'))
             && relativePath[1] == ':'
             && (relativePath[2] == '/' || relativePath[2] == '\\')))]]
       "${overlay}/engine/assets.cpp")
-    set_property(TARGET libdevilutionx_assets PROPERTY SOURCES "${overlay}/engine/assets.cpp")
+    if(TARGET libdevilutionx_assets)
+      # Newer DevilutionX releases split asset sources into a dedicated
+      # target.  Keep this branch for forward-compatible host builds.
+      set_property(TARGET libdevilutionx_assets PROPERTY SOURCES "${overlay}/engine/assets.cpp")
+    else()
+      # DevilutionX 1.5.5 keeps engine/assets.cpp in libdevilutionx itself.
+      get_target_property(engine_sources libdevilutionx SOURCES)
+      list(REMOVE_ITEM engine_sources engine/assets.cpp "${PROJECT_SOURCE_DIR}/Source/engine/assets.cpp")
+      list(APPEND engine_sources "${overlay}/engine/assets.cpp")
+      set_property(TARGET libdevilutionx PROPERTY SOURCES "${engine_sources}")
+    endif()
+    if(NOT NONET AND NOT DISABLE_ZERO_TIER)
+      file(MAKE_DIRECTORY "${overlay}/dvlnet")
+      diablo_host_patch_file(dvlnet/zerotier_native.cpp
+        d4aaac27e0e9a17132d4bda85bfb42e057b450f3a93c9700584b1720ce63072e
+        [[#include <SDL.h>]]
+        [[#include <SDL.h>
+#include <algorithm>
+#define ADD_EXPORTS]]
+        "${overlay}/dvlnet/zerotier_native.cpp")
+      get_target_property(network_sources libdevilutionx SOURCES)
+      list(REMOVE_ITEM network_sources dvlnet/zerotier_native.cpp "${PROJECT_SOURCE_DIR}/Source/dvlnet/zerotier_native.cpp")
+      list(APPEND network_sources "${overlay}/dvlnet/zerotier_native.cpp")
+      set_property(TARGET libdevilutionx PROPERTY SOURCES "${network_sources}")
+    endif()
     diablo_host_patch_file(utils/png.h
-      cc755c3c8f58859a5e68c95ad6d2156ab50a21cb6a362e87d6b7afedb6223d5a
-      [[auto *rwops = OpenAssetAsSdlRwOps(file);]]
-      [[auto *rwops = OpenAssetAsSdlRwOps(file);
+      f379c3cd4c83f98a82a7af17469793038df9d3adbd9ff383ebe9452804d7e425
+      [[SDL_RWops *rwops = OpenAssetAsSdlRwOps(file);]]
+      [[SDL_RWops *rwops = OpenAssetAsSdlRwOps(file);
     if (rwops == nullptr)
         return nullptr;]]
       "${overlay}/utils/png.h")
@@ -65,7 +92,13 @@ if(WIN32 AND MINGW)
       endforeach()
       get_target_property(engine_objects libdevilutionx LINKED_OBJECTS)
       foreach(engine_test IN LISTS tests)
-        target_sources(${engine_test} PRIVATE ${engine_objects} $<TARGET_OBJECTS:libdevilutionx>)
+        if(engine_objects AND NOT engine_objects STREQUAL "engine_objects-NOTFOUND")
+          target_sources(${engine_test} PRIVATE ${engine_objects} $<TARGET_OBJECTS:libdevilutionx>)
+        else()
+          # 1.5.5 exposes the object library directly and does not provide
+          # CMake's newer LINKED_OBJECTS target property.
+          target_sources(${engine_test} PRIVATE $<TARGET_OBJECTS:libdevilutionx>)
+        endif()
       endforeach()
       set_property(TARGET libdevilutionx_so PROPERTY EXCLUDE_FROM_ALL TRUE)
       target_compile_definitions(test_main PRIVATE SDL_MAIN_HANDLED)
@@ -74,9 +107,13 @@ if(WIN32 AND MINGW)
         target_link_libraries(${host_test} PRIVATE "${DIABLO_HOST_INTL_LIBRARY}")
       endforeach()
       # These standalone upstream tests include gmock matchers directly.
-      target_link_libraries(crawl_test PRIVATE GTest::gmock)
-      target_link_libraries(path_test PRIVATE GTest::gmock)
-      target_link_libraries(ini_test PRIVATE GTest::gmock)
+      # The set changed across releases; only link targets present in the
+      # pinned checkout (1.5.5 has path_test but not crawl_test/ini_test).
+      foreach(gmock_test crawl_test path_test ini_test)
+        if(TARGET ${gmock_test})
+          target_link_libraries(${gmock_test} PRIVATE GTest::gmock)
+        endif()
+      endforeach()
       add_custom_target(diablo_host_tests DEPENDS ${tests} ${standalone_tests} ${benchmarks})
       foreach(zlib_test example example64)
         if(TARGET ${zlib_test})

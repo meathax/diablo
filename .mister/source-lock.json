@@ -3,7 +3,8 @@
   "sources": {
     "devilutionx": {
       "url": "https://github.com/diasurgical/DevilutionX.git",
-      "commit": "0ff3186238e7c2786c4d52c21ecce1cb83723ed9",
+      "release": "1.5.5",
+      "commit": "7223eeac9e8274fbf665b4de86fda26d3b22c52f",
       "role": "engine and independent behavioral reference",
       "license_file": "LICENSE.md",
       "license_disposition": "Sustainable Use License; preserve notices; distribution composition review required"

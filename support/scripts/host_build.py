@@ -36,9 +36,14 @@ def resolve_build_dir(root, requested):
     return chosen
 
 
-def apply_dependency_fixes(root, build_dir):
+def apply_dependency_fixes(root, build_dir, enabled=True):
     manifest_path = root / 'support/patches/host-dependency-fixes.json'
     manifest = json.loads(manifest_path.read_text())
+    if not enabled:
+        record = {'manifest_sha256': digest(manifest_path), 'files': [],
+                  'status': 'skipped-zero-tier-disabled'}
+        (build_dir / 'dependency-fixes.json').write_text(json.dumps(record, indent=2) + '\n', encoding='utf-8')
+        return record
     applied = []
     for fix in manifest['fixes']:
         path = build_dir / fix['path']
@@ -69,6 +74,8 @@ def build(root, args, inspect_source, lock):
     identity = inspect_source(source, lock['sources']['devilutionx'])
     recipe_path = root / 'support/host-reference.json'
     recipe = json.loads(recipe_path.read_text())
+    zero_tier_enabled = (recipe['cmake_options'].get('NONET') != 'ON'
+                         and recipe['cmake_options'].get('DISABLE_ZERO_TIER') != 'ON')
     prefix = Path(recipe['toolchain_prefix'])
     tool_paths = {'cmake': Path(shutil.which('cmake') or ''),
                   'cc': prefix / 'bin/gcc.exe', 'cxx': prefix / 'bin/g++.exe',
@@ -114,7 +121,7 @@ def build(root, args, inspect_source, lock):
                                 '--parallel', str(args.jobs), '--target', 'devilutionx']))
     for stage, command in steps:
         if stage == 'build':
-            apply_dependency_fixes(root, build_dir)
+            apply_dependency_fixes(root, build_dir, zero_tier_enabled)
         log = build_dir / f'{stage}.log'
         print(f'{stage}: {log}', flush=True)
         with log.open('wb') as stream:

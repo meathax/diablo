@@ -42,7 +42,11 @@ class MpqBoundsTests(unittest.TestCase):
             self.probe(magic=b"FAIL")
 
     def test_lock_has_only_immutable_source_commits(self):
-        self.assertGreaterEqual(len(diablo.load_lock()["sources"]), 7)
+        lock = diablo.load_lock()
+        self.assertGreaterEqual(len(lock["sources"]), 7)
+        self.assertEqual("1.5.5", lock["sources"]["devilutionx"]["release"])
+        self.assertEqual("7223eeac9e8274fbf665b4de86fda26d3b22c52f",
+                         lock["sources"]["devilutionx"]["commit"])
 
 
 class PrivateDataTests(unittest.TestCase):

@@ -2,15 +2,15 @@
 # During playback, live mouse input must not overwrite recorded cursor/button
 # state. Keep recorded events in interface_msg_pump and ordinary play unchanged.
 diablo_host_patch_file(interfac.cpp
-  32a11d0891c5d23a470690e214a28d928a8a4a49db14c99a68ddc03913fe10a0
-  [[			HandleMessage(event, SDL_GetModState());]]
+  8503b4d3acb2173b29d3171eadba721821f6a8b3de20849eca0b2e6385c5017a
+  [[			HandleMessage(event, modState);]]
   [[            if (demo::IsRunning()
-                && (event.type == SDL_EVENT_MOUSE_MOTION
-                    || event.type == SDL_EVENT_MOUSE_BUTTON_DOWN
-                    || event.type == SDL_EVENT_MOUSE_BUTTON_UP)) {
+                && (event.type == SDL_MOUSEMOTION
+                    || event.type == SDL_MOUSEBUTTONDOWN
+                    || event.type == SDL_MOUSEBUTTONUP)) {
                 continue;
             }
-			HandleMessage(event, SDL_GetModState());]]
+			HandleMessage(event, modState);]]
   "${overlay}/interfac.cpp")
 set(output "${overlay}/interfac.cpp")
 file(READ "${output}" content)

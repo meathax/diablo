@@ -1,12 +1,12 @@
 # Explicitly enabled native-resolution smoke scenario; ordinary runs are unchanged.
 diablo_host_patch_file(menu.cpp
-  fadac067f0b1283b82182fdc6be0ba1e03eaad24bc851e79db9256e8768d1f33
+  035dda9176d388d69a24a97339a547a7e08d9b39bb65412bacc0547dce327944
   [[		gbLoadGame = true;]]
   [[		gbLoadGame = true;
-        diablo_reference::BeginNativeScenario(gameData);]]
+        diablo_reference::BeginNativeScenario();]]
   "${overlay}/menu.cpp")
 diablo_host_patch_file(engine/demomode.cpp
-  4f0daf1abb08551e5ad7c317fb27c9804baea708b9161d278b6effd7fb03344e
+  31b6bff3375921ba5c93bd1f9636bf1595bc97cee0223d2043886ce3a9a348a8
   [[void NotifyGameLoopEnd()
 {]]
   [[void NotifyGameLoopEnd()
@@ -14,16 +14,27 @@ diablo_host_patch_file(engine/demomode.cpp
     diablo_reference::FinishNativeScenario(LogicTick);]]
   "${overlay}/engine/demomode.cpp")
 file(READ "${overlay}/engine/demomode.cpp" demomode_content)
-string(FIND "${demomode_content}" [[if (isGameTick)
-		LogicTick++;]] scenario_tick_site)
+set(scenario_tick_before [[if (isGameTick)
+		LogicTick++;]])
+set(scenario_tick_after [[if (isGameTick) {
+		LogicTick++;
+		diablo_reference::NativeScenarioTick(LogicTick);
+	}]])
+string(FIND "${demomode_content}" "${scenario_tick_before}" scenario_tick_site)
+if(scenario_tick_site LESS 0)
+  # DevilutionX 1.5.5 names the same hook by demo message type.
+  set(scenario_tick_before [[if (dmsg.type == DemoMsgType::GameTick)
+		LogicTick++;]])
+  set(scenario_tick_after [[if (dmsg.type == DemoMsgType::GameTick) {
+		LogicTick++;
+		diablo_reference::NativeScenarioTick(LogicTick);
+	}]])
+  string(FIND "${demomode_content}" "${scenario_tick_before}" scenario_tick_site)
+endif()
 if(scenario_tick_site LESS 0)
   message(FATAL_ERROR "Pinned replay tick hook site is missing")
 endif()
-string(REPLACE [[if (isGameTick)
-		LogicTick++;]] [[if (isGameTick) {
-		LogicTick++;
-		diablo_reference::NativeScenarioTick(LogicTick);
-	}]] demomode_content "${demomode_content}")
+string(REPLACE "${scenario_tick_before}" "${scenario_tick_after}" demomode_content "${demomode_content}")
 foreach(required_hook "FinishNativeScenario(LogicTick)" "NativeScenarioTick(LogicTick)")
   string(FIND "${demomode_content}" "${required_hook}" hook_position)
   if(hook_position LESS 0)

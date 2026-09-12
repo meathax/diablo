@@ -13,7 +13,7 @@ set(DISABLE_ZERO_TIER OFF CACHE BOOL "Disable ZeroTier multiplayer for MiSTer" F
 
 set(_mister_reference_dir "${CMAKE_CURRENT_LIST_DIR}/../reference")
 set(_mister_overlay_dir "${CMAKE_BINARY_DIR}/mister-engine-overlay")
-set(_mister_svid_expected_sha256 "6e6aa7f4d360c2e3c23206c62342bc008f7b7551d3816c9f217b05182db7e715")
+  set(_mister_svid_expected_sha256 "73626c3cbf7d99386c2e84a9f4e57b4b894fa66ab2f9efe20c1c4ab52eeb2d60")
 
 function(diablo_mister_transport)
   file(MAKE_DIRECTORY "${_mister_overlay_dir}/engine")
@@ -28,14 +28,14 @@ function(diablo_mister_transport)
   # the synthetic SDL_TEXTINPUT event.
   set(ui_source "${PROJECT_SOURCE_DIR}/Source/DiabloUI/diabloui.cpp")
   file(SHA256 "${ui_source}" ui_observed)
-  if(NOT ui_observed STREQUAL "354432987e19fa1524a2ba61057ab61f43f9de8edab60c4f84f6f18138eada85")
+  if(NOT ui_observed STREQUAL "38fe000e7d054a69a047deb1284877a5d0da9e0c1d06e20527ee4b6aaec3c7b5")
     message(FATAL_ERROR "Unexpected pinned diabloui.cpp input for MiSTer text input")
   endif()
   file(READ "${ui_source}" ui_content)
   string(REPLACE
-    [[	SDLC_StopTextInput(ghMainWnd); // input is enabled by default
+    [[	SDL_StopTextInput(); // input is enabled by default
 #endif]]
-    [[	SDLC_StopTextInput(ghMainWnd); // input is enabled by default
+    [[	SDL_StopTextInput(); // input is enabled by default
 	SDL_SetHint("DIABLO_MISTER_TEXT_INPUT_ACTIVE", "0");
 #endif]]
     ui_content "${ui_content}")
@@ -62,10 +62,10 @@ function(diablo_mister_transport)
 	SelectedItem = 0;]]
     ui_content "${ui_content}")
   string(REPLACE
-    [[		SDLC_StopTextInput(ghMainWnd);
+    [[		SDL_StopTextInput();
 #endif
 		UiTextInputState = std::nullopt;]]
-    [[		SDLC_StopTextInput(ghMainWnd);
+    [[		SDL_StopTextInput();
 		SDL_SetHint("DIABLO_MISTER_TEXT_INPUT_ACTIVE", "0");
 #endif
 		UiTextInputState = std::nullopt;]]
@@ -106,7 +106,7 @@ function(diablo_mister_transport)
 
   set(dx_source "${PROJECT_SOURCE_DIR}/Source/engine/dx.cpp")
   file(SHA256 "${dx_source}" dx_observed)
-  if(NOT dx_observed STREQUAL "923338e58ba57b612f1ba4bccc6584e2b194d92fe0a1efc164955ea159a457ab")
+  if(NOT dx_observed STREQUAL "04f25f495210dfa631b78747d6d80c11554bf976ddcc22523abf2833ef7ed30e")
     message(FATAL_ERROR "Unexpected pinned dx.cpp input for MiSTer transport")
   endif()
   file(READ "${dx_source}" dx_content)
@@ -214,7 +214,7 @@ function(diablo_mister_transport)
 
   set(sound_source "${PROJECT_SOURCE_DIR}/Source/engine/sound.cpp")
   file(SHA256 "${sound_source}" sound_observed)
-  if(NOT sound_observed STREQUAL "32e84d454ebb46bb696c7dc304b45406c1e5c95045c40e0122734c22a53b0e4e")
+  if(NOT sound_observed STREQUAL "3a864798410355fecda39d5648fdd07ae59027803807e9cc1ba96fee7d46328e")
     message(FATAL_ERROR "Unexpected pinned sound.cpp input for MiSTer transport")
   endif()
   file(READ "${sound_source}" sound_content)
@@ -256,18 +256,28 @@ function(diablo_mister_transport)
   file(SHA256 "${sound_output}" sound_patched)
   file(APPEND "${CMAKE_BINARY_DIR}/mister-transport-fixes.txt"
     "engine/sound.cpp ${sound_observed} ${sound_patched}\n")
-  get_target_property(sound_sources libdevilutionx_sound SOURCES)
-  list(REMOVE_ITEM sound_sources engine/sound.cpp "${sound_source}")
-  list(APPEND sound_sources "${sound_output}")
-  set_property(TARGET libdevilutionx_sound PROPERTY SOURCES "${sound_sources}")
+  if(TARGET libdevilutionx_sound)
+    get_target_property(sound_sources libdevilutionx_sound SOURCES)
+    list(REMOVE_ITEM sound_sources engine/sound.cpp "${sound_source}")
+    list(APPEND sound_sources "${sound_output}")
+    set_property(TARGET libdevilutionx_sound PROPERTY SOURCES "${sound_sources}")
+  else()
+    # DevilutionX 1.5.5 keeps engine/sound.cpp in the monolithic engine target.
+    get_target_property(monolithic_sound_sources libdevilutionx SOURCES)
+    list(REMOVE_ITEM monolithic_sound_sources engine/sound.cpp "${sound_source}")
+    list(APPEND monolithic_sound_sources "${sound_output}")
+    set_property(TARGET libdevilutionx PROPERTY SOURCES "${monolithic_sound_sources}")
+  endif()
   set_property(SOURCE "${sound_output}" DIRECTORY "${PROJECT_SOURCE_DIR}/Source"
     APPEND PROPERTY INCLUDE_DIRECTORIES "${_mister_reference_dir}")
   # The upstream sound object library is linked into libdevilutionx. Remove any
   # stale overlay entry left by an earlier configure before replacing its source
   # in the owning object library above.
-  get_target_property(monolithic_sources libdevilutionx SOURCES)
-  list(REMOVE_ITEM monolithic_sources "${sound_output}" "engine/sound.cpp" "${sound_source}")
-  set_property(TARGET libdevilutionx PROPERTY SOURCES "${monolithic_sources}")
+  if(TARGET libdevilutionx_sound)
+    get_target_property(monolithic_sources libdevilutionx SOURCES)
+    list(REMOVE_ITEM monolithic_sources "${sound_output}" "engine/sound.cpp" "${sound_source}")
+    set_property(TARGET libdevilutionx PROPERTY SOURCES "${monolithic_sources}")
+  endif()
   target_sources(libdevilutionx PRIVATE
     "${_mister_reference_dir}/mister_transport_audio.cpp")
   target_include_directories(libdevilutionx PRIVATE "${_mister_reference_dir}")
@@ -307,7 +317,7 @@ function(diablo_mister_transport)
 
   set(main_source "${PROJECT_SOURCE_DIR}/Source/main.cpp")
   file(SHA256 "${main_source}" main_observed)
-  if(NOT main_observed STREQUAL "dffc9d98ff32d8cd93547cebf0394617e8d345d3a88673f5c1c8f3965407ea48")
+  if(NOT main_observed STREQUAL "6f8d4e2d3b6287705a788a0ebb9f73f3a4981fd832549f2945b84143c2bcbf1c")
     message(FATAL_ERROR "Unexpected pinned main.cpp input for MiSTer transport")
   endif()
   set(main_output "${_mister_overlay_dir}/main.cpp")
@@ -323,6 +333,10 @@ function(diablo_mister_transport)
 
   # Transport controllers are registered SDL game controllers. Do not enable
   # keyboard-controller emulation: physical arrows/modifiers must remain keys.
+  # The 1.5.5 project defaults to C++20, while the project-owned transport
+  # boundary uses std::expected and therefore requires C++23.
+  target_compile_features(libdevilutionx PRIVATE cxx_std_23)
+  target_compile_features(devilutionx PRIVATE cxx_std_23)
   target_compile_definitions(devilutionx PRIVATE
     DIABLO_MISTER_TRANSPORT_TARGET=1)
   include("${CMAKE_CURRENT_FUNCTION_LIST_DIR}/mister-controller.cmake")

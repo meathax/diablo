@@ -128,7 +128,10 @@ int main(int argc, char *argv[])
     // only the core's blank video until the runtime publishes its first frame.
     OsdDisable();
     release_core_reset();
-    sleep(1);
+    // The reset sequence already includes the hardware pulse delay.  Keep a
+    // short settle window for the resident core, without holding the screen
+    // blank for a full second before starting package verification.
+    usleep(100000);
     launch_runtime(rbf_path);
 
     while (true) {

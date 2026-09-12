@@ -52,6 +52,18 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _sha256_cached(path: Path, cache: dict[Path, tuple[int, int, int, int, str]]) -> str:
+    """Hash each unchanged package file once during launch verification."""
+    stat = path.stat()
+    signature = (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns)
+    cached = cache.get(path)
+    if cached is not None and cached[:4] == signature:
+        return cached[4]
+    digest = sha256_file(path)
+    cache[path] = (*signature, digest)
+    return digest
+
+
 def canonical_bytes(value: object) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
 
@@ -102,6 +114,7 @@ def _file_records(root: Path) -> dict[str, Path]:
 def verify_package(root: Path) -> dict[str, Any]:
     """Verify package metadata without importing any project code."""
     root = root.resolve()
+    hash_cache: dict[Path, tuple[int, int, int, int, str]] = {}
     package = _read_json(_real_file(root, "package-manifest.json", "package manifest"), "package manifest")
     if package.get("schema") != PACKAGE_SCHEMA or package.get("status") != "pass":
         raise LaunchError("unsupported or non-passing package manifest")
@@ -114,7 +127,7 @@ def verify_package(root: Path) -> dict[str, Any]:
     if not isinstance(deployment_record, dict) or deployment_record.get("path") != "deployment.json":
         raise LaunchError("package manifest has no deployment manifest")
     deployment_path = _real_file(root, "deployment.json", "deployment manifest")
-    if deployment_record.get("sha256") != sha256_file(deployment_path):
+    if deployment_record.get("sha256") != _sha256_cached(deployment_path, hash_cache):
         raise LaunchError("deployment manifest hash does not match package manifest")
     deployment = _read_json(deployment_path, "deployment manifest")
     if deployment.get("schema") != DEPLOYMENT_SCHEMA or deployment.get("status") != "pass":
@@ -145,7 +158,7 @@ def verify_package(root: Path) -> dict[str, Any]:
             raise LaunchError(f"package file is listed twice: {relative}")
         listed.add(relative)
         path = files.get(relative)
-        if path is None or record.get("bytes") != path.stat().st_size or record.get("sha256") != sha256_file(path):
+        if path is None or record.get("bytes") != path.stat().st_size or record.get("sha256") != _sha256_cached(path, hash_cache):
             raise LaunchError(f"package file hash/size mismatch: {relative}")
     expected = set(files) - {"package-manifest.json"}
     if listed != expected:
@@ -154,7 +167,7 @@ def verify_package(root: Path) -> dict[str, Any]:
         if not isinstance(record, dict):
             continue
         path = _real_file(root, record.get("path"), "deployment artifact")
-        if record.get("bytes") != path.stat().st_size or record.get("sha256") != sha256_file(path):
+        if record.get("bytes") != path.stat().st_size or record.get("sha256") != _sha256_cached(path, hash_cache):
             raise LaunchError(f"deployment artifact hash/size mismatch: {record.get('role')}")
     assets = deployment.get("runtime_assets")
     if not isinstance(assets, dict) or assets.get("path") != "assets":
@@ -171,7 +184,7 @@ def verify_package(root: Path) -> dict[str, Any]:
             raise LaunchError(f"assets tree contains a symlink: {path}")
         if path.is_file():
             current_assets.append({"path": path.relative_to(assets_root).as_posix(),
-                                   "bytes": path.stat().st_size, "sha256": sha256_file(path)})
+                                   "bytes": path.stat().st_size, "sha256": _sha256_cached(path, hash_cache)})
     current_assets.sort(key=lambda item: str(item["path"]))
     listed_assets = sorted(asset_records, key=lambda item: str(item.get("path")) if isinstance(item, dict) else "")
     if listed_assets != current_assets or assets.get("bytes") != sum(item["bytes"] for item in current_assets):

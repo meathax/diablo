@@ -2,10 +2,11 @@
 # Used only by the Windows host reference; capture is dormant without its env flag.
 set(capture_source "${PROJECT_SOURCE_DIR}/Source/engine/render/scrollrt.cpp")
 file(SHA256 "${capture_source}" observed)
-if(NOT observed STREQUAL "fb46866b8f2a54c50e3ec022abb1435b5a1729c8d791f44db4c47cb910d662f2")
+if(NOT observed STREQUAL "df6b5e704bf92ca677899397d214a118a642dbe3f7069016e07f8207fd055f6a")
   message(FATAL_ERROR "Unexpected scrollrt.cpp input for reference capture")
 endif()
 file(READ "${capture_source}" capture_content)
+string(REPLACE "\r\n" "\n" capture_content "${capture_content}")
 string(REPLACE [[#include "engine/render/scrollrt.h"]]
   [[#include "engine/render/scrollrt.h"
 #include "host_capture.hpp"
@@ -14,7 +15,7 @@ string(REPLACE [[	RenderPresent();
 }
 
 } // namespace devilution]]
-  [[    diablo_reference::CaptureRenderedFrame(out, demo::SimulateMillisecondsSinceStartup());
+  [[    diablo_reference::CaptureRenderedFrame(out, SDL_GetTicks());
 	RenderPresent();
 }
 

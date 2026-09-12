@@ -2,10 +2,11 @@
 # Preserve the pinned upstream checkout and record the generated translation unit.
 set(controller_source "${PROJECT_SOURCE_DIR}/Source/options.cpp")
 file(SHA256 "${controller_source}" controller_original_sha)
-if(NOT controller_original_sha STREQUAL "4433b8a94c556d251cd653aa69c44b76e1406b7bd1ed7f515edfdc118b01e236")
+if(NOT controller_original_sha STREQUAL "e7f0259173628f24a5743784a9a7e4854ab1c2e1cb827fbc8ec6754591118265")
   message(FATAL_ERROR "Unexpected pinned options.cpp for Xbox controller preset")
 endif()
 file(READ "${controller_source}" controller_content)
+string(REPLACE "\r\n" "\n" controller_content "${controller_content}")
 string(REPLACE "#define DEFAULT_PER_PIXEL_LIGHTING true"
   "#define DEFAULT_PER_PIXEL_LIGHTING false" controller_content "${controller_content}")
 set(controller_content "#include \"mister_controller_bindings.hpp\"\n#include \"mister_transport_config.hpp\"\n#include <cstdlib>\n${controller_content}")
@@ -42,10 +43,18 @@ set(controller_output "${CMAKE_BINARY_DIR}/mister-controller-overlay/options.cpp
 file(CONFIGURE OUTPUT "${controller_output}" CONTENT "${controller_content}" @ONLY NEWLINE_STYLE UNIX)
 file(SHA256 "${controller_output}" controller_patched_sha)
 file(WRITE "${CMAKE_BINARY_DIR}/mister-controller-fixes.txt" "options.cpp ${controller_original_sha} ${controller_patched_sha}\n")
-get_target_property(controller_sources libdevilutionx_options SOURCES)
-list(REMOVE_ITEM controller_sources options.cpp "${controller_source}")
-list(APPEND controller_sources "${controller_output}")
-set_property(TARGET libdevilutionx_options PROPERTY SOURCES "${controller_sources}")
+if(TARGET libdevilutionx_options)
+  get_target_property(controller_sources libdevilutionx_options SOURCES)
+  list(REMOVE_ITEM controller_sources options.cpp "${controller_source}")
+  list(APPEND controller_sources "${controller_output}")
+  set_property(TARGET libdevilutionx_options PROPERTY SOURCES "${controller_sources}")
+else()
+  # DevilutionX 1.5.5 keeps options.cpp in the monolithic engine library.
+  get_target_property(controller_sources libdevilutionx SOURCES)
+  list(REMOVE_ITEM controller_sources options.cpp "${controller_source}")
+  list(APPEND controller_sources "${controller_output}")
+  set_property(TARGET libdevilutionx PROPERTY SOURCES "${controller_sources}")
+endif()
 set_property(SOURCE "${controller_output}" DIRECTORY "${PROJECT_SOURCE_DIR}/Source"
   APPEND PROPERTY INCLUDE_DIRECTORIES "${CMAKE_CURRENT_LIST_DIR}/../reference")
 
@@ -55,10 +64,11 @@ set_property(SOURCE "${controller_output}" DIRECTORY "${PROJECT_SOURCE_DIR}/Sour
 # weakening the controller safety contract.
 set(controller_diablo_source "${PROJECT_SOURCE_DIR}/Source/diablo.cpp")
 file(SHA256 "${controller_diablo_source}" controller_diablo_original_sha)
-if(NOT controller_diablo_original_sha STREQUAL "b9f2aeacdbfa823b533f4e7f14e2337a6a88a1341b759acc7764f4922725e558")
+if(NOT controller_diablo_original_sha STREQUAL "b7337c65281c94d2dbd1abf79248799f3c8639a9bee60bbf8a8716cbccea686e")
   message(FATAL_ERROR "Unexpected pinned diablo.cpp for Xbox controller safety")
 endif()
 file(READ "${controller_diablo_source}" controller_diablo_content)
+string(REPLACE "\r\n" "\n" controller_diablo_content "${controller_diablo_content}")
 set(controller_diablo_content "#include \"mister_controller_safety.hpp\"\n${controller_diablo_content}")
 
 set(controller_safety_helpers [[
@@ -73,9 +83,9 @@ bool StowXboxPanelHeldItem()
 		return true;
 
 	const Item heldItem = myPlayer.HoldItem;
-	bool stowed = IsStashOpen && AutoPlaceItemInStash(heldItem, true);
+	bool stowed = IsStashOpen && AutoPlaceItemInStash(myPlayer, heldItem, true);
 	if (!stowed)
-		stowed = AutoPlaceItemInBelt(myPlayer, heldItem, true, true);
+		stowed = AutoPlaceItemInBelt(myPlayer, heldItem, true);
 	if (!stowed)
 		stowed = AutoPlaceItemInInventory(myPlayer, heldItem, true);
 	if (!stowed) {
@@ -90,7 +100,7 @@ bool StowXboxPanelHeldItem()
 
 void StartXboxSpellAction()
 {
-	LastPlayerAction = PlayerActionType::None;
+	LastMouseButtonAction = MouseActionType::None;
 	if (XboxHeldItemDrop.Begin(invflag, !MyPlayer->HoldItem.isEmpty(), SDL_GetTicks()))
 		return;
 
@@ -102,7 +112,7 @@ void FinishXboxSpellAction()
 {
 	const bool shouldDrop = XboxHeldItemDrop.Release(invflag, !MyPlayer->HoldItem.isEmpty(), SDL_GetTicks());
 	ControllerActionHeld = GameActionType_NONE;
-	LastPlayerAction = PlayerActionType::None;
+	LastMouseButtonAction = MouseActionType::None;
 	if (shouldDrop)
 		TryDropItem();
 }
@@ -118,15 +128,15 @@ void CancelXboxPanelAction()
 		return;
 
 	GameAction action;
-	if (SpellSelectFlag)
+	if (spselflag)
 		action = GameAction(GameActionType_TOGGLE_QUICK_SPELL_MENU);
 	else if (invflag)
 		action = GameAction(GameActionType_TOGGLE_INVENTORY);
-	else if (SpellbookFlag)
+	else if (sbookflag)
 		action = GameAction(GameActionType_TOGGLE_SPELL_BOOK);
 	else if (QuestLogIsOpen)
 		action = GameAction(GameActionType_TOGGLE_QUEST_LOG);
-	else if (CharFlag)
+	else if (chrflag)
 		action = GameAction(GameActionType_TOGGLE_CHARACTER_INFO);
 	ProcessGameAction(action);
 }
@@ -145,12 +155,12 @@ string(REPLACE "${controller_init_marker}" "${controller_safety_helpers}${contro
 set(controller_spell_action [[
 	    [] {
 		    ControllerActionHeld = GameActionType_CAST_SPELL;
-		    LastPlayerAction = PlayerActionType::None;
+		    LastMouseButtonAction = MouseActionType::None;
 		    PerformSpellAction();
 	    },
 	    [] {
 		    ControllerActionHeld = GameActionType_NONE;
-		    LastPlayerAction = PlayerActionType::None;
+		    LastMouseButtonAction = MouseActionType::None;
 	    },]])
 set(controller_spell_replacement [[
 	    StartXboxSpellAction,
@@ -169,15 +179,15 @@ set(controller_cancel_action [[
 		    }
 
 		    GameAction action;
-		    if (SpellSelectFlag)
+		    if (spselflag)
 			    action = GameAction(GameActionType_TOGGLE_QUICK_SPELL_MENU);
 		    else if (invflag)
 			    action = GameAction(GameActionType_TOGGLE_INVENTORY);
-		    else if (SpellbookFlag)
+		    else if (sbookflag)
 			    action = GameAction(GameActionType_TOGGLE_SPELL_BOOK);
 		    else if (QuestLogIsOpen)
 			    action = GameAction(GameActionType_TOGGLE_QUEST_LOG);
-		    else if (CharFlag)
+		    else if (chrflag)
 			    action = GameAction(GameActionType_TOGGLE_CHARACTER_INFO);
 		    ProcessGameAction(action);
 	    },]])
@@ -210,10 +220,11 @@ endif()
 # preset, so a user remap is never shown a misleading overlay.
 set(controller_modifier_source "${PROJECT_SOURCE_DIR}/Source/controls/modifier_hints.cpp")
 file(SHA256 "${controller_modifier_source}" controller_modifier_original_sha)
-if(NOT controller_modifier_original_sha STREQUAL "698f0948be523e7e466b63ed61d1c7688a6bcc8c4dfa7b41594d396b768d5e3e")
+if(NOT controller_modifier_original_sha STREQUAL "0feaf53285f59ea5ecbe97f96dcb88c1df908513e910796c52c9ca96e849e07c")
   message(FATAL_ERROR "Unexpected pinned modifier_hints.cpp for Xbox controller overlay")
 endif()
 file(READ "${controller_modifier_source}" controller_modifier_content)
+string(REPLACE "\r\n" "\n" controller_modifier_content "${controller_modifier_content}")
 string(REPLACE [[#include "controls/controller_motion.h"]] [[#include "controls/controller.h"
 #include "controls/controller_motion.h"
 #include "mister_controller_bindings.hpp"]] controller_modifier_content "${controller_modifier_content}")
@@ -228,7 +239,7 @@ void DrawXboxQuickSpellOverlay(const Surface &out)
 	if (SimulatingMouseWithPadmapper || !IsControllerButtonPressed(ControllerButton_AXIS_TRIGGERRIGHT))
 		return;
 
-	const PadmapperOptions &padmapper = GetOptions().Padmapper;
+	const PadmapperOptions &padmapper = sgOptions.Padmapper;
 	if (!mister::HasXboxQuickSpellLayer(
 	        padmapper.ButtonComboForAction("QuickSpell1"),
 	        padmapper.ButtonComboForAction("QuickSpell2"),

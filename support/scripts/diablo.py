@@ -83,6 +83,11 @@ def load_lock() -> dict:
         if not re.fullmatch(r"https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\.git",
                             source["url"]):
             raise GateError(f"Unsupported source URL: {name}")
+        release = source.get("release")
+        if release is not None and not re.fullmatch(r"\d+\.\d+\.\d+", release):
+            raise GateError(f"Unsupported release identifier: {name}")
+        if name == "devilutionx" and release != "1.5.5":
+            raise GateError("DevilutionX must remain pinned to stable release 1.5.5")
     return data
 
 
@@ -94,6 +99,11 @@ def inspect_source(path: Path, source: dict) -> dict:
     remote = git(path, "remote", "get-url", "origin")
     if remote.removesuffix(".git").lower() != source["url"].removesuffix(".git").lower():
         raise GateError(f"Origin differs from lock: {path}")
+    release = source.get("release")
+    if release is not None:
+        tag_commit = git(path, "rev-parse", "--verify", f"refs/tags/{release}")
+        if tag_commit != source["commit"]:
+            raise GateError(f"Release tag differs from lock: {path}")
     licenses = {}
     for name in ("LICENSE", "LICENSE.md", "LICENSE.txt", "COPYING"):
         if (path / name).is_file():
@@ -135,7 +145,10 @@ def fetch_sources(args: argparse.Namespace) -> dict:
             if remote != source["url"]:
                 raise GateError(f"Refusing unexpected source origin: {path}")
             if head is None:
-                git(path, "fetch", "--depth", "1", "origin", source["commit"], timeout=600)
+                release = source.get("release")
+                fetch_ref = (f"refs/tags/{release}:refs/tags/{release}"
+                             if release is not None else source["commit"])
+                git(path, "fetch", "--depth", "1", "origin", fetch_ref, timeout=600)
                 git(path, "checkout", "--detach", source["commit"])
         results[name] = inspect_source(path, source)
     return {"sources": results, "dependency_closure_verified": False}

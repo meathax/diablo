@@ -77,6 +77,14 @@ class PackageReleaseTest(unittest.TestCase):
                 self.assertEqual(source.read_bytes(),
                                  (package / "licenses" / source.relative_to(package_release.THIRD_PARTY_NOTICES)).read_bytes())
 
+    def test_launcher_verification_hashes_each_installed_file_once(self) -> None:
+        package = self.create()
+        expected = len(mister_launcher._file_records(package)) - 1  # package-manifest.json is excluded
+        with mock.patch.object(mister_launcher, "sha256_file",
+                               wraps=mister_launcher.sha256_file) as hash_file:
+            mister_launcher.verify_package(package)
+        self.assertEqual(expected, hash_file.call_count)
+
     def test_bundled_hellfire_mod_is_packaged_and_staged(self) -> None:
         mod = self.root / "source" / "hf"
         (mod / "lua/mods/hf").mkdir(parents=True)
