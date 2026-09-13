@@ -201,6 +201,7 @@ int main(int argc, char **argv)
 	SetEnvironment("DIABLO_MISTER_TRANSPORT_LOCK", lock_path.string());
 	SetEnvironment("DIABLO_MISTER_PROFILE", "0");
 	SetEnvironment("DIABLO_MISTER_COMMAND_SCENE", "0");
+	SetEnvironment("DIABLO_MISTER_AUDIO_TARGET_FRAMES", "8192");
 
 	SDL_SetMainReady();
 	if (SDL_Init(SDL_INIT_EVENTS) != 0) Fail(SDL_GetError());

@@ -261,17 +261,26 @@ public:
 		// from stale FIFO telemetry. Both queues count toward the playback lead.
 		std::uint64_t buffered = static_cast<std::uint64_t>(health->queued_frames)
 		                       + health->local_queue_frames;
-		constexpr std::uint32_t TargetFrames = 8192;
+		// Keep the proven 8192-frame safety lead by default. The measured board
+		// runs still show nonzero PCM underrun counters, so latency tuning must be
+		// an explicit, bounded experiment rather than an unconditional default.
+		// DIABLO_MISTER_AUDIO_TARGET_FRAMES permits that experiment without a
+		// rebuild and never permits a target above the qualified lead.
+		const std::uint32_t target_frames = AudioTargetFrames();
 		constexpr unsigned MaxChunks = 4;
 		unsigned chunks = 0;
-		while (buffered < TargetFrames && chunks < MaxChunks) {
+		while (buffered < target_frames && chunks < MaxChunks) {
 			mix(userdata, bytes, byte_count);
 			const auto before = runtime->session().view().header().pcm.producer_sequence;
-			if (!PublishPcmBytesForRuntime(runtime, bytes, static_cast<std::size_t>(byte_count)))
+			if (!PublishPcmBytesForRuntime(runtime, bytes, static_cast<std::size_t>(byte_count), false))
 				break;
 			buffered += runtime->session().view().header().pcm.producer_sequence - before;
 			++chunks;
 		}
+		// A refill can publish several chunks. One final ordering barrier is
+		// sufficient and avoids paying for a flush per chunk on file-backed test
+		// mappings and any future cached target mapping.
+		if (chunks != 0) (void)runtime->Flush();
 		return chunks;
 	}
 
@@ -286,7 +295,7 @@ public:
 		AudioCallbackFinished callback_finished {lifecycle_};
 		auto runtime = Runtime();
 		if (!runtime) return false;
-		return PublishPcmBytesForRuntime(runtime, bytes, byte_count);
+		return PublishPcmBytesForRuntime(runtime, bytes, byte_count, true);
 	}
 
 private:
@@ -297,7 +306,7 @@ private:
 
 	[[nodiscard]] bool PublishPcmBytesForRuntime(
 	    const std::shared_ptr<transport::TransportRuntime> &runtime,
-	    const std::uint8_t *bytes, std::size_t byte_count)
+	    const std::uint8_t *bytes, std::size_t byte_count, bool flush)
 	{
 		if (std::atomic_ref<std::uint32_t>(runtime->session().view().header().fpga_state)
 		        .load(std::memory_order_acquire)
@@ -323,7 +332,7 @@ private:
 			std::fprintf(stderr,
 		             "Diablo MiSTer PCM callback: input_bytes=%zu output_frames=%zu epoch=0x%08x\n",
 			             byte_count, output_frames, epoch);
-		(void)runtime->Flush();
+		if (flush) (void)runtime->Flush();
 		return true;
 	}
 
@@ -446,6 +455,24 @@ private:
 			                            || std::strcmp(value, "true") == 0);
 		}();
 		return enabled;
+	}
+
+	static std::uint32_t AudioTargetFrames()
+	{
+		static const std::uint32_t target = [] {
+			constexpr std::uint32_t DefaultTarget = 8192;
+			constexpr std::uint32_t MinimumTarget = 4096;
+			constexpr std::uint32_t MaximumTarget = 8192;
+			const char *value = std::getenv("DIABLO_MISTER_AUDIO_TARGET_FRAMES");
+			if (value == nullptr || *value == '\0') return DefaultTarget;
+			char *end = nullptr;
+			const auto parsed = std::strtoul(value, &end, 10);
+			if (end == value || *end != '\0') return DefaultTarget;
+			if (parsed < MinimumTarget) return MinimumTarget;
+			if (parsed > MaximumTarget) return MaximumTarget;
+			return static_cast<std::uint32_t>(parsed);
+		}();
+		return target;
 	}
 
 	void FlushProfiled()
