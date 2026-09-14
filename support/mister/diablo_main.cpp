@@ -3,7 +3,9 @@
 // Selected by MiSTer.ini's [Diablo] main=Diablo entry after either visible
 // Diablo RBF is selected from _Other.  The process remains the normal HPS
 // I/O/OSD owner while its child starts the packaged DevilutionX runtime.
+#include <algorithm>
 #include <cerrno>
+#include <cctype>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -30,6 +32,51 @@
 const char *version = "$VER:" VDATE;
 
 static pid_t runtime_pid = -1;
+
+static std::string json_string_value(const std::string &document, const char *key)
+{
+    const std::string needle = "\"" + std::string(key) + "\"";
+    const size_t key_offset = document.find(needle);
+    if (key_offset == std::string::npos) return {};
+    const size_t colon = document.find(':', key_offset + needle.size());
+    if (colon == std::string::npos) return {};
+    size_t value = colon + 1;
+    while (value < document.size() && std::isspace(static_cast<unsigned char>(document[value]))) ++value;
+    if (value == document.size() || document[value] != '\"') return {};
+    const size_t end = document.find('\"', value + 1);
+    if (end == std::string::npos) return {};
+    return document.substr(value + 1, end - value - 1);
+}
+
+static std::string active_package_root()
+{
+    constexpr const char *StatePath = "/media/fat/.diablo-install.json";
+    constexpr const char *LegacyRoot = "/media/fat/_Other/Diablo";
+    int descriptor = open(StatePath, O_RDONLY | O_CLOEXEC);
+    if (descriptor < 0) return LegacyRoot;
+    char buffer[4096];
+    const ssize_t bytes = read(descriptor, buffer, sizeof(buffer));
+    close(descriptor);
+    if (bytes <= 0 || bytes == static_cast<ssize_t>(sizeof(buffer))) return LegacyRoot;
+
+    const std::string state(buffer, static_cast<size_t>(bytes));
+    const std::string candidate = json_string_value(state, "active_candidate_id");
+    const std::string release = json_string_value(state, "active_release");
+    if (json_string_value(state, "status") != "pass" || candidate.size() != 64
+        || !std::all_of(candidate.begin(), candidate.end(), [](unsigned char value) { return std::isxdigit(value); })) {
+        return LegacyRoot;
+    }
+    const std::string expected = ".diablo-releases/" + candidate;
+    if (release != expected) return LegacyRoot;
+    const std::string package = "/media/fat/" + release;
+    struct stat metadata {};
+    if (lstat((package + "/diablo_launcher.py").c_str(), &metadata) != 0
+        || !S_ISREG(metadata.st_mode) || lstat((package + "/package-manifest.json").c_str(), &metadata) != 0
+        || !S_ISREG(metadata.st_mode)) {
+        return LegacyRoot;
+    }
+    return package;
+}
 
 
 static bool hellfire_selected(const char *rbf_path)
@@ -63,6 +110,8 @@ static void release_core_reset()
 static void launch_runtime(const char *rbf_path)
 {
     const char *campaign = hellfire_selected(rbf_path) ? "hellfire" : "diablo";
+    const std::string package = active_package_root();
+    const std::string launcher = package + "/diablo_launcher.py";
     runtime_pid = fork();
     if (runtime_pid < 0) {
         runtime_pid = -1;
@@ -80,8 +129,8 @@ static void launch_runtime(const char *rbf_path)
     prctl(PR_SET_PDEATHSIG, SIGKILL);
     char *const command[] = {
         const_cast<char *>("/usr/bin/python3"),
-        const_cast<char *>("/media/fat/_Other/Diablo/diablo_launcher.py"),
-        const_cast<char *>("--package-root"), const_cast<char *>("/media/fat/_Other/Diablo"),
+        const_cast<char *>(launcher.c_str()),
+        const_cast<char *>("--package-root"), const_cast<char *>(package.c_str()),
         const_cast<char *>("--data-root"), const_cast<char *>("/media/fat/games/Diablo"),
         const_cast<char *>("--save-root"), const_cast<char *>("/media/fat/saves/Diablo"),
         const_cast<char *>("--campaign"), const_cast<char *>(campaign),
