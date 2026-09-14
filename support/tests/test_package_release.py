@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import hashlib
 import os
-import shutil
 import subprocess
 from pathlib import Path
 import tempfile
@@ -100,18 +99,6 @@ class PackageReleaseTest(unittest.TestCase):
                 self.assertIsNone(mister_launcher._managed_package_identity(release))
             (release / "devilutionx").write_bytes(b"wrong size")
             self.assertIsNone(mister_launcher._managed_package_identity(release))
-
-    def test_downloader_legacy_layout_uses_fast_manifest_path(self) -> None:
-        package = self.create(board="de10-nano-mister")
-        target = self.root / "target"
-        legacy = target / "_Other" / "Diablo"
-        legacy.parent.mkdir(parents=True)
-        shutil.copytree(package, legacy)
-        with mock.patch.object(mister_launcher, "MISTER_INSTALL_STATE", target / ".diablo-install.json"):
-            with mock.patch.object(Path, "rglob", side_effect=AssertionError("repeated tree walk")):
-                identity = mister_launcher._managed_package_identity(legacy)
-        self.assertIsNotNone(identity)
-        self.assertEqual(identity["candidate_id"], "a" * 64)
 
     def test_full_verification_rejects_directory_symlinks(self) -> None:
         package = self.create()

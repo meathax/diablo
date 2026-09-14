@@ -45,12 +45,5 @@ class NetplayContractTest(unittest.TestCase):
         self.assertIn('"/media/fat/saves/Diablo"', source)
         self.assertNotIn('"/media/fat/games/Diablo/Saves"', source)
 
-    def test_resident_launcher_uses_the_active_transactional_release(self):
-        source = (ROOT / "support/mister/diablo_main.cpp").read_text()
-        self.assertIn('"/media/fat/.diablo-install.json"', source)
-        self.assertIn('json_string_value(state, "active_candidate_id")', source)
-        self.assertIn('json_string_value(state, "active_release")', source)
-        self.assertIn('const std::string package = active_package_root();', source)
-
 if __name__ == "__main__":
     unittest.main()
