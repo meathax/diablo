@@ -1,26 +1,26 @@
 {
   "schema": "diablo-package-manifest-v2",
   "status": "pass",
-  "candidate_id": "7ee7ba5168555ed44ae5d578072f439f82cc6871a4880910e82aa0d9b0cf08d6",
-  "source_id": "ced7164bfe7b8d25fce057b01d79f722b1436baba39f8efed1c817e091ec27e0",
+  "candidate_id": "0c3589cc780fae407f31e722ab4017cc051a47b00c7ee836d0fc5ec745b5caf9",
+  "source_id": "c144ee5e409a240c688151a260b9b92eb1cdfe170c1b420635e2c4802ba1d21c",
   "board_profile": "de10-nano-mister",
   "private_data_excluded": true,
   "deployment_manifest": {
     "path": "deployment.json",
-    "sha256": "d6de14ca1c81b22a338b198596ff7385eabc220d1b4b4f912996f79a8ffaa755"
+    "sha256": "77a450969f9bb59da76d605f47df0d1bf8017dbfd52b5673a80d15cb2eb0444b"
   },
   "files": [
     {
       "role": "runtime",
       "path": "devilutionx",
-      "bytes": 8731536,
-      "sha256": "2ab9d6b4f7ef4c43358c3ae2c66d563917bd724ab3ce64d13f676b6e7fb11ebb"
+      "bytes": 7365808,
+      "sha256": "727ac1927713b73479fc7f20bc832273b0346726e2c8f03d6d8cfc124feb3743"
     },
     {
       "role": "runtime",
       "path": "Diablo.rbf",
-      "bytes": 2738600,
-      "sha256": "e8b38f5ab1a1c1589bed2e308c46f5bc70ebca7ab03b32fe840a657ec51d19ba"
+      "bytes": 2755740,
+      "sha256": "75900db7251bbb336ae19d6206495ee2ff3776aa6e3864471fe3260e2e87114c"
     },
     {
       "role": "runtime",
@@ -31,14 +31,14 @@
     {
       "role": "runtime",
       "path": "diablo_launcher.py",
-      "bytes": 36233,
-      "sha256": "a1cd7dcb405bbedd60647093ccd184fa5cec0ef1ba6fb8f8be1482d45d105325"
+      "bytes": 36435,
+      "sha256": "b649b78ee41e6db105e93a4cbb36db6ceb82c1fee256ecb0d68af937221a5da0"
     },
     {
       "role": "deployment-manifest",
       "path": "deployment.json",
       "bytes": 37705,
-      "sha256": "d6de14ca1c81b22a338b198596ff7385eabc220d1b4b4f912996f79a8ffaa755"
+      "sha256": "77a450969f9bb59da76d605f47df0d1bf8017dbfd52b5673a80d15cb2eb0444b"
     },
     {
       "role": "release-document",

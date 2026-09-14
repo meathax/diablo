@@ -10,6 +10,7 @@ endif()
 set(NONET OFF CACHE BOOL "Disable network support for MiSTer" FORCE)
 set(DISABLE_TCP OFF CACHE BOOL "Disable TCP multiplayer for MiSTer" FORCE)
 set(DISABLE_ZERO_TIER OFF CACHE BOOL "Disable ZeroTier multiplayer for MiSTer" FORCE)
+set(PACKET_ENCRYPTION ON CACHE BOOL "Support passworded multiplayer with stock PCs" FORCE)
 # MiSTer must keep DevilutionX alive when the in-game Quit Game action is
 # selected so it can return to the title menu instead of leaving the resident
 # handler on a black frame after the SDL process exits.
@@ -352,3 +353,4 @@ cmake_language(DEFER CALL diablo_mister_transport)
 # Optional and independently guarded; incompatible or audio-only builds retain
 # their existing renderer.
 include("${CMAKE_CURRENT_LIST_DIR}/mister-lighting.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/netplay.cmake")

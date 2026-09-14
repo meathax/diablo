@@ -197,16 +197,19 @@ def verify_package(root: Path) -> dict[str, Any]:
 
 
 def _managed_package_identity(root: Path) -> dict[str, Any] | None:
-    """Use the install receipt for a fast, stat-only check of managed releases.
+    """Validate installed identity and entrypoints without scanning asset directories.
 
     Deployment already performs the complete content-hash verification before
     publishing a release.  On the target, re-hashing the 17 MiB package on
-    every RBF selection delays the first video by several seconds.  The fast
-    path remains strict about the signed package/deployment identities,
-    release location, file set, symlinks, and recorded sizes; an unmanaged or
-    changed package falls back to the complete verifier below.
+    every RBF selection delays the first video. Even a metadata-only recursive
+    scan takes tens of seconds on a cold MiSTer SD filesystem. Trust the
+    deployment receipt for assets; check manifest hashes and runtime entrypoints
+    here. Full file/asset auditing remains available with
+    DIABLO_MISTER_VERIFY_FULL=1 and is always used for unmanaged packages.
     """
     try:
+        if os.environ.get("DIABLO_MISTER_VERIFY_FULL") == "1":
+            return None
         state = _read_json(MISTER_INSTALL_STATE, "MiSTer install state")
         root = root.resolve()
         release = state.get("active_release")
@@ -258,20 +261,20 @@ def _managed_package_identity(root: Path) -> dict[str, Any] | None:
         records = package.get("files")
         if not isinstance(records, list):
             return None
-        files = _file_records(root)
-        listed: set[str] = set()
+        listed: dict[str, dict[str, Any]] = {}
         for item in records:
             if not isinstance(item, dict) or not isinstance(item.get("path"), str):
                 return None
-            relative = _relative(root, item["path"], "package file").as_posix()
-            if relative in listed:
+            relative = item["path"]
+            if (relative in listed or "\\" in relative
+                    or any(part in {"", ".", ".."} for part in relative.split("/"))):
                 return None
-            listed.add(relative)
-            path = files.get(relative)
-            if path is None or item.get("bytes") != path.stat().st_size:
+            listed[relative] = item
+        for item in artifacts:
+            record = listed.get(item["path"])
+            if (record is None or record.get("bytes") != item.get("bytes")
+                    or record.get("sha256") != item.get("sha256")):
                 return None
-        if listed != set(files) - {"package-manifest.json"}:
-            return None
 
         assets = deployment.get("runtime_assets")
         if not isinstance(assets, dict) or assets.get("path") != "assets" or not isinstance(assets.get("files"), list):
@@ -279,12 +282,13 @@ def _managed_package_identity(root: Path) -> dict[str, Any] | None:
         assets_root = root / "assets"
         if not assets_root.is_dir() or assets_root.is_symlink():
             return None
-        current_assets = [{"path": path.relative_to(assets_root).as_posix(), "bytes": path.stat().st_size}
-                          for path in sorted(assets_root.rglob("*"), key=lambda item: item.relative_to(assets_root).as_posix())
-                          if path.is_file()]
-        listed_assets = [{"path": item.get("path"), "bytes": item.get("bytes")}
-                         for item in assets["files"] if isinstance(item, dict)]
-        if (listed_assets != current_assets or assets.get("bytes") != sum(item["bytes"] for item in current_assets)):
+        current_assets = [{"path": relative[len("assets/"):], "bytes": record.get("bytes"),
+                           "sha256": record.get("sha256")}
+                          for relative, record in sorted(listed.items())
+                          if relative.startswith("assets/")]
+        if (assets["files"] != current_assets
+                or assets.get("bytes") != sum(item["bytes"] for item in current_assets)
+                or assets.get("sha256") != hashlib.sha256(canonical_bytes(current_assets)).hexdigest()):
             return None
         return {"candidate_id": candidate_id, "source_id": source_id,
                 "board_profile": package.get("board_profile"), "deployment": deployment}

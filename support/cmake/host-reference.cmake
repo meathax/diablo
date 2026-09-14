@@ -1,4 +1,5 @@
 # Project-owned host integration; the pinned engine checkout stays unchanged.
+include("${CMAKE_CURRENT_LIST_DIR}/netplay.cmake")
 if(WIN32 AND MINGW)
   function(diablo_host_patch_file relative expected before after output)
     set(original "${PROJECT_SOURCE_DIR}/Source/${relative}")
@@ -42,20 +43,10 @@ if(WIN32 AND MINGW)
       list(APPEND engine_sources "${overlay}/engine/assets.cpp")
       set_property(TARGET libdevilutionx PROPERTY SOURCES "${engine_sources}")
     endif()
-    if(NOT NONET AND NOT DISABLE_ZERO_TIER)
-      file(MAKE_DIRECTORY "${overlay}/dvlnet")
-      diablo_host_patch_file(dvlnet/zerotier_native.cpp
-        d4aaac27e0e9a17132d4bda85bfb42e057b450f3a93c9700584b1720ce63072e
-        [[#include <SDL.h>]]
-        [[#include <SDL.h>
-#include <algorithm>
-#define ADD_EXPORTS]]
-        "${overlay}/dvlnet/zerotier_native.cpp")
-      get_target_property(network_sources libdevilutionx SOURCES)
-      list(REMOVE_ITEM network_sources dvlnet/zerotier_native.cpp "${PROJECT_SOURCE_DIR}/Source/dvlnet/zerotier_native.cpp")
-      list(APPEND network_sources "${overlay}/dvlnet/zerotier_native.cpp")
-      set_property(TARGET libdevilutionx PROPERTY SOURCES "${network_sources}")
-    endif()
+    # ZeroTier is supplied by the generated netplay overlay. It carries the
+    # Windows ADD_EXPORTS compatibility define and the peer-readiness fix;
+    # adding the older host-only copy here would link two native translation
+    # units.
     diablo_host_patch_file(utils/png.h
       f379c3cd4c83f98a82a7af17469793038df9d3adbd9ff383ebe9452804d7e425
       [[SDL_RWops *rwops = OpenAssetAsSdlRwOps(file);]]

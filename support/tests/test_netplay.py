@@ -8,10 +8,15 @@ class NetplayContractTest(unittest.TestCase):
         source = (ROOT / "support/cmake/arm-transport.cmake").read_text()
         for setting in ("NONET", "DISABLE_TCP", "DISABLE_ZERO_TIER"):
             self.assertIn(f"set({setting} OFF", source)
+        self.assertIn("set(PACKET_ENCRYPTION ON", source)
         self.assertNotIn("mister_netplay", source)
         self.assertNotIn("set(multi_source", source)
         self.assertNotIn("set(selgame_source", source)
         self.assertIn("DIABLO_MISTER_TEXT_INPUT_ACTIVE", source)
+
+    def test_provider_fixture_tracks_the_local_player_after_join(self):
+        source = (ROOT / "support/tests/netplay_peer.cpp").read_text()
+        self.assertIn("MyPlayerId = static_cast<size_t>(id);", source)
 
     def test_osd_and_launcher_do_not_control_multiplayer(self):
         hdl = (ROOT / "Diablo.sv").read_text()
