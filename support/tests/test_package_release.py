@@ -4,6 +4,7 @@ import json
 import hashlib
 import os
 import subprocess
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
@@ -99,6 +100,24 @@ class PackageReleaseTest(unittest.TestCase):
                 self.assertIsNone(mister_launcher._managed_package_identity(release))
             (release / "devilutionx").write_bytes(b"wrong size")
             self.assertIsNone(mister_launcher._managed_package_identity(release))
+
+    def test_direct_install_fast_path_ignores_stale_transactional_state(self) -> None:
+        package = self.create(board="de10-nano-mister")
+        target = self.root / "direct"
+        direct = target / "_Other/Diablo"
+        shutil.copytree(package, direct)
+        state_path = target / ".diablo-install.json"
+        with mock.patch.object(mister_launcher, "MISTER_INSTALL_STATE", state_path):
+            for state in (None, '{"status":"pass","active_candidate_id":"stale"}'):
+                if state is not None:
+                    state_path.write_text(state)
+                with mock.patch.object(Path, "rglob", side_effect=AssertionError("startup tree scan")):
+                    self.assertIsNotNone(mister_launcher._managed_package_identity(direct))
+            with mock.patch.dict(os.environ, {"DIABLO_MISTER_VERIFY_FULL": "1"}):
+                self.assertIsNone(mister_launcher._managed_package_identity(direct))
+            deployment = direct / "deployment.json"
+            deployment.write_bytes(deployment.read_bytes() + b" ")
+            self.assertIsNone(mister_launcher._managed_package_identity(direct))
 
     def test_full_verification_rejects_directory_symlinks(self) -> None:
         package = self.create()
