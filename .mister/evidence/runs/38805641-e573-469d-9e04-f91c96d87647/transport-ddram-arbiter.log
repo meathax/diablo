@@ -1,7 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-38805641-e573-469d-9e04-f91c96d87647-j_zkd3cp\\rtl", "-s", "diablo_transport_ddram_arbiter_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-38805641-e573-469d-9e04-f91c96d87647-j_zkd3cp\\.work\\build\\verification\\transport-ddram-arbiter.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-38805641-e573-469d-9e04-f91c96d87647-j_zkd3cp\\rtl\\diablo_transport_ddram_arbiter.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-38805641-e573-469d-9e04-f91c96d87647-j_zkd3cp\\support\\tests\\diablo_transport_ddram_arbiter_tb.sv"]
-
-
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-38805641-e573-469d-9e04-f91c96d87647-j_zkd3cp\\.work\\build\\verification\\transport-ddram-arbiter.vvp"]
-
-DDR arbiter checks passed
-D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-38805641-e573-469d-9e04-f91c96d87647-j_zkd3cp\support\tests\diablo_transport_ddram_arbiter_tb.sv:223: $finish called at 296000 (1ps)

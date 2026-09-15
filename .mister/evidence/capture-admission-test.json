@@ -1,7 +1,0 @@
-{
-  "status": "pass",
-  "scope": "Negative capture-admission check: old executable completes replay but requested missing captures cause CLI failure",
-  "expected_cli_exit": 1,
-  "run": ".work/runtime/replays/7bd17261ed55446181168eb777ba255b/run.json",
-  "run_sha256": "82c5597532de519075b962ee09f8e52e9f01e692c36a265206abd3328a2a2128"
-}

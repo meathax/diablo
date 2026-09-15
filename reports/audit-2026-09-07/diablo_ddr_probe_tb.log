@@ -1,2 +1,0 @@
-diablo_ddr_probe_tb: PASS
-support/tests/diablo_ddr_probe_tb.sv:61: $finish called at 205000 (1ps)

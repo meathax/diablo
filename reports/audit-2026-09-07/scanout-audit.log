@@ -1,4 +1,0 @@
-AUDIT pending next frame but live base=3fe01000, palette writes=512
-AUDIT superseded ready slot state=2 id=6 active=8
-framebuffer scanout checks passed
-reports/audit-2026-09-07/scanout_audit_tb.sv:191: $finish called at 32345000 (1ps)

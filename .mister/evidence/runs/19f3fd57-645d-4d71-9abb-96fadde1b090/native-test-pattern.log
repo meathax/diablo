@@ -1,4 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\\rtl", "-s", "native_test_pattern_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\\.work\\build\\verification\\native-test-pattern.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\\rtl\\native_test_pattern.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\\support\\tests\\native_test_pattern_tb.sv"]
-
-D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-19f3fd57-645d-4d71-9abb-96fadde1b090-t0a86oz9\.work\build\verification\native-test-pattern.vvp: No such file or directory
-error: Code generator failure: -1

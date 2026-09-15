@@ -1,4 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-29a4be3e-3f60-4b34-9f6a-26e8ad621fa3-lc2ix5y2\\rtl", "-s", "i2s_interface_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-29a4be3e-3f60-4b34-9f6a-26e8ad621fa3-lc2ix5y2\\.work\\build\\verification\\i2s-interface.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-29a4be3e-3f60-4b34-9f6a-26e8ad621fa3-lc2ix5y2\\sys\\i2s.v", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-29a4be3e-3f60-4b34-9f6a-26e8ad621fa3-lc2ix5y2\\support\\tests\\i2s_interface_tb.sv"]
-
-D:\vibes\fpga\toolchains\msys64\ucrt64\bin\iverilog.EXE: Error opening temporary file D:\vibes\fpga\temp\.ctx-mode-uXTpHT\ivrlg3bea
-D:\vibes\fpga\toolchains\msys64\ucrt64\bin\iverilog.EXE: Please check TMP or TMPDIR.

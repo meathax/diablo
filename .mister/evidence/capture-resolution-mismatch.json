@@ -1,8 +1,0 @@
-{
-  "status": "failed-as-expected-for-wrong-resolution",
-  "scope": "Capture-enabled engine build succeeded; upstream replay cannot establish native 640x480 captures",
-  "reason": "Version-3 replay header declares 768x480 and overrides config; strict native capture guard aborts",
-  "run": ".work/runtime/replays/4b9f4c3d44be42e38a0672598cecf95f/run.json",
-  "run_sha256": "c47c9f33a8b4bb0019e3bf3f8e33f3de2a5427c2e43509dcaf201d8cf58a65eb",
-  "next": "Prepare a native640 replay, preserving input meaning and validating outcome; no crop/scale or weakened capture dimensions."
-}

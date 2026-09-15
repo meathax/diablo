@@ -1,7 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-8a143ac1-2e6e-4b97-8de8-d91a27a19aac-10l0hxn_\\rtl", "-s", "diablo_command_consumer_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-8a143ac1-2e6e-4b97-8de8-d91a27a19aac-10l0hxn_\\.work\\build\\verification\\command-consumer.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-8a143ac1-2e6e-4b97-8de8-d91a27a19aac-10l0hxn_\\rtl\\diablo_command_consumer.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-8a143ac1-2e6e-4b97-8de8-d91a27a19aac-10l0hxn_\\support\\tests\\diablo_command_consumer_tb.sv"]
-
-
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-8a143ac1-2e6e-4b97-8de8-d91a27a19aac-10l0hxn_\\.work\\build\\verification\\command-consumer.vvp"]
-
-command consumer randomized backpressure checks passed
-D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-8a143ac1-2e6e-4b97-8de8-d91a27a19aac-10l0hxn_\support\tests\diablo_command_consumer_tb.sv:269: $finish called at 8185000 (1ps)

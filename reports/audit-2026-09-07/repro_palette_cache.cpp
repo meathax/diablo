@@ -1,4 +1,0 @@
-#include "mister_transport.hpp"
-#include <vector>
-#include <iostream>
-int main(){using namespace diablo::mister::transport;std::vector<std::byte> memory(SHARED_BYTES);auto s=TransportSession::Attach(memory,123);std::vector<uint8_t> px(FRAME_PIXEL_BYTES,1),pal(PALETTE_BYTES,2);for(int i=0;i<3;i++)if(!s->PublishIndexedFrame(px,640,pal,1))return 2;auto v=s->view();if(!v.FpgaClaimReadyFrame(0,123)||!v.FpgaRetireDisplayedFrame(0,123,1))return 3;if(!v.ArmBeginFrameFast(0,123))return 4;std::memset(memory.data()+v.header().frames[0].palette_offset,9,PALETTE_BYTES);if(!v.ArmPublishFrameFast(0,123,4,2,4,0,FRAME_CHECKSUM_ABSENT)||!v.FpgaClaimReadyFrame(0,123)||!v.FpgaRetireDisplayedFrame(0,123,2))return 5;if(!s->PublishIndexedFrame(px,640,pal,3))return 6;auto got=std::to_integer<int>(memory[v.header().frames[0].palette_offset]);std::cout<<"expected_palette_byte=2 actual="<<got<<"\n";return got==2?0:1;}

@@ -1,3 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-0923b885-18ec-421b-a92a-d94285aeb5dc-k3hrbgu6\\support\\scripts\\test_mister_transport_lifecycle.py"]
-
-{"receipt": ".mister/evidence/receipts/20260908T143848Z-transport-lifecycle-ce9b15144207454783a0bba746689e43.json", "receipt_sha256": "33a6aa1c766f5df8633bfaeaaf0e6f384eba0805d1052a15079e8a7644741c3d", "run_log": ".work/build/transport-lifecycle/ce9b15144207454783a0bba746689e43/run.log", "status": "pass"}

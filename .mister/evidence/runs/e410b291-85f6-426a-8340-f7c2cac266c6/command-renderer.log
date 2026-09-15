@@ -1,4 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-e410b291-85f6-426a-8340-f7c2cac266c6-upm9hqt_\\support\\scripts\\test_command_renderer.py"]
-
-software command renderer checks passed
-software command renderer test passed

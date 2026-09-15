@@ -1,2 +1,0 @@
-transport control reader checks passed
-support/tests/diablo_transport_control_reader_tb.sv:150: $finish called at 3695000 (1ps)

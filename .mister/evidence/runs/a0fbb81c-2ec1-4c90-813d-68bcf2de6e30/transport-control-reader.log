@@ -1,7 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a0fbb81c-2ec1-4c90-813d-68bcf2de6e30-93e4ab27\\rtl", "-s", "diablo_transport_control_reader_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a0fbb81c-2ec1-4c90-813d-68bcf2de6e30-93e4ab27\\.work\\build\\verification\\transport-control-reader.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a0fbb81c-2ec1-4c90-813d-68bcf2de6e30-93e4ab27\\rtl\\diablo_transport_control_reader.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a0fbb81c-2ec1-4c90-813d-68bcf2de6e30-93e4ab27\\support\\tests\\diablo_transport_control_reader_tb.sv"]
-
-
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-a0fbb81c-2ec1-4c90-813d-68bcf2de6e30-93e4ab27\\.work\\build\\verification\\transport-control-reader.vvp"]
-
-transport control reader checks passed
-D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-a0fbb81c-2ec1-4c90-813d-68bcf2de6e30-93e4ab27\support\tests\diablo_transport_control_reader_tb.sv:150: $finish called at 3695000 (1ps)

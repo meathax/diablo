@@ -1,16 +1,49 @@
-# Private commercial data and local upstream checkouts must never be published.
+# Commercial game data and local fetched source checkouts.
 /game/
-/ready/games/
+/ready/
+*.mpq
+*.MPQ
+*.clx
+*.CLX
+*.iso
+*.ISO
+*.zip
+*.ZIP
 /.work/
-/.mister/evidence/private/
+
+# Quartus and simulation output; keep project inputs and HDL sources.
 /db/
 /incremental_db/
 /output_files/
-**/__pycache__/
+*.rpt
+*.summary
+*.jdi
+*.sof
+*.pof
+*.rbf
+*.qws
 *.pyc
+**/__pycache__/
 /build_id.v
 /jtag.cdf
 /Diablo.qws
-# Tool-generated root simulation and pin-model output.
 /a.out
 /c5_pin_model_dump.txt
+
+# Local run evidence, AI notes, reports, and package staging.
+/.mister/*
+!/.mister/source-lock.json
+/reports/
+/distribution/
+/pc-process-*.json
+/NUL
+
+# Keep the public entry-point README and legal notices; omit working docs.
+*.md
+!/README.md
+!/LICENSE.fpga
+!/support/licenses/
+!/support/licenses/**
+*.rst
+*.adoc
+/support/qualification/

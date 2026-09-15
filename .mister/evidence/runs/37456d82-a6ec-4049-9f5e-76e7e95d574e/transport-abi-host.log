@@ -1,6 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\g++.EXE", "-std=c++23", "-Wall", "-Wextra", "-Werror", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-37456d82-a6ec-4049-9f5e-76e7e95d574e-5m838nn5\\support\\reference", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-37456d82-a6ec-4049-9f5e-76e7e95d574e-5m838nn5\\support\\tests\\transport_abi_test.cpp", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-37456d82-a6ec-4049-9f5e-76e7e95d574e-5m838nn5\\.work\\build\\verification\\transport_abi_test.exe"]
-
-
-$ ["D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-37456d82-a6ec-4049-9f5e-76e7e95d574e-5m838nn5\\.work\\build\\verification\\transport_abi_test.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-37456d82-a6ec-4049-9f5e-76e7e95d574e-5m838nn5\\.work\\build\\verification\\transport_abi_header.hex"]
-
-transport ABI host checks passed

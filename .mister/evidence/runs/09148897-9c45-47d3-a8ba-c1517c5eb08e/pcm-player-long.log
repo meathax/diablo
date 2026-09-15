@@ -1,7 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-09148897-9c45-47d3-a8ba-c1517c5eb08e-82t1_zs_\\rtl", "-s", "diablo_pcm_player_long_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-09148897-9c45-47d3-a8ba-c1517c5eb08e-82t1_zs_\\.work\\build\\verification\\pcm-player-long.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-09148897-9c45-47d3-a8ba-c1517c5eb08e-82t1_zs_\\rtl\\diablo_pcm_player.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-09148897-9c45-47d3-a8ba-c1517c5eb08e-82t1_zs_\\support\\tests\\diablo_pcm_player_long_tb.sv"]
-
-
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-09148897-9c45-47d3-a8ba-c1517c5eb08e-82t1_zs_\\.work\\build\\verification\\pcm-player-long.vvp"]
-
-PCM long queue checks passed consumer=480 cycles=1219
-D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-09148897-9c45-47d3-a8ba-c1517c5eb08e-82t1_zs_\support\tests\diablo_pcm_player_long_tb.sv:85: $finish called at 12185000 (1ps)

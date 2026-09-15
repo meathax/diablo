@@ -1,7 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2bd9e896-582a-41d6-ba78-a9f706704ce0-8yyro9mm\\rtl", "-s", "native_test_pattern_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2bd9e896-582a-41d6-ba78-a9f706704ce0-8yyro9mm\\.work\\build\\verification\\native-test-pattern.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2bd9e896-582a-41d6-ba78-a9f706704ce0-8yyro9mm\\rtl\\native_test_pattern.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2bd9e896-582a-41d6-ba78-a9f706704ce0-8yyro9mm\\support\\tests\\native_test_pattern_tb.sv"]
-
-
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-2bd9e896-582a-41d6-ba78-a9f706704ce0-8yyro9mm\\.work\\build\\verification\\native-test-pattern.vvp"]
-
-PASS: three complete frames, CE cadence, sync/porches, 640x480, RGB, mode latching and reset continuity
-D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-2bd9e896-582a-41d6-ba78-a9f706704ce0-8yyro9mm\support\tests\native_test_pattern_tb.sv:99: $finish called at 25300150000 (1ps)

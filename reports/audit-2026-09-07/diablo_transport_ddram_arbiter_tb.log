@@ -1,2 +1,0 @@
-DDR arbiter checks passed
-support/tests/diablo_transport_ddram_arbiter_tb.sv:140: $finish called at 136000 (1ps)

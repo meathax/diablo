@@ -1,3 +1,0 @@
-PASS I2S divider=8: 20 words, channel order and setup/hold
-PASS I2S divider=4: 20 words, channel order and setup/hold
-support/tests/i2s_interface_tb.sv:83: $finish called at 312926445 (1ps)

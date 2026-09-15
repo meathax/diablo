@@ -1,2 +1,0 @@
-PASS: three complete frames, CE cadence, sync/porches, 640x480, RGB, mode latching and reset continuity
-support/tests/native_test_pattern_tb.sv:73: $finish called at 25200110000 (1ps)

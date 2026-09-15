@@ -1,1 +1,0 @@
-{"receipt": ".mister/evidence/receipts/20260909T124314Z-transport-lifecycle-03dcfe46ce16465e9b29508207af9bd8.json", "receipt_sha256": "4710abe3ba12ffacd85ec27bebf08e81a3261239e233ced400d7f77bb3bd599c", "run_log": ".work/build/transport-lifecycle/03dcfe46ce16465e9b29508207af9bd8/run.log", "status": "pass"}

@@ -1,2 +1,0 @@
-transport ABI C++/RTL layout checks passed
-reports/audit-2026-09-07/transport_abi_audit_tb.sv:53: $finish called at 0 (1ps)

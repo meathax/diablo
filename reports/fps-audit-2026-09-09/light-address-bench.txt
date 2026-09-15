@@ -1,5 +1,0 @@
-pass=0 original_ms=217.064 candidate_ms=40.454
-pass=1 original_ms=237.816 candidate_ms=38.437
-pass=2 original_ms=235.227 candidate_ms=50.273
-pass=3 original_ms=226.767 candidate_ms=37.258
-equivalence=pass checksum=357692160

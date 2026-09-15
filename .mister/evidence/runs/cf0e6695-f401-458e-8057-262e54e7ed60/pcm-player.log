@@ -1,7 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-cf0e6695-f401-458e-8057-262e54e7ed60-jdaye7mt\\rtl", "-s", "diablo_pcm_player_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-cf0e6695-f401-458e-8057-262e54e7ed60-jdaye7mt\\.work\\build\\verification\\pcm-player.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-cf0e6695-f401-458e-8057-262e54e7ed60-jdaye7mt\\rtl\\diablo_pcm_player.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-cf0e6695-f401-458e-8057-262e54e7ed60-jdaye7mt\\support\\tests\\diablo_pcm_player_tb.sv"]
-
-
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-cf0e6695-f401-458e-8057-262e54e7ed60-jdaye7mt\\.work\\build\\verification\\pcm-player.vvp"]
-
-PCM player checks passed
-D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-cf0e6695-f401-458e-8057-262e54e7ed60-jdaye7mt\support\tests\diablo_pcm_player_tb.sv:105: $finish called at 1105000 (1ps)

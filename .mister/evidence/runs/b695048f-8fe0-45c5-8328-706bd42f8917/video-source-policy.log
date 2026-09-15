@@ -1,7 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\iverilog.EXE", "-g2012", "-I", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b695048f-8fe0-45c5-8328-706bd42f8917-lbshfczj\\rtl", "-s", "diablo_video_source_policy_tb", "-o", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b695048f-8fe0-45c5-8328-706bd42f8917-lbshfczj\\.work\\build\\verification\\video-source-policy.vvp", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b695048f-8fe0-45c5-8328-706bd42f8917-lbshfczj\\rtl\\diablo_video_source_policy.sv", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b695048f-8fe0-45c5-8328-706bd42f8917-lbshfczj\\support\\tests\\diablo_video_source_policy_tb.sv"]
-
-
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\vvp.EXE", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b695048f-8fe0-45c5-8328-706bd42f8917-lbshfczj\\.work\\build\\verification\\video-source-policy.vvp"]
-
-PASS: video source policy prevents diagnostic/gameplay mux aliasing
-D:\Arcade\AI\aCORES\Diablo\.work\build\verification\diablo-verify-b695048f-8fe0-45c5-8328-706bd42f8917-lbshfczj\support\tests\diablo_video_source_policy_tb.sv:49: $finish called at 5000 (1ps)

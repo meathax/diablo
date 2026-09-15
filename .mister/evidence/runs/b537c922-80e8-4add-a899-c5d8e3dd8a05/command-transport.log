@@ -1,5 +1,0 @@
-$ ["D:\\vibes\\fpga\\toolchains\\msys64\\ucrt64\\bin\\python.exe", "D:\\Arcade\\AI\\aCORES\\Diablo\\.work\\build\\verification\\diablo-verify-b537c922-80e8-4add-a899-c5d8e3dd8a05-ovhujh30\\support\\scripts\\test_command_transport.py"]
-
-command transport publication checks passed
-transport configuration checks passed
-command transport publication test passed

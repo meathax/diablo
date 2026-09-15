@@ -1,2 +1,0 @@
-diablo frame ownership RTL checks passed
-support/tests/diablo_frame_ownership_tb.sv:106: $finish called at 126000 (1ps)
