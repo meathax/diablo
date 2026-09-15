@@ -1,4 +1,5 @@
 """Exercise launcher ownership loss with real, isolated child processes."""
+import argparse
 from pathlib import Path
 import errno
 import os
@@ -37,6 +38,22 @@ class LinuxMemoryAdmissionTest(unittest.TestCase):
         for base in (-4096, 0x3FE00001, 0x3FE01000, 0x80000000):
             with self.subTest(base=base), self.assertRaises(mister_launcher.LaunchError):
                 mister_launcher._validate_linux_memory(base, "00000000-1fefffff : System RAM")
+
+
+class LanguagePersistenceTest(unittest.TestCase):
+    def _args(self, lang=None):
+        return argparse.Namespace(campaign="diablo", data_root=Path("/game-data"), lang=lang, engine_arg=[])
+
+    def test_saved_in_game_language_is_not_overridden(self):
+        command = mister_launcher._engine_args(
+            self._args(), Path("/package"), Path("/save"), Path("/config"), Path("/log"))
+        self.assertNotIn("--lang", command)
+
+    def test_explicit_language_remains_a_one_run_override(self):
+        command = mister_launcher._engine_args(
+            self._args("pl"), Path("/package"), Path("/save"), Path("/config"), Path("/log"))
+        position = command.index("--lang")
+        self.assertEqual(command[position:position + 2], ["--lang", "pl"])
 
 
 class CoreLoadRequestTest(unittest.TestCase):

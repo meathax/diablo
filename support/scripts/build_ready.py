@@ -22,6 +22,13 @@ def md5_file(path):
             digest.update(block)
     return digest.hexdigest()
 
+def verify_menu_palettes(assets):
+    """1.5.5 Settings loads a separate default palette for each campaign."""
+    for campaign in ('diablo', 'hellfire'):
+        palette = assets / 'ui_art' / (campaign + '.pal')
+        if not palette.is_file() or palette.stat().st_size != 256 * 3:
+            raise ValueError(f'missing or invalid {campaign} Settings palette: {palette}')
+
 
 def stage_game_data(output):
     """Copy only the externally-audited local game archives into the SD root."""
@@ -44,6 +51,7 @@ def build(engine, base_package, output, base_url):
     problems = package.verify_package(base_package)
     if problems:
         raise ValueError(str(problems))
+    verify_menu_palettes(base_package / 'assets')
     paths = {"engine": engine, "rbf": ROOT / "output_files/Diablo.rbf",
              "abi": base_package / "transport_abi.hex",
              "launcher": ROOT / "support/scripts/mister_launcher.py"}
@@ -75,7 +83,7 @@ def build(engine, base_package, output, base_url):
         [(role, str(path.relative_to(ROOT))) for role, path in paths.items()],
         'de10-nano-mister', runtime, str(assets.relative_to(ROOT)))
     shutil.copyfile(frontend, output / 'Diablo')
-    for name in ('Diablo.rbf', 'Diablo Hellfire.rbf'):
+    for name in ('Diablo.rbf', 'Hellfire.rbf'):
         shutil.copyfile(paths['rbf'], output / '_Other' / name)
     for executable in (output / 'Diablo', runtime / 'devilutionx', runtime / 'diablo_launcher.py'):
         executable.chmod(0o755)
